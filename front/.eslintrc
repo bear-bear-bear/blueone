@@ -26,6 +26,7 @@
     "react",
     "react-hooks",
     "@typescript-eslint",
+    "@emotion",
     "prettier"
   ],
   "settings": {
