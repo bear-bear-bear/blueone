@@ -14,12 +14,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "jsxImportSource": "@emotion/react",
     "baseUrl": ".",
     "paths": {
       "@public/*":  ["./public/*"],
-      "@components/*": ["./src/components/*"],
-      "@hooks/*": ["./src/hooks/*"],
+      "@components/*": ["./components/*"],
+      "@hooks/*": ["./hooks/*"],
       "@pages/*":  ["./pages/*"],
     },
     "typeRoots": ["./node_modules/@types", "./typings"]
