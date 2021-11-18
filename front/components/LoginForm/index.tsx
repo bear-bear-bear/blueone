@@ -12,7 +12,7 @@ const LoginForm = () => {
   };
 
   return (
-    <S.LoginForm
+    <Form
       name="login-form"
       initialValues={{ remember: true }}
       onFinish={onFinish}
@@ -40,7 +40,7 @@ const LoginForm = () => {
           로그인
         </Button>
       </S.ButtonFormItem>
-    </S.LoginForm>
+    </Form>
   );
 };
 

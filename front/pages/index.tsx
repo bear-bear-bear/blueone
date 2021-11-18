@@ -1,11 +1,11 @@
 import LoginForm from '@components/LoginForm';
-import CenterLayout from '@components/CenterLayout';
+import LoginLayout from '@components/LoginLayout';
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => (
-  <CenterLayout>
+  <LoginLayout>
     <LoginForm />
-  </CenterLayout>
+  </LoginLayout>
 );
 
 export default Home;

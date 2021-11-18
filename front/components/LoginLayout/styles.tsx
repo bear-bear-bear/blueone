@@ -10,15 +10,18 @@ export const CenterLayout = styled.section`
 `;
 
 export const FormWrapper = styled.section`
-  width: 25rem;
-  max-width: 100%;
-  padding: 0.66rem;
-  border: 1px solid #fff;
+  width: 100%;
+  padding: 1.33rem;
+  
+  ${media.sm} {
+    border: 1px solid #ddd;
+    width: 27rem;
+  }
 `;
 
 export const Header = styled.header`
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
-  padding: 1rem 0;
+  margin-bottom: 1.33rem;
+  padding: 0.33rem 0;
 `;

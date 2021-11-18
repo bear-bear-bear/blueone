@@ -1,11 +1,6 @@
 import styled from '@emotion/styled';
 import { Form, Input } from 'antd';
 
-export const LoginForm = styled(Form)`
-  padding: 0.66rem;
-  width: 25rem;
-`;
-
 export const InputFormItem = styled(Form.Item)`
   margin-bottom: 0.66rem;
 
