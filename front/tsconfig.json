@@ -19,7 +19,9 @@
       "@public/*":  ["./public/*"],
       "@components/*": ["./components/*"],
       "@hooks/*": ["./hooks/*"],
-      "@pages/*":  ["./pages/*"],
+      "@pages/*": ["./pages/*"],
+      "@utils/*": ["./utils/*"],
+      "@globalStyles": ["./globalStyles"]
     },
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
