@@ -1,5 +1,7 @@
 import { Input, Form, Button } from 'antd';
 
+import * as S from './styles';
+
 const LoginForm = () => {
   const onFinish = (values: any) => {
     console.log('Success:', values);
@@ -10,35 +12,35 @@ const LoginForm = () => {
   };
 
   return (
-    <Form
-      name="basic"
+    <S.LoginForm
+      name="login-form"
       initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      <Form.Item
+      <S.InputFormItem
         label="전화번호"
-        name="username"
+        name="phone-number"
         rules={[{ required: true, message: '전화번호를 입력해주세요' }]}
       >
-        <Input />
-      </Form.Item>
+        <S.NumericInput type="number" autoComplete="off" size="large" />
+      </S.InputFormItem>
 
-      <Form.Item
+      <S.InputFormItem
         label="비밀번호"
         name="password"
         rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
       >
-        <Input.Password />
-      </Form.Item>
+        <Input.Password autoComplete="off" size="large" />
+      </S.InputFormItem>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>
+      <S.ButtonFormItem>
+        <Button type="primary" htmlType="submit" size="large" block>
           로그인
         </Button>
-      </Form.Item>
-    </Form>
+      </S.ButtonFormItem>
+    </S.LoginForm>
   );
 };
 
