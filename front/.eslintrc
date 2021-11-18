@@ -13,7 +13,6 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
     "next"
   ],
   "parserOptions": {
@@ -26,8 +25,8 @@
   "plugins": [
     "react",
     "react-hooks",
-    "prettier",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier"
   ],
   "settings": {
     "react": {
@@ -51,7 +50,6 @@
       }
     }
   ],
-  "ignorePatterns": ["dist/**/*", "jest-e2e.json", "*.css", "*.pug"],
   "rules": {
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
@@ -64,12 +62,6 @@
       1,
       { "extensions": [".js", ".jsx", ".tsx", "ts"] }
     ],
-    "prettier/prettier": [
-      "error",
-      {
-        "endOfLine": "auto"
-      }
-    ],
     "consistent-return": "warn",
     "no-shadow": "warn",
     "no-shadow-restricted-names": "warn",
@@ -78,6 +70,7 @@
     "import/no-unresolved": "off", // import 에 상대경로 금지
     "import/extensions": ["off"],
     "import/no-extraneous-dependencies": ["off"],
+    "linebreak-style": "off",
     "no-param-reassign": ["error", { "props": false }],
     "jsx-a11y/label-has-associated-control": [
       "error",
