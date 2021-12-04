@@ -7,7 +7,7 @@ const LoginLayout: React.FC = ({ children }) => (
   <S.CenterLayout>
     <S.FormWrapper>
       <S.Header>
-        <Image src="/logo.jpg" width={140} height={35} unoptimized />
+        <Image src="/logo.jpg" alt="로고" width={120} height={30} unoptimized />
       </S.Header>
       {children}
     </S.FormWrapper>

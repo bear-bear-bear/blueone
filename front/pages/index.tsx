@@ -1,11 +1,5 @@
-import LoginForm from '@components/LoginForm';
-import LoginLayout from '@components/LoginLayout';
 import type { NextPage } from 'next';
 
-const Home: NextPage = () => (
-  <LoginLayout>
-    <LoginForm />
-  </LoginLayout>
-);
+const Home: NextPage = () => <div>서비스페이지</div>;
 
 export default Home;

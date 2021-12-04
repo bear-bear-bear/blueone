@@ -12,7 +12,7 @@ export const CenterLayout = styled.section`
 export const FormWrapper = styled.section`
   width: 100%;
   padding: 1.33rem;
-  
+
   ${media.sm} {
     border: 1px solid #ddd;
     width: 27rem;
@@ -22,6 +22,12 @@ export const FormWrapper = styled.section`
 export const Header = styled.header`
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 1.33rem;
   padding: 0.33rem 0;
+  gap: 1rem;
+
+  h1 {
+    font-size: 1.33rem;
+  }
 `;
