@@ -20,11 +20,11 @@ const LoginForm = () => {
       autoComplete="off"
     >
       <S.InputFormItem
-        label="전화번호"
-        name="phone-number"
-        rules={[{ required: true, message: '전화번호를 입력해주세요' }]}
+        label="아이디"
+        name="id"
+        rules={[{ required: true, message: '아이디를 입력해주세요' }]}
       >
-        <S.NumericInput type="number" autoComplete="off" size="large" />
+        <Input size="large" />
       </S.InputFormItem>
 
       <S.InputFormItem
@@ -32,7 +32,7 @@ const LoginForm = () => {
         name="password"
         rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
       >
-        <Input.Password autoComplete="off" size="large" />
+        <Input.Password size="large" />
       </S.InputFormItem>
 
       <S.ButtonFormItem>
