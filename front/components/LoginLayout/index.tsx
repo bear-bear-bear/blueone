@@ -1,9 +1,9 @@
-import React from 'react';
+import type { FC } from 'react';
 import Image from 'next/image';
 
 import * as S from './styles';
 
-const LoginLayout: React.FC = ({ children }) => (
+const LoginLayout: FC = ({ children }) => (
   <S.CenterLayout>
     <S.FormWrapper>
       <S.Header>
