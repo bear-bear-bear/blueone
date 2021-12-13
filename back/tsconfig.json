@@ -9,8 +9,7 @@
     "esModuleInterop": true,
     "baseUrl": "src",
     "paths": {
-      "@config/*":  ["config/*"],
-      "@models/*": ["models/*"],
+      "@/*":  ["./*"],
     }
   },
   "include": [

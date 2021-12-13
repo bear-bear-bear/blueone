@@ -1,14 +1,13 @@
-import config, { NodeEnv } from '@config/config';
+import config from '@/config/config';
 import { Sequelize } from 'sequelize';
 
-const nodeEnv = (process.env.NODE_ENV as NodeEnv) || 'development';
-const { database, username, password } = config[nodeEnv];
+const { database, username, password } = config;
 
-const sequelize = new Sequelize(database, username, password, config[nodeEnv]);
+const sequelize = new Sequelize(database, username, password, config);
 
 const db = {
   sequelize,
   Sequelize,
 };
 
-module.exports = db;
+export default db;

@@ -6,8 +6,17 @@ import morgan from 'morgan';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import db from '@/models';
 
 dotenv.config();
+
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('db 연결 성공');
+  })
+  .catch(console.error);
+
 const app = express();
 
 if (process.env.NODE_ENV === 'production') {
