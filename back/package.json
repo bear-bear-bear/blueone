@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "build": "tsc -p .",
     "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" -r tsconfig-paths/register src/app.ts",
-    "db:create": "cross-env NODE_ENV=development ts-node src/config/config --create"
+    "db:create": "cross-env NODE_ENV=development ts-node src/config/createDB.ts --create"
   },
   "keywords": [],
   "author": "",
