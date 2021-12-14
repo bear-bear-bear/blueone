@@ -1,9 +1,5 @@
-import config from '@/config/config';
+import sequelize from './_sequelize';
 import { Sequelize } from 'sequelize';
-
-const { database, username, password } = config;
-
-const sequelize = new Sequelize(database, username, password, config);
 
 const db = {
   sequelize,
