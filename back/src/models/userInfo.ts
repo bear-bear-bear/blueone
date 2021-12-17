@@ -19,7 +19,9 @@ class UserInfo extends Model {
   public readonly created_at!: Date;
   public readonly updated_at!: Date;
 
-  public static associate = (db: Database): void => {};
+  public static associate = (db: Database): void => {
+    db.UserInfo.belongsTo(db.User);
+  };
 }
 
 UserInfo.init(

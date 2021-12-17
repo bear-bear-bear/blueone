@@ -11,7 +11,11 @@ class User extends Model {
   public readonly updated_at!: Date;
   public readonly deleted_at!: Date | null;
 
-  public static associate = (db: Database): void => {};
+  public static associate = (db: Database): void => {
+    db.User.hasMany(db.Notice);
+    db.User.hasMany(db.Work);
+    db.User.hasOne(db.UserInfo);
+  };
 }
 
 User.init(

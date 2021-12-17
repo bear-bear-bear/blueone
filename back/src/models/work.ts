@@ -17,7 +17,9 @@ class Work extends Model {
   public readonly created_at!: Date;
   public readonly updated_at!: Date;
 
-  public static associate = (db: Database): void => {};
+  public static associate = (db: Database): void => {
+    db.Work.belongsTo(db.User);
+  };
 }
 
 Work.init(
