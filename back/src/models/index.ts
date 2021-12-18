@@ -19,5 +19,6 @@ UserInfo.associate(db);
 Notice.associate(db);
 Work.associate(db);
 
+export { User, UserInfo, Notice, Work };
 export type Database = typeof db;
 export default db;
