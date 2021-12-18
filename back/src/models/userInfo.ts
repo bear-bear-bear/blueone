@@ -9,15 +9,15 @@ const identificationNumberValidate: ModelValidateOptions = {
 
 class UserInfo extends Model {
   public readonly id!: number;
-  public readonly user_id!: number;
+  public readonly userId!: number;
   public realname!: string;
-  public resident_registration_number!: string;
-  public license_number!: string;
-  public license_type!: string;
-  public insurance_number!: string;
-  public insurance_expiration_date!: Date;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
+  public residentRegistrationNumber!: string;
+  public licenseNumber!: string;
+  public licenseType!: string;
+  public insuranceNumber!: string;
+  public insuranceExpirationDate!: Date;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 
   public static associate = (db: Database): void => {
     db.UserInfo.belongsTo(db.User);
@@ -30,29 +30,29 @@ UserInfo.init(
       type: DataTypes.STRING(30),
       allowNull: false,
     },
-    resident_registration_number: {
+    residentRegistrationNumber: {
       type: DataTypes.STRING(30),
       validate: identificationNumberValidate,
       allowNull: false,
     },
-    license_number: {
+    licenseNumber: {
       type: DataTypes.STRING(30),
       validate: identificationNumberValidate,
       allowNull: false,
     },
-    license_type: {
+    licenseType: {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
-    insurance_number: {
+    insuranceNumber: {
       type: DataTypes.STRING(30),
       validate: identificationNumberValidate,
       allowNull: false,
     },
-    insurance_expiration_date: {
+    insuranceExpirationDate: {
       type: DataTypes.DATEONLY,
       get() {
-        return dayjs(this.getDataValue('insurance_expiration_date')).format(
+        return dayjs(this.getDataValue('insuranceExpirationDate')).format(
           'YYYY-MM-DD',
         );
       },

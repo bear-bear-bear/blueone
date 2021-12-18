@@ -4,11 +4,11 @@ import type { Database } from './index';
 
 class Notice extends Model {
   public readonly id!: number;
-  public readonly user_id!: number;
+  public readonly userId!: number;
   public title!: string;
   public content!: string;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 
   public static associate = (db: Database): void => {
     db.Notice.belongsTo(db.User);

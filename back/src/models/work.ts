@@ -4,18 +4,18 @@ import type { Database } from './index';
 
 class Work extends Model {
   public readonly id!: number;
-  public readonly user_id!: number;
+  public readonly userId!: number;
   public origin!: string;
   public waypoint!: string | null;
   public destination!: string;
-  public car_model!: string;
+  public carModel!: string;
   public charge!: number;
   public subsidy!: number | null;
   public remark!: string | null;
-  public check_time!: Date | null;
-  public end_time!: Date | null;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
+  public checkTime!: Date | null;
+  public endTime!: Date | null;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 
   public static associate = (db: Database): void => {
     db.Work.belongsTo(db.User);
@@ -35,7 +35,7 @@ Work.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    car_model: {
+    carModel: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
@@ -49,10 +49,10 @@ Work.init(
     remark: {
       type: DataTypes.TEXT,
     },
-    check_time: {
+    checkTime: {
       type: DataTypes.DATE,
     },
-    end_time: {
+    endTime: {
       type: DataTypes.DATE,
     },
   },
