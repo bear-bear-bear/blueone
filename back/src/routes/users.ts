@@ -12,7 +12,7 @@ router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
   const { per_page = '30', page = '1' } = req.params;
 
   const limit = parseInt(per_page, 10);
-  const offset = parseInt(page, 10) * limit;
+  const offset = (parseInt(page, 10) - 1) * limit;
 
   try {
     const users = await User.findAll({
