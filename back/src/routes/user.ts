@@ -5,7 +5,7 @@ import passport from 'passport';
 
 const router = express.Router();
 
-export const getFullUserWithoutPassword = (user: User): Promise<User | null> =>
+const getFullUserWithoutPassword = (user: User): Promise<User | null> =>
   User.findOne({
     where: { id: user.id },
     attributes: {
@@ -23,14 +23,30 @@ export const getFullUserWithoutPassword = (user: User): Promise<User | null> =>
 
 /**
  * 유저 확인
+ * role에 따라 다른 응답
  */
 router.get('/', async (req, res, next) => {
   try {
-    if (req.user) {
-      const fullUser = await getFullUserWithoutPassword(req.user);
-      res.status(200).json(fullUser);
-    } else {
-      res.status(200).json(null);
+    switch (req.user?.role) {
+      case 'admin': {
+        const fullUser = await getFullUserWithoutPassword(req.user);
+        res.status(200).json(fullUser);
+        break;
+      }
+      case 'user': {
+        const simpleUser = await User.findOne({
+          where: { id: req.user.id },
+          attributes: {
+            exclude: ['password'],
+          },
+        });
+        res.status(200).json(simpleUser);
+        break;
+      }
+      default: {
+        res.status(200).json(null);
+        break;
+      }
     }
   } catch (err) {
     console.error(err);
