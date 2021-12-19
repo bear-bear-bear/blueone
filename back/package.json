@@ -6,13 +6,14 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "tsc -p .",
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" -r tsconfig-paths/register src/app.ts",
-    "db:create": "cross-env NODE_ENV=development ts-node src/config/createDB.ts --create"
+    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" -r tsconfig-paths/register --files src/app.ts",
+    "db:create": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register --files src/config/createDB.ts --create"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -25,10 +26,13 @@
     "hpp": "^0.2.3",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
     "sequelize": "^6.12.0-beta.2",
     "sequelize-cli": "^6.3.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
@@ -36,6 +40,8 @@
     "@types/hpp": "^0.2.2",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.11.12",
+    "@types/passport": "^1.0.7",
+    "@types/passport-local": "^1.0.34",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "eslint": "^8.4.1",
