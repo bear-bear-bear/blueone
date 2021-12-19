@@ -1,6 +1,11 @@
-import { Model, DataTypes } from 'sequelize';
+import {
+  Model,
+  DataTypes,
+  HasOneGetAssociationMixin,
+  HasOneSetAssociationMixin,
+} from 'sequelize';
 import sequelize from './_sequelize';
-import type { Database } from './index';
+import type { Database, UserInfo } from './index';
 
 class User extends Model {
   public readonly id!: number;
@@ -10,6 +15,9 @@ class User extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date | null;
+
+  public getUserInfo!: HasOneGetAssociationMixin<UserInfo>;
+  public setUserInfo!: HasOneSetAssociationMixin<UserInfo, number>;
 
   public static associate = (db: Database): void => {
     db.User.hasMany(db.Notice);

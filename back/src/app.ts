@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import db from '@/models';
-import { userRouter } from '@/routes';
+import { userRouter, usersRouter } from '@/routes';
 import passportConfig from '@/auth';
 passportConfig();
 
@@ -71,6 +71,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/user', userRouter);
+app.use('/users', usersRouter);
 
 app.listen('8001', () => {
   console.log(`
