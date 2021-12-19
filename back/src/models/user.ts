@@ -4,7 +4,7 @@ import type { Database } from './index';
 
 class User extends Model {
   public readonly id!: number;
-  public role!: string;
+  public role!: 'user' | 'admin';
   public phoneNumber!: string;
   public password!: string;
   public readonly createdAt!: Date;
