@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import db from '@/models';
+import { userRouter } from '@/routes';
 import passportConfig from '@/auth';
 passportConfig();
 
@@ -69,9 +70,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/welcome', (req: Request, res: Response) => {
-  res.send('welcome!');
-});
+app.use('/user', userRouter);
 
 app.listen('8001', () => {
   console.log(`
