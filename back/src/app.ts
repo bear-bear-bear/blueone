@@ -1,14 +1,17 @@
 import express, { Request, Response } from 'express';
 import session from 'express-session';
+import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import db from '@/models';
-
 dotenv.config();
+
+import db from '@/models';
+import passportConfig from '@/auth';
+passportConfig();
 
 db.sequelize
   .sync()
@@ -40,6 +43,7 @@ if (process.env.NODE_ENV === 'production') {
         httpOnly: true,
         secure: true,
         domain: '.example.com',
+        maxAge: 14 * (24 * 60 * 60 * 1000),
       },
     }),
   );
@@ -62,6 +66,8 @@ if (process.env.NODE_ENV === 'production') {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/welcome', (req: Request, res: Response) => {
   res.send('welcome!');
