@@ -7,12 +7,18 @@
     "target": "es2017",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "typeRoots" : [
+      "./node_modules/@types",
+      "./typings"
+    ],
     "baseUrl": "src",
     "paths": {
-      "@/*":  ["./*"],
+      "@/*":  ["./*"]
     }
   },
   "include": [
+    "typings/**/*.d.ts",
     "src/**/*"
   ]
 }
