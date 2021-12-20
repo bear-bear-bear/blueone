@@ -14,7 +14,8 @@
     ],
     "baseUrl": "src",
     "paths": {
-      "@/*":  ["./*"]
+      "@/*":  ["./*"],
+      "typings": ["../typings"]
     }
   },
   "include": [
