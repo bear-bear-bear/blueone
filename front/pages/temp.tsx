@@ -1,0 +1,90 @@
+import type { NextPage } from 'next';
+import { useCallback } from 'react';
+import type { FormEventHandler } from 'react';
+import httpClient from '@utils/axios';
+import type { EndPoint } from '@typings';
+
+const textFields = [
+  'phoneNumber',
+  'realname',
+  'residentRegistrationNumber',
+  'licenseNumber',
+  'licenseType',
+  'insuranceNumber',
+];
+
+const dateFields = ['insuranceExpirationDate'];
+
+const TempUserCreatePage: NextPage = () => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.currentTarget);
+      try {
+        const users = await httpClient
+          .post<EndPoint['POST /users']['responses']['202']>('/users', formData)
+          .then((res) => res.data);
+        console.log('users', users);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [],
+  );
+
+  return (
+    <form
+      action=""
+      onSubmit={handleSubmit}
+      style={{
+        width: 'fit-content',
+        padding: '1.33rem',
+      }}
+    >
+      {textFields.map((field, i) => (
+        <div key={field + i}>
+          <label
+            htmlFor={field}
+            style={{
+              width: '200px',
+              display: 'inline-block',
+              marginRight: '1rem',
+              textAlign: 'right',
+            }}
+          >
+            {`${field}: `}
+          </label>
+          <input type="text" id={field + i} name={field} required />
+        </div>
+      ))}
+      {dateFields.map((field, i) => (
+        <div key={field + i}>
+          <label
+            htmlFor={field}
+            style={{
+              width: '200px',
+              display: 'inline-block',
+              marginRight: '1rem',
+              textAlign: 'right',
+            }}
+          >
+            {`${field}: `}
+          </label>
+          <input type="date" id={field + i} name={field} required />
+        </div>
+      ))}
+      <button
+        type="submit"
+        style={{
+          marginTop: '1rem',
+          float: 'right',
+        }}
+      >
+        유저 생성
+      </button>
+    </form>
+  );
+};
+
+export default TempUserCreatePage;
