@@ -1,4 +1,5 @@
 import express from 'express';
+import _ from 'lodash';
 import { isAdmin, isLoggedIn } from '@/routes/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import type {
@@ -74,10 +75,43 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
       });
     }
 
-    const userInfo = await UserInfo.create(restInfo);
-    await user.setUserInfo(userInfo);
+    res.status(202).json({
+      ...user,
+      restUserInfo,
+    });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
-    res.status(202).json(user);
+/**
+ * 어드민 추가 (임시)
+ */
+router.post('/', async (req, res, next) => {
+  const { phoneNumber } = req.body;
+  const INITIAL_PASSWORD = 1234;
+
+  try {
+    const [admin, isCreated] = await User.findOrCreate({
+      where: { phoneNumber },
+      defaults: {
+        role: 'admin',
+        phoneNumber,
+        password: INITIAL_PASSWORD,
+      },
+    });
+
+    if (!isCreated) {
+      res.status(409).json({
+        message: '이미 사용 중인 전화번호입니다.',
+      });
+    }
+
+    const omitPassword = (user: User) =>
+      _.omitBy(user, (value, key) => key !== 'password');
+
+    res.status(202).json(omitPassword(admin));
   } catch (err) {
     console.error(err);
     next(err);
