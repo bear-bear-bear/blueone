@@ -4,7 +4,7 @@ import type { Database } from './index';
 
 class Work extends Model {
   public readonly id!: number;
-  public readonly userId!: number;
+  public userId!: number;
   public origin!: string;
   public waypoint!: string | null;
   public destination!: string;

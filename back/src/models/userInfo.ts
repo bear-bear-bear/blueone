@@ -9,7 +9,7 @@ const identificationNumberValidate: ModelValidateOptions = {
 
 class UserInfo extends Model {
   public readonly id!: number;
-  public readonly userId!: number;
+  public userId!: number;
   public realname!: string;
   public residentRegistrationNumber!: string;
   public licenseNumber!: string;

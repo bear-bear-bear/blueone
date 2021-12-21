@@ -4,7 +4,7 @@ import type { Database } from './index';
 
 class Notice extends Model {
   public readonly id!: number;
-  public readonly userId!: number;
+  public userId!: number;
   public title!: string;
   public content!: string;
   public readonly createdAt!: Date;
