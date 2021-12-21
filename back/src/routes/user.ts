@@ -21,6 +21,22 @@ const getFullUserWithoutPassword = (user: User): Promise<User | null> =>
     ],
   });
 
+const getSimpleUserWithoutPassword = (user: User): Promise<User | null> =>
+  User.findOne({
+    where: { id: user.id },
+    attributes: {
+      exclude: ['password'],
+    },
+    include: [
+      {
+        model: UserInfo,
+        attributes: {
+          include: ['realname', 'licenseType', 'insuranceExpirationDate'],
+        },
+      },
+    ],
+  });
+
 /**
  * 유저 확인
  * role에 따라 다른 응답
@@ -34,12 +50,7 @@ router.get('/', async (req, res, next) => {
         break;
       }
       case 'user': {
-        const simpleUser = await User.findOne({
-          where: { id: req.user.id },
-          attributes: {
-            exclude: ['password'],
-          },
-        });
+        const simpleUser = await getSimpleUserWithoutPassword(req.user);
         res.status(200).json(simpleUser);
         break;
       }

@@ -56,7 +56,7 @@ router.get(
  * 유저 추가
  */
 router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
-  const { phoneNumber, ...restInfo }: CreateUserRequestBody = req.body;
+  const { phoneNumber, ...restUserInfo }: CreateUserRequestBody = req.body;
   const INITIAL_PASSWORD = 1234;
 
   try {
@@ -66,7 +66,12 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
         role: 'user',
         phoneNumber,
         password: INITIAL_PASSWORD,
+        UserInfo: restUserInfo,
       },
+      attributes: {
+        exclude: ['password'],
+      },
+      include: [UserInfo],
     });
 
     if (!isCreated) {
@@ -195,6 +200,9 @@ router.delete('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
     const user = await User.findOne({
       where: {
         userId,
+      },
+      attributes: {
+        exclude: ['password'],
       },
     });
 

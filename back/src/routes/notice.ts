@@ -1,5 +1,5 @@
 import express from 'express';
-import { Notice } from '@/models';
+import { Notice, User } from '@/models';
 import { isAdmin, isLoggedIn } from '@/routes/middlewares';
 import type {
   PaginationQuery,
@@ -43,7 +43,12 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
   const { title, content }: CreateNoticeRequestBody = req.body;
 
   try {
-    const notice = await Notice.create({ title, content });
+    const notice = await Notice.create({
+      title,
+      content,
+      userId: req.user?.id,
+    });
+
     res.status(202).json(notice);
   } catch (err) {
     console.error(err);

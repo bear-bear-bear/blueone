@@ -116,7 +116,9 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     await work.update({ workInfo });
-    res.sendStatus(204);
+
+    const updatedWork = await Work.findOne({ where: { id: workId } });
+    res.status(200).json(updatedWork);
   } catch (err) {
     console.error(err);
     next(err);
