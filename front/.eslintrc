@@ -38,6 +38,12 @@
     "import/extensions": "off",
     "import/no-unresolved": "off", // import 에 상대경로 금지 해제
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }], // tsx내에서 JSX 문법 허용
-    "react/jsx-props-no-spreading": "off" // props spread 허용
+    "react/jsx-props-no-spreading": "off", // props spread 허용
+    "jsx-a11y/label-has-associated-control": ["error", { // 라벨과 input 연결 강제
+      "required": {
+        "some": ["nesting", "id"]
+      }
+    }],
+    "react/no-array-index-key": "off" // array index key 허용
   }
 }
