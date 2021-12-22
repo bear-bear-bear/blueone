@@ -93,7 +93,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 어드민 추가 (임시)
  */
-router.post('/', async (req, res, next) => {
+router.post('/admin', async (req, res, next) => {
   const { phoneNumber } = req.body;
   const INITIAL_PASSWORD = 1234;
 
