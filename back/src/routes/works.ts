@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAdmin, isLoggedIn } from '@/routes/middlewares';
+import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, Work } from '@/models';
 import type {
   CreateWorkRequestBody,

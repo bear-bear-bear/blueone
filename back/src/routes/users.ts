@@ -1,6 +1,6 @@
 import express from 'express';
 import _ from 'lodash';
-import { isAdmin, isLoggedIn } from '@/routes/middlewares';
+import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import type {
   CreateUserRequestBody,
@@ -113,10 +113,8 @@ router.post('/admin', async (req, res, next) => {
       });
     }
 
-    const omitPassword = (user: User) =>
-      _.omitBy(user, (value, key) => key !== 'password');
-
-    res.status(202).json(omitPassword(admin));
+    const omitPassword = (user: User) => _.omitBy(user, (value, key) => key === 'password')
+    res.status(202).json(omitPassword(admin.get()));
   } catch (err) {
     console.error(err);
     next(err);

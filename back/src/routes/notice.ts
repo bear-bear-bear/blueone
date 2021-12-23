@@ -1,6 +1,6 @@
 import express from 'express';
 import { Notice, User } from '@/models';
-import { isAdmin, isLoggedIn } from '@/routes/middlewares';
+import { isAdmin, isLoggedIn } from '@/middlewares';
 import type {
   PaginationQuery,
   QueryTypedRequest,

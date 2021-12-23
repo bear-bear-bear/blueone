@@ -11,6 +11,7 @@ dotenv.config();
 
 import db from '@/models';
 import { userRouter, usersRouter, worksRouter, noticeRouter } from '@/routes';
+import { errorHandler, errorLogger } from '@/middlewares';
 import passportConfig from '@/auth';
 passportConfig();
 
@@ -74,6 +75,8 @@ app.use('/user', userRouter);
 app.use('/users', usersRouter);
 app.use('/works', worksRouter);
 app.use('/notice', noticeRouter);
+app.use(errorLogger);
+app.use(errorHandler);
 
 app.listen('8001', () => {
   console.log(`

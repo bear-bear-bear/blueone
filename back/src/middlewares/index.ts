@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express';
+import type { RequestHandler, ErrorRequestHandler } from 'express';
 
 export const isLoggedIn: RequestHandler = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -28,4 +28,14 @@ export const isAdmin: RequestHandler = (req, res, next) => {
       message: '어드민만 접근 가능합니다.',
     });
   }
+};
+
+export const errorLogger: ErrorRequestHandler = (err, req, res, next) => {
+  console.error('[' + new Date() + ']\n' + err.stack);
+  next(err);
+};
+
+export const errorHandler: ErrorRequestHandler = (err, req, res) => {
+  res.status(err.status || 500);
+  res.send(err.message || 'Server Error');
 };

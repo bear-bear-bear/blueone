@@ -33,7 +33,7 @@ User.init(
     role: {
       type: DataTypes.STRING(20),
       validate: {
-        isIn: [['user, admin']],
+        isIn: [['user', 'admin']],
       },
       allowNull: false,
     },

@@ -1,7 +1,7 @@
 import express from 'express';
-import { User, UserInfo } from '@/models';
-import { isLoggedIn, isNotLoggedIn } from './middlewares';
 import passport from 'passport';
+import { User, UserInfo } from '@/models';
+import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 
 const router = express.Router();
 
