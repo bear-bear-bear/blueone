@@ -15,7 +15,6 @@ export type User = {
   id: number;
   role: 'user' | 'admin';
   phoneNumber: string;
-  userInfo: UserInfo;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -69,11 +68,32 @@ export interface EndPoint {
   /**
    * 내 정보 가져오기
    */
-  'GET /user': undefined;
+  'GET /user': {
+    responses: {
+      200: User & {
+        userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
+      } & {
+        isLoggedIn: true;
+      };
+      401: {
+        isLoggedIn: false;
+      };
+    };
+  };
   /**
    * 로그인
    */
-  'POST /user/login': undefined;
+  'POST /user/login': {
+    requestBody: Pick<User, 'phoneNumber'> & {
+      password: string;
+    };
+    responses: {
+      200: User & {
+        userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
+      };
+      409: ErrorMessage;
+    };
+  };
   /**
    * 로그아웃
    */
