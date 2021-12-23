@@ -44,6 +44,8 @@
         "some": ["nesting", "id"]
       }
     }],
-    "react/no-array-index-key": "off" // array index key 허용
+    "react/no-array-index-key": "off", // array index key 허용
+    "operator-linebreak": "off", // prettier 와 충돌하는 규칙 off
+    "object-curly-newline": "off" // 이상한 줄바꿈 규칙 off
   }
 }
