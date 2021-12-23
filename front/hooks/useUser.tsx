@@ -38,6 +38,9 @@ const axiosFetcher = (url: string) => httpClient.get(url).then((res) => res.data
  */
 export default function useUser({ redirectTo, redirectIfFound = false }: Props = {}) {
   const router = useRouter();
+
+  // TODO: axiosFetcher 혹은 SWRMiddleware에서 isLoggedIn을 부여할 수 있을지 체크해보기 (서버 의존성 제거)
+  // FIXME: 현재 서버 측에서 로그인 검증 미들웨어 내에서 401 응답 시 isLoggedIn prop을 포함하지 않아 리디렉션이 안되는 문제 발생 중
   const { data: user, mutate: mutateUser } = useSWR<UserResponse>(
     SWR_KEY,
     axiosFetcher,
