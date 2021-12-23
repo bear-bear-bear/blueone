@@ -1,13 +1,24 @@
-import { Input, Form, Button } from 'antd';
-
+import { Input, Form, Button, FormProps } from 'antd';
+import httpClient from '@utils/axios';
+import type { EndPoint } from '@typings';
 import * as S from './styles';
 
+type RequestBody = EndPoint['POST /user/login']['requestBody'];
+type Responses = EndPoint['POST /user/login']['responses'];
+
 const LoginForm = () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  const onFinish: FormProps<RequestBody>['onFinish'] = async (values) => {
+    try {
+      const user = await httpClient
+        .post<Responses['200']>('/user/login', values)
+        .then((res) => res.data);
+      console.log('logged in user:', user);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed: FormProps<RequestBody>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -21,7 +32,7 @@ const LoginForm = () => {
     >
       <S.InputFormItem
         label="전화번호"
-        name="phone-number"
+        name="phoneNumber"
         rules={[{ required: true, message: '전화번호를 입력해주세요' }]}
       >
         <S.NumericInput type="number" autoComplete="off" size="large" />
