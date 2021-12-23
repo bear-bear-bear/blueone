@@ -1,5 +1,6 @@
 import express from 'express';
 import _ from 'lodash';
+import bcrypt from 'bcrypt';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import type {
@@ -57,15 +58,16 @@ router.get(
  */
 router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
   const { phoneNumber, ...restUserInfo }: CreateUserRequestBody = req.body;
-  const INITIAL_PASSWORD = 1234;
+  const INITIAL_PASSWORD = '1234';
 
   try {
+    const hashedPassword = await bcrypt.hash(INITIAL_PASSWORD, 10);
     const [user, isCreated] = await User.findOrCreate({
       where: { phoneNumber },
       defaults: {
         role: 'user',
         phoneNumber,
-        password: INITIAL_PASSWORD,
+        password: hashedPassword,
         UserInfo: restUserInfo,
       },
       attributes: {
@@ -85,7 +87,6 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
       restUserInfo,
     });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -95,15 +96,16 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
  */
 router.post('/admin', async (req, res, next) => {
   const { phoneNumber } = req.body;
-  const INITIAL_PASSWORD = 1234;
+  const INITIAL_PASSWORD = '1234';
 
   try {
+    const hashedPassword = await bcrypt.hash(INITIAL_PASSWORD, 10);
     const [admin, isCreated] = await User.findOrCreate({
       where: { phoneNumber },
       defaults: {
         role: 'admin',
         phoneNumber,
-        password: INITIAL_PASSWORD,
+        password: hashedPassword,
       },
     });
 
@@ -111,13 +113,13 @@ router.post('/admin', async (req, res, next) => {
       res.status(409).json({
         message: '이미 사용 중인 전화번호입니다.',
       });
+      return;
     }
 
     const omitPassword = (user: User) =>
       _.omitBy(user, (value, key) => key === 'password');
     res.status(202).json(omitPassword(admin.get()));
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -148,7 +150,6 @@ router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
     });
     res.status(200).json(user);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -184,7 +185,6 @@ router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
 
     res.status(200).json(updatedUser);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -215,7 +215,6 @@ router.delete('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
     await user.destroy();
     res.status(200).json(user);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -234,7 +233,6 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
     });
     res.status(200).json(activatedWorks);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });

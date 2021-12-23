@@ -5,62 +5,45 @@ import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 
 const router = express.Router();
 
-const getFullUserWithoutPassword = (user: User): Promise<User | null> =>
-  User.findOne({
-    where: { id: user.id },
-    attributes: {
-      exclude: ['password'],
-    },
-    include: [
-      {
-        model: UserInfo,
-        attributes: {
-          exclude: ['password'],
-        },
-      },
-    ],
-  });
-
-const getSimpleUserWithoutPassword = (user: User): Promise<User | null> =>
-  User.findOne({
-    where: { id: user.id },
-    attributes: {
-      exclude: ['password'],
-    },
-    include: [
-      {
-        model: UserInfo,
-        attributes: {
-          include: ['realname', 'licenseType', 'insuranceExpirationDate'],
-        },
-      },
-    ],
-  });
-
 /**
  * 유저 확인
- * role에 따라 다른 응답
  */
 router.get('/', async (req, res, next) => {
   try {
-    switch (req.user?.role) {
-      case 'admin': {
-        const fullUser = await getFullUserWithoutPassword(req.user);
-        res.status(200).json(fullUser);
-        break;
-      }
-      case 'user': {
-        const simpleUser = await getSimpleUserWithoutPassword(req.user);
-        res.status(200).json(simpleUser);
-        break;
-      }
-      default: {
-        res.status(200).json(null);
-        break;
-      }
+    if (!req.user) {
+      res.status(401).json({
+        isLoggedIn: false,
+      });
+      return;
     }
+
+    const user = await User.findOne({
+      where: { id: req.user.id },
+      attributes: {
+        exclude: ['password'],
+      },
+      include: [
+        {
+          model: UserInfo,
+          attributes: {
+            include: ['realname', 'licenseType', 'insuranceExpirationDate'],
+          },
+        },
+      ],
+    });
+
+    if (!user) {
+      res.status(401).json({
+        isLoggedIn: false,
+      });
+      return;
+    }
+
+    res.status(200).json({
+      ...user.get(),
+      isLoggedIn: true,
+    });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -71,20 +54,33 @@ router.get('/', async (req, res, next) => {
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (serverError, user, clientError) => {
     if (serverError) {
-      console.error(serverError);
-      return next(serverError);
+      next(serverError);
+      return;
     }
 
     if (clientError) {
-      return res.status(401).json(clientError);
+      res.status(401).json(clientError);
+      return;
     }
 
     return req.login(user, async (loginError) => {
       if (loginError) {
-        console.error(loginError);
         return next(loginError);
       }
-      const fullUser = await getFullUserWithoutPassword(user);
+      const fullUser = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ['password'],
+        },
+        include: [
+          {
+            model: UserInfo,
+            attributes: {
+              include: ['realname', 'licenseType', 'insuranceExpirationDate'],
+            },
+          },
+        ],
+      });
       return res.status(200).json(fullUser);
     });
   })(req, res, next);
@@ -117,7 +113,6 @@ router.patch('/password', isLoggedIn, async (req, res, next) => {
     );
     res.sendStatus(204);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });

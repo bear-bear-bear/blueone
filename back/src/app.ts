@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
   );
   app.use(
     session({
-      saveUninitialized: false,
+      saveUninitialized: true,
       resave: false,
       secret: process.env.COOKIE_SECRET as string,
       proxy: true,
@@ -59,9 +59,13 @@ if (process.env.NODE_ENV === 'production') {
   );
   app.use(
     session({
-      saveUninitialized: false,
+      saveUninitialized: true,
       resave: false,
       secret: process.env.COOKIE_SECRET as string,
+      cookie: {
+        httpOnly: true,
+        maxAge: 14 * (24 * 60 * 60 * 1000),
+      },
     }),
   );
 }

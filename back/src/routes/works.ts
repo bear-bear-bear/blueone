@@ -59,7 +59,7 @@ router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
     let user: User | null = null;
 
     if (userId) {
-      user = await User.findOne({ where: { id: userId } });
+      user = await User.findByPk(userId);
 
       if (!user) {
         res.status(400).json({
@@ -80,7 +80,6 @@ router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
       userId: userId || null,
     });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -93,7 +92,7 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { userId, ...workInfo }: UpdateWorkRequestBody = req.body;
 
   try {
-    const work = await Work.findOne({ where: { id: workId } });
+    const work = await Work.findByPk(workId);
 
     if (!work) {
       res.status(404).json({
@@ -103,7 +102,7 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     if (userId) {
-      const user = await User.findOne({ where: { id: userId } });
+      const user = await User.findByPk(userId);
 
       if (!user) {
         res.status(404).json({
@@ -117,10 +116,9 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
 
     await work.update({ workInfo });
 
-    const updatedWork = await Work.findOne({ where: { id: workId } });
+    const updatedWork = await Work.findByPk(workId);
     res.status(200).json(updatedWork);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -136,7 +134,7 @@ router.patch(
     const { state } = req.query;
 
     try {
-      const work = await Work.findOne({ where: { id: workId } });
+      const work = await Work.findByPk(workId);
 
       if (!work) {
         res.status(404).json({
@@ -186,7 +184,7 @@ router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { workId } = req.params;
 
   try {
-    const work = await Work.findOne({ where: { id: workId } });
+    const work = await Work.findByPk(workId);
 
     if (!work) {
       res.status(404).json({
@@ -198,7 +196,6 @@ router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
     await work.destroy();
     res.status(200).json(work);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });

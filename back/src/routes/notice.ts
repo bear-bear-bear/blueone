@@ -51,7 +51,6 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 
     res.status(202).json(notice);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -63,10 +62,9 @@ router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
   const { noticeId } = req.params;
 
   try {
-    const notice = await Notice.findOne({ where: { id: noticeId } });
+    const notice = await Notice.findByPk(noticeId);
     res.status(200).json(notice);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -79,7 +77,7 @@ router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { title, content }: UpdateNoticeRequestBody = req.body;
 
   try {
-    const notice = await Notice.findOne({ where: { id: noticeId } });
+    const notice = await Notice.findByPk(noticeId);
 
     if (!notice) {
       res.status(404).json({
@@ -93,7 +91,6 @@ router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
     await notice.save();
     res.status(200).json(notice);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });
@@ -105,7 +102,7 @@ router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { noticeId } = req.params;
 
   try {
-    const notice = await Notice.findOne({ where: { id: noticeId } });
+    const notice = await Notice.findByPk(noticeId);
 
     if (!notice) {
       res.status(404).json({
@@ -117,7 +114,6 @@ router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
     await notice.destroy();
     res.status(200).json(notice);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 });

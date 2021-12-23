@@ -9,9 +9,7 @@ export default () => {
 
   passport.deserializeUser<User['id']>(async (id, done) => {
     try {
-      const user = await User.findOne({
-        where: { id },
-      });
+      const user = await User.findByPk(id);
       if (!user) {
         return done(new Error('no user'));
       }
