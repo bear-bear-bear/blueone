@@ -4,7 +4,7 @@ const ROBOTO_DIR = '/fonts/Roboto-subset';
 const NOTOSANS_DIR = '/fonts/NotoSans-subset';
 const NOTOSANS_REMOTE = '//fonts.gstatic.com/ea/notosanskr/v2';
 
-const _FontFace = css`
+const FontFace = css`
   /* ---------------------------------------------------------------------------------------- */
   /* -- Roboto -- */
   // 숫자, 영문 기본 폰트 (body에 적용)
@@ -150,4 +150,4 @@ const _FontFace = css`
   }
 `;
 
-export default _FontFace;
+export default FontFace;

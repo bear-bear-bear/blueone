@@ -33,21 +33,24 @@ const TempUserCreatePage: NextPage = () => {
     [],
   );
 
-  const handleAdminSubmit: FormEventHandler<HTMLFormElement> = useCallback(async (e) => {
-    e.preventDefault();
+  const handleAdminSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    try {
-      const admin = await httpClient
-        .post('/users/admin', {
-          phoneNumber: formData.get('phoneNumber')
-        })
-        .then((res) => res.data);
-      console.log('admin 생성완료:', admin);
-    } catch (err) {
-      console.error(err);
-    }
-  }, [])
+      const formData = new FormData(e.currentTarget);
+      try {
+        const admin = await httpClient
+          .post('/users/admin', {
+            phoneNumber: formData.get('phoneNumber'),
+          })
+          .then((res) => res.data);
+        console.log('admin 생성완료:', admin);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [],
+  );
 
   return (
     <div
