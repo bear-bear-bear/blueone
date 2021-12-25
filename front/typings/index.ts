@@ -73,6 +73,9 @@ export interface EndPoint {
       200: User & {
         userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
       };
+      304: User & {
+        userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
+      };
       401: ErrorMessage;
       404: ErrorMessage;
     };

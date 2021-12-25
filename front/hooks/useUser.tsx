@@ -5,7 +5,9 @@ import httpClient from '@utils/axios';
 import type { AxiosError } from 'axios';
 import type { EndPoint } from '@typings';
 
-type SuccessResponse = EndPoint['GET /user']['responses']['200'];
+type SuccessResponse =
+  | EndPoint['GET /user']['responses']['200']
+  | EndPoint['GET /user']['responses']['304'];
 type FailureResponse =
   | AxiosError<EndPoint['GET /user']['responses']['401']>
   | AxiosError<EndPoint['GET /user']['responses']['404']>;
