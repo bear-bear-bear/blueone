@@ -2,18 +2,21 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useSWR, { SWRConfiguration } from 'swr';
 import httpClient from '@utils/axios';
+import type { AxiosError } from 'axios';
 import type { EndPoint } from '@typings';
 
-type UserResponse =
-  | EndPoint['GET /user']['responses']['200']
-  | EndPoint['GET /user']['responses']['401'];
+type SuccessResponse = EndPoint['GET /user']['responses']['200'];
+type FailureResponse =
+  | AxiosError<EndPoint['GET /user']['responses']['401']>
+  | AxiosError<EndPoint['GET /user']['responses']['404']>;
+
 interface Props {
   redirectTo?: `/${string}`;
   redirectIfFound?: boolean;
 }
 
 const SWR_KEY = '/user';
-const SWROptions: SWRConfiguration<UserResponse> = {
+const SWROptions: SWRConfiguration<SuccessResponse, FailureResponse> = {
   onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
     // Never url
     if (key === SWR_KEY) return;
@@ -36,34 +39,36 @@ const axiosFetcher = (url: string) => httpClient.get(url).then((res) => res.data
  * @param redirectTo {`/${string}`} (optional) 리디렉션 경로
  * @param redirectIfFound {boolean} (optional) Authorization 이 필요하지 않은 페이지에서 true 로 설정
  */
-export default function useUser({ redirectTo, redirectIfFound = false }: Props = {}) {
+export default function useUser({ redirectTo, redirectIfFound }: Props = {}) {
   const router = useRouter();
 
-  // TODO: axiosFetcher 혹은 SWRMiddleware에서 isLoggedIn을 부여할 수 있을지 체크해보기 (서버 의존성 제거)
-  // FIXME: 현재 서버 측에서 로그인 검증 미들웨어 내에서 401 응답 시 isLoggedIn prop을 포함하지 않아 리디렉션이 안되는 문제 발생 중
-  const { data: user, mutate: mutateUser } = useSWR<UserResponse>(
-    SWR_KEY,
-    axiosFetcher,
-    SWROptions,
-  );
+  const {
+    data: user,
+    mutate: mutateUser,
+    error,
+  } = useSWR<SuccessResponse, FailureResponse>(SWR_KEY, axiosFetcher, SWROptions);
 
-  console.log('user', user);
+  const isLoggedIn = !error && user !== undefined;
+
+  // console.log({
+  //   user,
+  //   error: error?.response?.data.message,
+  //   isLoggedIn,
+  // });
 
   useEffect(() => {
-    // 리디렉트가 필요하지 않다면 return
     if (!redirectTo) return;
-    if (!user) return;
+    if (user === undefined) return;
 
     if (
       // Authorization 이 필요한 페이지인데 사용자 비로그인 상태라면 리디렉션
-      (!redirectIfFound && !user.isLoggedIn) ||
+      (!redirectIfFound && !isLoggedIn) ||
       // Authorization 이 필요하지 않은 페이지인데 사용자가 로그인 상태라면 리디렉션
-      (redirectIfFound && user.isLoggedIn)
+      (redirectIfFound && isLoggedIn)
     ) {
-      console.log('리다이렉팅');
       router.push(redirectTo);
     }
-  }, [redirectIfFound, redirectTo, router, user]);
+  }, [isLoggedIn, redirectIfFound, redirectTo, router, user]);
 
-  return { user, mutateUser };
+  return { user, mutateUser, isLoggedIn };
 }

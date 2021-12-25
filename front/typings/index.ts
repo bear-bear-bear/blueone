@@ -72,12 +72,9 @@ export interface EndPoint {
     responses: {
       200: User & {
         userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
-      } & {
-        isLoggedIn: true;
       };
-      401: {
-        isLoggedIn: false;
-      };
+      401: ErrorMessage;
+      404: ErrorMessage;
     };
   };
   /**

@@ -6,7 +6,7 @@ const Home: NextPage = () => {
     redirectTo: '/login',
   });
 
-  if (!user?.isLoggedIn) return null;
+  if (!user) return null;
   return <div>서비스페이지</div>;
 };
 

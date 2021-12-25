@@ -8,17 +8,10 @@ const router = express.Router();
 /**
  * 유저 확인
  */
-router.get('/', async (req, res, next) => {
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
-    if (!req.user) {
-      res.status(401).json({
-        isLoggedIn: false,
-      });
-      return;
-    }
-
     const user = await User.findOne({
-      where: { id: req.user.id },
+      where: { id: req.user?.id },
       attributes: {
         exclude: ['password'],
       },
@@ -33,16 +26,13 @@ router.get('/', async (req, res, next) => {
     });
 
     if (!user) {
-      res.status(401).json({
-        isLoggedIn: false,
+      res.status(404).json({
+        message: '세션 정보로 유저를 찾을 수 없습니다.',
       });
       return;
     }
 
-    res.status(200).json({
-      ...user.get(),
-      isLoggedIn: true,
-    });
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
