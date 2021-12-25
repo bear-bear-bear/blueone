@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import type { FormEventHandler } from 'react';
 import httpClient from '@utils/axios';
 import type { EndPoint } from '@typings';
+import useAdmin from '@hooks/useAdmin';
 
 const textFields = [
   'phoneNumber',
@@ -16,42 +17,47 @@ const textFields = [
 const dateFields = ['insuranceExpirationDate'];
 
 const TempUserCreatePage: NextPage = () => {
-  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    async (e) => {
-      e.preventDefault();
+  const { isAdminLoggedIn } = useAdmin({
+    redirectTo: '/login',
+  });
 
-      const formData = new FormData(e.currentTarget);
-      try {
-        const users = await httpClient
-          .post<EndPoint['POST /users']['responses']['202']>('/users', formData)
-          .then((res) => res.data);
-        console.log('users', users);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    [],
-  );
+  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(async (e) => {
+    e.preventDefault();
 
-  const handleAdminSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    async (e) => {
-      e.preventDefault();
+    const reqBody = Array.from(e.currentTarget.querySelectorAll('input')).reduce(
+      (acc, inputEl) => ({
+        ...acc,
+        [inputEl.name]: inputEl.value,
+      }),
+      {} as EndPoint['POST /users']['requestBody'],
+    );
+    try {
+      const createdUser = await httpClient
+        .post<EndPoint['POST /users']['responses']['202']>('/users', reqBody)
+        .then((res) => res.data);
+      console.log('createdUser', createdUser);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
-      const formData = new FormData(e.currentTarget);
-      try {
-        const admin = await httpClient
-          .post('/users/admin', {
-            phoneNumber: formData.get('phoneNumber'),
-          })
-          .then((res) => res.data);
-        console.log('admin 생성완료:', admin);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    [],
-  );
+  const handleAdminSubmit: FormEventHandler<HTMLFormElement> = useCallback(async (e) => {
+    e.preventDefault();
 
+    const formData = new FormData(e.currentTarget);
+    try {
+      const admin = await httpClient
+        .post('/users/admin', {
+          phoneNumber: formData.get('phoneNumber'),
+        })
+        .then((res) => res.data);
+      console.log('admin 생성완료:', admin);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  if (!isAdminLoggedIn) return null;
   return (
     <div
       style={{

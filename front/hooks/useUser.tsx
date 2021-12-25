@@ -10,7 +10,7 @@ type FailureResponse =
   | AxiosError<EndPoint['GET /user']['responses']['401']>
   | AxiosError<EndPoint['GET /user']['responses']['404']>;
 
-interface Props {
+export interface Props {
   redirectTo?: `/${string}`;
   redirectIfFound?: boolean;
 }
@@ -48,17 +48,19 @@ export default function useUser({ redirectTo, redirectIfFound }: Props = {}) {
     error,
   } = useSWR<SuccessResponse, FailureResponse>(SWR_KEY, axiosFetcher, SWROptions);
 
-  const isLoggedIn = !error && user !== undefined;
+  const isLoggedIn = !error && !!user;
+  const isNotFetched = !error && !user;
 
-  // console.log({
-  //   user,
-  //   error: error?.response?.data.message,
-  //   isLoggedIn,
-  // });
+  console.log({
+    user,
+    error: error?.response?.data.message,
+    isLoggedIn,
+    isNotFetched,
+  });
 
   useEffect(() => {
     if (!redirectTo) return;
-    if (user === undefined) return;
+    if (isNotFetched) return;
 
     if (
       // Authorization 이 필요한 페이지인데 사용자 비로그인 상태라면 리디렉션
@@ -68,7 +70,7 @@ export default function useUser({ redirectTo, redirectIfFound }: Props = {}) {
     ) {
       router.push(redirectTo);
     }
-  }, [isLoggedIn, redirectIfFound, redirectTo, router, user]);
+  }, [isLoggedIn, isNotFetched, redirectIfFound, redirectTo, router, user]);
 
   return { user, mutateUser, isLoggedIn };
 }
