@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
-import useUser from '@hooks/useUser';
+import useAdmin from '@hooks/useAdmin';
 
 const Home: NextPage = () => {
-  const { isLoggedIn } = useUser({
+  const { isAdminLoggedIn } = useAdmin({
     redirectTo: '/login',
   });
 
-  if (!isLoggedIn) return null;
-  return <div>서비스페이지</div>;
+  if (!isAdminLoggedIn) return null;
+  return <div>어드민 인덱스 페이지</div>;
 };
 
 export default Home;

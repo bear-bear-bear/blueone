@@ -16,8 +16,16 @@ const LoginForm = () => {
       const user = await httpClient
         .post<Responses['200']>('/user/login', values)
         .then((res) => res.data);
-      console.log('logged in user:', user);
-      router.push('/');
+
+      switch (user.role) {
+        case 'admin':
+          router.push('/');
+          break;
+        case 'user':
+          router.push('worker');
+          break;
+        default:
+      }
     } catch (err) {
       console.error((err as AxiosError).response?.data);
     }
