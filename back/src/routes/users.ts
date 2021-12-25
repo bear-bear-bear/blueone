@@ -80,6 +80,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
       res.status(409).json({
         message: '이미 사용 중인 전화번호입니다.',
       });
+      return;
     }
 
     res.status(202).json({
