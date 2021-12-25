@@ -6,6 +6,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import hpp from 'hpp';
 import helmet from 'helmet';
+import fileStoreFactory from 'session-file-store';
+const FileStore = fileStoreFactory(session);
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -47,6 +49,7 @@ if (process.env.NODE_ENV === 'production') {
         domain: '.example.com',
         maxAge: 14 * (24 * 60 * 60 * 1000),
       },
+      store: new FileStore({}),
     }),
   );
 } else {
@@ -66,6 +69,7 @@ if (process.env.NODE_ENV === 'production') {
         httpOnly: true,
         maxAge: 14 * (24 * 60 * 60 * 1000),
       },
+      store: new FileStore({}),
     }),
   );
 }
