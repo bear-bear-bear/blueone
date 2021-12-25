@@ -11,6 +11,8 @@ import type {
 } from 'typings';
 
 const router = express.Router();
+const omitPassword = (user: User) =>
+  _.omitBy<Omit<User, 'password'>>(user, (value, key) => key === 'password');
 
 /**
  * 유저 리스트 가져오기
@@ -83,10 +85,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
       return;
     }
 
-    res.status(202).json({
-      ...user,
-      restUserInfo,
-    });
+    res.status(202).json(omitPassword(user.get()));
   } catch (err) {
     next(err);
   }
