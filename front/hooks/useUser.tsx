@@ -51,12 +51,12 @@ export default function useUser({ redirectTo, redirectIfFound }: Props = {}) {
   const isLoggedIn = !error && !!user;
   const isNotFetched = !error && !user;
 
-  console.log({
-    user,
-    error: error?.response?.data.message,
-    isLoggedIn,
-    isNotFetched,
-  });
+  console.group('SWR Fetched "/user"');
+  console.log('data:', user);
+  console.log('error:', error?.response?.data.message);
+  console.log('isLoggedIn:', isLoggedIn);
+  console.log('isNotFetched:', isNotFetched);
+  console.groupEnd();
 
   useEffect(() => {
     if (!redirectTo) return;
