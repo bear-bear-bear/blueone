@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import useAdmin from '@hooks/useAdmin';
+import AdminLayout from '@components/AdminLayout';
 
 const Home: NextPage = () => {
   const { isAdminLoggedIn } = useAdmin({
@@ -7,7 +8,7 @@ const Home: NextPage = () => {
   });
 
   if (!isAdminLoggedIn) return null;
-  return <div>어드민 인덱스 페이지</div>;
+  return <AdminLayout />;
 };
 
 export default Home;
