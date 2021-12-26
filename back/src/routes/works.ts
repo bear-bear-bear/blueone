@@ -149,6 +149,7 @@ router.patch(
             res.status(403).json({
               message: '이미 확인된 작업입니다.',
             });
+            return;
           }
           work.checkTime = new Date();
           await work.save();
@@ -158,6 +159,7 @@ router.patch(
             res.status(403).json({
               message: '이미 완료된 작업입니다.',
             });
+            return;
           }
           work.endTime = new Date();
           await work.save();
@@ -166,7 +168,7 @@ router.patch(
           res.status(403).json({
             message: 'query 값이 유효하지 않습니다',
           });
-          break;
+          return;
       }
 
       res.status(200).json(work);

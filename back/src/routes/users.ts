@@ -116,8 +116,6 @@ router.post('/admin', async (req, res, next) => {
       return;
     }
 
-    const omitPassword = (user: User) =>
-      _.omitBy(user, (value, key) => key === 'password');
     res.status(202).json(omitPassword(admin.get()));
   } catch (err) {
     next(err);
