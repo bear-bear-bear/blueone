@@ -21,7 +21,7 @@
       "@hooks/*": ["./hooks/*"],
       "@pages/*": ["./pages/*"],
       "@utils/*": ["./utils/*"],
-      "@globalStyles": ["./globalStyles"],
+      "@globalStyles/*": ["./globalStyles/*"],
       "@typings": ["./typings"]
     },
     "typeRoots": ["./node_modules/@types", "./typings"]
