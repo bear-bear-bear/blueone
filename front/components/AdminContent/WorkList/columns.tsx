@@ -1,8 +1,10 @@
 import { ColumnsType } from 'antd/es/table';
 import { Space } from 'antd';
 import Link from 'next/link';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import type { ProcessedWork } from './index';
+
+import * as S from './styles';
 
 const columns: ColumnsType<ProcessedWork> = [
   {
@@ -101,7 +103,7 @@ const columns: ColumnsType<ProcessedWork> = [
         </Link>
         <Link href="/">
           <a>
-            <DeleteOutlined title="삭제" />
+            <S.DeleteIconOutlined title="삭제" />
           </a>
         </Link>
       </Space>

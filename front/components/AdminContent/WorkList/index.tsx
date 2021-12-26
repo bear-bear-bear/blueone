@@ -1,6 +1,8 @@
 import { Table } from 'antd';
 import dayjs from 'dayjs';
+import { Global } from '@emotion/react';
 import type { Work } from '@typings';
+import { globalCSS } from '@components/AdminContent/WorkList/styles';
 import fakeWorks from './fakeWorks';
 import columns from './columns';
 
@@ -31,23 +33,26 @@ const WorkList = () => {
   }));
 
   return (
-    <Table
-      dataSource={fakeDataSource}
-      columns={columns}
-      expandable={{
-        expandedRowRender: (work) => <Remark work={work} />,
-      }}
-      locale={{
-        sortTitle: '정렬',
-        triggerDesc: '오래된 순 정렬',
-        triggerAsc: '최신 순 정렬',
-        cancelSort: '처음 상태로 되돌리기',
-      }}
-      rowKey={(work) => work.id}
-      pagination={{ position: ['topRight'] }}
-      size="middle"
-      bordered
-    />
+    <>
+      <Global styles={globalCSS} />
+      <Table
+        dataSource={fakeDataSource}
+        columns={columns}
+        expandable={{
+          expandedRowRender: (work) => <Remark work={work} />,
+        }}
+        locale={{
+          sortTitle: '정렬',
+          triggerDesc: '오래된 순 정렬',
+          triggerAsc: '최신 순 정렬',
+          cancelSort: '처음 상태로 되돌리기',
+        }}
+        rowKey={(work) => work.id}
+        pagination={{ position: ['topRight'] }}
+        size="middle"
+        bordered
+      />
+    </>
   );
 };
 
