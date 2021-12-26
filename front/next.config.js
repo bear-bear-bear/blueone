@@ -8,6 +8,11 @@ module.exports = withAntdLess({
   modifyVars: { '@primary-color': '#0076BB' },
   ...nextConfig,
   webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
     return config;
   },
 });
