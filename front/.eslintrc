@@ -38,7 +38,8 @@
     "no-bitwise": "off",
     "import/extensions": "off",
     "import/no-unresolved": "off", // import 에 상대경로 금지 해제
-    "import/prefer-default-export": "off", // 현재 프로젝트 구성과 맞지 않는 규칙 해제
+    "import/prefer-default-export": "off", // 현재 프로젝트 구성과 맞지 않는 규칙 해제,
+    "max-len": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }], // tsx내에서 JSX 문법 허용
     "react/jsx-props-no-spreading": "off", // props spread 허용
     "react/require-default-props": "off", // ts 사용으로 필요없음
