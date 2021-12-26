@@ -2,13 +2,18 @@ import { ColumnsType } from 'antd/es/table';
 import { Space } from 'antd';
 import Link from 'next/link';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import type { ProcessedWork } from './index';
 
 const columns: ColumnsType<ProcessedWork> = [
   {
     title: '일자',
-    dataIndex: 'createdAt',
-    key: 'createdAt',
+    dataIndex: 'processedCreatedAt',
+    key: 'processedCreatedAt',
     align: 'center',
+    sorter: {
+      compare: (a, b) => +(b.createdAt || 0) - +(a.createdAt || 0),
+    },
+    defaultSortOrder: 'ascend',
   },
   {
     title: '경로',
@@ -55,38 +60,32 @@ const columns: ColumnsType<ProcessedWork> = [
         title: '구간지수',
         dataIndex: 'charge',
         key: 'charge',
-        align: 'center',
+        align: 'right',
       },
       {
         title: '지원지수',
         dataIndex: 'subsidy',
         key: 'subsidy',
-        align: 'center',
+        align: 'right',
       },
       {
-        title: '수수료',
-        dataIndex: 'fee',
-        key: 'fee',
-        align: 'center',
-      },
-      {
-        title: '지불금',
+        title: '최종지수',
         dataIndex: 'payout',
         key: 'payout',
-        align: 'center',
+        align: 'right',
       },
     ],
   },
   {
-    title: '체크됨',
-    dataIndex: 'checkTime',
-    key: 'checkTime',
+    title: '확인',
+    dataIndex: 'processedCheckTime',
+    key: 'processedCheckTime',
     align: 'center',
   },
   {
-    title: '완료됨',
-    dataIndex: 'endTime',
-    key: 'endTime',
+    title: '완료',
+    dataIndex: 'processedEndTime',
+    key: 'processedEndTime',
     align: 'center',
   },
   {

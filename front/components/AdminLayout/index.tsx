@@ -1,16 +1,25 @@
 import { useState, FC, useCallback } from 'react';
 import Image from 'next/image';
-import { Layout, Menu, MenuProps } from 'antd';
+import { Layout, Empty, Menu, MenuProps } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
 import { TeamOutlined, CarOutlined } from '@ant-design/icons';
+import contentList, { ContentTitle } from '@components/AdminContent';
 import * as S from './styles';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content: Main, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
+
+const EmptyContent = () => (
+  <Empty
+    style={{ margin: '64px 0' }}
+    description={<p>선택된 항목에 컨텐츠가 설정되지 않았습니다. 개발자에게 문의하세요.</p>}
+  />
+);
 
 const AdminLayout: FC = () => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const [selectedKey, setSelectedKey] = useState<string>('업무 목록');
+  const [selectedKey, setSelectedKey] = useState<ContentTitle>('업무 목록');
+  const SelectedContent = contentList.find((v) => v.title === selectedKey)?.component;
 
   const onCollapse: SiderProps['onCollapse'] = useCallback(() => {
     setCollapsed((prev) => !prev);
@@ -56,7 +65,9 @@ const AdminLayout: FC = () => {
       <Layout className="site-layout">
         <Header style={{ color: 'white', padding: '0 16px' }}>{selectedKey}</Header>
 
-        <Content style={{ margin: '16px' }}>컨텐츠</Content>
+        <Main style={{ margin: '16px' }}>
+          {SelectedContent ? <SelectedContent /> : <EmptyContent />}
+        </Main>
 
         <Footer style={{ textAlign: 'center', padding: '16px 0' }}>BLUEONE ©2014</Footer>
       </Layout>
