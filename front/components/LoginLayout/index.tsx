@@ -5,12 +5,12 @@ import * as S from './styles';
 
 const LoginLayout: FC = ({ children }) => (
   <S.CenterLayout>
-    <S.FormWrapper>
-      <S.Header>
+    <S.Box>
+      <S.BoxHeader>
         <Image src="/logo.jpg" alt="로고" width={120} height={30} unoptimized />
-      </S.Header>
+      </S.BoxHeader>
       {children}
-    </S.FormWrapper>
+    </S.Box>
   </S.CenterLayout>
 );
 

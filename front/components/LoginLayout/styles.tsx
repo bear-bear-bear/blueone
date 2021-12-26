@@ -9,17 +9,18 @@ export const CenterLayout = styled.section`
   align-items: center;
 `;
 
-export const FormWrapper = styled.section`
+export const Box = styled.section`
   width: 100%;
   padding: 1.33rem;
 
   ${media.sm} {
     border: 1px solid #ddd;
+    border-radius: 2px;
     width: 27rem;
   }
 `;
 
-export const Header = styled.header`
+export const BoxHeader = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,6 +29,6 @@ export const Header = styled.header`
   gap: 1rem;
 
   h1 {
-    font-size: 1.33rem;
+    font-size: 1.1rem;
   }
 `;
