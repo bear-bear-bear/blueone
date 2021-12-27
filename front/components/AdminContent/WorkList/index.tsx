@@ -27,7 +27,7 @@ const processWorkDateTimes = (work: FullWork) => ({
 });
 
 const Remark = ({ work }: { work: FullWork }) => (
-  <p style={{ padding: '0 16px', textAlign: 'center' }}>{`비고: ${work.remark}`}</p>
+  <p style={{ padding: '0 16px', textAlign: 'center' }}>{work.remark ? `비고: ${work.remark}` : '-'}</p>
 );
 
 const WorkList = () => {
