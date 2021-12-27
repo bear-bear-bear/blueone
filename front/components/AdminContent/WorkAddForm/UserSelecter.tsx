@@ -23,7 +23,6 @@ const UserSelecter = ({ form }: Props) => {
     if (!users) return;
     return users.map(({ id, phoneNumber, UserInfo: { realname } }) => (
       <Option value={id} style={{ textAlign: 'center' }}>
-        {id}
         {realname}
         <Divider type="vertical" />
         {phoneNumber.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}
