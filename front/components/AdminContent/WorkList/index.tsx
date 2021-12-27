@@ -1,42 +1,58 @@
-import { Table } from 'antd';
+import React, { useMemo } from 'react';
+import useSWR from 'swr';
+import { axiosFetcher } from '@utils/swr';
+import { Spin, Table } from 'antd';
 import dayjs from 'dayjs';
 import { Global } from '@emotion/react';
-import type { Work } from '@typings';
 import { globalCSS } from '@components/AdminContent/WorkList/styles';
-import fakeWorks from './fakeWorks';
+import type { EndPoint, UserInfo, Unpacked } from '@typings';
 import columns from './columns';
 
-export type ProcessedWork = Work & {
+type FullWorks = EndPoint['GET /works']['responses']['200'];
+type FullWork = Unpacked<FullWorks>;
+export type ProcessedWork = FullWork & {
   processedCheckTime: string;
   processedEndTime: string;
   processedCreatedAt: string | null;
   processedUpdatedAt: string | null;
   payout: string | number;
+  realname?: UserInfo['realname'];
 };
 
-const processWorkDateTimes = (work: Work) => ({
+const processWorkDateTimes = (work: FullWork) => ({
   processedCheckTime: work.checkTime ? dayjs(work.checkTime).format('A hh:mm') : '-',
   processedEndTime: work.endTime ? dayjs(work.endTime).format('A hh:mm') : '-',
   processedCreatedAt: dayjs(work.createdAt).format('MM/DD'),
   processedUpdatedAt: dayjs(work.updatedAt).format('MM/DD'),
 });
 
-const Remark = ({ work }: { work: Work }) => (
+const Remark = ({ work }: { work: FullWork }) => (
   <p style={{ padding: '0 16px', textAlign: 'center' }}>{`비고: ${work.remark}`}</p>
 );
 
 const WorkList = () => {
-  const fakeDataSource: ProcessedWork[] = fakeWorks.map((work) => ({
-    ...work,
-    ...processWorkDateTimes(work),
-    payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
-  }));
+  const { data: works } = useSWR<FullWorks>('/works', axiosFetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnMount: true,
+  });
 
+  const dataSource: ProcessedWork[] = useMemo(() => {
+    if (!works) return [];
+    return works.map((work) => ({
+      ...work,
+      ...processWorkDateTimes(work),
+      payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
+      realname: work.User?.UserInfo.realname,
+    }));
+  }, [works]);
+
+  if (!dataSource) return <Spin size="large" />;
   return (
     <>
       <Global styles={globalCSS} />
       <Table
-        dataSource={fakeDataSource}
+        dataSource={dataSource}
         columns={columns}
         expandable={{
           expandedRowRender: (work) => <Remark work={work} />,

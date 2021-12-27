@@ -49,8 +49,8 @@ const columns: ColumnsType<ProcessedWork> = [
   },
   {
     title: '기사',
-    dataIndex: 'userId',
-    key: 'userId',
+    dataIndex: 'realname',
+    key: 'realname',
     align: 'center',
   },
   {
