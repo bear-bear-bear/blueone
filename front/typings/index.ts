@@ -46,16 +46,6 @@ export type Notice = {
 };
 
 // export type WorkState = 'checked' | 'done';
-// export type CreateWorkRequestBody = { userId?: User['id'] } & Pick<
-//   Work,
-//   | 'origin'
-//   | 'waypoint'
-//   | 'destination'
-//   | 'carModel'
-//   | 'charge'
-//   | 'subsidy'
-//   | 'remark'
-// >;
 // export type UpdateWorkRequestBody = CreateWorkRequestBody;
 //
 // export type CreateNoticeRequestBody = Pick<Notice, 'title' | 'content'>;
@@ -71,10 +61,10 @@ export interface EndPoint {
   'GET /user': {
     responses: {
       200: User & {
-        userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
+        UserInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
       };
       304: User & {
-        userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
+        UserInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
       };
       401: ErrorMessage;
       404: ErrorMessage;
@@ -89,7 +79,7 @@ export interface EndPoint {
     };
     responses: {
       200: User & {
-        userInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
+        UserInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
       };
       409: ErrorMessage;
     };
@@ -106,7 +96,14 @@ export interface EndPoint {
   /**
    * 유저 리스트 가져오기
    */
-  'GET /users': undefined;
+  'GET /users': {
+    responses: {
+      200: (User & {
+        UserInfo: UserInfo;
+        Work: Work;
+      })[];
+    };
+  };
   /**
    * 유저 추가
    */
@@ -122,9 +119,7 @@ export interface EndPoint {
         | 'insuranceExpirationDate'
       >;
     responses: {
-      202: User & {
-        userInfo: UserInfo;
-      };
+      202: User & { UserInfo: UserInfo };
       409: ErrorMessage;
     };
   };
@@ -148,11 +143,29 @@ export interface EndPoint {
   /**
    * 활성화된 작업 리스트 가져오기
    */
-  'GET /works': undefined;
+  'GET /works': {
+    responses: {
+      200: Work & {
+        User: User & {
+          UserInfo: Pick<UserInfo, 'realname'>;
+        };
+      };
+    };
+  };
   /**
    * 작업 추가
    */
-  'POST /works': undefined;
+  'POST /works': {
+    requestBody: { userId: Work['userId'] | null } & Pick<
+      Work,
+      'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
+    >;
+    responses: {
+      200: Work & {
+        userId: null;
+      };
+    };
+  };
   /**
    * 작업 수정
    */

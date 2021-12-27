@@ -1,0 +1,101 @@
+import { useCallback } from 'react';
+import { Form, Input, InputNumber, Button, FormProps, message } from 'antd';
+import type { ColProps } from 'antd/lib/grid/col';
+import UserSelecter from '@components/AdminContent/WorkAddForm/UserSelecter';
+import httpClient from '@utils/axios';
+import type { EndPoint } from '@typings';
+import * as S from './styles';
+
+type RequestBody = EndPoint['POST /works']['requestBody'];
+type Response = EndPoint['POST /works']['responses']['200'];
+export type Fields = RequestBody & {
+  waypoint: undefined;
+  userId: undefined;
+  remark: undefined;
+};
+
+const layout: { [ColName: string]: ColProps } = {
+  labelCol: { span: 5 },
+  wrapperCol: { flex: 'auto' },
+};
+const submitButtonWrapperCol: ColProps = { flex: 'auto' };
+
+const validateMessages = {
+  required: '필수 입력 값입니다.',
+  types: {
+    number: '숫자 형식이여야 합니다.',
+  },
+  number: {
+    min: '${min}보다 커야합니다.',
+  },
+};
+
+const WorkAddForm = () => {
+  const [form] = Form.useForm<Fields>();
+
+  const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(async (values) => {
+    const reqBody: RequestBody = {
+      ...values,
+      waypoint: values.waypoint ?? null,
+      userId: values.userId ?? null,
+      remark: values.remark ?? null,
+    };
+
+    try {
+      await httpClient.post<Response>('/works', reqBody);
+      message.success('작업 추가 완료');
+      form.resetFields();
+    } catch (err) {
+      message.error('작업 추가 중 에러 발생, 개발자에게 문의하세요.');
+      console.error(err);
+    }
+  }, []);
+
+  return (
+    <S.FormWrapper>
+      <Form {...layout} form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle">
+        <Form.Item name="userId" label="기사" tooltip="기사는 나중에 추가할 수도 있습니다.">
+          <UserSelecter />
+        </Form.Item>
+        <Form.Item name="origin" label="출발지" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name="waypoint" label="경유지">
+          <Input />
+        </Form.Item>
+        <Form.Item name="destination" label="도착지" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name="carModel" label="차종" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="charge"
+          label="구간지수"
+          tooltip="단위: 1000"
+          rules={[{ type: 'number', min: 0, required: true }]}
+        >
+          <InputNumber />
+        </Form.Item>
+        <Form.Item
+          name="subsidy"
+          label="지원지수"
+          tooltip="단위: 1000"
+          rules={[{ type: 'number', min: 0, required: true }]}
+        >
+          <InputNumber />
+        </Form.Item>
+        <Form.Item name="remark" label="비고">
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item wrapperCol={submitButtonWrapperCol}>
+          <Button type="primary" htmlType="submit" block size="middle">
+            작성 완료
+          </Button>
+        </Form.Item>
+      </Form>
+    </S.FormWrapper>
+  );
+};
+
+export default WorkAddForm;
