@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useSWR, { SWRConfiguration } from 'swr';
-import httpClient from '@utils/axios';
+import { axiosFetcher } from '@utils/swr';
 import type { AxiosError } from 'axios';
 import type { EndPoint } from '@typings';
 
-type SuccessResponse =
-  | EndPoint['GET /user']['responses']['200']
-  | EndPoint['GET /user']['responses']['304'];
+type SuccessResponse = EndPoint['GET /user']['responses']['200'] | EndPoint['GET /user']['responses']['304'];
 type FailureResponse =
   | AxiosError<EndPoint['GET /user']['responses']['401']>
   | AxiosError<EndPoint['GET /user']['responses']['404']>;
@@ -29,7 +27,6 @@ const SWROptions: SWRConfiguration<SuccessResponse, FailureResponse> = {
     setTimeout(() => revalidate({ retryCount }), 5000);
   },
 };
-const axiosFetcher = (url: string) => httpClient.get(url).then((res) => res.data);
 
 /**
  * @desc
