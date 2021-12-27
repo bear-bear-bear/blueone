@@ -29,7 +29,8 @@ router.get(
 
     try {
       const users = await User.findAll({
-        order: ['createdAt', 'DESC'],
+        where: { role: 'user' },
+        order: [['createdAt', 'DESC']],
         limit,
         offset,
         attributes: {
@@ -227,7 +228,7 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
         userId: req.user?.id,
         endTime: null,
       },
-      order: ['createdAt', 'DESC'],
+      order: [['createdAt', 'DESC']],
     });
     res.status(200).json(activatedWorks);
   } catch (err) {

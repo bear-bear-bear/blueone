@@ -24,7 +24,7 @@ router.get(
 
     try {
       const noticeList = await Notice.findAll({
-        order: ['createdAt', 'DESC'],
+        order: [['createdAt', 'DESC']],
         limit,
         offset,
       });

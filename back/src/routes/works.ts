@@ -1,6 +1,6 @@
 import express from 'express';
 import { isAdmin, isLoggedIn } from '@/middlewares';
-import { User, Work } from '@/models';
+import { User, UserInfo, Work } from '@/models';
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
@@ -25,11 +25,8 @@ router.get(
     const offset = (parseInt(page, 10) - 1) * limit;
 
     try {
-      const activatedWorks = await Work.findAll({
-        where: {
-          endTime: null,
-        },
-        order: ['createdAt', 'DESC'],
+      const works = await Work.findAll({
+        order: [['createdAt', 'DESC']],
         limit,
         offset,
         include: [
@@ -38,10 +35,16 @@ router.get(
             attributes: {
               exclude: ['password'],
             },
+            include: [
+              {
+                model: UserInfo,
+                attributes: ['realname'],
+              },
+            ],
           },
         ],
       });
-      res.status(200).json(activatedWorks);
+      res.status(200).json(works);
     } catch (err) {
       console.error(err);
       next(err);
@@ -52,7 +55,7 @@ router.get(
 /**
  * 작업 추가
  */
-router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
+router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
   const { userId, ...workInfo }: CreateWorkRequestBody = req.body;
 
   try {
