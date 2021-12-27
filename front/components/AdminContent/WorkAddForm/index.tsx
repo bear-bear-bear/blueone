@@ -8,10 +8,10 @@ import * as S from './styles';
 
 type RequestBody = EndPoint['POST /works']['requestBody'];
 type Response = EndPoint['POST /works']['responses']['200'];
-export type Fields = RequestBody & {
-  waypoint: undefined;
-  userId: undefined;
-  remark: undefined;
+export type Fields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
+  UserId?: RequestBody['UserId'];
+  waypoint?: RequestBody['waypoint'];
+  remark?: RequestBody['remark'];
 };
 
 const layout: { [ColName: string]: ColProps } = {
@@ -37,7 +37,7 @@ const WorkAddForm = () => {
     const reqBody: RequestBody = {
       ...values,
       waypoint: values.waypoint ?? null,
-      userId: values.userId ?? null,
+      UserId: values.UserId ?? null,
       remark: values.remark ?? null,
     };
 
@@ -54,8 +54,8 @@ const WorkAddForm = () => {
   return (
     <S.FormWrapper>
       <Form {...layout} form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle">
-        <Form.Item name="userId" label="기사" tooltip="기사는 나중에 추가할 수도 있습니다.">
-          <UserSelecter />
+        <Form.Item name="UserId" label="기사" tooltip="나중에 추가할 수도 있습니다.">
+          <UserSelecter form={form} />
         </Form.Item>
         <Form.Item name="origin" label="출발지" rules={[{ required: true }]}>
           <Input />
