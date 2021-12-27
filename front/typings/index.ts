@@ -1,6 +1,14 @@
+export type Unpacked<T> = T extends (infer U)[]
+  ? U
+  : T extends (...args: any[]) => infer U
+  ? U
+  : T extends Promise<infer U>
+  ? U
+  : T;
+
 export type UserInfo = {
   id: number;
-  userId: number;
+  UserId: number;
   realname: string;
   residentRegistrationNumber: string;
   licenseNumber: string;
@@ -22,7 +30,7 @@ export type User = {
 
 export type Work = {
   id: number;
-  userId: number;
+  UserId: number;
   origin: string;
   waypoint: string | null;
   destination: string;
@@ -38,7 +46,7 @@ export type Work = {
 
 export type Notice = {
   id: number;
-  userId: number;
+  UserId: number;
   title: string;
   content: string;
   createdAt: Date;
@@ -126,15 +134,15 @@ export interface EndPoint {
   /**
    * 유저 가져오기
    */
-  'GET /users/{userId}': undefined;
+  'GET /users/{UserId}': undefined;
   /**
    * 유저 수정
    */
-  'PUT /users/{userId}': undefined;
+  'PUT /users/{UserId}': undefined;
   /**
    * 유저 삭제
    */
-  'DELETE /users/{userId}': undefined;
+  'DELETE /users/{UserId}': undefined;
   /**
    * 활성화된 유저 작업 가져오기
    */
@@ -145,24 +153,24 @@ export interface EndPoint {
    */
   'GET /works': {
     responses: {
-      200: Work & {
-        User: User & {
+      200: (Work & {
+        User?: User & {
           UserInfo: Pick<UserInfo, 'realname'>;
         };
-      };
+      })[];
     };
   };
   /**
    * 작업 추가
    */
   'POST /works': {
-    requestBody: { userId: Work['userId'] | null } & Pick<
+    requestBody: { UserId: Work['UserId'] | null } & Pick<
       Work,
       'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
     >;
     responses: {
       200: Work & {
-        userId: null;
+        UserId: null;
       };
     };
   };
