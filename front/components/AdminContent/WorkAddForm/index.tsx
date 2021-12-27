@@ -58,16 +58,16 @@ const WorkAddForm = () => {
           <UserSelecter form={form} />
         </Form.Item>
         <Form.Item name="origin" label="출발지" rules={[{ required: true }]}>
-          <Input />
+          <Input autoComplete="off" />
         </Form.Item>
         <Form.Item name="waypoint" label="경유지">
-          <Input />
+          <Input autoComplete="off" />
         </Form.Item>
         <Form.Item name="destination" label="도착지" rules={[{ required: true }]}>
-          <Input />
+          <Input autoComplete="off" />
         </Form.Item>
         <Form.Item name="carModel" label="차종" rules={[{ required: true }]}>
-          <Input />
+          <Input autoComplete="off" />
         </Form.Item>
         <Form.Item
           name="charge"
@@ -75,7 +75,7 @@ const WorkAddForm = () => {
           tooltip="단위: 1000"
           rules={[{ type: 'number', min: 0, required: true }]}
         >
-          <InputNumber />
+          <InputNumber autoComplete="off" />
         </Form.Item>
         <Form.Item
           name="subsidy"
@@ -83,10 +83,10 @@ const WorkAddForm = () => {
           tooltip="단위: 1000"
           rules={[{ type: 'number', min: 0, required: true }]}
         >
-          <InputNumber />
+          <InputNumber autoComplete="off" />
         </Form.Item>
         <Form.Item name="remark" label="비고">
-          <Input.TextArea />
+          <Input.TextArea autoComplete="off" />
         </Form.Item>
         <Form.Item wrapperCol={submitButtonWrapperCol}>
           <Button type="primary" htmlType="submit" block size="middle">
