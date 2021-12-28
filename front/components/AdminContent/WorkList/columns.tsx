@@ -1,10 +1,7 @@
 import { ColumnsType } from 'antd/es/table';
-import { Space } from 'antd';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 import type { ProcessedWork } from './index';
-
-import * as S from './styles';
 
 const columns: ColumnsType<ProcessedWork> = [
   {
@@ -13,7 +10,7 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'processedCreatedAt',
     align: 'center',
     sorter: {
-      compare: (a, b) => +(b.createdAt || 0) - +(a.createdAt || 0),
+      compare: (a, b) => +(new Date(b.createdAt) || 0) - +(new Date(a.createdAt) || 0),
     },
     defaultSortOrder: 'ascend',
   },
