@@ -7,6 +7,7 @@ import { Global } from '@emotion/react';
 import { globalCSS } from '@components/AdminContent/WorkList/styles';
 import type { EndPoint, UserInfo, Unpacked } from '@typings';
 import columns from './columns';
+import * as S from './styles';
 
 type FullWorks = EndPoint['GET /works']['responses']['200'];
 type FullWork = Unpacked<FullWorks>;
@@ -37,8 +38,8 @@ const WorkList = () => {
     revalidateOnMount: true,
   });
 
-  const dataSource: ProcessedWork[] = useMemo(() => {
-    if (!works) return [];
+  const dataSource: ProcessedWork[] | undefined = useMemo(() => {
+    if (!works) return undefined;
     return works.map((work) => ({
       ...work,
       ...processWorkDateTimes(work),
@@ -47,7 +48,13 @@ const WorkList = () => {
     }));
   }, [works]);
 
-  if (!dataSource) return <Spin size="large" />;
+  if (!dataSource) {
+    return (
+      <S.SpinnerWrapper>
+        <Spin size="default" />
+      </S.SpinnerWrapper>
+    );
+  }
   return (
     <>
       <Global styles={globalCSS} />

@@ -22,3 +22,10 @@ export const DeleteIconOutlined = styled(DeleteOutlined)`
     color: #c40909;
   }
 `;
+
+export const SpinnerWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
