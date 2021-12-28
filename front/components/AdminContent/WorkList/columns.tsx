@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/es/table';
 import { Space } from 'antd';
-import Link from 'next/link';
-import { EditOutlined } from '@ant-design/icons';
+import EditButton from './EditButton';
+import DeleteButton from './DeleteButton';
 import type { ProcessedWork } from './index';
 
 import * as S from './styles';
@@ -94,19 +94,11 @@ const columns: ColumnsType<ProcessedWork> = [
     title: '',
     key: 'action',
     align: 'center',
-    render: () => (
-      <Space size="small">
-        <Link href="/">
-          <a>
-            <EditOutlined title="수정" />
-          </a>
-        </Link>
-        <Link href="/">
-          <a>
-            <S.DeleteIconOutlined title="삭제" />
-          </a>
-        </Link>
-      </Space>
+    render: (_, record) => (
+      <>
+        <EditButton record={record} />
+        <DeleteButton />
+      </>
     ),
   },
 ];

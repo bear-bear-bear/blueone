@@ -30,7 +30,7 @@ export type User = {
 
 export type Work = {
   id: number;
-  UserId: number;
+  UserId: number | null;
   origin: string;
   waypoint: string | null;
   destination: string;
@@ -164,9 +164,9 @@ export interface EndPoint {
    * 작업 추가
    */
   'POST /works': {
-    requestBody: { UserId: Work['UserId'] | null } & Pick<
+    requestBody: Pick<
       Work,
-      'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
+      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
     >;
     responses: {
       200: Work & {
@@ -177,7 +177,15 @@ export interface EndPoint {
   /**
    * 작업 수정
    */
-  'PUT /works/{workId}': undefined;
+  'PUT /works/{workId}': {
+    requestBody: Pick<
+      Work,
+      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
+    >;
+    responses: {
+      200: Work;
+    };
+  };
   /**
    * 작업 상태 수정
    */

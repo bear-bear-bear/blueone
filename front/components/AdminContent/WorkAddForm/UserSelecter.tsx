@@ -8,11 +8,12 @@ import type { Fields } from './index';
 type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {
   form: FormInstance<Fields>;
+  defaultUserId?: Fields['UserId'];
 };
 
 const { Option } = Select;
 
-const UserSelecter = ({ form }: Props) => {
+const UserSelecter = ({ form, defaultUserId }: Props) => {
   const { data: users } = useSWR<Users>('/users', axiosFetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -20,7 +21,7 @@ const UserSelecter = ({ form }: Props) => {
   });
 
   const userOptions = useMemo(() => {
-    if (!users) return;
+    if (!users) return undefined;
     return users.map(({ id, phoneNumber, UserInfo: { realname } }) => (
       <Option value={id} style={{ textAlign: 'center' }}>
         {realname}
@@ -40,7 +41,7 @@ const UserSelecter = ({ form }: Props) => {
     [],
   );
 
-  const onSelect: SelectProps<Fields['UserId'] & string>['onSelect'] = (v) => {
+  const onSelect: SelectProps<Fields['UserId']>['onSelect'] = (v) => {
     form.setFieldsValue({ UserId: v });
   };
 
@@ -51,6 +52,7 @@ const UserSelecter = ({ form }: Props) => {
       filterOption={selectSearchFilter}
       onSelect={onSelect}
       allowClear
+      defaultValue={defaultUserId ?? undefined}
     >
       {!userOptions ? (
         <Option value="" disabled>

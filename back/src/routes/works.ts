@@ -56,13 +56,13 @@ router.get(
  * 작업 추가
  */
 router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
-  const { userId, ...workInfo }: CreateWorkRequestBody = req.body;
+  const { UserId, ...workInfo }: CreateWorkRequestBody = req.body;
 
   try {
     let user: User | null = null;
 
-    if (userId) {
-      user = await User.findByPk(userId);
+    if (UserId) {
+      user = await User.findByPk(UserId);
 
       if (!user) {
         res.status(400).json({
@@ -75,12 +75,12 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
     const work = await Work.create(workInfo);
 
     if (user) {
-      await user.setWork(work);
+      await user.setWorks(work);
     }
 
     res.status(201).json({
       ...work,
-      userId: userId || null,
+      UserId: UserId || null,
     });
   } catch (err) {
     next(err);
@@ -92,7 +92,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
  */
 router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { workId } = req.params;
-  const { userId, ...workInfo }: UpdateWorkRequestBody = req.body;
+  const { UserId, ...workInfo }: UpdateWorkRequestBody = req.body;
 
   try {
     const work = await Work.findByPk(workId);
@@ -104,22 +104,37 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
       return;
     }
 
-    if (userId) {
-      const user = await User.findByPk(userId);
+    if (UserId) {
+      const user = await User.findByPk(UserId);
 
       if (!user) {
         res.status(404).json({
-          message: `id ${userId} 유저를 찾을 수 없습니다`,
+          message: `id ${UserId} 유저를 찾을 수 없습니다`,
         });
         return;
       }
 
-      await user.setWork(work);
+      await user.setWorks(work);
     }
 
-    await work.update({ workInfo });
+    await work.update(workInfo);
 
-    const updatedWork = await Work.findByPk(workId);
+    const updatedWork = await Work.findByPk(workId, {
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ['password'],
+          },
+          include: [
+            {
+              model: UserInfo,
+              attributes: ['realname'],
+            },
+          ],
+        },
+      ],
+    });
     res.status(200).json(updatedWork);
   } catch (err) {
     next(err);

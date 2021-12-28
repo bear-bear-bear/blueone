@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { DeleteOutlined } from '@ant-design/icons';
 
 export const globalCSS = css`
   tr td:first-of-type {
@@ -12,14 +11,9 @@ export const globalCSS = css`
       top: 2.5px;
     }
   }
-`;
 
-export const DeleteIconOutlined = styled(DeleteOutlined)`
-  transition: color 0.15s linear;
-
-  :hover,
-  :focus {
-    color: #c40909;
+  .ant-modal-body {
+    padding-bottom: 0;
   }
 `;
 
