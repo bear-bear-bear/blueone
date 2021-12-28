@@ -65,7 +65,7 @@ const AdminLayout: FC = () => {
       <Layout className="site-layout">
         <Header style={{ color: 'white', padding: '0 16px' }}>{selectedKey}</Header>
 
-        <Main style={{ margin: '16px' }}>
+        <Main style={{ margin: '16px', overflow: 'auto' }}>
           {SelectedContent ? <SelectedContent /> : <EmptyContent />}
         </Main>
 
