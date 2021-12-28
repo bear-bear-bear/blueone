@@ -94,7 +94,7 @@ const columns: ColumnsType<ProcessedWork> = [
     render: (_, record) => (
       <>
         <EditButton record={record} />
-        <DeleteButton />
+        <DeleteButton record={record} />
       </>
     ),
   },

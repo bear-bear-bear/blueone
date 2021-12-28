@@ -197,7 +197,11 @@ export interface EndPoint {
   /**
    * 작업 삭제
    */
-  'DELETE /works/{workId}': undefined;
+  'DELETE /works/{workId}': {
+    responses: {
+      200: Work;
+    };
+  };
 
   /**
    * 공지사항 목록 가져오기
