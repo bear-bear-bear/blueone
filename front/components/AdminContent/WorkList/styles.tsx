@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const globalCSS = css`
-  tr td:first-of-type {
+  #workListTable tr td:first-of-type {
     vertical-align: baseline;
     padding: 12px 15px !important;
 
@@ -12,8 +12,8 @@ export const globalCSS = css`
     }
   }
 
-  .ant-modal-body {
-    padding-bottom: 0;
+  .ant-modal-body .ant-form-horizontal div:last-child {
+    margin-bottom: 0;
   }
 `;
 

@@ -59,6 +59,7 @@ const WorkList = () => {
     <>
       <Global styles={globalCSS} />
       <Table
+        id="workListTable"
         dataSource={dataSource}
         columns={columns}
         expandable={{
