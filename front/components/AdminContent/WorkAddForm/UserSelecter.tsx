@@ -23,7 +23,7 @@ const UserSelecter = ({ form, defaultUserId }: Props) => {
   const userOptions = useMemo(() => {
     if (!users) return undefined;
     return users.map(({ id, phoneNumber, UserInfo: { realname } }) => (
-      <Option value={id} style={{ textAlign: 'center' }}>
+      <Option key={id} value={id} style={{ textAlign: 'center' }}>
         {realname}
         <Divider type="vertical" />
         {phoneNumber.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}

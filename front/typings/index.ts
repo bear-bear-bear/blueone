@@ -183,7 +183,11 @@ export interface EndPoint {
       'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
     >;
     responses: {
-      200: Work;
+      200: Work & {
+        User?: User & {
+          UserInfo: Pick<UserInfo, 'realname'>;
+        };
+      };
     };
   };
   /**

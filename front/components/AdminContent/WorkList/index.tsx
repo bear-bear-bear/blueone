@@ -9,8 +9,8 @@ import type { EndPoint, UserInfo, Unpacked } from '@typings';
 import columns from './columns';
 import * as S from './styles';
 
-type FullWorks = EndPoint['GET /works']['responses']['200'];
-type FullWork = Unpacked<FullWorks>;
+export type FullWorks = EndPoint['GET /works']['responses']['200'];
+export type FullWork = Unpacked<FullWorks>;
 export type ProcessedWork = FullWork & {
   processedCheckTime: string;
   processedEndTime: string;

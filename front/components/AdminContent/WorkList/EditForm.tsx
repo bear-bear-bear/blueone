@@ -1,11 +1,13 @@
-import { Dispatch, HTMLAttributes, SetStateAction, useCallback, useMemo } from 'react';
-import { Form, Input, InputNumber, FormProps, message, FormInstance, ModalProps } from 'antd';
+import { Dispatch, SetStateAction, useCallback } from 'react';
+import useSWRImmutable from 'swr/immutable';
+import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import UserSelecter from '@components/AdminContent/WorkAddForm/UserSelecter';
 import httpClient from '@utils/axios';
+import { axiosFetcher } from '@utils/swr';
 import type { Fields } from '@components/AdminContent/WorkAddForm';
 import type { EndPoint } from '@typings';
-import type { ProcessedWork } from './index';
+import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
   form: FormInstance<Fields>;
@@ -31,36 +33,30 @@ const validateMessages = {
   },
 };
 
-const WorkEditForm = ({ form, prevWork, closeModal }: Props) => {
-  console.log(prevWork);
-  const initialValues = useMemo(
-    () => ({
-      ...prevWork,
-      UserId: prevWork.UserId?.toString(),
-    }),
-    [prevWork],
-  );
+const WorkEditForm = ({ form, prevWork, setSubmitLoading, closeModal }: Props) => {
+  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>('/works', axiosFetcher);
 
   const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(async (values) => {
-    console.log(values);
-    closeModal();
-    // const reqBody: RequestBody = {
-    //   ...values,
-    //   waypoint: values.waypoint ?? null,
-    //   UserId: values.UserId ?? null,
-    //   remark: values.remark ?? null,
-    // };
-    //
-    // setSubmitLoading(true);
-    // try {
-    //   await httpClient.put<Response>(`/works/${prevWork.id}`, reqBody);
-    //   message.success('작업 수정 완료');
-    //   form.resetFields();
-    // } catch (err) {
-    //   message.error('작업 수정 중 에러 발생, 개발자에게 문의하세요.');
-    //   console.error(err);
-    // }
-    // setSubmitLoading(false);
+    const reqBody: RequestBody = {
+      ...values,
+      waypoint: values.waypoint ?? null,
+      UserId: values.UserId ?? null,
+      remark: values.remark ?? null,
+    };
+
+    setSubmitLoading(true);
+    try {
+      const updatedWork = await httpClient.put<Response>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
+      const willChangeWorkIndex = works!.findIndex((work) => work.id === updatedWork.id);
+      const updatedWorks = works!.map((work, i) => (i === willChangeWorkIndex ? updatedWork : work));
+      await mutateWorks(updatedWorks);
+      message.success('작업 수정 완료');
+      closeModal();
+    } catch (err) {
+      message.error('작업 수정 중 에러 발생, 개발자에게 문의하세요.');
+      console.error(err);
+    }
+    setSubmitLoading(false);
   }, []);
 
   return (
