@@ -2,6 +2,9 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const globalCSS = css`
+  tr {
+    background: #fff;
+  }
   .row--work-done {
     background-color: #666;
     transition: none;
@@ -11,7 +14,7 @@ export const globalCSS = css`
     }
     &:hover td,
     &:focus td {
-      background-color: #777 !important;
+      background-color: #aaa !important;
     }
   }
 
