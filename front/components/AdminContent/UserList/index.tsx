@@ -1,8 +1,9 @@
 import useSWR from 'swr';
-import { List, Spin } from 'antd';
+import { Divider, List, Spin } from 'antd';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, Unpacked } from '@typings';
 import UserItem from './UserItem';
+import AddButton from './AddButton';
 import * as S from './styles';
 
 export type FullUsers = EndPoint['GET /users']['responses']['200'];
@@ -24,6 +25,10 @@ const UserList = () => {
   }
   return (
     <S.ListWrapper>
+      <S.StickyHeader>
+        <AddButton />
+      </S.StickyHeader>
+      <S.StyledDivider />
       <List itemLayout="horizontal" dataSource={users} renderItem={UserItem} />
     </S.ListWrapper>
   );

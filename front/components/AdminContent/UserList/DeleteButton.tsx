@@ -15,7 +15,7 @@ type DeletedUser = EndPoint['DELETE /users/{UserId}']['responses']['200'];
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
 const DeleteButton = ({ user }: Props) => {
-  const INITIAL_POPOVER_TEXT = '유저 삭제';
+  const INITIAL_POPOVER_TEXT = '기사 정보 삭제';
   const { data: users, mutate: mutateUsers } = useSWRImmutable<FullUsers>('/users', axiosFetcher);
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
   const [popoverText, setPopoverText] = useState<ReactNode>(INITIAL_POPOVER_TEXT);
@@ -31,9 +31,9 @@ const DeleteButton = ({ user }: Props) => {
       const deletedUser = await httpClient.delete<DeletedUser>(`/users/${user.id}`).then((res) => res.data);
       const nextUsers = users!.filter((user) => user.id !== deletedUser.id);
       await mutateUsers(nextUsers);
-      message.success('유저 삭제 완료');
+      message.success('기사 정보 삭제 완료');
     } catch (err) {
-      message.error('유저 삭제 중 에러 발생, 개발자에게 문의하세요.');
+      message.error('기사 정보 삭제 중 에러 발생, 개발자에게 문의하세요.');
       console.error(err);
     }
 

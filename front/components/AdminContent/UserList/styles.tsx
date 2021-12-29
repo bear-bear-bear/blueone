@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { List } from 'antd';
+import { List, Divider } from 'antd';
 
 const { Item } = List;
 export const StyledItem = styled(Item)`
@@ -12,13 +12,14 @@ export const StyledItem = styled(Item)`
 `;
 
 export const ListWrapper = styled.div`
+  position: relative;
   max-width: 800px;
   max-height: 800px;
   overflow-y: auto;
-  padding: 16px;
+  padding: 0 16px 16px;
   border: 1px solid #ccc;
   border-radius: 2px;
-  background: #fff;
+  background-color: #fff;
 
   ::-webkit-scrollbar {
     width: 10px;
@@ -31,6 +32,20 @@ export const ListWrapper = styled.div`
       background: #ccc;
     }
   }
+`;
+
+export const StickyHeader = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 8px 8px;
+  background-color: inherit;
+`;
+
+export const StyledDivider = styled(Divider)`
+  margin: 8px 0;
 `;
 
 export const SpinnerWrapper = styled.div`

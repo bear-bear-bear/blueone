@@ -24,12 +24,6 @@ const layout: { [ColName: string]: ColProps } = {
 
 const validateMessages = {
   required: '필수 입력 값입니다.',
-  types: {
-    number: '숫자 형식이여야 합니다.',
-  },
-  number: {
-    min: '${min}보다 커야합니다.',
-  },
 };
 
 const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) => {
@@ -65,10 +59,10 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       const willChangeWorkIndex = users!.findIndex((user) => user.id === updatedUser.id);
       const updatedUsers = users!.map((user, i) => (i === willChangeWorkIndex ? updatedUser : user));
       await mutateUsers(updatedUsers);
-      message.success('유저 정보 수정 완료');
+      message.success('기사 정보 수정 완료');
       closeModal();
     } catch (err) {
-      message.error('유저 정보 수정 중 에러 발생, 개발자에게 문의하세요.');
+      message.error('기사 정보 수정 중 에러 발생, 개발자에게 문의하세요.');
       console.error(err);
     }
     setSubmitLoading(false);
