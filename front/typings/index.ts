@@ -6,6 +6,8 @@ export type Unpacked<T> = T extends (infer U)[]
   ? U
   : T;
 
+type ISODateString = string;
+
 export type UserInfo = {
   id: number;
   UserId: number;
@@ -14,18 +16,18 @@ export type UserInfo = {
   licenseNumber: string;
   licenseType: string;
   insuranceNumber: string;
-  insuranceExpirationDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  insuranceExpirationDate: ISODateString;
+  createdAt: ISODateString;
+  updatedAt: ISODateString;
 };
 
 export type User = {
   id: number;
   role: 'user' | 'admin';
   phoneNumber: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
+  createdAt: ISODateString;
+  updatedAt: ISODateString;
+  deletedAt: ISODateString | null;
 };
 
 export type Work = {
@@ -38,10 +40,10 @@ export type Work = {
   charge: number;
   subsidy: number | null;
   remark: string | null;
-  checkTime: Date | null;
-  endTime: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
+  checkTime: ISODateString | null;
+  endTime: ISODateString | null;
+  createdAt: ISODateString;
+  updatedAt: ISODateString;
 };
 
 export type Notice = {
@@ -49,8 +51,8 @@ export type Notice = {
   UserId: number;
   title: string;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: ISODateString;
+  updatedAt: ISODateString;
 };
 
 // export type WorkState = 'checked' | 'done';
