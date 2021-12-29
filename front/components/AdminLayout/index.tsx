@@ -2,7 +2,7 @@ import { useState, FC, useCallback } from 'react';
 import Image from 'next/image';
 import { Layout, Empty, Menu, MenuProps } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
-import { TeamOutlined, CarOutlined } from '@ant-design/icons';
+import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/icons';
 import contentList, { ContentTitle } from '@components/AdminContent';
 import * as S from './styles';
 
@@ -58,6 +58,10 @@ const AdminLayout: FC = () => {
             <Menu.Item key="기사 목록">기사 목록</Menu.Item>
             <Menu.Item key="기사 추가">기사 추가</Menu.Item>
           </SubMenu>
+          <Menu.Divider style={{ backgroundColor: '#000810' }} />
+          <Menu.Item key="공지사항" icon={<NotificationOutlined />} title="공지사항">
+            공지사항
+          </Menu.Item>
           <Menu.Divider style={{ backgroundColor: '#000810' }} />
         </Menu>
       </Sider>
