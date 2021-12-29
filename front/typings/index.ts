@@ -129,7 +129,10 @@ export interface EndPoint {
         | 'insuranceExpirationDate'
       >;
     responses: {
-      202: User & { UserInfo: UserInfo };
+      202: User & {
+        UserInfo: UserInfo;
+        Work: Work;
+      };
       409: ErrorMessage;
     };
   };

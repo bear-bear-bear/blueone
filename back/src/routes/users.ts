@@ -36,14 +36,7 @@ router.get(
         attributes: {
           exclude: ['password'],
         },
-        include: [
-          {
-            model: UserInfo,
-          },
-          {
-            model: Work,
-          },
-        ],
+        include: [UserInfo, Work],
       });
       res.status(200).json(users);
     } catch (err) {
@@ -73,7 +66,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
       attributes: {
         exclude: ['password'],
       },
-      include: [UserInfo],
+      include: [UserInfo, Work],
     });
 
     if (!isCreated) {
@@ -132,14 +125,7 @@ router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
       attributes: {
         exclude: ['password'],
       },
-      include: [
-        {
-          model: UserInfo,
-        },
-        {
-          model: Work,
-        },
-      ],
+      include: [UserInfo, Work],
     });
 
     if (!user) {
@@ -180,14 +166,7 @@ router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
       attributes: {
         exclude: ['password'],
       },
-      include: [
-        {
-          model: UserInfo,
-        },
-        {
-          model: Work,
-        },
-      ],
+      include: [UserInfo, Work],
     });
 
     res.status(200).json(updatedUser);
