@@ -203,10 +203,7 @@ router.delete('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    const user = await User.findOne({
-      where: {
-        userId,
-      },
+    const user = await User.findByPk(userId, {
       attributes: {
         exclude: ['password'],
       },
