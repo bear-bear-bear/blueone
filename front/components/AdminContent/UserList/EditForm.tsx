@@ -18,12 +18,15 @@ type Users = EndPoint['GET /users']['responses']['200'];
 type UpdatedUser = EndPoint['PUT /users/{UserId}']['responses']['200'];
 
 const layout: { [ColName: string]: ColProps } = {
-  labelCol: { span: 5 },
+  labelCol: { span: 6 },
   wrapperCol: { flex: 'auto' },
 };
 
-const validateMessages = {
+const validateMessages: FormProps<UpdateRequestBody>['validateMessages'] = {
   required: '필수 입력 값입니다.',
+  pattern: {
+    mismatch: '형식이 올바르지 않습니다.',
+  },
 };
 
 const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) => {
@@ -77,25 +80,45 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       size="middle"
       {...layout}
     >
-      <Form.Item name="phoneNumber" label="전화번호" rules={[{ required: true }]}>
+      <Form.Item
+        name="phoneNumber"
+        label="전화번호"
+        rules={[{ required: true, pattern: /\d+/ }]}
+        tooltip="ex) 01012340000"
+      >
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item name="realname" label="실명" rules={[{ required: true }]}>
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="residentRegistrationNumber" label="주민등록번호" rules={[{ required: true }]}>
+      <Form.Item
+        name="residentRegistrationNumber"
+        label="주민등록번호"
+        rules={[{ required: true, pattern: /[\d-]+/ }]}
+        tooltip="ex) 800101-1000000"
+      >
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item name="licenseType" label="면허 종류" rules={[{ required: true }]}>
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="licenseNumber" label="면허 번호" rules={[{ required: true }]}>
+      <Form.Item
+        name="licenseNumber"
+        label="면허 번호"
+        rules={[{ required: true, pattern: /[\d-]+/ }]}
+        tooltip="ex) 12-000000-34"
+      >
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="insuranceNumber" label="보험 번호" rules={[{ required: true }]}>
+      <Form.Item
+        name="insuranceNumber"
+        label="보험 번호"
+        rules={[{ required: true, pattern: /[\d-]+/ }]}
+        tooltip="ex) 1-1234-0000000-000"
+      >
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="insuranceExpirationDate" label="보험 만료 날짜" rules={[{ required: true }]}>
+      <Form.Item name="insuranceExpirationDate" label="보험 만료일" rules={[{ required: true }]}>
         <Input autoComplete="off" type="date" />
       </Form.Item>
     </Form>
