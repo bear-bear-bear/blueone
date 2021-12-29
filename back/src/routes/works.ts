@@ -91,7 +91,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
  */
 router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { workId } = req.params;
-  const { UserId, ...workInfo }: UpdateWorkRequestBody = req.body;
+  const { UserId }: UpdateWorkRequestBody = req.body;
 
   try {
     const work = await Work.findByPk(workId);
@@ -112,11 +112,9 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
         });
         return;
       }
-
-      await user.addWorks(work);
     }
 
-    await work.update(workInfo);
+    await work.update(req.body);
 
     const updatedWork = await Work.findByPk(workId, {
       include: [

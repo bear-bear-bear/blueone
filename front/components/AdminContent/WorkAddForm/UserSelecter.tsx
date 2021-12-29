@@ -45,12 +45,17 @@ const UserSelecter = ({ form, defaultUserId }: Props) => {
     form.setFieldsValue({ UserId: v });
   };
 
+  const onClear: SelectProps<Fields['UserId']>['onClear'] = () => {
+    form.setFieldsValue({ UserId: undefined });
+  };
+
   return (
     <Select
       placeholder="작업을 배정받을 기사 선택"
       showSearch
       filterOption={selectSearchFilter}
       onSelect={onSelect}
+      onClear={onClear}
       allowClear
       defaultValue={defaultUserId ?? undefined}
     >
