@@ -1,10 +1,10 @@
 import express from 'express';
+import { Op } from 'sequelize';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
-  PaginationQuery,
   UpdateWorkRequestBody,
   WorkState,
 } from 'typings';
@@ -12,45 +12,42 @@ import type {
 const router = express.Router();
 
 /**
- * 활성화된 작업 리스트 가져오기
+ * 오늘 작업 리스트 가져오기
  */
-router.get(
-  '/',
-  isLoggedIn,
-  isAdmin,
-  async (req: QueryTypedRequest<PaginationQuery>, res, next) => {
-    const { per_page = '30', page = '1' } = req.query;
+router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
+  // const TODAY_START = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+  // const NOW = new Date();
 
-    const limit = parseInt(per_page, 10);
-    const offset = (parseInt(page, 10) - 1) * limit;
-
-    try {
-      const works = await Work.findAll({
-        order: [['createdAt', 'DESC']],
-        limit,
-        offset,
-        include: [
-          {
-            model: User,
-            attributes: {
-              exclude: ['password'],
-            },
-            include: [
-              {
-                model: UserInfo,
-                attributes: ['realname'],
-              },
-            ],
+  try {
+    const works = await Work.findAll({
+      where: {
+        // createdAt: {
+        //   [Op.gt]: TODAY_START,
+        //   [Op.lt]: NOW,
+        // },
+      },
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ['password'],
           },
-        ],
-      });
-      res.status(200).json(works);
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  },
-);
+          include: [
+            {
+              model: UserInfo,
+              attributes: ['realname'],
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json(works);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 /**
  * 작업 추가
