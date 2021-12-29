@@ -1,25 +1,39 @@
+import { useCallback, useMemo } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Avatar, List, Tooltip } from 'antd';
 import { UserOutlined, WarningOutlined } from '@ant-design/icons';
-import type { Unpacked } from '@typings';
-import type { Response } from './index';
+import EditButton from './EditButton';
+import type { FullUser } from './index';
 import * as S from './styles';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
 const { Item } = List;
 
-const UserItem = ({ phoneNumber, UserInfo: { realname, insuranceExpirationDate } }: Unpacked<Response>) => {
+const UserItem = (user: FullUser) => {
+  const {
+    phoneNumber,
+    UserInfo: { realname, insuranceExpirationDate },
+  } = user;
+
   const now = dayjs();
   const DAY = 24 * 60 * 60 * 1000;
   const isValidInsurance = now.isBefore(insuranceExpirationDate, 'day');
-  const isImminentExpiredAt = !isValidInsurance ? false : dayjs(insuranceExpirationDate).diff(now, 'ms') < 7 * DAY;
-  const expiredAtFromNow = () => now.to(insuranceExpirationDate);
+  const isImminentExpiredAt = useMemo(
+    () => (!isValidInsurance ? false : dayjs(insuranceExpirationDate).diff(now, 'ms') < 7 * DAY),
+    [now, isValidInsurance],
+  );
+  const expiredAtFromNow = useCallback(() => now.to(insuranceExpirationDate), [now]);
 
   return (
-    <S.StyledItem>
+    <S.StyledItem
+      actions={[
+        <EditButton user={user} />,
+        // <DeleteButton userId={user.id} />
+      ]}
+    >
       <Item.Meta
         avatar={
           <Avatar

@@ -1,14 +1,15 @@
 import useSWR from 'swr';
 import { List, Spin } from 'antd';
 import { axiosFetcher } from '@utils/swr';
-import type { EndPoint } from '@typings';
+import type { EndPoint, Unpacked } from '@typings';
 import UserItem from './UserItem';
 import * as S from './styles';
 
-export type Response = EndPoint['GET /users']['responses']['200'];
+export type FullUsers = EndPoint['GET /users']['responses']['200'];
+export type FullUser = Unpacked<FullUsers>;
 
 const UserList = () => {
-  const { data: users } = useSWR<Response>('/users', axiosFetcher, {
+  const { data: users } = useSWR<FullUsers>('/users', axiosFetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnMount: true,
