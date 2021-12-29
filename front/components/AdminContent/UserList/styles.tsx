@@ -13,7 +13,7 @@ export const StyledItem = styled(Item)`
 
 export const ListWrapper = styled.div`
   max-width: 800px;
-  max-height: 60%;
+  max-height: 800px;
   overflow-y: auto;
   padding: 16px;
   border: 1px solid #ccc;
