@@ -26,3 +26,12 @@ export const SpinnerWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const Remark = styled.p`
+  padding: 0 16px;
+  text-align: center;
+
+  span {
+    text-decoration: underline;
+  }
+`;

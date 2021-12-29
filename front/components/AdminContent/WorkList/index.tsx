@@ -19,6 +19,7 @@ export type ProcessedWork = FullWork & {
   processedUpdatedAt: string | null;
   payout: string | number;
   realname?: UserInfo['realname'];
+  isDone: boolean;
 };
 
 const processWorkDateTimes = (work: FullWork) => ({
@@ -28,10 +29,10 @@ const processWorkDateTimes = (work: FullWork) => ({
   processedUpdatedAt: dayjs(work.updatedAt).format('MM/DD'),
 });
 
-const Remark = ({ work }: { work: FullWork }) => (
-  <p style={{ padding: '0 16px', textAlign: 'center' }}>
-    <span style={{ textDecoration: 'underline' }}>비고:</span> {work.remark ?? '-'}
-  </p>
+const Remark = ({ work }: { work: ProcessedWork }) => (
+  <S.Remark>
+    <span>비고:</span> {work.remark ?? '-'}
+  </S.Remark>
 );
 
 // TODO: 확인과 완료 check box 로 work 필터링 하는 기능 작성
@@ -50,6 +51,7 @@ const WorkList = () => {
       ...processWorkDateTimes(work),
       payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
       realname: work.User?.UserInfo.realname,
+      isDone: work.endTime !== null || +new Date(work.createdAt) < TODAY,
     }));
   }, [works]);
 
@@ -68,8 +70,7 @@ const WorkList = () => {
         dataSource={dataSource}
         columns={columns}
         rowClassName={(record) => {
-          const isWorkDone = record.endTime !== null || +new Date(record.createdAt) < TODAY;
-          return isWorkDone ? 'row--work-done' : '';
+          return record.isDone ? 'row--work-done' : '';
         }}
         expandable={{
           expandedRowRender: (work) => <Remark work={work} />,
