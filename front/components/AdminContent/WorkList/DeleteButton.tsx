@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
-import { Button, message, Popconfirm } from 'antd';
+import { Button, message, Popconfirm, Tooltip } from 'antd';
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
@@ -57,7 +57,9 @@ const DeleteButton = ({ record }: Props) => {
         cancelText="취소"
         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
       >
-        <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={showPopconfirm} />
+        <Tooltip title="삭제">
+          <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={showPopconfirm} />
+        </Tooltip>
       </Popconfirm>
     </>
   );
