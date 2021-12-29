@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
+import dayjs from 'dayjs';
 import useSWR from 'swr';
 import { axiosFetcher } from '@utils/swr';
 import { Spin, Table } from 'antd';
-import dayjs from 'dayjs';
+import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
 import { globalCSS } from '@components/AdminContent/WorkList/styles';
 import type { EndPoint, UserInfo, Unpacked } from '@typings';
@@ -28,7 +29,9 @@ const processWorkDateTimes = (work: FullWork) => ({
 });
 
 const Remark = ({ work }: { work: FullWork }) => (
-  <p style={{ padding: '0 16px', textAlign: 'center' }}>{work.remark ? `비고: ${work.remark}` : '-'}</p>
+  <p style={{ padding: '0 16px', textAlign: 'center' }}>
+    <span style={{ textDecoration: 'underline' }}>비고:</span> {work.remark ?? '-'}
+  </p>
 );
 
 const WorkList = () => {
@@ -64,6 +67,12 @@ const WorkList = () => {
         columns={columns}
         expandable={{
           expandedRowRender: (work) => <Remark work={work} />,
+          expandIcon: ({ onExpand, record }) => {
+            if (!record.remark) return null;
+            return <SnippetsOutlined onClick={(e) => onExpand(record, e)} />;
+          },
+          rowExpandable: (record) => !!record.remark,
+          columnWidth: 30,
         }}
         locale={{
           sortTitle: '정렬',

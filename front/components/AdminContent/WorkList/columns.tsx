@@ -13,6 +13,7 @@ const columns: ColumnsType<ProcessedWork> = [
       compare: (a, b) => +(new Date(b.createdAt) || 0) - +(new Date(a.createdAt) || 0),
     },
     defaultSortOrder: 'ascend',
+    width: 60,
   },
   {
     title: '경로',
@@ -23,18 +24,33 @@ const columns: ColumnsType<ProcessedWork> = [
         dataIndex: 'origin',
         key: 'origin',
         align: 'center',
+        width: 100,
+        ellipsis: true,
+        render: (value) => {
+          return <span style={{ cursor: 'help' }}>{value}</span>;
+        },
       },
       {
         title: '경유지',
         dataIndex: 'waypoint',
         key: 'waypoint',
         align: 'center',
+        width: 100,
+        ellipsis: true,
+        render: (value) => {
+          return <span style={{ cursor: 'help' }}>{value}</span>;
+        },
       },
       {
         title: '도착지',
         dataIndex: 'destination',
         key: 'destination',
         align: 'center',
+        width: 100,
+        ellipsis: true,
+        render: (value) => {
+          return <span style={{ cursor: 'help' }}>{value}</span>;
+        },
       },
     ],
   },
@@ -43,12 +59,15 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'carModel',
     key: 'carModel',
     align: 'center',
+    ellipsis: true,
+    width: 100,
   },
   {
     title: '기사',
     dataIndex: 'realname',
     key: 'realname',
     align: 'center',
+    width: 80,
   },
   {
     title: '요금 (단위: 1000)',
@@ -60,18 +79,21 @@ const columns: ColumnsType<ProcessedWork> = [
         dataIndex: 'charge',
         key: 'charge',
         align: 'right',
+        width: 80,
       },
       {
         title: '지원지수',
         dataIndex: 'subsidy',
         key: 'subsidy',
         align: 'right',
+        width: 80,
       },
       {
         title: '최종지수',
         dataIndex: 'payout',
         key: 'payout',
         align: 'right',
+        width: 80,
       },
     ],
   },
@@ -80,12 +102,14 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'processedCheckTime',
     key: 'processedCheckTime',
     align: 'center',
+    width: 60,
   },
   {
     title: '완료',
     dataIndex: 'processedEndTime',
     key: 'processedEndTime',
     align: 'center',
+    width: 60,
   },
   {
     title: '',
@@ -97,6 +121,7 @@ const columns: ColumnsType<ProcessedWork> = [
         <DeleteButton record={record} />
       </>
     ),
+    width: 80,
   },
 ];
 
