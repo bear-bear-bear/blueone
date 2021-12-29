@@ -123,8 +123,8 @@ export interface EndPoint {
         UserInfo,
         | 'realname'
         | 'residentRegistrationNumber'
-        | 'licenseNumber'
         | 'licenseType'
+        | 'licenseNumber'
         | 'insuranceNumber'
         | 'insuranceExpirationDate'
       >;
@@ -136,15 +136,46 @@ export interface EndPoint {
   /**
    * 유저 가져오기
    */
-  'GET /users/{UserId}': undefined;
+  'GET /users/{UserId}': {
+    responses: {
+      200: User & {
+        UserInfo: UserInfo;
+        Work: Work;
+      };
+      404: ErrorMessage;
+    };
+  };
   /**
    * 유저 수정
    */
-  'PUT /users/{UserId}': undefined;
+  'PUT /users/{UserId}': {
+    requestBody: Pick<User, 'phoneNumber'> &
+      Pick<
+        UserInfo,
+        | 'realname'
+        | 'residentRegistrationNumber'
+        | 'licenseType'
+        | 'licenseNumber'
+        | 'insuranceNumber'
+        | 'insuranceExpirationDate'
+      >;
+    responses: {
+      200: User & {
+        UserInfo: UserInfo;
+        Work: Work;
+      };
+      404: ErrorMessage;
+    };
+  };
   /**
    * 유저 삭제
    */
-  'DELETE /users/{UserId}': undefined;
+  'DELETE /users/{UserId}': {
+    responses: {
+      200: User;
+      404: ErrorMessage;
+    };
+  };
   /**
    * 활성화된 유저 작업 가져오기
    */
