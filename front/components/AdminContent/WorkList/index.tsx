@@ -35,6 +35,7 @@ const Remark = ({ work }: { work: FullWork }) => (
 );
 
 const WorkList = () => {
+  const TODAY = new Date().setHours(0, 0, 0, 0);
   const { data: works } = useSWR<FullWorks>('/works', axiosFetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -65,6 +66,10 @@ const WorkList = () => {
         id="workListTable"
         dataSource={dataSource}
         columns={columns}
+        rowClassName={(record) => {
+          const isWorkDone = record.endTime !== null || +new Date(record.createdAt) < TODAY;
+          return isWorkDone ? 'row--work-done' : '';
+        }}
         expandable={{
           expandedRowRender: (work) => <Remark work={work} />,
           expandIcon: ({ onExpand, record }) => {

@@ -2,6 +2,10 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const globalCSS = css`
+  .row--work-done {
+    background-color: #555;
+  }
+
   .ant-modal-body .ant-form-horizontal div:last-child {
     margin-bottom: 0;
   }
