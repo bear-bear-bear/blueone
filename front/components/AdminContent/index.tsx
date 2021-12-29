@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import WorkList from './WorkList';
+import WorkTable from './WorkTable';
 import WorkAddForm from '@components/AdminContent/WorkAddForm';
 
 export type ContentTitle = '업무 목록' | '업무 추가' | '기사 목록' | '기사 추가' | '공지사항';
@@ -11,7 +11,7 @@ export type Content = {
 const contentList: Content[] = [
   {
     title: '업무 목록',
-    component: WorkList,
+    component: WorkTable,
   },
   {
     title: '업무 추가',

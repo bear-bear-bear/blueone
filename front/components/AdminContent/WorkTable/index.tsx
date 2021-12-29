@@ -5,7 +5,7 @@ import { axiosFetcher } from '@utils/swr';
 import { Spin, Table } from 'antd';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
-import { globalCSS } from '@components/AdminContent/WorkList/styles';
+import { globalCSS } from '@components/AdminContent/WorkTable/styles';
 import type { EndPoint, UserInfo, Unpacked } from '@typings';
 import columns from './columns';
 import * as S from './styles';
@@ -36,7 +36,7 @@ const Remark = ({ work }: { work: ProcessedWork }) => (
 );
 
 // TODO: 확인과 완료 check box 로 work 필터링 하는 기능 작성
-const WorkList = () => {
+const WorkTable = () => {
   const TODAY = new Date().setHours(0, 0, 0, 0);
   const { data: works } = useSWR<FullWorks>('/works', axiosFetcher, {
     revalidateIfStale: false,
@@ -96,4 +96,4 @@ const WorkList = () => {
   );
 };
 
-export default WorkList;
+export default WorkTable;

@@ -58,7 +58,13 @@ const DeleteButton = ({ record }: Props) => {
         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
       >
         <Tooltip title="삭제">
-          <Button type="text" danger size="small" icon={<DeleteOutlined />} onClick={showPopconfirm} />
+          <Button
+            type="text"
+            size="small"
+            icon={<DeleteOutlined />}
+            style={{ color: record.isDone ? '#7C3A38' : '#ff4d4f' }}
+            onClick={showPopconfirm}
+          />
         </Tooltip>
       </Popconfirm>
     </>
