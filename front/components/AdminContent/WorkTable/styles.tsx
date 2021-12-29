@@ -6,7 +6,7 @@ export const globalCSS = css`
     background: #fff;
   }
   .row--work-done {
-    background-color: #666;
+    background-color: #aaa;
     transition: none;
 
     td {
@@ -14,7 +14,7 @@ export const globalCSS = css`
     }
     &:hover td,
     &:focus td {
-      background-color: #aaa !important;
+      background-color: #ccc !important;
     }
   }
 
