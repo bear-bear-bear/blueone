@@ -74,7 +74,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
     const work = await Work.create(workInfo);
 
     if (user) {
-      await user.setWorks(work);
+      await user.addWorks(work);
     }
 
     res.status(201).json({
@@ -113,7 +113,7 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
         return;
       }
 
-      await user.setWorks(work);
+      await user.addWorks(work);
     }
 
     await work.update(workInfo);
