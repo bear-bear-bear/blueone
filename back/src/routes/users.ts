@@ -39,9 +39,6 @@ router.get(
         include: [
           {
             model: UserInfo,
-            attributes: {
-              exclude: ['password'],
-            },
           },
           {
             model: Work,
@@ -138,9 +135,6 @@ router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
       include: [
         {
           model: UserInfo,
-          attributes: {
-            exclude: ['password'],
-          },
         },
         {
           model: Work,
@@ -172,9 +166,6 @@ router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
       include: [
         {
           model: UserInfo,
-          attributes: {
-            exclude: ['password'],
-          },
         },
         {
           model: Work,
