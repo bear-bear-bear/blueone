@@ -1,8 +1,10 @@
 import type { NextPage } from 'next';
 import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
+import UserLayout from '@components/UserLayout';
+import 'antd/dist/antd.dark.css';
 
-const Home: NextPage = () => {
+const WorkPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
     redirectTo: '/login',
   });
@@ -15,7 +17,7 @@ const Home: NextPage = () => {
   }, [isLoggedIn, user]);
 
   if (!isLoggedIn) return null;
-  return <div>유저 전용 페이지</div>;
+  return <UserLayout />;
 };
 
-export default Home;
+export default WorkPage;
