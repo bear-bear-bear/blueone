@@ -141,6 +141,14 @@ router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
         },
       ],
     });
+
+    if (!user) {
+      res.status(404).json({
+        message: '존재하지 않는 유저입니다.',
+      });
+      return;
+    }
+
     res.status(200).json(user);
   } catch (err) {
     next(err);
@@ -155,8 +163,17 @@ router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { phoneNumber, ...restInfo }: UpdateUserRequestBody = req.body;
 
   try {
-    await User.update({ phoneNumber }, { where: { id: userId } });
-    await UserInfo.update(restInfo, { where: { userId } });
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      res.status(404).json({
+        message: '존재하지 않는 유저입니다.',
+      });
+      return;
+    }
+
+    await user.update({ phoneNumber });
+    await UserInfo.update(restInfo, { where: { UserId: userId } });
 
     const updatedUser = await User.findOne({
       where: { id: userId },
