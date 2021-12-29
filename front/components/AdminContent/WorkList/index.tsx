@@ -34,6 +34,7 @@ const Remark = ({ work }: { work: FullWork }) => (
   </p>
 );
 
+// TODO: 확인과 완료 check box 로 work 필터링 하는 기능 작성
 const WorkList = () => {
   const TODAY = new Date().setHours(0, 0, 0, 0);
   const { data: works } = useSWR<FullWorks>('/works', axiosFetcher, {
