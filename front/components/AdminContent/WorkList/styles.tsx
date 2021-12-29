@@ -3,7 +3,16 @@ import styled from '@emotion/styled';
 
 export const globalCSS = css`
   .row--work-done {
-    background-color: #555;
+    background-color: #666;
+    transition: none;
+
+    td {
+      transition: background-color 0.1s !important;
+    }
+    &:hover td,
+    &:focus td {
+      background-color: #777 !important;
+    }
   }
 
   .ant-modal-body .ant-form-horizontal div:last-child {

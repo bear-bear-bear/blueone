@@ -25,9 +25,6 @@ const columns: ColumnsType<ProcessedWork> = [
         align: 'center',
         width: 100,
         ellipsis: true,
-        render: (value) => {
-          return <span style={{ cursor: 'help' }}>{value}</span>;
-        },
       },
       {
         title: '경유지',
@@ -36,9 +33,6 @@ const columns: ColumnsType<ProcessedWork> = [
         align: 'center',
         width: 100,
         ellipsis: true,
-        render: (value) => {
-          return <span style={{ cursor: 'help' }}>{value}</span>;
-        },
       },
       {
         title: '도착지',
@@ -47,9 +41,6 @@ const columns: ColumnsType<ProcessedWork> = [
         align: 'center',
         width: 100,
         ellipsis: true,
-        render: (value) => {
-          return <span style={{ cursor: 'help' }}>{value}</span>;
-        },
       },
     ],
   },
