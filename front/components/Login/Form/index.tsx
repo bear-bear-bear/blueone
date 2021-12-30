@@ -1,5 +1,6 @@
-import { Input, Form, Button, FormProps } from 'antd';
 import { useRouter } from 'next/router';
+import { Input, Form, Button, FormProps, message } from 'antd';
+import { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@utils/axios';
 import type { AxiosError } from 'axios';
 import type { EndPoint } from '@typings';
@@ -8,14 +9,17 @@ import * as S from './styles';
 type RequestBody = EndPoint['POST /user/login']['requestBody'];
 type Responses = EndPoint['POST /user/login']['responses'];
 
+const layout: { [ColName: string]: ColProps } = {
+  labelCol: { span: 5 },
+  wrapperCol: { flex: 'auto' },
+};
+
 const LoginForm = () => {
   const router = useRouter();
 
   const onFinish: FormProps<RequestBody>['onFinish'] = async (values) => {
     try {
-      const user = await httpClient
-        .post<Responses['200']>('/user/login', values)
-        .then((res) => res.data);
+      const user = await httpClient.post<Responses['200']>('/user/login', values).then((res) => res.data);
 
       switch (user.role) {
         case 'admin':
@@ -27,7 +31,9 @@ const LoginForm = () => {
         default:
       }
     } catch (err) {
-      console.error((err as AxiosError).response?.data);
+      const errorMessage = (err as AxiosError).response?.data.message;
+      message.error(errorMessage);
+      console.error(errorMessage);
     }
   };
   const onFinishFailed: FormProps<RequestBody>['onFinishFailed'] = (errorInfo) => {
@@ -41,6 +47,7 @@ const LoginForm = () => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
+      {...layout}
     >
       <S.InputFormItem
         label="전화번호"

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
 import UserLayout from '@components/User/Layout';
-import 'antd/dist/antd.dark.css';
+import Settings from '@components/User/Settings';
 
 const SettingPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
@@ -17,7 +17,11 @@ const SettingPage: NextPage = () => {
   }, [isLoggedIn, user]);
 
   if (!isLoggedIn) return null;
-  return <UserLayout />;
+  return (
+    <UserLayout bodyNoPadding>
+      <Settings />
+    </UserLayout>
+  );
 };
 
 export default SettingPage;

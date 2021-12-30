@@ -10,7 +10,6 @@ import {
   AiOutlineSetting,
 } from 'react-icons/ai';
 import * as S from './styles';
-import 'antd/dist/antd.dark.css';
 
 type NavItem = {
   href: `/${string}`;
@@ -48,7 +47,7 @@ const ActiveLink: FC<{ active: boolean; item: NavItem }> = ({ item, active }) =>
   </Link>
 );
 
-const UserLayout: FC = ({ children }) => {
+const UserLayout: FC<{ bodyNoPadding?: boolean }> = ({ children, bodyNoPadding }) => {
   const router = useRouter();
 
   const headerText = useMemo(() => navItems.find((item) => item.href === router.asPath)!.text, [router.asPath]);
@@ -59,7 +58,7 @@ const UserLayout: FC = ({ children }) => {
         <S.BoxHeader>
           <h1>{headerText}</h1>
         </S.BoxHeader>
-        <S.BoxMain>{children}</S.BoxMain>
+        <S.BoxMain noPadding={bodyNoPadding}>{children}</S.BoxMain>
         <S.BoxFooter>
           <nav>
             {navItems.map((item) => (

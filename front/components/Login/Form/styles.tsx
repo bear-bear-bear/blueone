@@ -3,6 +3,10 @@ import { Form, Input } from 'antd';
 
 export const InputFormItem = styled(Form.Item)`
   margin-bottom: 0.66rem;
+
+  .ant-form-item-label {
+    padding: 0;
+  }
 `;
 
 export const ButtonFormItem = styled(Form.Item)`

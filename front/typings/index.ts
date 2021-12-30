@@ -101,7 +101,14 @@ export interface EndPoint {
   /**
    * 비밀번호 수정
    */
-  'PATCH /user/password': undefined;
+  'POST /user/password': {
+    requestBody: {
+      password: string;
+    };
+    responses: {
+      204: void;
+    };
+  };
   /**
    * 활성화된 내 작업 리스트 가져오기
    */

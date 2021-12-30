@@ -3,6 +3,7 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Avatar, List, Tooltip } from 'antd';
 import { UserOutlined, WarningOutlined } from '@ant-design/icons';
+import processPhoneNumber from '@utils/processPhoneNumber';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 import type { FullUser } from './index';
@@ -56,7 +57,7 @@ const UserItem = (user: FullUser) => {
         }
         description={
           <div style={{ textDecoration: `${isValidInsurance ? 'initial' : 'line-through'}` }}>
-            <p>{phoneNumber.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}</p>
+            <p>{processPhoneNumber(phoneNumber)}</p>
             <p>
               {isValidInsurance
                 ? `보험 만료일: ${insuranceExpirationDate} (${expiredAtFromNow()})`

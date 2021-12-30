@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import bcrypt from 'bcrypt';
 import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 
@@ -95,10 +96,11 @@ router.post('/logout', isLoggedIn, (req, res) => {
 /**
  * 비밀번호 수정
  */
-router.patch('/password', isLoggedIn, async (req, res, next) => {
+router.post('/password', isLoggedIn, async (req, res, next) => {
   try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     await User.update(
-      { password: req.body.password },
+      { password: hashedPassword },
       { where: { id: req.user?.id } },
     );
     res.sendStatus(204);

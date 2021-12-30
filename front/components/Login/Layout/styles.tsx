@@ -24,11 +24,15 @@ export const BoxHeader = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1.33rem;
+  margin-bottom: 0.66rem;
   padding: 0.33rem 0;
   gap: 1rem;
 
   h1 {
     font-size: 1.1rem;
+  }
+
+  ${media.sm} {
+    margin-bottom: 1.33rem;
   }
 `;

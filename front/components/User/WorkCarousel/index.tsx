@@ -7,7 +7,6 @@ import type { EndPoint } from '@typings';
 import type { Settings } from '@ant-design/react-slick';
 import WorkCard from './WorkCard';
 import * as S from './styles';
-import 'antd/dist/antd.dark.css';
 
 export type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 

@@ -3,7 +3,6 @@ import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
 import { Empty } from 'antd';
 import UserLayout from '@components/User/Layout';
-import 'antd/dist/antd.dark.css';
 
 const TempEmpty = () => (
   <Empty

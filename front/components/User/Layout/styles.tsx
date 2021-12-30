@@ -31,6 +31,7 @@ export const BoxHeader = styled.header`
   align-items: center;
   margin-bottom: 1.33rem;
   padding: ${BOX_ITEM_PADDING};
+  padding-top: 1rem;
   gap: 1rem;
 
   h1 {
@@ -40,9 +41,9 @@ export const BoxHeader = styled.header`
   }
 `;
 
-export const BoxMain = styled.main`
+export const BoxMain = styled.main<{ noPadding?: boolean }>`
   flex: 1;
-  padding: ${BOX_ITEM_PADDING};
+  padding: ${({ noPadding }) => (noPadding ? 'initial' : BOX_ITEM_PADDING)};
   position: relative;
 `;
 
