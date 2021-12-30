@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
+import _ from 'lodash';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
@@ -47,9 +48,8 @@ const WorkEditForm = ({ form, prevWork, setSubmitLoading, closeModal }: Props) =
     setSubmitLoading(true);
     try {
       const updatedWork = await httpClient.put<Response>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
-      const willChangeWorkIndex = works!.findIndex((work) => work.id === updatedWork.id);
-      const updatedWorks = works!.map((work, i) => (i === willChangeWorkIndex ? updatedWork : work));
-      await mutateWorks(updatedWorks);
+      const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
+      await mutateWorks(nextWorks);
       message.success('작업 수정 완료');
       closeModal();
     } catch (err) {

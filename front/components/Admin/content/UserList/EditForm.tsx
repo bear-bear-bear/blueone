@@ -59,9 +59,8 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
     setSubmitLoading(true);
     try {
       const updatedUser = await httpClient.put<UpdatedUser>(`/users/${prevUser.id}`, values).then((res) => res.data);
-      const willChangeWorkIndex = users!.findIndex((user) => user.id === updatedUser.id);
-      const updatedUsers = users!.map((user, i) => (i === willChangeWorkIndex ? updatedUser : user));
-      await mutateUsers(updatedUsers);
+      const nextUsers = users!.map((user) => (user.id !== updatedUser.id ? user : updatedUser));
+      await mutateUsers(nextUsers);
       message.success('기사 정보 수정 완료');
       closeModal();
     } catch (err) {
