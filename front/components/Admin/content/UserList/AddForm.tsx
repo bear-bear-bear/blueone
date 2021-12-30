@@ -34,7 +34,7 @@ const WorkEditForm = ({ form, setSubmitLoading, closeModal }: Props) => {
     async (values) => {
       setSubmitLoading(true);
       try {
-        const createdUser = await httpClient.post<CreatedUser>(`/users`, values).then((res) => res.data);
+        const createdUser = await httpClient.post<CreatedUser>('/users', values).then((res) => res.data);
         const nextUsers = [createdUser, ...users!];
         await mutateUsers(nextUsers);
         message.success('기사 등록 완료');
@@ -45,7 +45,7 @@ const WorkEditForm = ({ form, setSubmitLoading, closeModal }: Props) => {
       }
       setSubmitLoading(false);
     },
-    [users],
+    [users, closeModal, mutateUsers, setSubmitLoading],
   );
 
   return (

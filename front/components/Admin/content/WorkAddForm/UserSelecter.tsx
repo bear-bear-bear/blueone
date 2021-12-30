@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, memo } from 'react';
 import useSWR from 'swr';
 import { Divider, FormInstance, Select, SelectProps, Spin } from 'antd';
 import { axiosFetcher } from '@utils/swr';
@@ -48,7 +48,7 @@ const UserSelecter = ({ form, defaultUserId }: Props) => {
   );
 
   const onSelect: SelectProps<Fields['UserId']>['onSelect'] = (v) => {
-    form.setFieldsValue({ UserId: v });
+    form.setFieldsValue({ UserId: Number(v) });
   };
 
   const onClear: SelectProps<Fields['UserId']>['onClear'] = () => {
@@ -76,4 +76,4 @@ const UserSelecter = ({ form, defaultUserId }: Props) => {
   );
 };
 
-export default React.memo(UserSelecter);
+export default memo(UserSelecter);

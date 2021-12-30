@@ -1,16 +1,15 @@
 import { MouseEventHandler, FC, useCallback, useState } from 'react';
-import { Button, message, Modal } from 'antd';
-import type { Work } from '@typings';
-import type { EndPoint } from '@typings';
-import httpClient from '@utils/axios';
 import useSWRImmutable from 'swr/immutable';
-import { MyWorks } from '@components/User/WorkCarousel';
+import { Button, message, Modal } from 'antd';
+import type { Work, EndPoint } from '@typings';
 import { axiosFetcher } from '@utils/swr';
+import httpClient from '@utils/axios';
 
 type Props = {
   workId: Work['id'];
   isWorkChecked: boolean;
 };
+type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
 
 const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
@@ -36,7 +35,7 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
       message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.');
       console.error(err);
     }
-  }, [works, workId]);
+  }, [works, workId, isWorkChecked, mutateWorks]);
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);

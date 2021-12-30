@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
-import { Empty } from 'antd';
+import { Empty, message } from 'antd';
 import UserLayout from '@components/User/Layout';
 
 const TempEmpty = () => (
@@ -29,7 +29,7 @@ const NoticePage: NextPage = () => {
   useEffect(() => {
     if (!isLoggedIn) return;
     if (user?.role === 'admin') {
-      alert('유저 전용 페이지입니다.');
+      message.info('유저 전용 페이지입니다.');
     }
   }, [isLoggedIn, user]);
 

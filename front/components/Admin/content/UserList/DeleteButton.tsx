@@ -29,7 +29,7 @@ const DeleteButton = ({ user }: Props) => {
 
     try {
       const deletedUser = await httpClient.delete<DeletedUser>(`/users/${user.id}`).then((res) => res.data);
-      const nextUsers = users!.filter((user) => user.id !== deletedUser.id);
+      const nextUsers = users!.filter((prevUser) => prevUser.id !== deletedUser.id);
       await mutateUsers(nextUsers);
       message.success('기사 정보 삭제 완료');
     } catch (err) {

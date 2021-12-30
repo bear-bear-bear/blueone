@@ -58,7 +58,7 @@ const WorkEditForm = ({ form, prevWork, setSubmitLoading, closeModal }: Props) =
       }
       setSubmitLoading(false);
     },
-    [works, prevWork, httpClient],
+    [works, prevWork, closeModal, mutateWorks, setSubmitLoading],
   );
 
   return (

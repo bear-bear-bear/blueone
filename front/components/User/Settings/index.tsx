@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import { axiosFetcher } from '@utils/swr';
@@ -9,7 +8,7 @@ import * as S from './styles';
 
 export type UserWithInfo = EndPoint['GET /user']['responses']['200'];
 
-const items = [<PasswordChangeButton />];
+const items = [<PasswordChangeButton key="passwordChangeButton" />];
 
 const Settings = () => {
   const { data: user } = useSWRImmutable<UserWithInfo>('/user', axiosFetcher);

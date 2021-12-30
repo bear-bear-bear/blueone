@@ -70,7 +70,7 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       }
       setSubmitLoading(false);
     },
-    [prevUser, users],
+    [prevUser, users, closeModal, mutateUsers, setSubmitLoading],
   );
 
   return (

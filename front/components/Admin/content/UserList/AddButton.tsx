@@ -1,7 +1,7 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
-import AddForm from './AddForm';
 import type { EndPoint } from '@typings';
+import AddForm from './AddForm';
 
 export type CreateRequestBody = EndPoint['POST /users']['requestBody'];
 
@@ -13,7 +13,7 @@ const AddButton = () => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     form.resetFields();
-  }, []);
+  }, [form]);
 
   const handleAddIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
     setIsModalOpen(true);

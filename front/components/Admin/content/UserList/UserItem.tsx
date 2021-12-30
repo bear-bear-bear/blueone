@@ -15,6 +15,7 @@ const { Item } = List;
 
 const UserItem = (user: FullUser) => {
   const {
+    id,
     phoneNumber,
     UserInfo: { realname, insuranceExpirationDate },
   } = user;
@@ -26,7 +27,12 @@ const UserItem = (user: FullUser) => {
   const expiredAtFromNow = () => now.to(insuranceExpirationDate);
 
   return (
-    <S.StyledItem actions={[<EditButton user={user} />, <DeleteButton user={user} />]}>
+    <S.StyledItem
+      actions={[
+        <EditButton user={user} key={`editButton_${id}`} />,
+        <DeleteButton user={user} key={`deleteButton_${id}`} />,
+      ]}
+    >
       <Item.Meta
         avatar={
           <Avatar
@@ -40,7 +46,8 @@ const UserItem = (user: FullUser) => {
               <span>{realname}</span>
             ) : (
               <>
-                <span>{realname}</span>{' '}
+                <span>{realname}</span>
+                &lt;
                 <Tooltip title="보험 만료가 얼마 남지 않았습니다.">
                   <WarningOutlined style={{ color: '#eed202', verticalAlign: 'text-top' }} />
                 </Tooltip>
@@ -48,7 +55,8 @@ const UserItem = (user: FullUser) => {
             )
           ) : (
             <>
-              <span style={{ textDecoration: 'line-through' }}>{realname}</span>{' '}
+              <span style={{ textDecoration: 'line-through' }}>{realname}</span>
+              &lt;
               <Tooltip title="보험이 만료되었습니다.">
                 <WarningOutlined style={{ color: '#ff4d4f', verticalAlign: 'text-top' }} />
               </Tooltip>
@@ -61,7 +69,7 @@ const UserItem = (user: FullUser) => {
             <p>
               {isValidInsurance
                 ? `보험 만료일: ${insuranceExpirationDate} (${expiredAtFromNow()})`
-                : `보험이 만료되었습니다`}
+                : '보험이 만료되었습니다'}
             </p>
           </div>
         }

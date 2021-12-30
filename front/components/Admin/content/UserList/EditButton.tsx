@@ -1,8 +1,8 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, Modal, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import EditForm from './EditForm';
 import type { EndPoint } from '@typings';
+import EditForm from './EditForm';
 import type { FullUser } from './index';
 
 type Props = {
@@ -18,7 +18,7 @@ const EditButton = ({ user }: Props) => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     form.resetFields();
-  }, []);
+  }, [form]);
 
   const handleEditIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
     setIsModalOpen(true);

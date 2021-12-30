@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import useSWR from 'swr';
 import { axiosFetcher } from '@utils/swr';
@@ -30,7 +30,9 @@ const processWorkDateTimes = (work: FullWork) => ({
 
 const Remark = ({ work }: { work: ProcessedWork }) => (
   <S.Remark>
-    <span>비고:</span> {work.remark ?? '-'}
+    <span>비고:</span>
+    &lt;
+    {work.remark ?? '-'}
   </S.Remark>
 );
 
@@ -66,9 +68,7 @@ const WorkTable = () => {
         id="workListTable"
         dataSource={dataSource}
         columns={columns}
-        rowClassName={(record) => {
-          return record.isDone ? 'row--work-done' : '';
-        }}
+        rowClassName={(record) => (record.isDone ? 'row--work-done' : '')}
         expandable={{
           expandedRowRender: (work) => <Remark work={work} />,
           expandIcon: ({ onExpand, record }) => {

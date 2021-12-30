@@ -30,7 +30,9 @@ const WorkCarousel = () => {
       typeof window !== 'undefined'
         ? window.localStorage
         : {
-            setItem() {},
+            setItem() {
+              return null;
+            },
             getItem() {
               return '0';
             },
@@ -39,9 +41,12 @@ const WorkCarousel = () => {
   );
   const initialSlide = Number(localStorage.getItem('currSlide'));
 
-  const afterChange: Settings['afterChange'] = useCallback((currSlide) => {
-    localStorage.setItem('currSlide', currSlide.toString());
-  }, []);
+  const afterChange: Settings['afterChange'] = useCallback(
+    (currSlide) => {
+      localStorage.setItem('currSlide', currSlide.toString());
+    },
+    [localStorage],
+  );
 
   useEffect(() => {
     if (!prevWorkCount.current) return;

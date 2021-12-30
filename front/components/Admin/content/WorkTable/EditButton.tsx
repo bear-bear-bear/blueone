@@ -1,8 +1,8 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, Modal, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import EditForm from './EditForm';
 import type { Fields } from '@components/Admin/content/WorkAddForm';
+import EditForm from './EditForm';
 import type { ProcessedWork } from './index';
 
 type Props = {

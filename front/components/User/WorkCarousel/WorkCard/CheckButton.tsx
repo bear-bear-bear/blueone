@@ -29,7 +29,7 @@ const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
       message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.');
       console.error(err);
     }
-  }, [works, workId]);
+  }, [works, workId, mutateWorks]);
 
   return (
     <Button

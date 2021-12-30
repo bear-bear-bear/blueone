@@ -36,19 +36,9 @@ const LoginForm = () => {
       console.error(errorMessage);
     }
   };
-  const onFinishFailed: FormProps<RequestBody>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
 
   return (
-    <Form
-      name="login-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-      {...layout}
-    >
+    <Form name="login-form" initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off" {...layout}>
       <S.InputFormItem
         label="전화번호"
         name="phoneNumber"

@@ -6,14 +6,14 @@ import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 
+type User = EndPoint['GET /user']['responses']['200'];
+type RequestBody = EndPoint['POST /user/password']['requestBody'];
+type Response = EndPoint['POST /user/password']['responses']['204'];
 type Props = {
   form: FormInstance<RequestBody>;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
-type User = EndPoint['GET /user']['responses']['200'];
-type RequestBody = EndPoint['POST /user/password']['requestBody'];
-type Response = EndPoint['POST /user/password']['responses']['204'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 4 },
@@ -35,7 +35,7 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
 
       setSubmitLoading(true);
       try {
-        await httpClient.post<Response>(`/user/password`, reqBody).then((res) => res.data);
+        await httpClient.post<Response>('/user/password', reqBody).then((res) => res.data);
         closeModal();
         message.success('비밀번호가 변경되었어요.');
       } catch (err) {
@@ -44,7 +44,7 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
       }
       setSubmitLoading(false);
     },
-    [user],
+    [user, closeModal, setSubmitLoading],
   );
 
   return (
@@ -65,7 +65,7 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject('비밀번호가 일치하지 않습니다.');
+              return Promise.reject(new Error('비밀번호가 일치하지 않습니다.'));
             },
           }),
         ]}
