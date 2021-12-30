@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { User, UserInfo } from '@/models';
+import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 
 const router = express.Router();
@@ -102,6 +102,24 @@ router.patch('/password', isLoggedIn, async (req, res, next) => {
       { where: { id: req.user?.id } },
     );
     res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * 활성화된 내 작업 가져오기
+ */
+router.get('/works', isLoggedIn, async (req, res, next) => {
+  try {
+    const activatedWorks = await Work.findAll({
+      where: {
+        UserId: req.user?.id,
+        endTime: null,
+      },
+      order: [['createdAt', 'DESC']],
+    });
+    res.status(200).json(activatedWorks);
   } catch (err) {
     next(err);
   }

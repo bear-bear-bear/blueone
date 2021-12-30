@@ -205,11 +205,13 @@ router.delete('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 활성화된 유저 작업 가져오기
  */
-router.get('/works', isLoggedIn, async (req, res, next) => {
+router.get('/:userId/works', isLoggedIn, isAdmin, async (req, res, next) => {
+  const { userId } = req.params;
+
   try {
     const activatedWorks = await Work.findAll({
       where: {
-        userId: req.user?.id,
+        UserId: userId,
         endTime: null,
       },
       order: [['createdAt', 'DESC']],
