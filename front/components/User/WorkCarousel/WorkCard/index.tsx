@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Card } from 'antd';
+import { Card, Typography } from 'antd';
 import { MdAttachMoney } from 'react-icons/md';
 import type { Unpacked } from '@typings';
 import type { MyWorks } from '../index';
@@ -13,11 +13,18 @@ type Props = {
 };
 
 const { Meta } = Card;
+const { Paragraph } = Typography;
 
-const InfoRow: FC<{ label: string; content: string }> = ({ label, content }) => (
+const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ label, content, copyable = false }) => (
   <S.Row>
     <p>{label}:</p>
-    <p>{content}</p>
+    {copyable ? (
+      <Paragraph style={{ marginBottom: 0 }} copyable>
+        {content}
+      </Paragraph>
+    ) : (
+      <p>{content}</p>
+    )}
   </S.Row>
 );
 
@@ -39,9 +46,9 @@ const WorkCard = ({ work }: Props) => {
         description={`지원지수 ${work.subsidy}`}
       />
       <S.WorkInfo>
-        <InfoRow label="출발지" content={work.origin} />
-        {work.waypoint && <InfoRow label="경유지" content={work.waypoint} />}
-        <InfoRow label="도착지" content={work.destination} />
+        <InfoRow label="출발지" content={work.origin} copyable />
+        {work.waypoint && <InfoRow label="경유지" content={work.waypoint} copyable />}
+        <InfoRow label="도착지" content={work.destination} copyable />
         <InfoRow label="차종" content={work.carModel} />
         {work.remark && <InfoRow label="비고" content={work.remark} />}
       </S.WorkInfo>
