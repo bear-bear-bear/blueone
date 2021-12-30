@@ -10,7 +10,7 @@ import type { FullUsers, FullUser } from './index';
 type Props = {
   user: FullUser;
 };
-type DeletedUser = EndPoint['DELETE /users/{UserId}']['responses']['200'];
+type DeletedUser = EndPoint['DELETE /users/{userId}']['responses']['200'];
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 

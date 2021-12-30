@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
 import UserLayout from '@components/User/Layout';
+import WorkCarousel from '@components/User/WorkCarousel';
 import 'antd/dist/antd.dark.css';
 
 const WorkPage: NextPage = () => {
@@ -17,7 +18,11 @@ const WorkPage: NextPage = () => {
   }, [isLoggedIn, user]);
 
   if (!isLoggedIn) return null;
-  return <UserLayout />;
+  return (
+    <UserLayout>
+      <WorkCarousel />
+    </UserLayout>
+  );
 };
 
 export default WorkPage;

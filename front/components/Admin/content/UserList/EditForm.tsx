@@ -15,7 +15,7 @@ type Props = {
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
 type Users = EndPoint['GET /users']['responses']['200'];
-type UpdatedUser = EndPoint['PUT /users/{UserId}']['responses']['200'];
+type UpdatedUser = EndPoint['PUT /users/{userId}']['responses']['200'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 6 },

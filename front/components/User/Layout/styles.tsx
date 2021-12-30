@@ -43,6 +43,7 @@ export const BoxHeader = styled.header`
 export const BoxMain = styled.main`
   flex: 1;
   padding: ${BOX_ITEM_PADDING};
+  position: relative;
 `;
 
 export const BoxFooter = styled.footer`

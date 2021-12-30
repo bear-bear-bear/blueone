@@ -8,7 +8,7 @@ import type { FullUser } from './index';
 type Props = {
   user: FullUser;
 };
-export type UpdateRequestBody = EndPoint['PUT /users/{UserId}']['requestBody'];
+export type UpdateRequestBody = EndPoint['PUT /users/{userId}']['requestBody'];
 
 const EditButton = ({ user }: Props) => {
   const [form] = Form.useForm<UpdateRequestBody>();
