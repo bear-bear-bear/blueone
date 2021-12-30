@@ -39,7 +39,7 @@ const DeleteButton = ({ user }: Props) => {
 
     setIsPopoverOpen(false);
     setPopoverText(INITIAL_POPOVER_TEXT);
-  }, [user, mutateUsers]);
+  }, [users, user, mutateUsers]);
 
   const handleCancel = () => {
     setIsPopoverOpen(false);

@@ -1,10 +1,11 @@
 import { FC } from 'react';
-import { Button, Card } from 'antd';
+import { Card } from 'antd';
 import { MdAttachMoney } from 'react-icons/md';
 import type { Unpacked } from '@typings';
 import type { MyWorks } from '../index';
 import * as S from '../styles';
 import CheckButton from '@components/User/WorkCarousel/WorkCard/CheckButton';
+import DoneButton from '@components/User/WorkCarousel/WorkCard/DoneButton';
 
 type MyWork = Unpacked<MyWorks>;
 type Props = {
@@ -25,9 +26,7 @@ const WorkCard = ({ work }: Props) => {
     <S.StyledCard
       actions={[
         <CheckButton isWorkChecked={!!work.checkTime} workId={work.id} />,
-        <Button type={work.checkTime ? 'primary' : 'ghost'} disabled={!work.checkTime} block>
-          완료
-        </Button>,
+        <DoneButton isWorkChecked={!!work.checkTime} workId={work.id} />,
       ]}
     >
       <Meta
@@ -44,6 +43,7 @@ const WorkCard = ({ work }: Props) => {
         {work.waypoint && <InfoRow label="경유지" content={work.waypoint} />}
         <InfoRow label="도착지" content={work.destination} />
         <InfoRow label="차종" content={work.carModel} />
+        {work.remark && <InfoRow label="비고" content={work.remark} />}
       </S.WorkInfo>
     </S.StyledCard>
   );

@@ -28,6 +28,7 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
       const patchedWork = await httpClient.patch<PatchedWork>(`/works/${workId}?state=done`).then((res) => res.data);
       const nextWorks = works?.map((work) => (work.id !== patchedWork.id ? work : patchedWork));
       setLoading(false);
+      setIsModalOpen(false);
       await mutateWorks(nextWorks);
       message.success('작업이 완료 처리 되었어요. 고생하셨습니다 :)');
     } catch (err) {
@@ -51,14 +52,19 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
         완료
       </Button>
       <Modal
-        title="작업을 완료하셨나요?"
         visible={isModalOpen}
         onOk={deleteWork}
         onCancel={closeModal}
         okText="완료"
         cancelText="취소"
         confirmLoading={loading}
-      />
+        style={{
+          top: '50%',
+          transform: 'translateY(-50%)',
+        }}
+      >
+        작업을 완료 할까요?
+      </Modal>
     </>
   );
 };
