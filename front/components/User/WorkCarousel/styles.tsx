@@ -45,6 +45,7 @@ export const StyledEmpty = styled(Empty)`
   top: 42%;
   transform: translateY(-50%);
   color: #fafafa;
+  fontweight: 300;
 `;
 
 export const WorkInfo = styled.div`
