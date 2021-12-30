@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "cross-env ANALYZE=true NODE_ENV=production next build",
-    "start": "cross-env NODE_ENV=production pm2 start npm --name \"next\" -- \"start -p 80\" && npx pm2 monit",
+    "start": "cross-env NODE_ENV=production pm2 start npm --name \"next\" -- start -p 80 && npx pm2 monit",
     "lint": "next lint"
   },
   "dependencies": {
