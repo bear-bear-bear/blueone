@@ -93,7 +93,7 @@ function useUser({
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 const httpClient = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://localhost:8001',
+  baseURL:  true ? 'http://54.180.83.42' : 0,
   withCredentials: true
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (httpClient);
