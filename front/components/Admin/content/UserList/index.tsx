@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { Divider, List, Spin } from 'antd';
+import { List, Spin } from 'antd';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, Unpacked } from '@typings';
 import UserItem from './UserItem';

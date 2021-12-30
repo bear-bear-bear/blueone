@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, message } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import UserSelecter from '@components/AdminContent/WorkAddForm/UserSelecter';
 import httpClient from '@utils/axios';
 import type { EndPoint } from '@typings';
+import UserSelecter from './UserSelecter';
 import * as S from './styles';
 
 type RequestBody = EndPoint['POST /works']['requestBody'];

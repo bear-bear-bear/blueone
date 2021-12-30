@@ -2,10 +2,10 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import UserSelecter from '@components/AdminContent/WorkAddForm/UserSelecter';
+import UserSelecter from '@components/Admin/Content/WorkAddForm/UserSelecter';
 import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { Fields } from '@components/AdminContent/WorkAddForm';
+import type { Fields } from '@components/Admin/Content/WorkAddForm';
 import type { EndPoint } from '@typings';
 import type { FullWorks, ProcessedWork } from './index';
 

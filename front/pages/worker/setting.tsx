@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
-import UserLayout from '@components/UserLayout';
+import UserLayout from '@components/User/Layout';
 import 'antd/dist/antd.dark.css';
 
 const SettingPage: NextPage = () => {

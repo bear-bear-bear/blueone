@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Layout, Empty, Menu, MenuProps } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
 import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/icons';
-import contentList, { ContentTitle } from '@components/AdminContent';
+import contentList, { ContentTitle } from '@components/Admin/Content';
 import * as S from './styles';
 
 const { Header, Content: Main, Footer, Sider } = Layout;

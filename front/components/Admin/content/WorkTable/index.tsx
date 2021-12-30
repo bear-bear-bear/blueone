@@ -5,7 +5,6 @@ import { axiosFetcher } from '@utils/swr';
 import { Spin, Table } from 'antd';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
-import { globalCSS } from '@components/AdminContent/WorkTable/styles';
 import type { EndPoint, UserInfo, Unpacked } from '@typings';
 import columns from './columns';
 import * as S from './styles';
@@ -64,7 +63,7 @@ const WorkTable = () => {
   }
   return (
     <>
-      <Global styles={globalCSS} />
+      <Global styles={S.globalCSS} />
       <Table
         id="workListTable"
         dataSource={dataSource}

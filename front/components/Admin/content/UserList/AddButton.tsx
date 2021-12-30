@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, Modal, Tooltip } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import AddForm from './AddForm';
 import type { EndPoint } from '@typings';
 
