@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet());
   app.use(
     cors({
-      origin: ['https://example.com'],
+      origin: ['http://3.35.133.211'],
       credentials: true,
     }),
   );
