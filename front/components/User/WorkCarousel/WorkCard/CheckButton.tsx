@@ -10,7 +10,7 @@ type Props = {
   workId: Work['id'];
   isWorkChecked: boolean;
 };
-type Response = EndPoint['PATCH /works/{workId}']['responses']['200'];
+type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
 
 const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
@@ -19,17 +19,17 @@ const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
   const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(async () => {
     setLoading(true);
     try {
-      const patchedWork = await httpClient.patch<Response>(`/works/${workId}?state=checked`).then((res) => res.data);
+      const patchedWork = await httpClient.patch<PatchedWork>(`/works/${workId}?state=checked`).then((res) => res.data);
       const nextWorks = works?.map((work) => (work.id !== patchedWork.id ? work : patchedWork));
       setLoading(false);
-      await mutateWorks(nextWorks, false);
+      await mutateWorks(nextWorks);
       message.success('업무 확인 완료');
     } catch (err) {
       setLoading(false);
       message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.');
       console.error(err);
     }
-  }, []);
+  }, [works, workId]);
 
   return (
     <Button

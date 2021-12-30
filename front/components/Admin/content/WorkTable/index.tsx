@@ -50,7 +50,7 @@ const WorkTable = () => {
       realname: work.User?.UserInfo.realname,
       isDone: work.endTime !== null || +new Date(work.createdAt) < TODAY,
     }));
-  }, [works]);
+  }, [works, TODAY]);
 
   if (!dataSource) {
     return (

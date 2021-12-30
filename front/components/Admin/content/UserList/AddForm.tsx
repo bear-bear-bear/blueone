@@ -30,20 +30,23 @@ const validateMessages: FormProps<CreateRequestBody>['validateMessages'] = {
 const WorkEditForm = ({ form, setSubmitLoading, closeModal }: Props) => {
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
 
-  const onFormFinish: FormProps<CreateRequestBody>['onFinish'] = useCallback(async (values) => {
-    setSubmitLoading(true);
-    try {
-      const createdUser = await httpClient.post<CreatedUser>(`/users`, values).then((res) => res.data);
-      const nextUsers = [createdUser, ...users!];
-      await mutateUsers(nextUsers);
-      message.success('기사 등록 완료');
-      closeModal();
-    } catch (err) {
-      message.error('기사 등록 중 에러 발생, 개발자에게 문의하세요.');
-      console.error(err);
-    }
-    setSubmitLoading(false);
-  }, []);
+  const onFormFinish: FormProps<CreateRequestBody>['onFinish'] = useCallback(
+    async (values) => {
+      setSubmitLoading(true);
+      try {
+        const createdUser = await httpClient.post<CreatedUser>(`/users`, values).then((res) => res.data);
+        const nextUsers = [createdUser, ...users!];
+        await mutateUsers(nextUsers);
+        message.success('기사 등록 완료');
+        closeModal();
+      } catch (err) {
+        message.error('기사 등록 중 에러 발생, 개발자에게 문의하세요.');
+        console.error(err);
+      }
+      setSubmitLoading(false);
+    },
+    [users],
+  );
 
   return (
     <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>

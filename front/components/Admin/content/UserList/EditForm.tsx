@@ -55,20 +55,23 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
     [prevUser],
   );
 
-  const onFormFinish: FormProps<UpdateRequestBody>['onFinish'] = useCallback(async (values) => {
-    setSubmitLoading(true);
-    try {
-      const updatedUser = await httpClient.put<UpdatedUser>(`/users/${prevUser.id}`, values).then((res) => res.data);
-      const nextUsers = users!.map((user) => (user.id !== updatedUser.id ? user : updatedUser));
-      await mutateUsers(nextUsers);
-      message.success('기사 정보 수정 완료');
-      closeModal();
-    } catch (err) {
-      message.error('기사 정보 수정 중 에러 발생, 개발자에게 문의하세요.');
-      console.error(err);
-    }
-    setSubmitLoading(false);
-  }, []);
+  const onFormFinish: FormProps<UpdateRequestBody>['onFinish'] = useCallback(
+    async (values) => {
+      setSubmitLoading(true);
+      try {
+        const updatedUser = await httpClient.put<UpdatedUser>(`/users/${prevUser.id}`, values).then((res) => res.data);
+        const nextUsers = users!.map((user) => (user.id !== updatedUser.id ? user : updatedUser));
+        await mutateUsers(nextUsers);
+        message.success('기사 정보 수정 완료');
+        closeModal();
+      } catch (err) {
+        message.error('기사 정보 수정 중 에러 발생, 개발자에게 문의하세요.');
+        console.error(err);
+      }
+      setSubmitLoading(false);
+    },
+    [prevUser, users],
+  );
 
   return (
     <Form

@@ -1,0 +1,66 @@
+import { MouseEventHandler, FC, useCallback, useState } from 'react';
+import { Button, message, Modal } from 'antd';
+import type { Work } from '@typings';
+import type { EndPoint } from '@typings';
+import httpClient from '@utils/axios';
+import useSWRImmutable from 'swr/immutable';
+import { MyWorks } from '@components/User/WorkCarousel';
+import { axiosFetcher } from '@utils/swr';
+
+type Props = {
+  workId: Work['id'];
+  isWorkChecked: boolean;
+};
+type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
+
+const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
+  const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const deleteWork = useCallback(async () => {
+    if (!isWorkChecked) {
+      message.warn('확인 처리되지 않은 업무는 완료할 수 없어요.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const patchedWork = await httpClient.patch<PatchedWork>(`/works/${workId}?state=done`).then((res) => res.data);
+      const nextWorks = works?.map((work) => (work.id !== patchedWork.id ? work : patchedWork));
+      setLoading(false);
+      await mutateWorks(nextWorks);
+      message.success('작업이 완료 처리 되었어요. 고생하셨습니다 :)');
+    } catch (err) {
+      setLoading(false);
+      message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.');
+      console.error(err);
+    }
+  }, [works, workId]);
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
+
+  const handleButtonClick: MouseEventHandler<HTMLElement> = useCallback(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  return (
+    <>
+      <Button type={isWorkChecked ? 'primary' : 'ghost'} disabled={!isWorkChecked} onClick={handleButtonClick} block>
+        완료
+      </Button>
+      <Modal
+        title="작업을 완료하셨나요?"
+        visible={isModalOpen}
+        onOk={deleteWork}
+        onCancel={closeModal}
+        okText="완료"
+        cancelText="취소"
+        confirmLoading={loading}
+      />
+    </>
+  );
+};
+
+export default DoneButton;

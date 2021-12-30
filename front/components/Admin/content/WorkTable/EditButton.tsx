@@ -17,7 +17,7 @@ const EditButton = ({ record }: Props) => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     form.resetFields();
-  }, []);
+  }, [form]);
 
   const handleEditIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
     setIsModalOpen(true);

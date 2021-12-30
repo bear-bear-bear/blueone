@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import _ from 'lodash';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
@@ -37,27 +36,30 @@ const validateMessages = {
 const WorkEditForm = ({ form, prevWork, setSubmitLoading, closeModal }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>('/works', axiosFetcher);
 
-  const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(async (values) => {
-    const reqBody: RequestBody = {
-      ...values,
-      waypoint: values.waypoint ?? null,
-      UserId: values.UserId ?? null,
-      remark: values.remark ?? null,
-    };
+  const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(
+    async (values) => {
+      const reqBody: RequestBody = {
+        ...values,
+        waypoint: values.waypoint ?? null,
+        UserId: values.UserId ?? null,
+        remark: values.remark ?? null,
+      };
 
-    setSubmitLoading(true);
-    try {
-      const updatedWork = await httpClient.put<Response>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
-      const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
-      await mutateWorks(nextWorks);
-      message.success('작업 수정 완료');
-      closeModal();
-    } catch (err) {
-      message.error('작업 수정 중 에러 발생, 개발자에게 문의하세요.');
-      console.error(err);
-    }
-    setSubmitLoading(false);
-  }, []);
+      setSubmitLoading(true);
+      try {
+        const updatedWork = await httpClient.put<Response>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
+        const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
+        await mutateWorks(nextWorks);
+        message.success('작업 수정 완료');
+        closeModal();
+      } catch (err) {
+        message.error('작업 수정 중 에러 발생, 개발자에게 문의하세요.');
+        console.error(err);
+      }
+      setSubmitLoading(false);
+    },
+    [works, prevWork, httpClient],
+  );
 
   return (
     <Form

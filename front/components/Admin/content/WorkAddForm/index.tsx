@@ -33,23 +33,26 @@ const validateMessages = {
 const WorkAddForm = () => {
   const [form] = Form.useForm<Fields>();
 
-  const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(async (values) => {
-    const reqBody: RequestBody = {
-      ...values,
-      waypoint: values.waypoint ?? null,
-      UserId: values.UserId ?? null,
-      remark: values.remark ?? null,
-    };
+  const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(
+    async (values) => {
+      const reqBody: RequestBody = {
+        ...values,
+        waypoint: values.waypoint ?? null,
+        UserId: values.UserId ?? null,
+        remark: values.remark ?? null,
+      };
 
-    try {
-      await httpClient.post<Response>('/works', reqBody);
-      message.success('작업 추가 완료');
-      form.resetFields();
-    } catch (err) {
-      message.error('작업 추가 중 에러 발생, 개발자에게 문의하세요.');
-      console.error(err);
-    }
-  }, []);
+      try {
+        await httpClient.post<Response>('/works', reqBody);
+        message.success('작업 추가 완료');
+        form.resetFields();
+      } catch (err) {
+        message.error('작업 추가 중 에러 발생, 개발자에게 문의하세요.');
+        console.error(err);
+      }
+    },
+    [form],
+  );
 
   return (
     <S.FormWrapper>
