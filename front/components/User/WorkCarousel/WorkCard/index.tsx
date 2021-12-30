@@ -2,8 +2,9 @@ import { FC } from 'react';
 import { Button, Card } from 'antd';
 import { MdAttachMoney } from 'react-icons/md';
 import type { Unpacked } from '@typings';
-import type { MyWorks } from './index';
-import * as S from './styles';
+import type { MyWorks } from '../index';
+import * as S from '../styles';
+import CheckButton from '@components/User/WorkCarousel/WorkCard/CheckButton';
 
 type MyWork = Unpacked<MyWorks>;
 type Props = {
@@ -23,9 +24,7 @@ const WorkCard = ({ work }: Props) => {
   return (
     <S.StyledCard
       actions={[
-        <Button type={work.checkTime ? 'ghost' : 'primary'} disabled={!!work.checkTime} block>
-          확인
-        </Button>,
+        <CheckButton isWorkChecked={!!work.checkTime} workId={work.id} />,
         <Button type={work.checkTime ? 'primary' : 'ghost'} disabled={!work.checkTime} block>
           완료
         </Button>,

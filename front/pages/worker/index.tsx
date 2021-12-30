@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import useUser from '@hooks/useUser';
-import { useEffect } from 'react';
 import UserLayout from '@components/User/Layout';
 import WorkCarousel from '@components/User/WorkCarousel';
 import 'antd/dist/antd.dark.css';

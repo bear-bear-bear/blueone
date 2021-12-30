@@ -92,14 +92,14 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'processedCheckTime',
     key: 'processedCheckTime',
     align: 'center',
-    width: 60,
+    width: 90,
   },
   {
     title: '완료',
     dataIndex: 'processedEndTime',
     key: 'processedEndTime',
     align: 'center',
-    width: 60,
+    width: 90,
   },
   {
     title: '',

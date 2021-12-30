@@ -38,9 +38,7 @@ const Remark = ({ work }: { work: ProcessedWork }) => (
 const WorkTable = () => {
   const TODAY = new Date().setHours(0, 0, 0, 0);
   const { data: works } = useSWR<FullWorks>('/works', axiosFetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnMount: true,
+    refreshInterval: 30 * 1000,
   });
 
   const dataSource: ProcessedWork[] | undefined = useMemo(() => {
