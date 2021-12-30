@@ -102,6 +102,14 @@ export interface EndPoint {
    * 비밀번호 수정
    */
   'PATCH /user/password': undefined;
+  /**
+   * 활성화된 내 작업 리스트 가져오기
+   */
+  'GET /user/works': {
+    responses: {
+      200: Work[];
+    };
+  };
 
   /**
    * 유저 리스트 가져오기
@@ -139,7 +147,7 @@ export interface EndPoint {
   /**
    * 유저 가져오기
    */
-  'GET /users/{UserId}': {
+  'GET /users/{userId}': {
     responses: {
       200: User & {
         UserInfo: UserInfo;
@@ -151,7 +159,7 @@ export interface EndPoint {
   /**
    * 유저 수정
    */
-  'PUT /users/{UserId}': {
+  'PUT /users/{userId}': {
     requestBody: Pick<User, 'phoneNumber'> &
       Pick<
         UserInfo,
@@ -173,7 +181,7 @@ export interface EndPoint {
   /**
    * 유저 삭제
    */
-  'DELETE /users/{UserId}': {
+  'DELETE /users/{userId}': {
     responses: {
       200: User;
       404: ErrorMessage;
@@ -182,7 +190,11 @@ export interface EndPoint {
   /**
    * 활성화된 유저 작업 가져오기
    */
-  'GET /users/works': undefined;
+  'GET /users/{userId}/works': {
+    responses: {
+      200: Work[];
+    };
+  };
 
   /**
    * 활성화된 작업 리스트 가져오기
