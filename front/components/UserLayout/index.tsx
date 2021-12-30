@@ -1,50 +1,69 @@
-import type { FC } from 'react';
+import { useMemo, FC, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { CarOutlined, NotificationOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  AiFillCar,
+  AiFillNotification,
+  AiFillSetting,
+  AiOutlineCar,
+  AiOutlineNotification,
+  AiOutlineSetting,
+} from 'react-icons/ai';
 import * as S from './styles';
 import 'antd/dist/antd.dark.css';
-import { useMemo } from 'react';
 
-const navItems = [
+type NavItem = {
+  href: `/${string}`;
+  outlineIcon: ReactNode;
+  fillIcon: ReactNode;
+  text: string;
+};
+const navItems: NavItem[] = [
   {
     href: '/worker',
-    icon: <CarOutlined style={{ fontSize: 20 }} />,
+    outlineIcon: <AiOutlineCar size={20} />,
+    fillIcon: <AiFillCar size={20} />,
     text: '업무',
   },
   {
     href: '/worker/notice',
-    icon: <NotificationOutlined style={{ fontSize: 20 }} />,
+    outlineIcon: <AiOutlineNotification size={20} />,
+    fillIcon: <AiFillNotification size={20} />,
     text: '공지사항',
   },
   {
     href: '/worker/setting',
-    icon: <SettingOutlined style={{ fontSize: 20 }} />,
+    outlineIcon: <AiOutlineSetting size={20} />,
+    fillIcon: <AiFillSetting size={20} />,
     text: '설정',
   },
 ];
 
+const ActiveLink: FC<{ active: boolean; item: NavItem }> = ({ item, active }) => (
+  <Link href={item.href} key={item.href} passHref>
+    <S.ActiveAnchor active={active}>
+      {active ? item.fillIcon : item.outlineIcon}
+      <p>{item.text}</p>
+    </S.ActiveAnchor>
+  </Link>
+);
+
 const UserLayout: FC = ({ children }) => {
   const router = useRouter();
 
-  const currHeader = useMemo(() => navItems.find((item) => item.href === router.asPath)!.text, [router.asPath]);
+  const headerText = useMemo(() => navItems.find((item) => item.href === router.asPath)!.text, [router.asPath]);
 
   return (
     <S.CenterLayout>
       <S.Box>
-        <S.BoxHeader>{currHeader}</S.BoxHeader>
+        <S.BoxHeader>
+          <h1>{headerText}</h1>
+        </S.BoxHeader>
         <S.BoxMain>{children}</S.BoxMain>
         <S.BoxFooter>
           <nav>
             {navItems.map((item) => (
-              <Link href={item.href} key={item.href}>
-                <a>
-                  <div>
-                    {item.icon}
-                    <p>{item.text}</p>
-                  </div>
-                </a>
-              </Link>
+              <ActiveLink item={item} active={item.href === router.asPath} />
             ))}
           </nav>
         </S.BoxFooter>

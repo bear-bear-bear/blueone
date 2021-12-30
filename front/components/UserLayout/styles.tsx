@@ -9,7 +9,7 @@ export const CenterLayout = styled.section`
   align-items: center;
 `;
 
-const BOX_ITEM_PADDING = '0.66rem 1.66rem';
+const BOX_ITEM_PADDING = '0.66rem 1rem';
 
 export const Box = styled.section`
   width: 100%;
@@ -35,6 +35,7 @@ export const BoxHeader = styled.header`
 
   h1 {
     font-size: 1.1rem;
+    font-weight: 300;
   }
 `;
 
@@ -49,20 +50,19 @@ export const BoxFooter = styled.footer`
     justify-content: space-between;
     padding: ${BOX_ITEM_PADDING};
     background-color: #000;
+  }
+`;
 
-    a {
-      color: #fafafa;
+export const ActiveAnchor = styled.a<{ active: boolean }>`
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.33rem;
+  color: ${({ active }) => (active ? '#fff' : '#aaa')} !important;
 
-      div {
-        display: flex;
-        flex-direction: column;
-        gap: 0.33rem;
-
-        p {
-          font-size: 10px;
-          font-weight: 100;
-        }
-      }
-    }
+  p {
+    font-size: 10px;
+    font-weight: 100;
   }
 `;
