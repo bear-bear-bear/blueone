@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import useSWR from 'swr';
 import { Card, Carousel, Empty, message } from 'antd';
 import { Global } from '@emotion/react';
@@ -26,6 +26,18 @@ const WorkCarousel = () => {
     refreshInterval: 60 * 1000,
   });
   const prevWorkCount = useRef<number | undefined>(myWorks?.length);
+  const localStorage = useMemo(
+    () =>
+      typeof window !== 'undefined'
+        ? window.localStorage
+        : {
+            setItem() {},
+            getItem() {
+              return '0';
+            },
+          },
+    [typeof window],
+  );
   const initialSlide = Number(localStorage.getItem('currSlide'));
 
   const afterChange: Settings['afterChange'] = useCallback((currSlide) => {
@@ -58,7 +70,7 @@ const WorkCarousel = () => {
         afterChange={afterChange}
       >
         {myWorks.map((work) => (
-          <WorkCard work={work} />
+          <WorkCard work={work} key={work.id} />
         ))}
       </Carousel>
     </>

@@ -40,7 +40,7 @@ const navItems: NavItem[] = [
 ];
 
 const ActiveLink: FC<{ active: boolean; item: NavItem }> = ({ item, active }) => (
-  <Link href={item.href} key={item.href} passHref>
+  <Link href={item.href} passHref>
     <S.ActiveAnchor active={active}>
       {active ? item.fillIcon : item.outlineIcon}
       <p>{item.text}</p>
@@ -63,7 +63,7 @@ const UserLayout: FC = ({ children }) => {
         <S.BoxFooter>
           <nav>
             {navItems.map((item) => (
-              <ActiveLink item={item} active={item.href === router.asPath} />
+              <ActiveLink key={item.href} item={item} active={item.href === router.asPath} />
             ))}
           </nav>
         </S.BoxFooter>
