@@ -7,7 +7,7 @@ import UserSelecter from './UserSelecter';
 import * as S from './styles';
 
 type RequestBody = EndPoint['POST /works']['requestBody'];
-type Response = EndPoint['POST /works']['responses']['200'];
+type Response = EndPoint['POST /works']['responses']['201'];
 export type Fields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
   UserId?: RequestBody['UserId'];
   waypoint?: RequestBody['waypoint'];

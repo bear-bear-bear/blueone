@@ -197,7 +197,7 @@ export interface EndPoint {
   };
 
   /**
-   * 활성화된 작업 리스트 가져오기
+   * 일주일 이내의 작업 리스트 가져오기
    */
   'GET /works': {
     responses: {
@@ -217,9 +217,10 @@ export interface EndPoint {
       'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
     >;
     responses: {
-      200: Work & {
+      201: Work & {
         UserId: null;
       };
+      400: ErrorMessage;
     };
   };
   /**
@@ -241,13 +242,20 @@ export interface EndPoint {
   /**
    * 작업 상태 수정
    */
-  'PATCH /works/{workId}': undefined;
+  'PATCH /works/{workId}': {
+    responses: {
+      200: Work;
+      403: ErrorMessage;
+      404: ErrorMessage;
+    };
+  };
   /**
    * 작업 삭제
    */
   'DELETE /works/{workId}': {
     responses: {
       200: Work;
+      404: ErrorMessage;
     };
   };
 
