@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Card } from 'antd';
+import { css } from '@emotion/react';
 
 export const StyleCustomWrapper = styled.div`
   .ant-list-header {
@@ -25,6 +26,21 @@ export const StyleCustomWrapper = styled.div`
       color: #fafafa;
       font-weight: 300;
       font-size: 15px;
+    }
+  }
+`;
+
+export const formCustomStyles = css`
+  .pw-change-form__item {
+    margin-bottom: 12px;
+
+    .ant-form-item-label {
+      label {
+        font-size: 16px !important;
+      }
+    }
+
+    .ant-form-item-control {
     }
   }
 `;

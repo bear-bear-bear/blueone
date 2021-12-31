@@ -31,6 +31,8 @@ const PasswordChangeButton: FC = () => {
         onCancel={closeModal}
         okText="변경하기"
         cancelText="취소"
+        okButtonProps={{ size: 'large' }}
+        cancelButtonProps={{ size: 'large' }}
         confirmLoading={loading}
         style={{
           top: '50%',

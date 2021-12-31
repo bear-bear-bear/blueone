@@ -1,10 +1,12 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
+import { Global } from '@emotion/react';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
+import * as S from './styles';
 
 type User = EndPoint['GET /user']['responses']['200'];
 type RequestBody = EndPoint['POST /user/password']['requestBody'];
@@ -49,8 +51,9 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
 
   return (
     <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
-      <Form.Item name="password" label="새 비밀번호" rules={[{ required: true }]}>
-        <Input.Password autoComplete="off" />
+      <Global styles={S.formCustomStyles} />
+      <Form.Item name="password" label="새 비밀번호" rules={[{ required: true }]} className="pw-change-form__item">
+        <Input.Password autoComplete="off" size="large" />
       </Form.Item>
 
       <Form.Item
@@ -69,8 +72,9 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
             },
           }),
         ]}
+        className="pw-change-form__item"
       >
-        <Input.Password />
+        <Input.Password size="large" />
       </Form.Item>
     </Form>
   );
