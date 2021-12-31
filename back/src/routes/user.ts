@@ -80,17 +80,13 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 /**
  * 로그아웃
  */
-router.post('/logout', isLoggedIn, (req, res) => {
+router.post('/logout', isLoggedIn, (req, res, next) => {
   req.logout();
   req.session.destroy((err) => {
     console.error('세션 파괴 도중 에러 발생', err);
-    res.status(500).json({
-      message: 'Server error',
-    });
+    next(err);
   });
-  res.status(200).json({
-    message: '로그아웃 완료',
-  });
+  res.sendStatus(204);
 });
 
 /**
