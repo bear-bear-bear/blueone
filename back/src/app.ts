@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet());
   app.use(
     cors({
-      origin: ['http://3.35.133.211'],
+      origin: ['https://blueone.vercel.app'],
       credentials: true,
     }),
   );
@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
       cookie: {
         httpOnly: true,
         secure: true,
-        domain: '.example.com',
+        domain: '.blueone.vercel.app',
         maxAge: 14 * (24 * 60 * 60 * 1000),
       },
       store: new FileStore({}),
