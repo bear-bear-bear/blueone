@@ -47,6 +47,7 @@ if (process.env.NODE_ENV === 'production') {
         httpOnly: true,
         secure: true,
         maxAge: 14 * (24 * 60 * 60 * 1000),
+        domain: '/',
         sameSite: 'none',
       },
       store: new FileStore({}),
