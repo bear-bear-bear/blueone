@@ -3,8 +3,6 @@ import { List, Divider } from 'antd';
 
 const { Item } = List;
 export const StyledItem = styled(Item)`
-  cursor: pointer;
-
   :hover,
   :focus {
     background: #fafafa;
