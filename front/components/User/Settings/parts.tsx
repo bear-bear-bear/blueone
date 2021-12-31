@@ -19,7 +19,7 @@ export const SettingsHeader: FC<{ user: UserWithInfo }> = ({ user }) => (
   <S.StyledCard>
     <Card.Meta
       avatar={<Avatar icon={<UserOutlined />} size={45} style={{ backgroundColor: '#00598d' }} />}
-      title={user.UserInfo.realname}
+      title={user.UserInfo?.realname || 'Admin'}
       description={
         <>
           <PhoneOutlined style={{ transform: 'rotateY(180deg)', marginRight: '0.3rem' }} />
