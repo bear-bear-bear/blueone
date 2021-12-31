@@ -35,8 +35,8 @@ export const BoxHeader = styled.header`
   gap: 1rem;
 
   h1 {
-    font-size: 1.1rem;
-    font-weight: 300;
+    font-size: 1.33rem;
+    font-weight: 400;
     color: #fff;
   }
 `;
@@ -65,7 +65,8 @@ export const ActiveAnchor = styled.a<{ active: boolean }>`
   color: ${({ active }) => (active ? '#fff' : '#aaa')} !important;
 
   p {
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 100;
+    text-align: center;
   }
 `;

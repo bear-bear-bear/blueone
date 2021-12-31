@@ -24,6 +24,7 @@ export const StyleCustomWrapper = styled.div`
     * {
       color: #fafafa;
       font-weight: 300;
+      font-size: 15px;
     }
   }
 `;
@@ -40,12 +41,11 @@ export const StyledCard = styled(Card)`
 
   .ant-card-meta-title {
     color: #fafafa;
-    font-weight: 300;
+    font-size: 16px;
     margin-bottom: 0.2rem !important;
   }
 
   .ant-card-meta-description {
-    font-size: 0.9em;
     font-weight: 300;
     color: #ccc;
   }
@@ -54,7 +54,7 @@ export const StyledCard = styled(Card)`
 export const Footer = styled.footer`
   text-align: center;
   padding: 16px 0;
-  font-size: 0.8rem;
+  font-size: 14px;
   font-weight: 300;
   color: #888;
 `;

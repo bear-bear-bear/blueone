@@ -19,6 +19,7 @@ const { Paragraph } = Typography;
 const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ label, content, copyable = false }) => (
   <S.Row>
     <p>{label}:</p>
+
     {copyable ? (
       <Paragraph style={{ marginBottom: 0 }} copyable>
         {content}

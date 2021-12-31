@@ -35,6 +35,7 @@ const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
     <Button
       type={isWorkChecked ? 'ghost' : 'primary'}
       disabled={isWorkChecked}
+      size="large"
       onClick={handleClick}
       loading={loading}
       block

@@ -1,12 +1,21 @@
+import { Card, Empty } from 'antd';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Card, Empty } from 'antd';
+import media from '@utils/media';
 
 const CARD_MARGIN_TOP = '2rem';
 export const globalCSS = css`
   .ant-card-actions {
     li {
       margin: 0 !important;
+    }
+  }
+
+  .ant-card-body {
+    padding: 24px 12px;
+
+    ${media.sm} {
+      padding: 24px;
     }
   }
 
@@ -36,6 +45,8 @@ export const globalCSS = css`
 `;
 
 export const StyledCard = styled(Card)`
+  max-height: 70vh;
+  overflow-y: auto;
   margin-top: ${CARD_MARGIN_TOP};
   border: none;
 `;
@@ -45,7 +56,6 @@ export const StyledEmpty = styled(Empty)`
   top: 42%;
   transform: translateY(-50%);
   color: #fafafa;
-  fontweight: 300;
 `;
 
 export const WorkInfo = styled.div`
@@ -58,10 +68,11 @@ export const WorkInfo = styled.div`
 export const Row = styled.div`
   display: flex;
   gap: 0.66rem;
+  font-size: 16px;
 
   p:first-of-type {
     width: fit-content;
-    min-width: 3rem;
+    min-width: 4rem;
     text-align: right;
   }
 

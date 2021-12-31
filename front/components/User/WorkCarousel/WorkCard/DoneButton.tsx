@@ -47,7 +47,13 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
 
   return (
     <>
-      <Button type={isWorkChecked ? 'primary' : 'ghost'} disabled={!isWorkChecked} onClick={handleButtonClick} block>
+      <Button
+        type={isWorkChecked ? 'primary' : 'ghost'}
+        disabled={!isWorkChecked}
+        size="large"
+        onClick={handleButtonClick}
+        block
+      >
         완료
       </Button>
       <Modal

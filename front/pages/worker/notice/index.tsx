@@ -16,7 +16,8 @@ const TempEmpty = () => (
       top: '42%',
       transform: 'translateY(-50%)',
       color: '#fafafa',
-      fontWeight: 300,
+      fontWeight: 400,
+      fontSize: '16px',
     }}
   />
 );
