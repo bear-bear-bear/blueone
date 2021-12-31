@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { SWRConfig } from 'swr';
 import GlobalStyles from '@globalStyles/index';
@@ -12,6 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         errorRetryInterval: 5000,
       }}
     >
+      <Head>
+        <title>블루원</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <GlobalStyles />
       <Component {...pageProps} />
     </SWRConfig>
