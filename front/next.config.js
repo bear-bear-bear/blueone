@@ -1,12 +1,9 @@
-/** @type {import('next').NextConfig} */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+const withPlugins = require('next-compose-plugins');
 const withAntdLess = require('next-plugin-antd-less');
+const withPWA = require('next-pwa');
 
-const nextConfig = {};
-
-module.exports = withAntdLess({
-  modifyVars: { '@primary-color': '#0076BB' },
-  ...nextConfig,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -15,4 +12,24 @@ module.exports = withAntdLess({
 
     return config;
   },
-});
+};
+
+module.exports = withPlugins(
+  [
+    [
+      withPWA,
+      {
+        pwa: {
+          dest: 'public',
+        },
+      },
+    ],
+    [
+      withAntdLess,
+      {
+        modifyVars: { '@primary-color': '#0076BB' },
+      },
+    ],
+  ],
+  nextConfig,
+);

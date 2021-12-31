@@ -1,0 +1,17 @@
+{
+  "name": "블루원",
+  "short_name": "블루원",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0076bb",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon_fill.svg",
+      "sizes": "any",
+      "type": "image/svg",
+      "purpose": "any maskable"
+    }
+  ]
+}

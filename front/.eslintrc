@@ -58,6 +58,7 @@
     "object-curly-newline": "off", // 이상한 줄바꿈 규칙 off
     "no-nested-ternary": "warn", // 중첩 3항연산자 warn으로 변경
     "no-template-curly-in-string": "off", // antd form 지원
-    "implicit-arrow-linebreak": "off"
+    "implicit-arrow-linebreak": "off",
+    "linebreak-style": "off" // 이상한 에러 나는 규칙 off
   }
 }

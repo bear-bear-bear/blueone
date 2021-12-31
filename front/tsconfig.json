@@ -22,7 +22,8 @@
       "@pages/*": ["./pages/*"],
       "@utils/*": ["./utils/*"],
       "@globalStyles/*": ["./globalStyles/*"],
-      "@typings": ["./typings"]
+      "@typings": ["./typings"],
+      "@typings/*": ["./typings/*"]
     },
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
