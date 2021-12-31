@@ -4,7 +4,6 @@ import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import type { UserWithInfo } from '@components/User/Settings/index';
 import * as S from './styles';
-import LogoutButton from '@components/LogoutButton';
 
 export const SettingsSkeleton = () => (
   <div style={{ padding: '1.66rem 1rem' }}>
