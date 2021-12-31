@@ -86,6 +86,6 @@ app.use('/notice', noticeRouter);
 app.use(errorLogger);
 app.use(errorHandler);
 
-app.listen('80', () => {
-  console.log('🛡️  Server listening on port: 80 🛡️');
+app.listen('8001', () => {
+  console.log('🛡️  Server listening on port: 8001 🛡️');
 });
