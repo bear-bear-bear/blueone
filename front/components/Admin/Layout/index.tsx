@@ -47,21 +47,20 @@ const AdminLayout: FC = () => {
           selectedKeys={[selectedKey]} // MenuItem
           mode="inline"
         >
-          {/* <Menu.Item key="10">Option 2</Menu.Item> */}
-          <Menu.Divider style={{ backgroundColor: '#000810' }} />
+          <S.StyledMenuDevider />
           <SubMenu key="업무 관리" icon={<CarOutlined />} title="업무 관리">
             <Menu.Item key="업무 목록">업무 목록</Menu.Item>
             <Menu.Item key="업무 추가">업무 추가</Menu.Item>
           </SubMenu>
-          <Menu.Divider style={{ backgroundColor: '#000810' }} />
+          <S.StyledMenuDevider />
           <Menu.Item key="기사 관리" icon={<TeamOutlined />} title="기사 관리">
             기사 관리
           </Menu.Item>
-          <Menu.Divider style={{ backgroundColor: '#000810' }} />
+          <S.StyledMenuDevider />
           <Menu.Item key="공지사항" icon={<NotificationOutlined />} title="공지사항">
             공지사항
           </Menu.Item>
-          <Menu.Divider style={{ backgroundColor: '#000810' }} />
+          <S.StyledMenuDevider />
         </Menu>
       </Sider>
 
