@@ -18,11 +18,11 @@ export const SettingsSkeleton = () => (
 export const SettingsHeader: FC<{ user: UserWithInfo }> = ({ user }) => (
   <S.StyledCard>
     <Card.Meta
-      avatar={<Avatar icon={<UserOutlined />} size={45} style={{ backgroundColor: '#00598d' }} />}
-      title={user.UserInfo?.realname || 'Admin'}
+      avatar={<Avatar icon={<UserOutlined />} size={54} style={{ backgroundColor: '#00598d' }} />}
+      title={<p style={{ fontSize: '18px', marginTop: '2px' }}>{user.UserInfo?.realname || 'Admin'}</p>}
       description={
         <>
-          <PhoneOutlined style={{ transform: 'rotateY(180deg)', marginRight: '0.3rem' }} />
+          <PhoneOutlined style={{ transform: 'rotateY(180deg)', marginRight: '0.3rem', fontSize: '18px' }} />
           <span>{processPhoneNumber(user.phoneNumber)}</span>
         </>
       }

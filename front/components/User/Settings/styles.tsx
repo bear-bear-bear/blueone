@@ -25,7 +25,7 @@ export const StyleCustomWrapper = styled.div`
     * {
       color: #fafafa;
       font-weight: 300;
-      font-size: 15px;
+      font-size: 16px;
     }
   }
 `;
