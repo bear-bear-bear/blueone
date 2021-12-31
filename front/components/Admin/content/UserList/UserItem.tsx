@@ -47,7 +47,7 @@ const UserItem = (user: FullUser) => {
             ) : (
               <>
                 <span>{realname}</span>
-                &lt;
+                &nbsp;
                 <Tooltip title="보험 만료가 얼마 남지 않았습니다.">
                   <WarningOutlined style={{ color: '#eed202', verticalAlign: 'text-top' }} />
                 </Tooltip>
@@ -56,7 +56,7 @@ const UserItem = (user: FullUser) => {
           ) : (
             <>
               <span style={{ textDecoration: 'line-through' }}>{realname}</span>
-              &lt;
+              &nbsp;
               <Tooltip title="보험이 만료되었습니다.">
                 <WarningOutlined style={{ color: '#ff4d4f', verticalAlign: 'text-top' }} />
               </Tooltip>

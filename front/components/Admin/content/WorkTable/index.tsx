@@ -31,7 +31,7 @@ const processWorkDateTimes = (work: FullWork) => ({
 const Remark = ({ work }: { work: ProcessedWork }) => (
   <S.Remark>
     <span>비고:</span>
-    &lt;
+    &nbsp;
     {work.remark ?? '-'}
   </S.Remark>
 );
