@@ -97,7 +97,11 @@ export interface EndPoint {
   /**
    * 로그아웃
    */
-  'POST /user/logout': undefined;
+  'POST /user/logout': {
+    responses: {
+      204: void;
+    };
+  };
   /**
    * 비밀번호 수정
    */

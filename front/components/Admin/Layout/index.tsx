@@ -4,7 +4,9 @@ import { Layout, Empty, Menu, MenuProps } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
 import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/icons';
 import contentList, { ContentTitle } from '@components/Admin/content';
+import LogoutButton from '@components/LogoutButton';
 import * as S from './styles';
+import { StyledHeader } from './styles';
 
 const { Header, Content: Main, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -65,7 +67,10 @@ const AdminLayout: FC = () => {
       </Sider>
 
       <Layout className="site-layout">
-        <Header style={{ color: 'white', padding: '0 16px' }}>{selectedKey}</Header>
+        <S.StyledHeader>
+          {selectedKey}
+          <LogoutButton style={{ color: 'white' }} />
+        </S.StyledHeader>
 
         <Main style={{ margin: '16px', overflow: 'auto' }}>
           {SelectedContent ? <SelectedContent /> : <EmptyContent />}

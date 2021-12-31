@@ -1,5 +1,13 @@
 import styled from '@emotion/styled';
-import { Menu } from 'antd';
+import { Menu, Layout } from 'antd';
+
+export const StyledHeader = styled(Layout.Header)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  color: #fff;
+`;
 
 export const StyledMenuDevider = styled(Menu.Divider)`
   background-color: #000810 !important;
