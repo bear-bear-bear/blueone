@@ -46,7 +46,6 @@ if (process.env.NODE_ENV === 'production') {
       cookie: {
         httpOnly: true,
         secure: true,
-        domain: 'blueone.vercel.app',
         maxAge: 14 * (24 * 60 * 60 * 1000),
         sameSite: 'none',
       },
