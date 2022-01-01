@@ -26,6 +26,15 @@ db.sequelize
 
 const app = express();
 
+app.use('*', function (req, res, next) {
+  //replace localhost:8080 to the ip address:port of your server
+  res.header('Access-Control-Allow-Origin', 'https://blueone.vercel.app');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1);
   app.use(morgan('combined'));
