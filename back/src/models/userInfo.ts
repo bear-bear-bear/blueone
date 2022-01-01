@@ -27,25 +27,25 @@ class UserInfo extends Model {
 UserInfo.init(
   {
     realname: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     residentRegistrationNumber: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(255),
       validate: identificationNumberValidate,
       allowNull: false,
     },
     licenseNumber: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(255),
       validate: identificationNumberValidate,
       allowNull: false,
     },
     licenseType: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     insuranceNumber: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(255),
       validate: identificationNumberValidate,
       allowNull: false,
     },
