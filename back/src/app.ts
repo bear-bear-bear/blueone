@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet());
   app.use(
     cors({
-      origin: ['https://blueone.vercel.app'],
+      origin: 'https://blueone.vercel.app',
       credentials: true,
     }),
   );

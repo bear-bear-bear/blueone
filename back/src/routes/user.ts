@@ -45,6 +45,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (serverError, user, clientError) => {
     if (serverError) {
+      console.error('serverError', serverError);
       next(serverError);
       return;
     }
@@ -56,6 +57,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 
     return req.login(user, async (loginError) => {
       if (loginError) {
+        console.error('loginError', loginError);
         return next(loginError);
       }
       const fullUser = await User.findOne({
