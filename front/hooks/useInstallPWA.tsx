@@ -6,16 +6,25 @@ import type { BeforeInstallPromptEvent } from '@typings/window';
 const MOBILE_REGEX = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
 
 export default function useInstallPWA() {
-  const [buttonVisible, setButtonVisible] = useState<boolean>(false);
+  const [buttonVisible, setButtonVisible] = useState<boolean>(true);
   const deferredInstallPrompt = useRef<BeforeInstallPromptEvent | null>(null);
 
-  const prepareInstall = useCallback((e: BeforeInstallPromptEvent) => {
-    deferredInstallPrompt.current = e;
-    setButtonVisible(true);
-  }, []);
+  const prepareInstall = useCallback(
+    (e: BeforeInstallPromptEvent) => {
+      console.log('prepare');
+      deferredInstallPrompt.current = e;
+      if (typeof navigator !== 'undefined' && MOBILE_REGEX.test(navigator.userAgent)) {
+        setButtonVisible(true); // 모바일에서만 버튼 visible
+      }
+      console.log('abc', typeof navigator !== 'undefined' && MOBILE_REGEX.test(navigator.userAgent));
+    },
+    [typeof navigator, deferredInstallPrompt.current],
+  );
 
   const installPWA = useCallback(async () => {
+    console.log('installPWA ?');
     if (!deferredInstallPrompt.current) return;
+    console.log('installPWA');
     const { prompt, userChoice } = deferredInstallPrompt.current;
     try {
       await prompt();
@@ -26,14 +35,13 @@ export default function useInstallPWA() {
       console.error(err);
       message.error('저장 중 에러가 발생했어요.');
     }
-  }, []);
+  }, [deferredInstallPrompt.current]);
 
   useEffect(() => {
-    if (MOBILE_REGEX.test(navigator.userAgent)) {
-      setButtonVisible(true);
-    }
-
-    window.addEventListener('beforeinstallprompt', prepareInstall);
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('되긴함?');
+      prepareInstall(e);
+    });
     return () => {
       window.removeEventListener('beforeinstallprompt', prepareInstall);
     };
@@ -47,7 +55,6 @@ export default function useInstallPWA() {
         position: 'absolute',
         bottom: '1.33rem',
         right: '1.33rem',
-        display: buttonVisible ? 'block' : 'none',
       }}
       shape="circle"
       size="large"
