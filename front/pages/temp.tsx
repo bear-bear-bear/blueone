@@ -14,7 +14,7 @@ const TempPage = () => {
       await httpClient.post<Response>('/user/admin', { phoneNumber });
       message.success('추가 완료');
     } catch (err) {
-      message.error('수정 중 에러 발생, 개발자에게 문의하세요.');
+      message.error('에러 발생');
       console.error(err);
     }
   }, []);
@@ -22,7 +22,7 @@ const TempPage = () => {
   return (
     <div style={{ width: '1000px' }}>
       <Form onFinish={onFormFinish} {...layout}>
-        <Form.Item name="phoneNumber" label="비밀번호" rules={[{ required: true }]}>
+        <Form.Item name="phoneNumber" label="전번" rules={[{ required: true }]}>
           <Input autoComplete="off" />
         </Form.Item>
         <Button type="primary" htmlType="submit">
