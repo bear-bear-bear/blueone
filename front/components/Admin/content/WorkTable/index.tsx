@@ -49,7 +49,7 @@ const WorkTable = () => {
       ...work,
       ...processWorkDateTimes(work),
       payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
-      realname: work.User?.UserInfo.realname,
+      realname: work.User?.UserInfo?.realname,
       isDone: work.endTime !== null || +new Date(work.createdAt) < TODAY,
     }));
   }, [works, TODAY]);

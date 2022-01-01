@@ -6,9 +6,8 @@ import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/ico
 import contentList, { ContentTitle } from '@components/Admin/content';
 import LogoutButton from '@components/LogoutButton';
 import * as S from './styles';
-import { StyledHeader } from './styles';
 
-const { Header, Content: Main, Footer, Sider } = Layout;
+const { Content: Main, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const EmptyContent = () => (

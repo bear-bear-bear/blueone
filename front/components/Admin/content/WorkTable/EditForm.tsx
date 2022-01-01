@@ -93,12 +93,7 @@ const WorkEditForm = ({ form, prevWork, setSubmitLoading, closeModal }: Props) =
       >
         <InputNumber autoComplete="off" />
       </Form.Item>
-      <Form.Item
-        name="subsidy"
-        label="지원지수"
-        tooltip="단위: 1000"
-        rules={[{ type: 'number', min: 0, required: true }]}
-      >
+      <Form.Item name="subsidy" label="지원지수" tooltip="단위: 1000" rules={[{ type: 'number', min: 0 }]}>
         <InputNumber autoComplete="off" />
       </Form.Item>
       <Form.Item name="remark" label="비고">

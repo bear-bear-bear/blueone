@@ -29,7 +29,7 @@ const validateMessages: FormProps<UpdateRequestBody>['validateMessages'] = {
   },
 };
 
-const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) => {
+const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) => {
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
   const {
     phoneNumber,
@@ -96,7 +96,7 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="residentRegistrationNumber"
         label="주민등록번호"
-        rules={[{ required: true, pattern: /[\d-]+/ }]}
+        rules={[{ required: true }, { pattern: /[-\d]+/ }]}
         tooltip="ex) 800101-1000000"
       >
         <Input autoComplete="off" />
@@ -107,7 +107,7 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="licenseNumber"
         label="면허 번호"
-        rules={[{ required: true, pattern: /[\d-]+/ }]}
+        rules={[{ required: true }, { pattern: /[-\d]+/ }]}
         tooltip="ex) 12-000000-34"
       >
         <Input autoComplete="off" />
@@ -115,7 +115,7 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="insuranceNumber"
         label="보험 번호"
-        rules={[{ required: true, pattern: /[\d-]+/ }]}
+        rules={[{ required: true }, { pattern: /[-\d]+/ }]}
         tooltip="ex) 1-1234-0000000-000"
       >
         <Input autoComplete="off" />
@@ -127,4 +127,4 @@ const WorkEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
   );
 };
 
-export default WorkEditForm;
+export default UserEditForm;
