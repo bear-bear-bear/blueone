@@ -2,6 +2,7 @@ import { Button, Form, FormProps, Input, message } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
 import { useCallback } from 'react';
 import httpClient from '@utils/axios';
+import LogoutButton from '@components/LogoutButton';
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 4 },
@@ -29,6 +30,7 @@ const TempPage = () => {
           제출
         </Button>
       </Form>
+      <LogoutButton />
     </div>
   );
 };

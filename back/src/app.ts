@@ -26,14 +26,6 @@ db.sequelize
 
 const app = express();
 
-app.use('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'https://blueone.vercel.app:443');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-});
-
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1);
   app.use(morgan('combined'));

@@ -85,10 +85,12 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 router.post('/logout', isLoggedIn, (req, res, next) => {
   req.logout();
   req.session.destroy((err) => {
-    console.error('세션 파괴 도중 에러 발생', err);
-    next(err);
+    if (err) {
+      console.error(err);
+    }
+    res.clearCookie('connect.sid');
+    res.sendStatus(204);
   });
-  res.sendStatus(204);
 });
 
 /**
