@@ -4,6 +4,7 @@ import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
+import regex from '@utils/regex';
 import type { EndPoint } from '@typings';
 import type { FullUser } from './index';
 import type { UpdateRequestBody } from './EditButton';
@@ -85,7 +86,7 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="phoneNumber"
         label="전화번호"
-        rules={[{ required: true, pattern: /\d+/ }]}
+        rules={[{ required: true, pattern: regex.phoneNumber }]}
         tooltip="ex) 01012340000"
       >
         <Input autoComplete="off" />
@@ -96,7 +97,7 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="residentRegistrationNumber"
         label="주민등록번호"
-        rules={[{ required: true }, { pattern: /[-\d]+/ }]}
+        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
         tooltip="ex) 800101-1000000"
       >
         <Input autoComplete="off" />
@@ -107,7 +108,7 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="licenseNumber"
         label="면허 번호"
-        rules={[{ required: true }, { pattern: /[-\d]+/ }]}
+        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
         tooltip="ex) 12-000000-34"
       >
         <Input autoComplete="off" />
@@ -115,7 +116,7 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="insuranceNumber"
         label="보험 번호"
-        rules={[{ required: true }, { pattern: /[-\d]+/ }]}
+        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
         tooltip="ex) 1-1234-0000000-000"
       >
         <Input autoComplete="off" />
