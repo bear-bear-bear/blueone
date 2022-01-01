@@ -82,11 +82,11 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 /**
  * 로그아웃
  */
-router.post('/logout', isLoggedIn, (req, res, next) => {
+router.post('/logout', (req, res) => {
   req.logout();
   req.session.destroy((err) => {
     if (err) {
-      console.error(err);
+      console.error('세션 파괴 중 에러', err);
     }
     res.clearCookie('connect.sid');
     res.sendStatus(204);
