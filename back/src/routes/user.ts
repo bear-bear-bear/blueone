@@ -82,7 +82,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 /**
  * 로그아웃
  */
-router.post('/logout', (req, res) => {
+router.post('/logout', isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy((err) => {
     if (err) {
