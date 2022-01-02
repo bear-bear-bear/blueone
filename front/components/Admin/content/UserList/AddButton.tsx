@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, Modal } from 'antd';
+import { Button, Form, FormProps, Modal } from 'antd';
 import type { EndPoint } from '@typings';
 import AddForm from './AddForm';
 
@@ -9,10 +9,12 @@ const AddButton = () => {
   const [form] = Form.useForm<CreateRequestBody>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     form.resetFields();
+    setFormValidateTrigger('onFinish');
   }, [form]);
 
   const handleAddIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
@@ -33,7 +35,13 @@ const AddButton = () => {
         cancelText="취소"
         confirmLoading={submitLoading}
       >
-        <AddForm form={form} closeModal={closeModal} setSubmitLoading={setSubmitLoading} />
+        <AddForm
+          form={form}
+          validateTrigger={formValidateTrigger}
+          setValidateTrigger={setFormValidateTrigger}
+          closeModal={closeModal}
+          setSubmitLoading={setSubmitLoading}
+        />
       </Modal>
     </>
   );

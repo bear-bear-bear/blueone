@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
@@ -11,6 +11,8 @@ import type { UpdateRequestBody } from './EditButton';
 
 type Props = {
   form: FormInstance<UpdateRequestBody>;
+  validateTrigger: FormProps['validateTrigger'];
+  setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevUser: FullUser;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
@@ -30,8 +32,9 @@ const validateMessages: FormProps<UpdateRequestBody>['validateMessages'] = {
   },
 };
 
-const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) => {
+const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, setSubmitLoading, closeModal }: Props) => {
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
+
   const {
     phoneNumber,
     UserInfo: { realname, dateOfBirth, licenseNumber, licenseType, insuranceNumber, insuranceExpirationDate },
@@ -67,11 +70,17 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
     [prevUser, users, closeModal, mutateUsers, setSubmitLoading],
   );
 
+  const onFormFinishFailed = useCallback(() => {
+    setValidateTrigger(['onFinish', 'onChange']);
+  }, [setValidateTrigger]);
+
   return (
     <Form
       form={form}
       initialValues={formInitialValues}
       onFinish={onFormFinish}
+      onFinishFailed={onFormFinishFailed}
+      validateTrigger={validateTrigger}
       validateMessages={validateMessages}
       size="middle"
       {...layout}
@@ -89,7 +98,7 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       </Form.Item>
       <Form.Item
         name="dateOfBirth"
-        label="주민등록번호"
+        label="생년월일"
         rules={[{ required: true }, { pattern: regex.dateOfBirth }]}
         tooltip="ex) 800101"
       >
@@ -101,7 +110,7 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="licenseNumber"
         label="면허 번호"
-        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
+        rules={[{ required: true }, { pattern: regex.licenseNumber }]}
         tooltip="ex) 12-000000-34"
       >
         <Input autoComplete="off" />
@@ -109,7 +118,7 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
       <Form.Item
         name="insuranceNumber"
         label="보험 번호"
-        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
+        rules={[{ required: true }, { pattern: regex.insuranceNumber }]}
         tooltip="ex) 1-1234-0000000-000"
       >
         <Input autoComplete="off" />

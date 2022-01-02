@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, Modal, Tooltip } from 'antd';
+import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import type { Fields } from '@components/Admin/content/WorkAddForm';
 import EditForm from './EditForm';
@@ -13,10 +13,12 @@ const EditButton = ({ record }: Props) => {
   const [form] = Form.useForm<Fields>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     form.resetFields();
+    setFormValidateTrigger('onFinish');
   }, [form]);
 
   const handleEditIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
@@ -37,7 +39,14 @@ const EditButton = ({ record }: Props) => {
         cancelText="취소"
         confirmLoading={submitLoading}
       >
-        <EditForm form={form} prevWork={record} closeModal={closeModal} setSubmitLoading={setSubmitLoading} />
+        <EditForm
+          form={form}
+          validateTrigger={formValidateTrigger}
+          setValidateTrigger={setFormValidateTrigger}
+          prevWork={record}
+          closeModal={closeModal}
+          setSubmitLoading={setSubmitLoading}
+        />
       </Modal>
     </>
   );

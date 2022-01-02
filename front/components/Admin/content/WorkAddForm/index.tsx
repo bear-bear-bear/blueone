@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, message } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@utils/axios';
@@ -32,6 +32,7 @@ const validateMessages = {
 
 const WorkAddForm = () => {
   const [form] = Form.useForm<Fields>();
+  const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
   const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(
     async (values) => {
@@ -54,9 +55,21 @@ const WorkAddForm = () => {
     [form],
   );
 
+  const onFormFinishFailed = useCallback(() => {
+    setValidateTrigger(['onFinish', 'onChange']);
+  }, [setValidateTrigger]);
+
   return (
     <S.FormWrapper>
-      <Form {...layout} form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle">
+      <Form
+        {...layout}
+        form={form}
+        onFinish={onFormFinish}
+        onFinishFailed={onFormFinishFailed}
+        validateTrigger={validateTrigger}
+        validateMessages={validateMessages}
+        size="middle"
+      >
         <Form.Item name="UserId" label="기사" tooltip="나중에 추가할 수도 있습니다.">
           <UserSelecter form={form} />
         </Form.Item>

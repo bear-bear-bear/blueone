@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
@@ -11,6 +11,8 @@ import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
   form: FormInstance<Fields>;
+  validateTrigger: FormProps['validateTrigger'];
+  setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork: ProcessedWork;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
@@ -33,7 +35,7 @@ const validateMessages = {
   },
 };
 
-const WorkEditForm = ({ form, prevWork, setSubmitLoading, closeModal }: Props) => {
+const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>('/works', axiosFetcher);
 
   const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(
@@ -61,11 +63,17 @@ const WorkEditForm = ({ form, prevWork, setSubmitLoading, closeModal }: Props) =
     [works, prevWork, closeModal, mutateWorks, setSubmitLoading],
   );
 
+  const onFormFinishFailed = useCallback(() => {
+    setValidateTrigger(['onFinish', 'onChange']);
+  }, [setValidateTrigger]);
+
   return (
     <Form
       form={form}
       initialValues={prevWork}
       onFinish={onFormFinish}
+      onFinishFailed={onFormFinishFailed}
+      validateTrigger={validateTrigger}
       validateMessages={validateMessages}
       size="middle"
       {...layout}

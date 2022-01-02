@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Input, Form, Button, FormProps, message } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
@@ -16,6 +17,7 @@ const layout: { [ColName: string]: ColProps } = {
 
 const LoginForm = () => {
   const router = useRouter();
+  const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
   const onFinish: FormProps<RequestBody>['onFinish'] = async (values) => {
     try {
@@ -37,8 +39,20 @@ const LoginForm = () => {
     }
   };
 
+  const onFinishFailed = useCallback(() => {
+    setValidateTrigger(['onFinish', 'onChange']);
+  }, [setValidateTrigger]);
+
   return (
-    <Form name="login-form" initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off" {...layout}>
+    <Form
+      name="login-form"
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      validateTrigger={validateTrigger}
+      autoComplete="off"
+      {...layout}
+    >
       <S.InputFormItem
         label="전화번호"
         name="phoneNumber"

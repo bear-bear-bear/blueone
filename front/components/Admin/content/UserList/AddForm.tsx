@@ -10,6 +10,8 @@ import type { CreateRequestBody } from './AddButton';
 
 type Props = {
   form: FormInstance<CreateRequestBody>;
+  validateTrigger: FormProps['validateTrigger'];
+  setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
@@ -28,7 +30,7 @@ const validateMessages: FormProps<CreateRequestBody>['validateMessages'] = {
   },
 };
 
-const UserAddForm = ({ form, setSubmitLoading, closeModal }: Props) => {
+const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoading, closeModal }: Props) => {
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
 
   const onFormFinish: FormProps<CreateRequestBody>['onFinish'] = useCallback(
@@ -49,8 +51,20 @@ const UserAddForm = ({ form, setSubmitLoading, closeModal }: Props) => {
     [users, closeModal, mutateUsers, setSubmitLoading],
   );
 
+  const onFormFinishFailed = useCallback(() => {
+    setValidateTrigger(['onFinish', 'onChange']);
+  }, [setValidateTrigger]);
+
   return (
-    <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
+    <Form
+      form={form}
+      onFinish={onFormFinish}
+      onFinishFailed={onFormFinishFailed}
+      validateTrigger={validateTrigger}
+      validateMessages={validateMessages}
+      size="middle"
+      {...layout}
+    >
       <Form.Item
         name="phoneNumber"
         label="전화번호"
@@ -64,7 +78,7 @@ const UserAddForm = ({ form, setSubmitLoading, closeModal }: Props) => {
       </Form.Item>
       <Form.Item
         name="dateOfBirth"
-        label="주민등록번호"
+        label="생년월일"
         rules={[{ required: true }, { pattern: regex.dateOfBirth }]}
         tooltip="ex) 800101"
       >
@@ -76,7 +90,7 @@ const UserAddForm = ({ form, setSubmitLoading, closeModal }: Props) => {
       <Form.Item
         name="licenseNumber"
         label="면허 번호"
-        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
+        rules={[{ required: true }, { pattern: regex.licenseNumber }]}
         tooltip="ex) 12-000000-34"
       >
         <Input autoComplete="off" />
@@ -84,7 +98,7 @@ const UserAddForm = ({ form, setSubmitLoading, closeModal }: Props) => {
       <Form.Item
         name="insuranceNumber"
         label="보험 번호"
-        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
+        rules={[{ required: true }, { pattern: regex.insuranceNumber }]}
         tooltip="ex) 1-1234-0000000-000"
       >
         <Input autoComplete="off" />

@@ -1,5 +1,5 @@
 import { MouseEventHandler, FC, useCallback, useState } from 'react';
-import { Button, Form, Modal } from 'antd';
+import { Button, Form, FormProps, Modal } from 'antd';
 import type { EndPoint } from '@typings';
 import PasswordChangeForm from './PasswordChangeForm';
 
@@ -9,10 +9,12 @@ const PasswordChangeButton: FC = () => {
   const [form] = Form.useForm<RequestBody>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
   const closeModal = useCallback(() => {
     form.resetFields();
     setIsModalOpen(false);
+    setFormValidateTrigger('onFinish');
   }, []);
 
   const handleButtonClick: MouseEventHandler<HTMLElement> = useCallback(() => {
@@ -39,7 +41,13 @@ const PasswordChangeButton: FC = () => {
           transform: 'translateY(-50%)',
         }}
       >
-        <PasswordChangeForm form={form} closeModal={closeModal} setSubmitLoading={setLoading} />
+        <PasswordChangeForm
+          form={form}
+          validateTrigger={formValidateTrigger}
+          setValidateTrigger={setFormValidateTrigger}
+          closeModal={closeModal}
+          setSubmitLoading={setLoading}
+        />
       </Modal>
     </>
   );
