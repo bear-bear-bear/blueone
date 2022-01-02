@@ -1,4 +1,5 @@
 export default {
-  phoneNumber: /^\d{7,15}$/,
+  phoneNumber: /^\d{7,}$/,
+  dateOfBirth: /^\d{6}$/,
   identificationNumber: /^[\d-]+$/,
 };

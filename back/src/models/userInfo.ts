@@ -3,6 +3,9 @@ import { Model, DataTypes, ModelValidateOptions } from 'sequelize';
 import sequelize from './_sequelize';
 import type { Database } from './index';
 
+const dateOfBirthValidate: ModelValidateOptions = {
+  is: /^\d{6}$/,
+};
 const identificationNumberValidate: ModelValidateOptions = {
   is: /^[\d-]+$/,
 };
@@ -11,7 +14,7 @@ class UserInfo extends Model {
   public readonly id!: number;
   public userId!: number;
   public realname!: string;
-  public residentRegistrationNumber!: string;
+  public dateOfBirth!: string;
   public licenseNumber!: string;
   public licenseType!: string;
   public insuranceNumber!: string;
@@ -27,25 +30,25 @@ class UserInfo extends Model {
 UserInfo.init(
   {
     realname: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(32),
       allowNull: false,
     },
-    residentRegistrationNumber: {
-      type: DataTypes.STRING(255),
-      validate: identificationNumberValidate,
+    dateOfBirth: {
+      type: DataTypes.STRING(32),
+      validate: dateOfBirthValidate,
       allowNull: false,
     },
     licenseNumber: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(32),
       validate: identificationNumberValidate,
       allowNull: false,
     },
     licenseType: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(32),
       allowNull: false,
     },
     insuranceNumber: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(32),
       validate: identificationNumberValidate,
       allowNull: false,
     },

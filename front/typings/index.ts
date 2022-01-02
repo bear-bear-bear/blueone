@@ -12,7 +12,7 @@ export type UserInfo = {
   id: number;
   UserId: number;
   realname: string;
-  residentRegistrationNumber: string;
+  dateOfBirth: string;
   licenseNumber: string;
   licenseType: string;
   insuranceNumber: string;
@@ -140,12 +140,7 @@ export interface EndPoint {
     requestBody: Pick<User, 'phoneNumber'> &
       Pick<
         UserInfo,
-        | 'realname'
-        | 'residentRegistrationNumber'
-        | 'licenseType'
-        | 'licenseNumber'
-        | 'insuranceNumber'
-        | 'insuranceExpirationDate'
+        'realname' | 'dateOfBirth' | 'licenseType' | 'licenseNumber' | 'insuranceNumber' | 'insuranceExpirationDate'
       >;
     responses: {
       202: User & {
@@ -174,12 +169,7 @@ export interface EndPoint {
     requestBody: Pick<User, 'phoneNumber'> &
       Pick<
         UserInfo,
-        | 'realname'
-        | 'residentRegistrationNumber'
-        | 'licenseType'
-        | 'licenseNumber'
-        | 'insuranceNumber'
-        | 'insuranceExpirationDate'
+        'realname' | 'dateOfBirth' | 'licenseType' | 'licenseNumber' | 'insuranceNumber' | 'insuranceExpirationDate'
       >;
     responses: {
       200: User & {

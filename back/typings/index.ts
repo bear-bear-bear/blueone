@@ -19,7 +19,7 @@ export type CreateUserRequestBody = Pick<User, 'phoneNumber'> &
   Pick<
     UserInfo,
     | 'realname'
-    | 'residentRegistrationNumber'
+    | 'dateOfBirth'
     | 'licenseNumber'
     | 'licenseType'
     | 'insuranceNumber'

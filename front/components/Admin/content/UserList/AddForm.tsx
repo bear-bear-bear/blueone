@@ -63,10 +63,10 @@ const UserAddForm = ({ form, setSubmitLoading, closeModal }: Props) => {
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item
-        name="residentRegistrationNumber"
+        name="dateOfBirth"
         label="주민등록번호"
-        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
-        tooltip="ex) 800101-1000000"
+        rules={[{ required: true }, { pattern: regex.dateOfBirth }]}
+        tooltip="ex) 800101"
       >
         <Input autoComplete="off" />
       </Form.Item>

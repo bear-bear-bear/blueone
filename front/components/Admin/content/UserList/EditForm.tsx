@@ -34,20 +34,13 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
   const {
     phoneNumber,
-    UserInfo: {
-      realname,
-      residentRegistrationNumber,
-      licenseNumber,
-      licenseType,
-      insuranceNumber,
-      insuranceExpirationDate,
-    },
+    UserInfo: { realname, dateOfBirth, licenseNumber, licenseType, insuranceNumber, insuranceExpirationDate },
   } = prevUser;
   const formInitialValues = useMemo<UpdateRequestBody>(
     () => ({
       phoneNumber,
       realname,
-      residentRegistrationNumber,
+      dateOfBirth,
       licenseNumber,
       licenseType,
       insuranceNumber,
@@ -95,10 +88,10 @@ const UserEditForm = ({ form, prevUser, setSubmitLoading, closeModal }: Props) =
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item
-        name="residentRegistrationNumber"
+        name="dateOfBirth"
         label="주민등록번호"
-        rules={[{ required: true }, { pattern: regex.identificationNumber }]}
-        tooltip="ex) 800101-1000000"
+        rules={[{ required: true }, { pattern: regex.dateOfBirth }]}
+        tooltip="ex) 800101"
       >
         <Input autoComplete="off" />
       </Form.Item>
