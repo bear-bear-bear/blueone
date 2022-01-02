@@ -55,12 +55,6 @@ export type Notice = {
   updatedAt: ISODateString;
 };
 
-// export type WorkState = 'checked' | 'done';
-// export type UpdateWorkRequestBody = CreateWorkRequestBody;
-//
-// export type CreateNoticeRequestBody = Pick<Notice, 'title' | 'content'>;
-// export type UpdateNoticeRequestBody = CreateNoticeRequestBody;
-
 export interface ErrorMessage {
   message: string;
 }
@@ -114,7 +108,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 활성화된 내 작업 리스트 가져오기
+   * 오늘자 내 작업 리스트 가져오기
    */
   'GET /user/works': {
     responses: {
@@ -198,7 +192,7 @@ export interface EndPoint {
   };
 
   /**
-   * 일주일 이내의 작업 리스트 가져오기
+   * 오늘자 작업 가져오기
    */
   'GET /works': {
     responses: {

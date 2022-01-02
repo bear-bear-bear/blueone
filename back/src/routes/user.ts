@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
@@ -110,16 +111,23 @@ router.post('/password', isLoggedIn, async (req, res, next) => {
 });
 
 /**
- * 활성화된 내 작업 가져오기
+ * 오늘자 내 작업 리스트 가져오기
  */
 router.get('/works', isLoggedIn, async (req, res, next) => {
+  const TODAY_START = new Date().setHours(0, 0, 0, 0);
+
   try {
     const activatedWorks = await Work.findAll({
       where: {
         UserId: req.user?.id,
-        endTime: null,
+        createdAt: {
+          [Op.gt]: TODAY_START,
+        },
       },
-      order: [['createdAt', 'DESC']],
+      order: [
+        ['endTime', 'ASC'],
+        ['createdAt', 'DESC'],
+      ],
     });
     res.status(200).json(activatedWorks);
   } catch (err) {

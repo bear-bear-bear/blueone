@@ -41,9 +41,9 @@ const PasswordChangeForm = ({ form, validateTrigger, setValidateTrigger, setSubm
       try {
         await httpClient.post<Response>('/user/password', reqBody).then((res) => res.data);
         closeModal();
-        message.success('비밀번호가 변경되었어요.');
+        message.success('비밀번호가 변경되었어요.', 4);
       } catch (err) {
-        message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.');
+        message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.', 4);
         console.error(err);
       }
       setSubmitLoading(false);

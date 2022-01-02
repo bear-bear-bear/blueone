@@ -8,18 +8,19 @@ import httpClient from '@utils/axios';
 type Props = {
   workId: Work['id'];
   isWorkChecked: boolean;
+  isWorkDone: boolean;
 };
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
 
-const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
+const DoneButton: FC<Props> = ({ workId, isWorkChecked, isWorkDone }) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const deleteWork = useCallback(async () => {
     if (!isWorkChecked) {
-      message.warn('확인 처리되지 않은 업무는 완료할 수 없어요.');
+      message.warn('확인 처리되지 않은 업무는 완료할 수 없어요.', 4);
       return;
     }
     setLoading(true);
@@ -29,10 +30,13 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
       setLoading(false);
       setIsModalOpen(false);
       await mutateWorks(nextWorks);
-      message.success('작업이 완료 처리 되었어요. 고생하셨습니다 :)');
+      message.success('업무가 완료 처리 되었어요. 고생하셨습니다 :)', 4);
+      if (nextWorks?.find((work) => work.endTime === null)) {
+        message.success('완료된 업무는 완료되지 않은 업무 뒤쪽으로 배치되었어요.', 4);
+      }
     } catch (err) {
       setLoading(false);
-      message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.');
+      message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.', 4);
       console.error(err);
     }
   }, [works, workId, isWorkChecked, mutateWorks]);
@@ -49,7 +53,7 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked }) => {
     <>
       <Button
         type={isWorkChecked ? 'primary' : 'ghost'}
-        disabled={!isWorkChecked}
+        disabled={!isWorkChecked || isWorkDone}
         size="large"
         onClick={handleButtonClick}
         block

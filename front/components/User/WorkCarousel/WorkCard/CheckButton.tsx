@@ -23,10 +23,10 @@ const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
       const nextWorks = works?.map((work) => (work.id !== patchedWork.id ? work : patchedWork));
       setLoading(false);
       await mutateWorks(nextWorks);
-      message.success('업무 확인 완료');
+      message.success('업무 확인 완료', 4);
     } catch (err) {
       setLoading(false);
-      message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.');
+      message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.', 4);
       console.error(err);
     }
   }, [works, workId, mutateWorks]);

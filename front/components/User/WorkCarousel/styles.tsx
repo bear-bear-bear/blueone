@@ -1,4 +1,5 @@
 import { Card, Empty } from 'antd';
+import { AiOutlineFileDone } from 'react-icons/ai';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import media from '@utils/media';
@@ -45,6 +46,7 @@ export const globalCSS = css`
 `;
 
 export const StyledCard = styled(Card)`
+  position: relative;
   max-height: 70vh;
   overflow-y: auto;
   margin-top: ${CARD_MARGIN_TOP};
@@ -79,4 +81,11 @@ export const Row = styled.div`
   p:last-of-type {
     word-break: break-all;
   }
+`;
+
+export const WorkDoneStamp = styled(AiOutlineFileDone)`
+  color: #008000;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 `;

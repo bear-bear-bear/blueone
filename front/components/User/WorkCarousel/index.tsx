@@ -53,7 +53,7 @@ const WorkCarousel = () => {
 
     const currWorkCount = myWorks?.length ?? 0;
     if (currWorkCount > prevWorkCount.current) {
-      message.info('새로운 업무가 추가됐어요!');
+      message.info('새로운 업무가 추가됐어요!', 4);
     }
     prevWorkCount.current = currWorkCount;
   }, [myWorks, prevWorkCount]);

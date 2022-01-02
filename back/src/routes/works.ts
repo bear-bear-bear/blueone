@@ -12,20 +12,16 @@ import type {
 const router = express.Router();
 
 /**
- * 일주일 이내의 작업 리스트 가져오기
+ * 오늘자 작업 가져오기
  */
 router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
   const TODAY_START = new Date().setHours(0, 0, 0, 0);
-  const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
-  const BEFORE_SEVEN_DAYS_START = new Date(
-    TODAY_START - SEVEN_DAYS,
-  ).toISOString();
 
   try {
     const works = await Work.findAll({
       where: {
         createdAt: {
-          [Op.gt]: BEFORE_SEVEN_DAYS_START,
+          [Op.gt]: TODAY_START,
         },
       },
       order: [['createdAt', 'DESC']],
