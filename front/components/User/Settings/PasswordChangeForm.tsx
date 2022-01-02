@@ -13,8 +13,6 @@ type RequestBody = EndPoint['POST /user/password']['requestBody'];
 type Response = EndPoint['POST /user/password']['responses']['204'];
 type Props = {
   form: FormInstance<RequestBody>;
-  validateTrigger: FormProps['validateTrigger'];
-  setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
@@ -28,7 +26,7 @@ const validateMessages = {
   required: '필수 입력 값입니다.',
 };
 
-const PasswordChangeForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoading, closeModal }: Props) => {
+const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
   const { data: user } = useSWRImmutable<User>('/user', axiosFetcher);
 
   const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
@@ -51,20 +49,8 @@ const PasswordChangeForm = ({ form, validateTrigger, setValidateTrigger, setSubm
     [user, closeModal, setSubmitLoading],
   );
 
-  const onFormFinishFailed = useCallback(() => {
-    setValidateTrigger(['onFinish', 'onChange']);
-  }, [setValidateTrigger]);
-
   return (
-    <Form
-      form={form}
-      onFinish={onFormFinish}
-      onFinishFailed={onFormFinishFailed}
-      validateTrigger={validateTrigger}
-      validateMessages={validateMessages}
-      size="middle"
-      {...layout}
-    >
+    <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
       <Global styles={S.formCustomStyles} />
       <Form.Item name="password" label="새 비밀번호" rules={[{ required: true }]} className="pw-change-form__item">
         <Input.Password autoComplete="off" size="large" />
