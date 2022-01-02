@@ -3,12 +3,16 @@ import { Model, DataTypes, ModelValidateOptions } from 'sequelize';
 import sequelize from './_sequelize';
 import type { Database } from './index';
 
-const dateOfBirthValidate: ModelValidateOptions = {
-  is: /^\d{6}$/,
+const regex = {
+  phoneNumber: /^\d{7,32}$/,
+  dateOfBirth: /^\d{6}$/,
+  licenseNumber: /^[\d-가-힣ㄱ-ㅎ]{1,32}$/,
+  insuranceNumber: /^[\d-]{1,32}$/,
 };
-const identificationNumberValidate: ModelValidateOptions = {
-  is: /^[\d-]+$/,
-};
+const validate: { [column in keyof typeof regex]: ModelValidateOptions } =
+  Object.fromEntries(
+    Object.entries(regex).map((column, regex) => [column, { is: regex }]),
+  );
 
 class UserInfo extends Model {
   public readonly id!: number;
@@ -31,16 +35,17 @@ UserInfo.init(
   {
     realname: {
       type: DataTypes.STRING(32),
+      validate: validate.phoneNumber,
       allowNull: false,
     },
     dateOfBirth: {
-      type: DataTypes.STRING(32),
-      validate: dateOfBirthValidate,
+      type: DataTypes.STRING(6),
+      validate: validate.dateOfBirth,
       allowNull: false,
     },
     licenseNumber: {
       type: DataTypes.STRING(32),
-      validate: identificationNumberValidate,
+      validate: validate.licenseNumber,
       allowNull: false,
     },
     licenseType: {
@@ -49,7 +54,7 @@ UserInfo.init(
     },
     insuranceNumber: {
       type: DataTypes.STRING(32),
-      validate: identificationNumberValidate,
+      validate: validate.insuranceNumber,
       allowNull: false,
     },
     insuranceExpirationDate: {

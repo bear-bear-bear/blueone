@@ -1,5 +1,6 @@
 export default {
-  phoneNumber: /^\d{7,}$/,
+  phoneNumber: /^\d{7,32}$/,
   dateOfBirth: /^\d{6}$/,
-  identificationNumber: /^[\d-]+$/,
+  licenseNumber: /^[\d-가-힣ㄱ-ㅎ]{1,32}$/,
+  insuranceNumber: /^[\d-]{1,32}$/,
 };
