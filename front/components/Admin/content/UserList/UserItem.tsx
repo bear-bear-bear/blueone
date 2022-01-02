@@ -44,6 +44,7 @@ const getTitle: (state: InsuranceState, realname: string) => ReactNode = (state,
         </>
       );
     default:
+      return;
   }
 };
 

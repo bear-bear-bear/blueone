@@ -21,7 +21,7 @@ const tooltipTitle: { [key in Props['type']]: string } = {
   danger: '경고 알림',
 };
 
-const messageFunc: { [key in Props['type']]: Function } = {
+const messageFunc: { [key in Props['type']]: typeof message['info' | 'warn' | 'error'] } = {
   info: message.info,
   warn: message.warn,
   danger: message.error,
@@ -42,7 +42,8 @@ const NotificationBadge: FC<Props> = ({ type, content, tooltip }) => {
     // 24시간마다 자동 알림
     if (!document.cookie.includes(`notified_${content}`)) {
       const ONE_DAY = 24 * 60 * 60 * 1000;
-      document.cookie = `notified_${content}=true; expires=` + new Date(ONE_DAY + Date.now()).toUTCString() + ';';
+      const cookieExpires = new Date(ONE_DAY + Date.now()).toUTCString();
+      document.cookie = `notified_${content}=true; expires=${cookieExpires};`;
       messageFunc[type](content);
     }
   }, [document.cookie]);
