@@ -28,6 +28,9 @@ const validateMessages: FormProps<CreateRequestBody>['validateMessages'] = {
   pattern: {
     mismatch: '형식이 올바르지 않습니다.',
   },
+  string: {
+    max: '최대 입력 수를 초과했습니다.',
+  },
 };
 
 const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoading, closeModal }: Props) => {
@@ -68,29 +71,29 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
       <Form.Item
         name="phoneNumber"
         label="전화번호"
-        rules={[{ required: true }, { pattern: regex.phoneNumber }]}
+        rules={[{ required: true }, { pattern: regex.phoneNumber }, { type: 'string', max: 20 }]}
         tooltip="ex) 01012340000"
       >
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="realname" label="실명" rules={[{ required: true }]}>
+      <Form.Item name="realname" label="실명" rules={[{ required: true }, { type: 'string', max: 32 }]}>
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item
         name="dateOfBirth"
         label="생년월일"
-        rules={[{ required: true }, { pattern: regex.dateOfBirth }]}
+        rules={[{ required: true }, { pattern: regex.dateOfBirth }, { type: 'string', len: 6 }]}
         tooltip="ex) 800101"
       >
         <Input autoComplete="off" />
       </Form.Item>
-      <Form.Item name="licenseType" label="면허 종류" rules={[{ required: true }]}>
+      <Form.Item name="licenseType" label="면허 종류" rules={[{ required: true }, { type: 'string', max: 32 }]}>
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item
         name="licenseNumber"
         label="면허 번호"
-        rules={[{ required: true }, { pattern: regex.licenseNumber }]}
+        rules={[{ required: true }, { pattern: regex.licenseNumber }, { type: 'string', max: 32 }]}
         tooltip="ex) 12-000000-34"
       >
         <Input autoComplete="off" />
@@ -98,7 +101,7 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
       <Form.Item
         name="insuranceNumber"
         label="보험 번호"
-        rules={[{ required: true }, { pattern: regex.insuranceNumber }]}
+        rules={[{ required: true }, { pattern: regex.insuranceNumber }, { type: 'string', max: 32 }]}
         tooltip="ex) 1-1234-0000000-000"
       >
         <Input autoComplete="off" />

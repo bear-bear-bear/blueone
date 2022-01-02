@@ -27,6 +27,10 @@ const validateMessages = {
   },
   number: {
     min: '${min}보다 커야합니다.',
+    max: '${max}보다 작아야 합니다.',
+  },
+  string: {
+    max: '최대 입력 수를 초과했습니다.',
   },
 };
 
@@ -73,27 +77,32 @@ const WorkAddForm = () => {
         <Form.Item name="UserId" label="기사" tooltip="나중에 추가할 수도 있습니다.">
           <UserSelecter form={form} />
         </Form.Item>
-        <Form.Item name="origin" label="출발지" rules={[{ required: true }]}>
+        <Form.Item name="origin" label="출발지" rules={[{ required: true }, { type: 'string', max: 255 }]}>
           <Input autoComplete="off" />
         </Form.Item>
-        <Form.Item name="waypoint" label="경유지">
+        <Form.Item name="waypoint" label="경유지" rules={[{ type: 'string', max: 255 }]}>
           <Input autoComplete="off" />
         </Form.Item>
-        <Form.Item name="destination" label="도착지" rules={[{ required: true }]}>
+        <Form.Item name="destination" label="도착지" rules={[{ required: true }, { type: 'string', max: 255 }]}>
           <Input autoComplete="off" />
         </Form.Item>
-        <Form.Item name="carModel" label="차종" rules={[{ required: true }]}>
+        <Form.Item name="carModel" label="차종" rules={[{ required: true }, { type: 'string', max: 255 }]}>
           <Input autoComplete="off" />
         </Form.Item>
         <Form.Item
           name="charge"
           label="구간지수"
           tooltip="단위: 1000"
-          rules={[{ type: 'number', min: 0, required: true }]}
+          rules={[{ type: 'number', min: 0, max: 16777216, required: true }]}
         >
           <InputNumber autoComplete="off" />
         </Form.Item>
-        <Form.Item name="subsidy" label="지원지수" tooltip="단위: 1000" rules={[{ type: 'number', min: 0 }]}>
+        <Form.Item
+          name="subsidy"
+          label="지원지수"
+          tooltip="단위: 1000"
+          rules={[{ type: 'number', min: 0, max: 16777216 }]}
+        >
           <InputNumber autoComplete="off" />
         </Form.Item>
         <Form.Item name="remark" label="비고">

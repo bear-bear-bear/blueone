@@ -40,7 +40,7 @@ User.init(
     phoneNumber: {
       type: DataTypes.STRING(20),
       validate: {
-        is: /^\d{7,15}$/,
+        is: /^\d{7,20}$/,
       },
       allowNull: false,
     },
