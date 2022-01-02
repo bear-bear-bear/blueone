@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production pm2 start dist/src/app.js --node-args=\"-r ts-node/register/transpile-only -r tsconfig-paths/register\" && npx pm2 monit",
     "build": "tsc -p .",
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" -r tsconfig-paths/register --files src/app.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" -r tsconfig-paths/register --files src/app.ts",
     "db:create": "cross-env NODE_ENV=production ts-node -r tsconfig-paths/register --files src/config/createDB.ts --create"
   },
   "keywords": [],
@@ -32,7 +32,9 @@
     "pm2": "^5.1.2",
     "sequelize": "^6.12.0-beta.2",
     "sequelize-cli": "^6.3.0",
-    "session-file-store": "^1.5.0"
+    "session-file-store": "^1.5.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

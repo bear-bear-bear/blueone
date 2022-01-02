@@ -1,4 +1,5 @@
 import type { RequestHandler, ErrorRequestHandler } from 'express';
+import logger from '@/utils/logger';
 
 export const isLoggedIn: RequestHandler = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -31,7 +32,7 @@ export const isAdmin: RequestHandler = (req, res, next) => {
 };
 
 export const errorLogger: ErrorRequestHandler = (err, req, res, next) => {
-  console.error('[' + new Date() + ']\n' + err.stack);
+  logger.error(`${err.name}: ${err.message}`);
   next(err);
 };
 
