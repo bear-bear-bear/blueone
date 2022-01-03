@@ -1,14 +1,11 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import useSWRImmutable from 'swr/immutable';
 import { Global } from '@emotion/react';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
 
-type User = EndPoint['GET /user']['responses']['200'];
 type RequestBody = EndPoint['POST /user/password']['requestBody'];
 type Response = EndPoint['POST /user/password']['responses']['204'];
 type Props = {
@@ -27,8 +24,6 @@ const validateMessages = {
 };
 
 const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
-  const { data: user } = useSWRImmutable<User>('/user', axiosFetcher);
-
   const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
     async (values) => {
       const reqBody: RequestBody = {
@@ -46,7 +41,7 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
       }
       setSubmitLoading(false);
     },
-    [user, closeModal, setSubmitLoading],
+    [closeModal, setSubmitLoading],
   );
 
   return (
