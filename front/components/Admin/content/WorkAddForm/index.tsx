@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, message } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@utils/axios';
 import UserSelecter from '@components/Admin/content/parts/UserSelecter';
@@ -38,33 +39,39 @@ const WorkAddForm = () => {
   const [form] = Form.useForm<WorkAddAntdFormFields>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
-  const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
-    async (values) => {
-      const reqBody: RequestBody = {
-        ...values,
-        waypoint: values.waypoint ?? null,
-        UserId: values.UserId ?? null,
-        remark: values.remark ?? null,
-      };
+  const clearForm = useCallback(() => {
+    form.resetFields();
+  }, [form]);
 
-      try {
-        await httpClient.post<Response>('/works', reqBody);
-        message.success('작업 등록 완료');
-        form.resetFields();
-      } catch (err) {
-        message.error('작업 등록 중 에러 발생, 개발자에게 문의하세요.');
-        console.error(err);
-      }
-    },
-    [form],
-  );
+  const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(async (values) => {
+    const reqBody: RequestBody = {
+      ...values,
+      waypoint: values.waypoint ?? null,
+      UserId: values.UserId ?? null,
+      remark: values.remark ?? null,
+    };
+
+    try {
+      await httpClient.post<Response>('/works', reqBody);
+      message.success('작업 등록 완료');
+    } catch (err) {
+      message.error('작업 등록 중 에러 발생, 개발자에게 문의하세요.');
+      console.error(err);
+    }
+  }, []);
 
   const onFormFinishFailed = useCallback(() => {
     setValidateTrigger(['onFinish', 'onChange']);
   }, [setValidateTrigger]);
 
   return (
-    <S.FormWrapper>
+    <S.Container>
+      <S.ActionsWrapper>
+        <Button type="ghost" icon={<DeleteOutlined />} onClick={clearForm}>
+          초기화
+        </Button>
+      </S.ActionsWrapper>
+
       <Form
         {...layout}
         form={form}
@@ -109,12 +116,12 @@ const WorkAddForm = () => {
           <Input.TextArea autoComplete="off" />
         </Form.Item>
         <Form.Item wrapperCol={submitButtonWrapperCol}>
-          <Button type="primary" htmlType="submit" block size="middle">
-            등록 완료
+          <Button type="primary" htmlType="submit" block>
+            등록하기
           </Button>
         </Form.Item>
       </Form>
-    </S.FormWrapper>
+    </S.Container>
   );
 };
 
