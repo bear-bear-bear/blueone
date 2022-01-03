@@ -10,11 +10,12 @@ type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {
   form: FormInstance<WorkAddAntdFormFields>;
   defaultUserId?: WorkAddAntdFormFields['UserId'];
+  disabled?: boolean;
 };
 
 const { Option } = Select;
 
-const UserSelecter = ({ form, defaultUserId }: Props) => {
+const UserSelecter = ({ form, defaultUserId, disabled = false }: Props) => {
   const { data: users } = useSWR<Users>('/users', axiosFetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -64,6 +65,7 @@ const UserSelecter = ({ form, defaultUserId }: Props) => {
       onClear={onClear}
       allowClear
       defaultValue={isDeletedUser ? undefined : defaultUserId ?? undefined}
+      disabled={disabled}
     >
       {!userOptions ? (
         <Option value="" disabled>

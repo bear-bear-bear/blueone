@@ -27,7 +27,7 @@ export type CreateUserRequestBody = Pick<User, 'phoneNumber'> &
   >;
 export type UpdateUserRequestBody = CreateUserRequestBody;
 
-export type WorkState = 'checked' | 'done';
+export type WorkState = 'init' | 'checked' | 'done';
 export type CreateWorkRequestBody = { UserId?: User['id'] } & Pick<
   Work,
   | 'origin'

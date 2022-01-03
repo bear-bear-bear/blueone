@@ -155,6 +155,16 @@ router.patch(
       }
 
       switch (state) {
+        case 'init':
+          if (work.endTime) {
+            res.status(403).json({
+              message: '완료된 작업은 초기화할 수 없습니다.',
+            });
+            return;
+          }
+          work.checkTime = null;
+          await work.save();
+          break;
         case 'checked':
           if (work.checkTime) {
             res.status(403).json({

@@ -6,7 +6,7 @@ import UserSelecter from '@components/Admin/content/parts/UserSelecter';
 import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddForm';
-import type { EndPoint } from '@typings';
+import type { EndPoint, Work } from '@typings';
 import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
@@ -42,6 +42,21 @@ const validateMessages = {
 const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>('/works', axiosFetcher);
 
+  const cancelWorkCheck = useCallback(
+    async (workId: Work['id']) => {
+      if (prevWork.endTime) return; // 완료된 작업은 상태 초기화가 불가능하므로, 완료된 작업일 경우 아래에서 selector 내에 disable 속성을 부여합니다.
+
+      try {
+        await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
+        message.error('업무 확인 취소 완료');
+      } catch (err) {
+        message.error('업무 확인 취소 중 에러 발생, 개발자에게 문의하세요.');
+        console.error(err);
+      }
+    },
+    [prevWork.endTime],
+  );
+
   const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
     async (values) => {
       const reqBody: RequestBody = {
@@ -54,6 +69,12 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       setSubmitLoading(true);
       try {
         const updatedWork = await httpClient.put<Response>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
+
+        if (reqBody.UserId !== prevWork.UserId) {
+          await cancelWorkCheck(prevWork.id);
+          updatedWork.checkTime = null;
+        }
+
         const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
         await mutateWorks(nextWorks);
         message.success('작업 수정 완료');
@@ -64,7 +85,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       }
       setSubmitLoading(false);
     },
-    [works, prevWork, closeModal, mutateWorks, setSubmitLoading],
+    [setSubmitLoading, prevWork.id, prevWork.UserId, works, mutateWorks, closeModal, cancelWorkCheck],
   );
 
   const onFormFinishFailed = useCallback(() => {
@@ -83,7 +104,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       {...layout}
     >
       <Form.Item name="UserId" label="기사" tooltip="나중에 추가할 수도 있습니다.">
-        <UserSelecter form={form} defaultUserId={prevWork.UserId} />
+        <UserSelecter form={form} defaultUserId={prevWork.UserId} disabled={!!prevWork.endTime} />
       </Form.Item>
       <Form.Item name="origin" label="출발지" rules={[{ required: true }, { type: 'string', max: 255 }]}>
         <Input autoComplete="off" />
