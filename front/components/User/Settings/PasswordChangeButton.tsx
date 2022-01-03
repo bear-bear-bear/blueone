@@ -29,7 +29,7 @@ const PasswordChangeButton: FC = () => {
         visible={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
-        okText="변경하기"
+        okText="변경"
         cancelText="취소"
         okButtonProps={{ size: 'large' }}
         cancelButtonProps={{ size: 'large' }}

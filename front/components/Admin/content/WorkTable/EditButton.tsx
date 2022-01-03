@@ -35,7 +35,7 @@ const EditButton = ({ record }: Props) => {
         visible={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
-        okText="수정 완료"
+        okText="수정"
         cancelText="취소"
         confirmLoading={submitLoading}
       >

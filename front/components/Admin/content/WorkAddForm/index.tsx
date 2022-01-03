@@ -117,7 +117,7 @@ const WorkAddForm = () => {
         </Form.Item>
         <Form.Item wrapperCol={submitButtonWrapperCol}>
           <Button type="primary" htmlType="submit" block>
-            등록하기
+            등록
           </Button>
         </Form.Item>
       </Form>
