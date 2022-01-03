@@ -3,6 +3,7 @@ import { ColProps } from 'antd/lib/grid/col';
 import { useCallback } from 'react';
 import httpClient from '@utils/axios';
 import LogoutButton from '@components/LogoutButton';
+import useAdmin from '@hooks/useAdmin';
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 4 },
@@ -10,6 +11,8 @@ const layout: { [ColName: string]: ColProps } = {
 };
 
 const TempPage = () => {
+  const { isAdminLoggedIn } = useAdmin({ redirectTo: '/login' });
+
   const onFormFinish: FormProps<{ phoneNumber: string }>['onFinish'] = useCallback(async ({ phoneNumber }) => {
     try {
       await httpClient.post('/users/admin', { phoneNumber });
@@ -20,6 +23,7 @@ const TempPage = () => {
     }
   }, []);
 
+  if (!isAdminLoggedIn) return null;
   return (
     <div style={{ width: '1000px' }}>
       <Form onFinish={onFormFinish} {...layout}>
