@@ -128,7 +128,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 유저 추가
+   * 유저 등록
    */
   'POST /users': {
     requestBody: Pick<User, 'phoneNumber'> &
@@ -204,7 +204,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 작업 추가
+   * 작업 등록
    */
   'POST /works': {
     requestBody: Pick<

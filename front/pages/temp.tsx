@@ -16,7 +16,7 @@ const TempPage = () => {
   const onFormFinish: FormProps<{ phoneNumber: string }>['onFinish'] = useCallback(async ({ phoneNumber }) => {
     try {
       await httpClient.post('/users/admin', { phoneNumber });
-      message.success('추가 완료');
+      message.success('등록 완료');
     } catch (err) {
       message.error('에러 발생');
       console.error(err);

@@ -49,10 +49,10 @@ const WorkAddForm = () => {
 
       try {
         await httpClient.post<Response>('/works', reqBody);
-        message.success('작업 추가 완료');
+        message.success('작업 등록 완료');
         form.resetFields();
       } catch (err) {
-        message.error('작업 추가 중 에러 발생, 개발자에게 문의하세요.');
+        message.error('작업 등록 중 에러 발생, 개발자에게 문의하세요.');
         console.error(err);
       }
     },
@@ -74,7 +74,7 @@ const WorkAddForm = () => {
         validateMessages={validateMessages}
         size="middle"
       >
-        <Form.Item name="UserId" label="기사" tooltip="나중에 추가할 수도 있습니다.">
+        <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
           <UserSelecter form={form} />
         </Form.Item>
         <Form.Item name="origin" label="출발지" rules={[{ required: true }, { type: 'string', max: 255 }]}>
@@ -110,7 +110,7 @@ const WorkAddForm = () => {
         </Form.Item>
         <Form.Item wrapperCol={submitButtonWrapperCol}>
           <Button type="primary" htmlType="submit" block size="middle">
-            작성 완료
+            등록 완료
           </Button>
         </Form.Item>
       </Form>

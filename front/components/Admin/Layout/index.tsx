@@ -51,7 +51,7 @@ const AdminLayout: FC = () => {
           <S.StyledMenuDevider />
           <SubMenu key="업무 관리" icon={<CarOutlined />} title="업무 관리">
             <Menu.Item key="업무 목록">업무 목록</Menu.Item>
-            <Menu.Item key="업무 추가">업무 추가</Menu.Item>
+            <Menu.Item key="업무 등록">업무 등록</Menu.Item>
           </SubMenu>
           <S.StyledMenuDevider />
           <Menu.Item key="기사 관리" icon={<TeamOutlined />} title="기사 관리">

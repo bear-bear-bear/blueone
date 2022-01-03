@@ -31,7 +31,7 @@ const AddButton = () => {
         visible={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
-        okText="작성 완료"
+        okText="등록 완료"
         cancelText="취소"
         confirmLoading={submitLoading}
       >

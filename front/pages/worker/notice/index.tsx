@@ -10,7 +10,7 @@ const TempEmpty = () => (
     imageStyle={{
       height: 60,
     }}
-    description="공지사항이 아직 작성되지 않았어요."
+    description="공지사항이 아직 등록되지 않았어요."
     style={{
       position: 'relative',
       top: '42%',
