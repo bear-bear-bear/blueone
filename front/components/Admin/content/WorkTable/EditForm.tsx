@@ -2,15 +2,15 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import UserSelecter from '@components/Admin/content/WorkAddForm/UserSelecter';
+import UserSelecter from '@components/Admin/content/parts/UserSelecter';
 import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { Fields } from '@components/Admin/content/WorkAddForm';
+import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddForm';
 import type { EndPoint } from '@typings';
 import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
-  form: FormInstance<Fields>;
+  form: FormInstance<WorkAddAntdFormFields>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork: ProcessedWork;
@@ -42,7 +42,7 @@ const validateMessages = {
 const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>('/works', axiosFetcher);
 
-  const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(
+  const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
     async (values) => {
       const reqBody: RequestBody = {
         ...values,

@@ -2,13 +2,13 @@ import { useCallback, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, message } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@utils/axios';
+import UserSelecter from '@components/Admin/content/parts/UserSelecter';
 import type { EndPoint } from '@typings';
-import UserSelecter from './UserSelecter';
 import * as S from './styles';
 
 type RequestBody = EndPoint['POST /works']['requestBody'];
 type Response = EndPoint['POST /works']['responses']['201'];
-export type Fields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
+export type WorkAddAntdFormFields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
   UserId?: RequestBody['UserId'];
   waypoint?: RequestBody['waypoint'];
   remark?: RequestBody['remark'];
@@ -35,10 +35,10 @@ const validateMessages = {
 };
 
 const WorkAddForm = () => {
-  const [form] = Form.useForm<Fields>();
+  const [form] = Form.useForm<WorkAddAntdFormFields>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
-  const onFormFinish: FormProps<Fields>['onFinish'] = useCallback(
+  const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
     async (values) => {
       const reqBody: RequestBody = {
         ...values,

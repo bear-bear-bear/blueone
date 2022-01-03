@@ -1,7 +1,7 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import type { Fields } from '@components/Admin/content/WorkAddForm';
+import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddForm';
 import EditForm from './EditForm';
 import type { ProcessedWork } from './index';
 
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const EditButton = ({ record }: Props) => {
-  const [form] = Form.useForm<Fields>();
+  const [form] = Form.useForm<WorkAddAntdFormFields>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
