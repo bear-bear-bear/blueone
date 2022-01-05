@@ -5,7 +5,7 @@ import type { ColProps } from 'antd/lib/grid/col';
 import UserSelecter from '@components/Admin/content/parts/UserSelecter';
 import httpClient from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddForm';
+import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
 import type { EndPoint } from '@typings';
 import type { FullWorks, ProcessedWork } from './index';
 

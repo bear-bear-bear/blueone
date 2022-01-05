@@ -4,7 +4,7 @@ import { Divider, FormInstance, Select, SelectProps, Spin } from 'antd';
 import { axiosFetcher } from '@utils/swr';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import type { EndPoint } from '@typings';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddForm';
+import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
 
 type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {

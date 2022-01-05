@@ -1,7 +1,7 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddForm';
+import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
 import EditForm from './EditForm';
 import type { ProcessedWork } from './index';
 

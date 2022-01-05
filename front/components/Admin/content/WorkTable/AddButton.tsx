@@ -1,7 +1,7 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { Button as AntdButton, Form, FormProps, Modal, Tooltip } from 'antd';
 import { AiOutlinePlus } from 'react-icons/ai';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddForm';
+import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
 import AddForm from './AddForm';
 import type { ProcessedWork } from './index';
 

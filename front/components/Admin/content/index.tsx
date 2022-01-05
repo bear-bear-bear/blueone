@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import WorkTable from './WorkTable';
-import WorkAddForm from './WorkAddForm';
+import WorkAddFormForMobile from './WorkAddFormForMobile';
 import UserList from './UserList';
 
-export type ContentTitle = '업무 목록' | '업무 등록' | '기사 관리' | '공지사항';
+export type ContentTitle = '업무 목록' | '모바일 업무 등록' | '기사 관리' | '공지사항';
 export type Content = {
   title: ContentTitle;
   component: FC;
@@ -15,8 +15,8 @@ const contentList: Content[] = [
     component: WorkTable,
   },
   {
-    title: '업무 등록',
-    component: WorkAddForm,
+    title: '모바일 업무 등록',
+    component: WorkAddFormForMobile,
   },
   {
     title: '기사 관리',
