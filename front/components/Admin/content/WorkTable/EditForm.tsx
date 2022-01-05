@@ -44,7 +44,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
 
   const cancelWorkCheck = useCallback(
     async (workId: Work['id']) => {
-      if (prevWork.endTime) return; // 완료된 작업은 상태 초기화가 불가능하므로, 완료된 작업일 경우 아래에서 selector 내에 disable 속성을 부여합니다.
+      if (prevWork.endTime) return; // 완료된 업무은 상태 초기화가 불가능하므로, 완료된 업무일 경우 아래에서 selector 내에 disable 속성을 부여합니다.
 
       try {
         await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
@@ -77,10 +77,10 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
 
         const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
         await mutateWorks(nextWorks);
-        message.success('작업 수정 완료');
+        message.success('업무 수정 완료');
         closeModal();
       } catch (err) {
-        message.error('작업 수정 중 에러 발생, 개발자에게 문의하세요.');
+        message.error('업무 수정 중 에러 발생, 개발자에게 문의하세요.');
         console.error(err);
       }
       setSubmitLoading(false);

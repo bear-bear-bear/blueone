@@ -31,11 +31,11 @@ const DeleteButton = ({ record }: Props) => {
       await httpClient.delete<Response>(`/works/${record.id}`);
       const nextWorks = works!.filter((work) => work.id !== record.id);
       await mutateWorks(nextWorks);
-      message.success('작업 삭제 완료');
+      message.success('업무 삭제 완료');
     } catch (err) {
       setIsPopoverOpen(false);
       setPopoverText(INITIAL_POPOVER_TEXT);
-      message.error('작업 삭제 중 에러 발생, 개발자에게 문의하세요.');
+      message.error('업무 삭제 중 에러 발생, 개발자에게 문의하세요.');
       console.error(err);
     }
   }, [works, record, mutateWorks]);

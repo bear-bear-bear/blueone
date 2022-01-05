@@ -17,7 +17,7 @@ const { Meta } = Card;
 const { Paragraph } = Typography;
 
 const WorkDoneStamp = () => (
-  <Tooltip title="완료된 작업이에요.">
+  <Tooltip title="완료된 업무이에요.">
     <S.WorkDoneStamp size={45} />
   </Tooltip>
 );
