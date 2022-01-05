@@ -10,6 +10,12 @@ export type QueryTypedRequest<QT = core.Query> = Request<
   Record<string, unknown>
 >;
 
+export type ISODateString = string;
+export type DatePickQuery = {
+  start: ISODateString;
+  end: ISODateString;
+};
+
 export type PaginationQuery = {
   per_page: string;
   page: string;

@@ -40,7 +40,7 @@ const validateMessages = {
 };
 
 const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
-  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>('/works', axiosFetcher);
+  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
 
   const cancelWorkCheck = useCallback(
     async (workId: Work['id']) => {

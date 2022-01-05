@@ -1,10 +1,12 @@
 import express from 'express';
 import { Op } from 'sequelize';
+import dayjs from 'dayjs';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
+  DatePickQuery,
   UpdateWorkRequestBody,
   WorkState,
 } from 'typings';
@@ -14,38 +16,48 @@ const router = express.Router();
 /**
  * 오늘자 작업 가져오기
  */
-router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
-  const TODAY_START = new Date().setHours(0, 0, 0, 0);
+router.get(
+  '/',
+  isLoggedIn,
+  isAdmin,
+  async (req: QueryTypedRequest<DatePickQuery>, res, next) => {
+    const today = dayjs();
+    const { start = today, end = today } = req.query;
 
-  try {
-    const works = await Work.findAll({
-      where: {
-        createdAt: {
-          [Op.gt]: TODAY_START,
-        },
-      },
-      order: [['createdAt', 'DESC']],
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: ['password'],
+    const gt = dayjs(start).startOf('day').toISOString();
+    const lt = dayjs(end).endOf('day').toISOString();
+
+    try {
+      const works = await Work.findAll({
+        where: {
+          createdAt: {
+            [Op.gt]: gt,
+            [Op.lt]: lt,
           },
-          include: [
-            {
-              model: UserInfo,
-              attributes: ['realname'],
-            },
-          ],
         },
-      ],
-    });
-    res.status(200).json(works);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
+        order: [['createdAt', 'DESC']],
+        include: [
+          {
+            model: User,
+            attributes: {
+              exclude: ['password'],
+            },
+            include: [
+              {
+                model: UserInfo,
+                attributes: ['realname'],
+              },
+            ],
+          },
+        ],
+      });
+      res.status(200).json(works);
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  },
+);
 
 /**
  * 작업 추가

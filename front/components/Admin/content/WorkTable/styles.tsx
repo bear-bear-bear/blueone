@@ -23,6 +23,10 @@ export const globalCSS = css`
   }
 `;
 
+export const DatePickerWrapper = styled.div`
+  margin-bottom: 0.33rem;
+`;
+
 export const SpinnerWrapper = styled.div`
   display: flex;
   height: 100%;
