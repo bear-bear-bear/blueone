@@ -14,6 +14,7 @@ type Props = {
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork?: ProcessedWork;
+  swrKey?: string;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
 type RequestBody = EndPoint['PUT /works/{workId}']['requestBody'];
@@ -38,8 +39,15 @@ const validateMessages = {
   },
 };
 
-const WorkAddForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading }: Props) => {
-  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork?.swrKey || '/works', axiosFetcher);
+const WorkAddForm = ({
+  form,
+  validateTrigger,
+  setValidateTrigger,
+  setSubmitLoading,
+  prevWork,
+  swrKey = prevWork?.swrKey,
+}: Props) => {
+  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher);
 
   const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
     async (values) => {
@@ -64,7 +72,7 @@ const WorkAddForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setS
       }
       setSubmitLoading(false);
     },
-    [setSubmitLoading, works, mutateWorks],
+    [setSubmitLoading, works, mutateWorks, setValidateTrigger],
   );
 
   const onFormFinishFailed = useCallback(() => {

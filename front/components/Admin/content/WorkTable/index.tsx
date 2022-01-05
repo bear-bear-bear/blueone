@@ -1,13 +1,14 @@
-import { useMemo, useState } from 'react';
+import { MouseEventHandler, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import qs from 'qs';
 import useSWR from 'swr';
 import { axiosFetcher } from '@utils/swr';
-import { Spin, Table } from 'antd';
+import { Button, Spin, Table } from 'antd';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
-import DatePicker from '@components/Admin/content/WorkTable/DatePicker';
 import type { EndPoint, UserInfo, Unpacked } from '@typings';
+import DatePicker from './DatePicker';
+import AddButton from './AddButton';
 import columns from './columns';
 import * as S from './styles';
 
@@ -86,9 +87,16 @@ const WorkTable = () => {
   return (
     <>
       <Global styles={S.globalCSS} />
-      <S.DatePickerWrapper>
+      <S.TableHeader>
         <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
-      </S.DatePickerWrapper>
+        <AddButton
+          Button={({ onClick }) => (
+            <Button type="default" onClick={onClick}>
+              업무 등록
+            </Button>
+          )}
+        />
+      </S.TableHeader>
       <Table
         id="workListTable"
         dataSource={dataSource}

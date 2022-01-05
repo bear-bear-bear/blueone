@@ -6,7 +6,7 @@ export const globalCSS = css`
     background: #fff;
   }
   .row--work-done {
-    background-color: #aaa;
+    background-color: #ccc;
     transition: none;
 
     td {
@@ -23,7 +23,12 @@ export const globalCSS = css`
   }
 `;
 
-export const DatePickerWrapper = styled.div`
+export const TableHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.33rem;
   margin-bottom: 0.33rem;
 `;
 
