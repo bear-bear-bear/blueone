@@ -91,7 +91,7 @@ const WorkAddForm = ({
       {...layout}
     >
       <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelecter form={form} defaultUserId={prevWork?.UserId} />
+        <UserSelecter form={form} defaultUserId={prevWork?.UserId} immutable />
       </Form.Item>
       <Form.Item name="origin" label="출발지" rules={[{ required: true }, { type: 'string', max: 255 }]}>
         <Input autoComplete="off" />

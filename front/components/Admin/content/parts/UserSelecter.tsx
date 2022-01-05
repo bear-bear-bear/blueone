@@ -11,15 +11,16 @@ type Props = {
   form: FormInstance<WorkAddAntdFormFields>;
   defaultUserId?: WorkAddAntdFormFields['UserId'];
   disabled?: boolean;
+  immutable?: boolean;
 };
 
 const { Option } = Select;
 
-const UserSelecter = ({ form, defaultUserId, disabled = false }: Props) => {
+const UserSelecter = ({ form, defaultUserId, disabled = false, immutable = false }: Props) => {
   const { data: users } = useSWR<Users>('/users', axiosFetcher, {
-    revalidateIfStale: false,
     revalidateOnFocus: false,
-    revalidateOnMount: true,
+    revalidateIfStale: false,
+    revalidateOnMount: !immutable,
   });
 
   const isDeletedUser = useMemo(() => {
