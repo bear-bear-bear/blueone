@@ -21,6 +21,29 @@ export const globalCSS = css`
   .ant-modal-body .ant-form-horizontal div:last-child {
     margin-bottom: 0;
   }
+
+  .ant-picker {
+    &-panels > *:first-child button.ant-picker-header-next-btn {
+      visibility: visible !important;
+    }
+
+    &-panels > *:first-child button.ant-picker-header-super-next-btn {
+      visibility: visible !important;
+    }
+
+    &-panels > *:last-child {
+      display: none;
+    }
+
+    &-panel-container,
+    &-footer {
+      width: 280px !important;
+    }
+
+    &-footer-extra > div {
+      flex-wrap: wrap !important;
+    }
+  }
 `;
 
 export const TableHeader = styled.div`

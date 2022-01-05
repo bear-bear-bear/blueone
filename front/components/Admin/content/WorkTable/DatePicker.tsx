@@ -26,14 +26,22 @@ const CustomDatePicker = ({ dateRange, setDateRange }: Props) => {
     [setDateRange],
   );
 
+  const disabledDate = useCallback(
+    (current: dayjs.Dayjs) =>
+      // Can not select days before today and today
+      current && current > dayjs().endOf('day'),
+    [],
+  );
+
   return (
     <RangePicker
       ranges={{
         Today: [today, today],
-        'This Month': [today.startOf('month'), today.endOf('month')],
+        'This Month': [today.startOf('month'), today],
       }}
       onChange={handleChange}
       defaultValue={[dayjs(dateRange.start), dayjs(dateRange.end)]}
+      disabledDate={disabledDate}
     />
   );
 };
