@@ -108,7 +108,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 오늘자 내 작업 리스트 가져오기
+   * 오늘자 내 업무 리스트 가져오기
    */
   'GET /user/works': {
     responses: {
@@ -183,7 +183,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 활성화된 유저 작업 가져오기
+   * 활성화된 유저 업무 가져오기
    */
   'GET /users/{userId}/works': {
     responses: {
@@ -192,7 +192,7 @@ export interface EndPoint {
   };
 
   /**
-   * 작업 목록 가져오기
+   * 업무 목록 가져오기
    */
   'GET /works': {
     responses: {
@@ -204,7 +204,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 작업 등록
+   * 업무 등록
    */
   'POST /works': {
     requestBody: Pick<
@@ -219,7 +219,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 작업 수정
+   * 업무 수정
    */
   'PUT /works/{workId}': {
     requestBody: Pick<
@@ -235,7 +235,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 작업 상태 수정
+   * 업무 상태 수정
    */
   'PATCH /works/{workId}': {
     responses: {
@@ -245,7 +245,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 작업 삭제
+   * 업무 삭제
    */
   'DELETE /works/{workId}': {
     responses: {

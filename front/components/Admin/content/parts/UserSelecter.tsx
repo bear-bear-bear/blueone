@@ -58,7 +58,7 @@ const UserSelecter = ({ form, defaultUserId, disabled = false }: Props) => {
 
   return (
     <Select
-      placeholder={isDeletedUser ? '(삭제된 기사가 배정되어 있습니다)' : '업무을 배정받을 기사 선택'}
+      placeholder={isDeletedUser ? '(삭제된 기사가 배정되어 있습니다)' : '업무를 배정받을 기사 선택'}
       showSearch
       filterOption={selectSearchFilter}
       onSelect={onSelect}

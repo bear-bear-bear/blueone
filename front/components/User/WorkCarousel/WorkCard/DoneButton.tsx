@@ -72,7 +72,7 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked, isWorkDone }) => {
           transform: 'translateY(-50%)',
         }}
       >
-        업무을 완료 할까요?
+        업무를 완료 할까요?
       </Modal>
     </>
   );
