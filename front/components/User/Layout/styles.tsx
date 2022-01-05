@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import media from '@utils/media';
 
 export const CenterLayout = styled.section`
   width: 100%;
@@ -7,6 +6,7 @@ export const CenterLayout = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #141414;
 `;
 
 const BOX_ITEM_PADDING = '0.66rem 1rem';
@@ -16,13 +16,6 @@ export const Box = styled.section`
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #141414;
-
-  ${media.sm} {
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    width: 27rem;
-  }
 `;
 
 export const BoxHeader = styled.header`
