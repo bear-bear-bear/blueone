@@ -86,6 +86,9 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'processedEndTime',
     key: 'processedEndTime',
     align: 'center',
+    sorter: {
+      compare: (a, b) => +!!a.endTime - +!!b.endTime,
+    },
     width: 90,
   },
   {
