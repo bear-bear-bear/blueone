@@ -192,7 +192,7 @@ export interface EndPoint {
   };
 
   /**
-   * 오늘자 작업 가져오기
+   * 작업 목록 가져오기
    */
   'GET /works': {
     responses: {
