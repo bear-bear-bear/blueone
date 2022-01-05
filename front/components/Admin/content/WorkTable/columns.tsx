@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import AddButton from './AddButton';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 import type { ProcessedWork } from './index';
@@ -98,10 +99,11 @@ const columns: ColumnsType<ProcessedWork> = [
     render: (_, record) => (
       <>
         <EditButton record={record} />
+        <AddButton record={record} />
         <DeleteButton record={record} />
       </>
     ),
-    width: 80,
+    width: 90,
   },
 ];
 

@@ -53,9 +53,9 @@ const WorkAddForm = () => {
 
     try {
       await httpClient.post<Response>('/works', reqBody);
-      message.success('작업 등록 완료');
+      message.success('업무 등록 완료');
     } catch (err) {
-      message.error('작업 등록 중 에러 발생, 개발자에게 문의하세요.');
+      message.error('업무 등록 중 에러 발생, 개발자에게 문의하세요.');
       console.error(err);
     }
   }, []);
