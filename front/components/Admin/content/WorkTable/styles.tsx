@@ -18,20 +18,20 @@ export const globalCSS = css`
     }
   }
 
-  .ant-modal-body .ant-form-horizontal div:last-child {
+  .ant-modal-body .ant-form-horizontal div:last-of-type {
     margin-bottom: 0;
   }
 
   .ant-picker {
-    &-panels > *:first-child button.ant-picker-header-next-btn {
+    &-panels > *:first-of-type button.ant-picker-header-next-btn {
       visibility: visible !important;
     }
 
-    &-panels > *:first-child button.ant-picker-header-super-next-btn {
+    &-panels > *:first-of-type button.ant-picker-header-super-next-btn {
       visibility: visible !important;
     }
 
-    &-panels > *:last-child {
+    &-panels > *:last-of-type {
       display: none;
     }
 
