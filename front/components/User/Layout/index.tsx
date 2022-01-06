@@ -9,6 +9,7 @@ import {
   AiOutlineNotification,
   AiOutlineSetting,
 } from 'react-icons/ai';
+import { RiBitCoinFill, RiBitCoinLine } from 'react-icons/ri';
 import * as S from './styles';
 
 type NavItem = {
@@ -29,6 +30,12 @@ const navItems: NavItem[] = [
     outlineIcon: <AiOutlineNotification size={20} />,
     fillIcon: <AiFillNotification size={20} />,
     text: '공지사항',
+  },
+  {
+    href: '/worker/monthly-index',
+    outlineIcon: <RiBitCoinLine size={20} />,
+    fillIcon: <RiBitCoinFill size={20} />,
+    text: '지수 합계',
   },
   {
     href: '/worker/setting',
