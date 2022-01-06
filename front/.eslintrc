@@ -34,6 +34,7 @@
       "version": "detect"
     }
   },
+  "ignorePatterns": ["worker/index.js"],
   "rules": {
     "no-bitwise": "off",
     "import/extensions": "off",
