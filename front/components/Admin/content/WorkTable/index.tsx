@@ -90,9 +90,10 @@ const WorkTable = () => {
       <S.TableHeader>
         <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
         <AddButton
+          swrKey={swrKey}
           Button={({ onClick }) => (
             <Button type="default" onClick={onClick}>
-              업무 등록
+              등록
             </Button>
           )}
         />

@@ -47,7 +47,9 @@ const WorkAddForm = ({
   prevWork,
   swrKey = prevWork?.swrKey,
 }: Props) => {
-  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher);
+  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher, {
+    revalidateOnMount: false,
+  });
 
   const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
     async (values) => {

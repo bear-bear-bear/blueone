@@ -7,10 +7,11 @@ import type { ProcessedWork } from './index';
 
 type Props = {
   record?: ProcessedWork;
+  swrKey?: string;
   Button?: FC<{ onClick: MouseEventHandler<HTMLButtonElement> }>;
 };
 
-const AddButton = ({ record, Button }: Props) => {
+const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
   const [form] = Form.useForm<WorkAddAntdFormFields>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
@@ -48,6 +49,7 @@ const AddButton = ({ record, Button }: Props) => {
           form={form}
           validateTrigger={formValidateTrigger}
           setValidateTrigger={setFormValidateTrigger}
+          swrKey={swrKey}
           prevWork={record}
           setSubmitLoading={setSubmitLoading}
         />
