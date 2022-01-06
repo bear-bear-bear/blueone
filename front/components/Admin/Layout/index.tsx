@@ -1,11 +1,16 @@
 import { useState, FC, useCallback } from 'react';
+import useSWRImmutable from 'swr/immutable';
 import Image from 'next/image';
 import { Layout, Empty, Menu, MenuProps } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
 import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/icons';
 import contentList, { ContentTitle } from '@components/Admin/content';
 import LogoutButton from '@components/LogoutButton';
+import { axiosFetcher } from '@utils/swr';
+import type { EndPoint } from '@typings';
 import * as S from './styles';
+
+type Users = EndPoint['GET /users']['responses']['200'];
 
 const { Content: Main, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -18,6 +23,11 @@ const EmptyContent = () => (
 );
 
 const AdminLayout: FC = () => {
+  // WorkTable 에서 users 를 useSWRImmutable(revalidateOnMount: false)과 함께 사용하기 위한 initial fetch
+  useSWRImmutable<Users>('/users', axiosFetcher, {
+    revalidateOnMount: true,
+  });
+
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [selectedKey, setSelectedKey] = useState<ContentTitle>('업무 목록');
   const SelectedContent = contentList.find((v) => v.title === selectedKey)?.component;

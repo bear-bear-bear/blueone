@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import { List, Spin } from 'antd';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, Unpacked } from '@typings';
@@ -10,9 +10,7 @@ export type FullUsers = EndPoint['GET /users']['responses']['200'];
 export type FullUser = Unpacked<FullUsers>;
 
 const UserList = () => {
-  const { data: users } = useSWR<FullUsers>('/users', axiosFetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
+  const { data: users } = useSWRImmutable<FullUsers>('/users', axiosFetcher, {
     revalidateOnMount: true,
   });
 
