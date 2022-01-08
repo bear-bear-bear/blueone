@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { message } from 'antd';
 import useUser from '@hooks/useUser';
 import UserLayout from '@components/User/Layout';
-import MonthlyIndex from '@components/User/MonthlyIndex';
+import Analysis from '@components/User/Analysis';
 
-const MonthlyIndexPage: NextPage = () => {
+const AnalysisPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
     redirectTo: '/login',
   });
@@ -20,9 +20,9 @@ const MonthlyIndexPage: NextPage = () => {
   if (!isLoggedIn) return null;
   return (
     <UserLayout bodyNoPadding>
-      <MonthlyIndex />
+      <Analysis />
     </UserLayout>
   );
 };
 
-export default MonthlyIndexPage;
+export default AnalysisPage;

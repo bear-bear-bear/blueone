@@ -32,10 +32,10 @@ const navItems: NavItem[] = [
     text: '공지사항',
   },
   {
-    href: '/worker/monthly-index',
+    href: '/worker/analysis',
     outlineIcon: <RiBitCoinLine size={20} />,
     fillIcon: <RiBitCoinFill size={20} />,
-    text: '지수 합계',
+    text: '지수 분석',
   },
   {
     href: '/worker/setting',
