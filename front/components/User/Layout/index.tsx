@@ -5,11 +5,11 @@ import {
   AiFillCar,
   AiFillNotification,
   AiFillSetting,
+  AiOutlineBarChart,
   AiOutlineCar,
   AiOutlineNotification,
   AiOutlineSetting,
 } from 'react-icons/ai';
-import { RiBitCoinFill, RiBitCoinLine } from 'react-icons/ri';
 import * as S from './styles';
 
 type NavItem = {
@@ -33,8 +33,8 @@ const navItems: NavItem[] = [
   },
   {
     href: '/worker/analysis',
-    outlineIcon: <RiBitCoinLine size={20} />,
-    fillIcon: <RiBitCoinFill size={20} />,
+    outlineIcon: <AiOutlineBarChart size={20} />,
+    fillIcon: <AiOutlineBarChart size={20} />,
     text: '지수 분석',
   },
   {

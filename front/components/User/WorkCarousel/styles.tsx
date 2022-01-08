@@ -64,7 +64,7 @@ export const WorkInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.66rem;
-  margin-top: 1.66rem;
+  margin-top: 1.33rem;
 `;
 
 export const Row = styled.div`

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Card, Tooltip, Typography } from 'antd';
-import { MdAttachMoney } from 'react-icons/md';
+import { MoneyCollectOutlined } from '@ant-design/icons';
 import type { Unpacked } from '@typings';
 import CheckButton from '@components/User/WorkCarousel/WorkCard/CheckButton';
 import DoneButton from '@components/User/WorkCarousel/WorkCard/DoneButton';
@@ -17,7 +17,7 @@ const { Meta } = Card;
 const { Paragraph } = Typography;
 
 const WorkDoneStamp = () => (
-  <Tooltip title="완료된 업무이에요.">
+  <Tooltip title="완료된 업무예요.">
     <S.WorkDoneStamp size={45} />
   </Tooltip>
 );
@@ -39,6 +39,7 @@ const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ l
 const WorkCard = ({ work }: Props) => {
   const isWorkChecked = !!work.checkTime;
   const isWorkDone = !!work.endTime;
+  const payout = ((work.charge + (work.subsidy ?? 0)) * 8) / 10;
 
   return (
     <S.StyledCard
@@ -54,11 +55,16 @@ const WorkCard = ({ work }: Props) => {
       <Meta
         title={
           <p>
-            <MdAttachMoney size={20} style={{ verticalAlign: 'text-bottom' }} />
-            <span style={{ marginLeft: '0.33rem' }}>구간지수 {work.charge}</span>
+            <MoneyCollectOutlined style={{ fontSize: '24px' }} />
+            <span style={{ marginLeft: '0.33rem' }}>최종지수 {payout}</span>
           </p>
         }
-        description={work.subsidy ? `지원지수 ${work.subsidy}` : undefined}
+        description={
+          <div>
+            <p>- 구간지수 {work.charge}</p>
+            {work.subsidy && <p>- 지원지수 {work.subsidy}</p>}
+          </div>
+        }
       />
       <S.WorkInfo>
         <InfoRow label="출발지" content={work.origin} copyable />
