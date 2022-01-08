@@ -1,9 +1,17 @@
+import { Tabs } from 'antd';
 import * as S from './styles';
 
-// const datePicker = {
-//   thisMonth: []
-// }
+const { TabPane } = Tabs;
 
-const Analysis = () => <div style={{ color: 'white' }}>임시</div>;
+const Analysis = () => (
+  <S.StyledTabs defaultActiveKey="1" size="large">
+    <TabPane tab="이번 달" key="1">
+      이번 달
+    </TabPane>
+    <TabPane tab="올해" key="2">
+      올해
+    </TabPane>
+  </S.StyledTabs>
+);
 
 export default Analysis;
