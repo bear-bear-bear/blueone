@@ -96,13 +96,16 @@ const columns: ColumnsType<ProcessedWork> = [
     title: '',
     key: 'action',
     align: 'center',
-    render: (_, record) => (
-      <>
-        <EditButton record={record} />
+    render: (_, record) =>
+      record.isCompletelyDone ? (
         <AddButton record={record} />
-        <DeleteButton record={record} />
-      </>
-    ),
+      ) : (
+        <>
+          <EditButton record={record} />
+          <AddButton record={record} />
+          <DeleteButton record={record} />
+        </>
+      ),
     width: 90,
   },
 ];

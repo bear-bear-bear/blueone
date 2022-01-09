@@ -26,6 +26,7 @@ export type ProcessedWork = FullWork & {
   payout: string | number;
   realname?: UserInfo['realname'];
   isDone: boolean;
+  isCompletelyDone: boolean;
   swrKey: string;
 };
 
@@ -73,6 +74,7 @@ const WorkTable = () => {
       payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
       realname: work.User?.UserInfo?.realname,
       isDone: work.endTime !== null || +new Date(work.createdAt) < TODAY_START_MS,
+      isCompletelyDone: work.endTime !== null && +new Date(work.createdAt) < TODAY_START_MS,
       swrKey,
     }));
   }, [works, TODAY_START_MS, swrKey]);
