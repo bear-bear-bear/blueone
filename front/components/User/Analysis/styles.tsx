@@ -36,4 +36,20 @@ export const StyledTabs = styled(Tabs)`
   .ant-tabs-ink-bar {
     background-color: #fff !important;
   }
+
+  .ant-tabs-content {
+    padding: 0 1rem;
+    overflow-y: auto !important;
+    max-height: 70vh;
+  }
+`;
+
+export const Header = styled.header`
+  margin-top: 1rem;
+  margin-bottom: 1.66rem;
+
+  h1 {
+    color: #fff;
+    font-size: 1.33rem;
+  }
 `;

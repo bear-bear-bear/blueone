@@ -1,7 +1,11 @@
+import { useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
-import { EndPoint } from '@typings';
-import { axiosFetcher } from '@utils/swr';
 import dayjs from 'dayjs';
+import { Divider } from 'antd';
+import { Column } from '@ant-design/plots';
+import { axiosFetcher } from '@utils/swr';
+import type { EndPoint } from '@typings';
+import * as S from './styles';
 
 type Response = EndPoint['GET /user/works/analysis']['responses']['200'];
 
@@ -9,14 +13,25 @@ const AnalysisByDay = () => {
   const { data: workAnalysis } = useSWRImmutable<Response>('/user/works/analysis?by=day', axiosFetcher, {
     revalidateOnMount: true,
   });
+  const chartData = useMemo(
+    () =>
+      Object.entries(workAnalysis ?? {}).map(([day, totalPayment]) => ({
+        날짜: `${day}일`,
+        지수합계: totalPayment,
+      })),
+    [workAnalysis],
+  );
   const thisDate = dayjs().date();
-
-  console.log('byDay', workAnalysis);
 
   if (!workAnalysis) return null;
   return (
     <>
-      <p>오늘의 지수 합계: {workAnalysis[`${thisDate}`]}</p>
+      <S.Header>
+        {thisDate !== 1 && <p>어제자 지수 합계: {workAnalysis[`${thisDate - 1}`]}</p>}
+        <h1>오늘자 지수 합계: {workAnalysis[`${thisDate}`]}</h1>
+      </S.Header>
+      <Divider />
+      <Column data={chartData} xField="날짜" yField="지수합계" color="#0076BB" xAxis={{}} />
     </>
   );
 };
