@@ -4,6 +4,8 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
+import dayjs from 'dayjs';
+import { DatePickQuery, ISODateString, QueryTypedRequest } from 'typings';
 
 const router = express.Router();
 
@@ -134,5 +136,100 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
     next(err);
   }
 });
+
+/**
+ * 올해 혹은 이번달 내 업무의 최종지수 통계 가져오기
+ */
+router.get(
+  '/works/analysis',
+  isLoggedIn,
+  async (req: QueryTypedRequest<{ by: 'day' | 'month' }>, res, next) => {
+    const { by = 'day' } = req.query;
+
+    const today = dayjs();
+    const dayjsUnit = {
+      day: 'month',
+      month: 'year',
+    } as const;
+    const firstDateOfRange = today.startOf(dayjsUnit[by]).toISOString();
+
+    try {
+      const doneWorks = await Work.findAll({
+        where: {
+          UserId: req.user?.id,
+          endTime: {
+            [Op.ne]: null,
+          },
+          createdAt: {
+            [Op.gt]: firstDateOfRange,
+          },
+        },
+        attributes: {
+          include: ['charge', 'subsidy', 'checkTime'],
+        },
+        order: [['createdAt', 'DESC']],
+      });
+
+      if (doneWorks.length === 0) {
+        res.status(200).json([]);
+        return;
+      }
+
+      const getPayout = (charge: Work['charge'], subsidy: Work['subsidy']) => {
+        return ((charge + (subsidy ?? 0)) * 10) / 8;
+      };
+
+      const getWorksAnalysisAtThisMonth = async () => {
+        const lastDayOfThisMonth = today.endOf('month').date();
+        const dateMap = [...Array(lastDayOfThisMonth)].reduce<{
+          [date: `${number}`]: 0;
+        }>((acc, _, i) => {
+          acc[`${i + 1}`] = 0;
+          return acc;
+        }, {});
+
+        return doneWorks.reduce((acc, curr) => {
+          const currWorkPayout = getPayout(curr.charge, curr.subsidy);
+          const currDate = dayjs(curr.checkTime).date();
+          dateMap[`${currDate}`] += currWorkPayout;
+          return dateMap;
+        }, dateMap);
+      };
+
+      const getWorksAnalysisAtThisYear = async () => {
+        const monthMap = [...Array(12)].reduce<{
+          [date: `${number}`]: 0;
+        }>((acc, _, i) => {
+          acc[`${i + 1}`] = 0;
+          return acc;
+        }, {});
+
+        return doneWorks.reduce((acc, curr) => {
+          const currWorkPayout = getPayout(curr.charge, curr.subsidy);
+          const currMonth = dayjs(curr.checkTime).month() + 1; // dayjs month is 0~11
+          monthMap[`${currMonth}`] += currWorkPayout;
+          return monthMap;
+        }, monthMap);
+      };
+
+      let worksAnalysis: { [dateOrMonth: `${number}`]: number };
+      switch (by) {
+        case 'day':
+          worksAnalysis = await getWorksAnalysisAtThisMonth();
+          break;
+        case 'month':
+          worksAnalysis = await getWorksAnalysisAtThisYear();
+          break;
+        default:
+          worksAnalysis = await getWorksAnalysisAtThisMonth();
+          break;
+      }
+
+      res.status(200).json(worksAnalysis);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;

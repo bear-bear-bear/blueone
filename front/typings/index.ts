@@ -115,6 +115,14 @@ export interface EndPoint {
       200: Work[];
     };
   };
+  /**
+   * 올해 혹은 이번달 내 업무의 최종지수 통계 가져오기
+   */
+  'GET /user/works/analysis': {
+    responses: {
+      200: { [dayOrMonth: `${number}`]: number };
+    };
+  };
 
   /**
    * 유저 리스트 가져오기

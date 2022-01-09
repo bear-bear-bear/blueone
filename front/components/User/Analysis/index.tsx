@@ -1,15 +1,17 @@
 import { Tabs } from 'antd';
+import AnalysisByDay from '@components/User/Analysis/AnalysisByDay';
+import AnalysisByMonth from '@components/User/Analysis/AnalysisByMonth';
 import * as S from './styles';
 
 const { TabPane } = Tabs;
 
 const Analysis = () => (
   <S.StyledTabs defaultActiveKey="1" size="large">
-    <TabPane tab="이번 달" key="1">
-      이번 달
+    <TabPane tab="일" key="1">
+      <AnalysisByDay />
     </TabPane>
-    <TabPane tab="올해" key="2">
-      올해
+    <TabPane tab="월" key="2">
+      <AnalysisByMonth />
     </TabPane>
   </S.StyledTabs>
 );
