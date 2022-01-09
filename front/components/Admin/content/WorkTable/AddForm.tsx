@@ -92,9 +92,6 @@ const WorkAddForm = ({
       size="middle"
       {...layout}
     >
-      <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelecter form={form} defaultUserId={prevWork?.UserId} immutable />
-      </Form.Item>
       <Form.Item name="origin" label="출발지" rules={[{ required: true }, { type: 'string', max: 255 }]}>
         <Input autoComplete="off" />
       </Form.Item>
@@ -122,6 +119,9 @@ const WorkAddForm = ({
         rules={[{ type: 'number', min: 0, max: 16777216 }]}
       >
         <InputNumber autoComplete="off" />
+      </Form.Item>
+      <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
+        <UserSelecter form={form} defaultUserId={prevWork?.UserId} immutable />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />

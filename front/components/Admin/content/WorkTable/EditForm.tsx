@@ -103,9 +103,6 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       size="middle"
       {...layout}
     >
-      <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelecter form={form} defaultUserId={prevWork.UserId} disabled={!!prevWork.endTime} immutable />
-      </Form.Item>
       <Form.Item name="origin" label="출발지" rules={[{ required: true }, { type: 'string', max: 255 }]}>
         <Input autoComplete="off" />
       </Form.Item>
@@ -133,6 +130,9 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
         rules={[{ type: 'number', min: 0, max: 16777216 }]}
       >
         <InputNumber autoComplete="off" />
+      </Form.Item>
+      <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
+        <UserSelecter form={form} defaultUserId={prevWork.UserId} disabled={!!prevWork.endTime} immutable />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />
