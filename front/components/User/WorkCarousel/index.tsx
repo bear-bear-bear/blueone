@@ -6,7 +6,6 @@ import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import type { Settings } from '@ant-design/react-slick';
 import EmptyContent from '@components/User/parts/Empty';
-import { translate } from '@antv/g2/lib/util/transform';
 import WorkCard from './WorkCard';
 import * as S from './styles';
 
