@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import dayjs from 'dayjs';
+import { Skeleton } from 'antd';
 import { Column } from '@ant-design/plots';
 import { axiosFetcher } from '@utils/swr';
+import EmptyContent from '@components/User/parts/Empty';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
 
@@ -22,7 +24,12 @@ const AnalysisByMonth = () => {
   );
   const thisMonth = dayjs().month() + 1; // dayjs month is 0~11
 
-  if (!workAnalysis) return null;
+  if (!workAnalysis) {
+    return <Skeleton />;
+  }
+  if (chartData.length === 0) {
+    return <EmptyContent description="아직 완료된 업무가 없어요 :)" />;
+  }
   return (
     <>
       <S.Header>

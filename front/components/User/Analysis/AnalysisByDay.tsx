@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import dayjs from 'dayjs';
-import { Divider } from 'antd';
+import { Divider, Skeleton } from 'antd';
 import { Column } from '@ant-design/plots';
+import EmptyContent from '@components/User/parts/Empty';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
@@ -23,7 +24,12 @@ const AnalysisByDay = () => {
   );
   const thisDate = dayjs().date();
 
-  if (!workAnalysis) return null;
+  if (!workAnalysis) {
+    return <Skeleton />;
+  }
+  if (chartData.length === 0) {
+    return <EmptyContent description="아직 완료된 업무가 없어요 :)" />;
+  }
   return (
     <>
       <S.Header>
@@ -31,7 +37,7 @@ const AnalysisByDay = () => {
         <h1>오늘자 지수 합계: {workAnalysis[`${thisDate}`]}</h1>
       </S.Header>
       <Divider />
-      <Column data={chartData} xField="날짜" yField="지수합계" color="#0076BB" xAxis={{}} />
+      <Column data={chartData} xField="날짜" yField="지수합계" color="#0076BB" />
     </>
   );
 };

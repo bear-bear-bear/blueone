@@ -1,26 +1,9 @@
 import type { NextPage } from 'next';
-import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
-import { Empty, message } from 'antd';
+import { message } from 'antd';
+import useUser from '@hooks/useUser';
 import UserLayout from '@components/User/Layout';
-
-const TempEmpty = () => (
-  <Empty
-    image={Empty.PRESENTED_IMAGE_SIMPLE}
-    imageStyle={{
-      height: 60,
-    }}
-    description="공지사항이 아직 등록되지 않았어요."
-    style={{
-      position: 'relative',
-      top: '42%',
-      transform: 'translateY(-50%)',
-      color: '#fafafa',
-      fontWeight: 400,
-      fontSize: '16px',
-    }}
-  />
-);
+import EmptyContent from '@components/User/parts/Empty';
 
 const NoticePage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
@@ -37,7 +20,7 @@ const NoticePage: NextPage = () => {
   if (!isLoggedIn) return null;
   return (
     <UserLayout>
-      <TempEmpty />
+      <EmptyContent description="공지사항이 아직 등록되지 않았어요." />
     </UserLayout>
   );
 };

@@ -1,44 +1,32 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import useSWR from 'swr';
-import { Card, Carousel, Empty, message } from 'antd';
+import { Card, Carousel, message } from 'antd';
 import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import type { Settings } from '@ant-design/react-slick';
+import EmptyContent from '@components/User/parts/Empty';
+import { translate } from '@antv/g2/lib/util/transform';
 import WorkCard from './WorkCard';
 import * as S from './styles';
 
 export type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 
-const EmptyWork = () => (
-  <S.StyledEmpty
-    image={Empty.PRESENTED_IMAGE_SIMPLE}
-    imageStyle={{
-      height: 60,
-    }}
-    description="아직 배정된 업무가 없어요 :)"
-  />
-);
+const tempLocalStorage = {
+  setItem() {
+    return null;
+  },
+  getItem() {
+    return '0';
+  },
+};
 
 const WorkCarousel = () => {
   const { data: myWorks } = useSWR<MyWorks>('/user/works', axiosFetcher, {
     refreshInterval: 60 * 1000,
   });
   const prevWorkCount = useRef<number | undefined>(myWorks?.length);
-  const localStorage = useMemo(
-    () =>
-      typeof window !== 'undefined'
-        ? window.localStorage
-        : {
-            setItem() {
-              return null;
-            },
-            getItem() {
-              return '0';
-            },
-          },
-    [typeof window],
-  );
+  const localStorage = typeof window !== 'undefined' ? window.localStorage : tempLocalStorage;
   const initialSlide = Number(localStorage.getItem('currSlide'));
 
   const afterChange: Settings['afterChange'] = useCallback(
@@ -59,10 +47,10 @@ const WorkCarousel = () => {
   }, [myWorks, prevWorkCount]);
 
   if (!myWorks) {
-    return <Card loading />;
+    return <Card loading style={{ position: 'relative', top: '50%', transform: 'translateY(-50%)' }} />;
   }
   if (myWorks.length === 0) {
-    return <EmptyWork />;
+    return <EmptyContent description="아직 배정된 업무가 없어요 :)" />;
   }
   return (
     <>
