@@ -33,6 +33,9 @@ const AnalysisByDay = () => {
   return (
     <>
       <S.Header>
+        <section className="announcement">
+          <p>※ 익일입고는 확인 시점으로 정산됩니다.</p>
+        </section>
         {thisDate !== 1 && <p>어제자 지수 합계: {workAnalysis[`${thisDate - 1}`]}</p>}
         <h1>오늘자 지수 합계: {workAnalysis[`${thisDate}`]}</h1>
       </S.Header>

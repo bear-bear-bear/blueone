@@ -52,4 +52,9 @@ export const Header = styled.header`
     color: #fff;
     font-size: 1.33rem;
   }
+
+  section.announcement {
+    font-size: 0.8rem;
+    margin-bottom: 0.33rem;
+  }
 `;

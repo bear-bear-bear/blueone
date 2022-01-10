@@ -113,25 +113,48 @@ router.post('/password', isLoggedIn, async (req, res, next) => {
 });
 
 /**
- * 오늘자 내 작업 리스트 가져오기
+ * 3일 이내 내 작업 리스트 가져오기 (완료 날짜가 오늘인 항목을 제외하곤 완료된 작업 미포함)
  */
 router.get('/works', isLoggedIn, async (req, res, next) => {
-  const TODAY_START = new Date().setHours(0, 0, 0, 0);
+  const today = dayjs();
+  const TODAY_START = today.startOf('day').toISOString();
+  const THREE_DAYS_AGO_START = today
+    .startOf('day')
+    .subtract(3, 'days')
+    .toISOString();
 
   try {
-    const activatedWorks = await Work.findAll({
+    const works = await Work.findAll({
       where: {
         UserId: req.user?.id,
-        createdAt: {
-          [Op.gt]: TODAY_START,
-        },
+        [Op.or]: [
+          {
+            createdAt: {
+              [Op.gt]: TODAY_START,
+            },
+          },
+          {
+            createdAt: {
+              [Op.gt]: THREE_DAYS_AGO_START,
+              [Op.lt]: TODAY_START,
+            },
+            endTime: {
+              [Op.or]: [
+                null,
+                {
+                  [Op.gt]: TODAY_START,
+                },
+              ],
+            },
+          },
+        ],
       },
       order: [
         ['endTime', 'ASC'],
-        ['createdAt', 'DESC'],
+        ['createdAt', 'ASC'],
       ],
     });
-    res.status(200).json(activatedWorks);
+    res.status(200).json(works);
   } catch (err) {
     next(err);
   }
@@ -176,7 +199,7 @@ router.get(
       }
 
       const getPayout = (charge: Work['charge'], subsidy: Work['subsidy']) => {
-        return ((charge + (subsidy ?? 0)) * 10) / 8;
+        return ((charge + (subsidy ?? 0)) * 8) / 10;
       };
 
       const getWorksAnalysisAtThisMonth = async () => {

@@ -108,7 +108,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 오늘자 내 업무 리스트 가져오기
+   * 3일 이내 내 작업 리스트 가져오기 (완료 날짜가 오늘인 항목을 제외하곤 완료된 작업 미포함)
    */
   'GET /user/works': {
     responses: {

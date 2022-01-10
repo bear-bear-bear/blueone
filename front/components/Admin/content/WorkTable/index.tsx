@@ -30,13 +30,21 @@ export type ProcessedWork = FullWork & {
 };
 
 const processWorkDateTimes = (work: FullWork) => {
+  const checkTime = dayjs(work.checkTime);
+  const endTime = dayjs(work.endTime);
+
   const thisYear = dayjs().year();
   const createdAt = dayjs(work.createdAt);
+  const createdAtDayStart = createdAt.startOf('day').valueOf();
   const updatedAt = dayjs(work.updatedAt);
 
   return {
-    processedCheckTime: work.checkTime ? dayjs(work.checkTime).format('A hh:mm') : '-',
-    processedEndTime: work.endTime ? dayjs(work.endTime).format('A hh:mm') : '-',
+    processedCheckTime: work.checkTime
+      ? checkTime.format(checkTime.startOf('day').valueOf() === createdAtDayStart ? 'A hh:mm' : 'MM/DD_A hh:mm')
+      : '-',
+    processedEndTime: work.endTime
+      ? endTime.format(endTime.startOf('day').valueOf() === createdAtDayStart ? 'A hh:mm' : 'MM/DD_A hh:mm')
+      : '-',
     processedCreatedAt: createdAt.format(createdAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
     processedUpdatedAt: updatedAt.format(updatedAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
   };
@@ -71,9 +79,8 @@ const WorkTable = () => {
     if (!works) return undefined;
     return works
       .filter((work) => {
-        const isPast = +new Date(work.createdAt) < TODAY_START_MS;
-        const isDone = work.endTime !== null;
-        return isVisiblePastDoneWork || !(isPast && isDone);
+        const isDoneAtPast = work.endTime !== null && +new Date(work.endTime) < TODAY_START_MS;
+        return isVisiblePastDoneWork || !isDoneAtPast;
       })
       .map((work) => ({
         ...work,
@@ -103,7 +110,7 @@ const WorkTable = () => {
         <section>
           <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
           <Checkbox onChange={handleChangeCheckbox} style={{ marginLeft: '0.66rem' }}>
-            지난 날짜의 완료된 작업 표시
+            지난 날짜에 완료된 작업 표시
           </Checkbox>
         </section>
         <AddButton
