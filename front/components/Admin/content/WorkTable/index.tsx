@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import qs from 'qs';
 import useSWR from 'swr';
 import { axiosFetcher } from '@utils/swr';
-import { Button, Spin, Table } from 'antd';
+import { Button, Checkbox, Spin, Table } from 'antd';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
 import type { EndPoint, UserInfo, Unpacked } from '@typings';
@@ -26,7 +26,6 @@ export type ProcessedWork = FullWork & {
   payout: string | number;
   realname?: UserInfo['realname'];
   isDone: boolean;
-  isCompletelyDone: boolean;
   swrKey: string;
 };
 
@@ -56,28 +55,39 @@ const WorkTable = () => {
   const today = dayjs();
   const TODAY_START_MS = today.startOf('d').valueOf();
   const TODAY_YYYY_MM_DD = today.format('YYYY-MM-DD');
+  const THREE_DAYS_AGO_YYYY_MM_DD = today.subtract(3, 'days').format('YYYY-MM-DD');
 
   const [dateRange, setDateRange] = useState<DateRange>({
-    start: TODAY_YYYY_MM_DD,
+    start: THREE_DAYS_AGO_YYYY_MM_DD,
     end: TODAY_YYYY_MM_DD,
   });
   const swrKey = `/works?${qs.stringify(dateRange)}`;
   const { data: works } = useSWR<FullWorks>(swrKey, axiosFetcher, {
     refreshInterval: 30 * 1000,
   });
+  const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState<boolean>(false);
 
   const dataSource: ProcessedWork[] | undefined = useMemo(() => {
     if (!works) return undefined;
-    return works.map((work) => ({
-      ...work,
-      ...processWorkDateTimes(work),
-      payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
-      realname: work.User?.UserInfo?.realname,
-      isDone: work.endTime !== null || +new Date(work.createdAt) < TODAY_START_MS,
-      isCompletelyDone: work.endTime !== null && +new Date(work.createdAt) < TODAY_START_MS,
-      swrKey,
-    }));
-  }, [works, TODAY_START_MS, swrKey]);
+    return works
+      .filter((work) => {
+        const isPast = +new Date(work.createdAt) < TODAY_START_MS;
+        const isDone = work.endTime !== null;
+        return isVisiblePastDoneWork || !(isPast && isDone);
+      })
+      .map((work) => ({
+        ...work,
+        ...processWorkDateTimes(work),
+        payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
+        realname: work.User?.UserInfo?.realname,
+        isDone: work.endTime !== null,
+        swrKey,
+      }));
+  }, [works, TODAY_START_MS, swrKey, isVisiblePastDoneWork]);
+
+  const handleChangeCheckbox = () => {
+    setIsVisiblePastDoneWork((prev) => !prev);
+  };
 
   if (!dataSource) {
     return (
@@ -90,7 +100,12 @@ const WorkTable = () => {
     <>
       <Global styles={S.globalCSS} />
       <S.TableHeader>
-        <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
+        <section>
+          <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
+          <Checkbox onChange={handleChangeCheckbox} style={{ marginLeft: '0.66rem' }}>
+            지난 날짜의 완료된 작업 표시
+          </Checkbox>
+        </section>
         <AddButton
           swrKey={swrKey}
           Button={({ onClick }) => (

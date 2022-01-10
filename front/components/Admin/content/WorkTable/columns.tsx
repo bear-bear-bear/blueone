@@ -97,7 +97,7 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'action',
     align: 'center',
     render: (_, record) =>
-      record.isCompletelyDone ? (
+      record.isDone ? (
         <AddButton record={record} />
       ) : (
         <>
