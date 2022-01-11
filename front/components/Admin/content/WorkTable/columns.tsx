@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import AddButton from './AddButton';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
@@ -96,16 +97,28 @@ const columns: ColumnsType<ProcessedWork> = [
     title: '',
     key: 'action',
     align: 'center',
-    render: (_, record) =>
-      record.isDone ? (
-        <AddButton record={record} />
-      ) : (
-        <>
-          <EditButton record={record} />
-          <AddButton record={record} />
-          <DeleteButton record={record} />
-        </>
-      ),
+    render: (_, record) => {
+      if (record.endTime === null) {
+        return (
+          <>
+            <EditButton record={record} />
+            <AddButton record={record} />
+            <DeleteButton record={record} />
+          </>
+        );
+      }
+      const TODAY_START_MS = dayjs().startOf('d').valueOf();
+      const isDoneAtToday = +new Date(record.endTime) > TODAY_START_MS;
+      if (isDoneAtToday) {
+        return (
+          <>
+            <EditButton record={record} />
+            <AddButton record={record} />
+          </>
+        );
+      }
+      return <AddButton record={record} />;
+    },
     width: 90,
   },
 ];
