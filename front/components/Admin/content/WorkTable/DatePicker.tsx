@@ -43,6 +43,7 @@ const CustomDatePicker = ({ dateRange, setDateRange }: Props) => {
       onChange={handleChange}
       defaultValue={[dayjs(dateRange.start), dayjs(dateRange.end)]}
       disabledDate={disabledDate}
+      allowClear={false}
     />
   );
 };
