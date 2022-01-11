@@ -202,10 +202,16 @@ router.get(
         return ((charge + (subsidy ?? 0)) * 8) / 10;
       };
 
+      const plusWithoutFloatingPointIssue = (a: number, b: number) => {
+        const MAX_FLOATING_POINT = 2;
+        const tempNumber = 10 * MAX_FLOATING_POINT;
+        return (a * tempNumber + b * tempNumber) / tempNumber;
+      };
+
       const getWorksAnalysisAtThisMonth = async () => {
         const lastDayOfThisMonth = today.endOf('month').date();
         const dateMap = [...Array(lastDayOfThisMonth)].reduce<{
-          [date: `${number}`]: 0;
+          [date: `${number}`]: number;
         }>((acc, _, i) => {
           acc[`${i + 1}`] = 0;
           return acc;
@@ -214,14 +220,17 @@ router.get(
         return doneWorks.reduce((acc, curr) => {
           const currWorkPayout = getPayout(curr.charge, curr.subsidy);
           const currDate = dayjs(curr.checkTime).date();
-          dateMap[`${currDate}`] += currWorkPayout;
+          dateMap[`${currDate}`] = plusWithoutFloatingPointIssue(
+            dateMap[`${currDate}`],
+            currWorkPayout,
+          );
           return dateMap;
         }, dateMap);
       };
 
       const getWorksAnalysisAtThisYear = async () => {
         const monthMap = [...Array(12)].reduce<{
-          [date: `${number}`]: 0;
+          [date: `${number}`]: number;
         }>((acc, _, i) => {
           acc[`${i + 1}`] = 0;
           return acc;
@@ -230,7 +239,10 @@ router.get(
         return doneWorks.reduce((acc, curr) => {
           const currWorkPayout = getPayout(curr.charge, curr.subsidy);
           const currMonth = dayjs(curr.checkTime).month() + 1; // dayjs month is 0~11
-          monthMap[`${currMonth}`] += currWorkPayout;
+          monthMap[`${currMonth}`] = plusWithoutFloatingPointIssue(
+            monthMap[`${currMonth}`],
+            currWorkPayout,
+          );
           return monthMap;
         }, monthMap);
       };
