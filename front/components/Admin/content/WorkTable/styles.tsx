@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 export const globalCSS = css`
   tr {
-    background: #fff;
+    background: #fff !important;
   }
 
   .row--work-done {
@@ -15,6 +15,10 @@ export const globalCSS = css`
     }
     &:hover td,
     &:focus td {
+      background-color: #ccc !important;
+    }
+
+    .ant-table-cell-row-hover {
       background-color: #ccc !important;
     }
   }
