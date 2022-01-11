@@ -5,8 +5,9 @@ export const globalCSS = css`
   tr {
     background: #fff;
   }
+
   .row--work-done {
-    background-color: #ccc;
+    background-color: #ccc !important;
     transition: none;
 
     td {
