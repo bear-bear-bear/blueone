@@ -7,19 +7,19 @@ export const globalCSS = css`
   }
 
   .row--work-done {
-    background-color: #ccc !important;
+    background: #ccc !important;
     transition: none;
 
     td {
-      transition: background-color 0.1s !important;
+      transition: background 0.1s !important;
     }
     &:hover td,
     &:focus td {
-      background-color: #ccc !important;
+      background: #ccc !important;
     }
 
     .ant-table-cell-row-hover {
-      background-color: #ccc !important;
+      background: #ccc !important;
     }
   }
 
