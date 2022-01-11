@@ -55,6 +55,16 @@ export const Header = styled.header`
 
   section.announcement {
     font-size: 0.8rem;
-    margin-bottom: 0.33rem;
+    margin-bottom: 0.66rem;
+    color: #aaa;
   }
+`;
+
+export const TempVerticalCenterLayout = styled.div`
+  height: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 1rem;
 `;

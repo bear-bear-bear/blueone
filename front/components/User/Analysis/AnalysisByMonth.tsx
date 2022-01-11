@@ -33,6 +33,9 @@ const AnalysisByMonth = () => {
   return (
     <>
       <S.Header>
+        <section className="announcement">
+          <p>※ 익일입고는 확인 시점으로 정산됩니다.</p>
+        </section>
         {thisMonth !== 1 && <p>지난 달 지수 합계: {workAnalysis[`${thisMonth - 1}`]}</p>}
         <h1>이번 달 지수 합계: {workAnalysis[`${thisMonth}`]}</h1>
       </S.Header>
