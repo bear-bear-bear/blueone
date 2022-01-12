@@ -2,12 +2,14 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Global } from '@emotion/react';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import httpClient from '@utils/axios';
+import type { AxiosError } from 'axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
 
 type RequestBody = EndPoint['POST /user/password']['requestBody'];
 type Response = EndPoint['POST /user/password']['responses']['204'];
+type RequestError = EndPoint['POST /user/password']['responses']['500'];
 type Props = {
   form: FormInstance<RequestBody>;
   closeModal: () => void;
@@ -36,8 +38,7 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
         closeModal();
         message.success('비밀번호가 변경되었어요.', 4);
       } catch (err) {
-        message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.', 4);
-        console.error(err);
+        logAxiosError<RequestError>(err as AxiosError<RequestError>);
       }
       setSubmitLoading(false);
     },

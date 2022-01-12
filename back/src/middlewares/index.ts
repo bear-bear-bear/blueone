@@ -38,6 +38,7 @@ export const errorLogger: ErrorRequestHandler = (err, req, res, next) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandler: ErrorRequestHandler = (err, req, res, _) => {
-  res.status(500);
-  res.send('Server Error');
+  res.status(500).json({
+    message: '500 Server Error',
+  });
 };

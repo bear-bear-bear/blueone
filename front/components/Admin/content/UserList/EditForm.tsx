@@ -1,11 +1,12 @@
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import httpClient from '@utils/axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import regex from '@utils/regex';
 import type { EndPoint } from '@typings';
+import { AxiosError } from 'axios';
 import type { FullUser } from './index';
 import type { UpdateRequestBody } from './EditButton';
 
@@ -19,6 +20,9 @@ type Props = {
 };
 type Users = EndPoint['GET /users']['responses']['200'];
 type UpdatedUser = EndPoint['PUT /users/{userId}']['responses']['200'];
+type UserUpdateError =
+  | EndPoint['PUT /users/{userId}']['responses']['404']
+  | EndPoint['PUT /users/{userId}']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 6 },
@@ -65,8 +69,7 @@ const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, set
         message.success('기사 정보 수정 완료');
         closeModal();
       } catch (err) {
-        message.error('기사 정보 수정 중 에러 발생, 개발자에게 문의하세요.');
-        console.error(err);
+        logAxiosError<UserUpdateError>(err as AxiosError<UserUpdateError>);
       }
       setSubmitLoading(false);
     },

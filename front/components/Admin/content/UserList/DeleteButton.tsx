@@ -2,7 +2,8 @@ import { ReactNode, useCallback, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Button, message, Popconfirm, Tooltip } from 'antd';
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import httpClient from '@utils/axios';
+import type { AxiosError } from 'axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import type { FullUsers, FullUser } from './index';
@@ -11,6 +12,9 @@ type Props = {
   user: FullUser;
 };
 type DeletedUser = EndPoint['DELETE /users/{userId}']['responses']['200'];
+type UserDeleteError =
+  | EndPoint['DELETE /users/{userId}']['responses']['404']
+  | EndPoint['DELETE /users/{userId}']['responses']['500'];
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
@@ -33,8 +37,7 @@ const DeleteButton = ({ user }: Props) => {
       await mutateUsers(nextUsers);
       message.success('기사 정보 삭제 완료');
     } catch (err) {
-      message.error('기사 정보 삭제 중 에러 발생, 개발자에게 문의하세요.');
-      console.error(err);
+      logAxiosError<UserDeleteError>(err as AxiosError<UserDeleteError>);
     }
 
     setIsPopoverOpen(false);

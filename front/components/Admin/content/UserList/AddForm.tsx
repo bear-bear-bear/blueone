@@ -2,7 +2,8 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import httpClient from '@utils/axios';
+import type { AxiosError } from 'axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import regex from '@utils/regex';
 import type { EndPoint } from '@typings';
@@ -17,6 +18,7 @@ type Props = {
 };
 type Users = EndPoint['GET /users']['responses']['200'];
 type CreatedUser = EndPoint['POST /users']['responses']['202'];
+type UserCreationError = EndPoint['POST /users']['responses']['409'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 6 },
@@ -46,8 +48,7 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
         message.success('기사 등록 완료');
         closeModal();
       } catch (err) {
-        message.error('기사 등록 중 에러 발생, 개발자에게 문의하세요.');
-        console.error(err);
+        logAxiosError<UserCreationError>(err as AxiosError<UserCreationError>);
       }
       setSubmitLoading(false);
     },

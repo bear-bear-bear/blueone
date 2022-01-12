@@ -2,8 +2,9 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
+import type { AxiosError } from 'axios';
 import UserSelecter from '@components/Admin/content/parts/UserSelecter';
-import httpClient from '@utils/axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
 import type { EndPoint, Work } from '@typings';
@@ -17,8 +18,13 @@ type Props = {
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
-type RequestBody = EndPoint['PUT /works/{workId}']['requestBody'];
-type Response = EndPoint['PUT /works/{workId}']['responses']['200'];
+type WorkPutRequestBody = EndPoint['PUT /works/{workId}']['requestBody'];
+type EditedWork = EndPoint['PUT /works/{workId}']['responses']['200'];
+type WorkPutError = EndPoint['PUT /works/{workId}']['responses']['500'];
+type WorkPatchError =
+  | EndPoint['PATCH /works/{workId}']['responses']['403']
+  | EndPoint['PATCH /works/{workId}']['responses']['404']
+  | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },
@@ -50,8 +56,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
         await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
         message.error('업무 확인 취소 완료');
       } catch (err) {
-        message.error('업무 확인 취소 중 에러 발생, 개발자에게 문의하세요.');
-        console.error(err);
+        logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
       }
     },
     [prevWork.endTime],
@@ -59,7 +64,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
 
   const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
     async (values) => {
-      const reqBody: RequestBody = {
+      const reqBody: WorkPutRequestBody = {
         ...values,
         waypoint: values.waypoint ?? null,
         UserId: values.UserId ?? null,
@@ -68,7 +73,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
 
       setSubmitLoading(true);
       try {
-        const updatedWork = await httpClient.put<Response>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
+        const updatedWork = await httpClient.put<EditedWork>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
 
         if (reqBody.UserId !== prevWork.UserId) {
           await cancelWorkCheck(prevWork.id);
@@ -80,8 +85,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
         message.success('업무 수정 완료');
         closeModal();
       } catch (err) {
-        message.error('업무 수정 중 에러 발생, 개발자에게 문의하세요.');
-        console.error(err);
+        logAxiosError<WorkPutError>(err as AxiosError<WorkPutError>);
       }
       setSubmitLoading(false);
     },

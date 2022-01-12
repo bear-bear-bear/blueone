@@ -1,7 +1,8 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { Button, message } from 'antd';
-import httpClient from '@utils/axios';
 import useSWRImmutable from 'swr/immutable';
+import type { AxiosError } from 'axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, Work } from '@typings';
 import type { MyWorks } from '@components/User/WorkCarousel';
@@ -11,6 +12,10 @@ type Props = {
   isWorkChecked: boolean;
 };
 type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
+type WorkPatchError =
+  | EndPoint['PATCH /works/{workId}']['responses']['403']
+  | EndPoint['PATCH /works/{workId}']['responses']['404']
+  | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
 const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
@@ -26,8 +31,7 @@ const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
       message.success('업무 확인 완료', 4);
     } catch (err) {
       setLoading(false);
-      message.error('서버에 문제가 있는 것 같아요! 사장님에게 문의해주세요.', 4);
-      console.error(err);
+      logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
     }
   }, [works, workId, mutateWorks]);
 

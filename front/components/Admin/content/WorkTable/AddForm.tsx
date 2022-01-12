@@ -2,8 +2,9 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
+import type { AxiosError } from 'axios';
 import UserSelecter from '@components/Admin/content/parts/UserSelecter';
-import httpClient from '@utils/axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
 import type { EndPoint } from '@typings';
@@ -19,6 +20,7 @@ type Props = {
 };
 type RequestBody = EndPoint['PUT /works/{workId}']['requestBody'];
 type Response = EndPoint['PUT /works/{workId}']['responses']['200'];
+type RequestError = EndPoint['PUT /works/{workId}']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },
@@ -69,8 +71,7 @@ const WorkAddForm = ({
         message.success('업무 등록 완료');
         setValidateTrigger('onFinish');
       } catch (err) {
-        message.error('업무 등록 중 에러 발생, 개발자에게 문의하세요.');
-        console.error(err);
+        logAxiosError<RequestError>(err as AxiosError<RequestError>);
       }
       setSubmitLoading(false);
     },

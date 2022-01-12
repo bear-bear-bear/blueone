@@ -9,19 +9,16 @@ export default function useInstallPWA() {
   const [buttonVisible, setButtonVisible] = useState<boolean>(true);
   const deferredInstallPrompt = useRef<BeforeInstallPromptEvent | null>(null);
 
-  const prepareInstall = useCallback(
-    (e: BeforeInstallPromptEvent) => {
-      console.log('prepare');
-      deferredInstallPrompt.current = e;
-      if (typeof navigator !== 'undefined' && MOBILE_REGEX.test(navigator.userAgent)) {
-        setButtonVisible(true); // 모바일에서만 버튼 visible
-      }
-      console.log('abc', typeof navigator !== 'undefined' && MOBILE_REGEX.test(navigator.userAgent));
-    },
-    [typeof navigator, deferredInstallPrompt.current],
-  );
+  const prepareInstall = (e: BeforeInstallPromptEvent) => {
+    console.log('prepare');
+    deferredInstallPrompt.current = e;
+    if (typeof navigator !== 'undefined' && MOBILE_REGEX.test(navigator.userAgent)) {
+      setButtonVisible(true); // 모바일에서만 버튼 visible
+    }
+    console.log('abc', typeof navigator !== 'undefined' && MOBILE_REGEX.test(navigator.userAgent));
+  };
 
-  const installPWA = useCallback(async () => {
+  const installPWA = async () => {
     console.log('installPWA ?');
     if (!deferredInstallPrompt.current) return;
     console.log('installPWA');
@@ -35,7 +32,7 @@ export default function useInstallPWA() {
       console.error(err);
       message.error('저장 중 에러가 발생했어요.');
     }
-  }, [deferredInstallPrompt.current]);
+  };
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -47,6 +44,7 @@ export default function useInstallPWA() {
     };
   }, []);
 
+  // eslint-disable-next-line react/display-name
   return (props: HTMLAttributes<HTMLButtonElement>) => (
     <Button
       icon={<DownloadOutlined />}

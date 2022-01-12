@@ -2,13 +2,15 @@ import { useCallback, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import type { ColProps } from 'antd/lib/grid/col';
-import httpClient from '@utils/axios';
+import type { AxiosError } from 'axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import UserSelecter from '@components/Admin/content/parts/UserSelecter';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
 
 type RequestBody = EndPoint['POST /works']['requestBody'];
 type Response = EndPoint['POST /works']['responses']['201'];
+type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
 export type WorkAddAntdFormFields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
   UserId?: RequestBody['UserId'];
   waypoint?: RequestBody['waypoint'];
@@ -55,8 +57,7 @@ const WorkAddForm = () => {
       await httpClient.post<Response>('/works', reqBody);
       message.success('업무 등록 완료');
     } catch (err) {
-      message.error('업무 등록 중 에러 발생, 개발자에게 문의하세요.');
-      console.error(err);
+      logAxiosError<RequestError>(err as AxiosError<RequestError>);
     }
   }, []);
 

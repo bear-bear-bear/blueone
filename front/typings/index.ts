@@ -72,6 +72,7 @@ export interface EndPoint {
       };
       401: ErrorMessage;
       404: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -86,6 +87,7 @@ export interface EndPoint {
         UserInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
       };
       409: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -94,6 +96,7 @@ export interface EndPoint {
   'POST /user/logout': {
     responses: {
       204: void;
+      500: ErrorMessage;
     };
   };
   /**
@@ -105,6 +108,7 @@ export interface EndPoint {
     };
     responses: {
       204: void;
+      500: ErrorMessage;
     };
   };
   /**
@@ -113,6 +117,7 @@ export interface EndPoint {
   'GET /user/works': {
     responses: {
       200: Work[];
+      500: ErrorMessage;
     };
   };
   /**
@@ -121,6 +126,7 @@ export interface EndPoint {
   'GET /user/works/analysis': {
     responses: {
       200: { [dayOrMonth: `${number}`]: number };
+      500: ErrorMessage;
     };
   };
 
@@ -133,6 +139,7 @@ export interface EndPoint {
         UserInfo: UserInfo;
         Work: Work;
       })[];
+      500: ErrorMessage;
     };
   };
   /**
@@ -150,6 +157,7 @@ export interface EndPoint {
         Work: Work;
       };
       409: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -162,6 +170,7 @@ export interface EndPoint {
         Work: Work;
       };
       404: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -179,6 +188,7 @@ export interface EndPoint {
         Work: Work;
       };
       404: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -188,6 +198,7 @@ export interface EndPoint {
     responses: {
       200: User;
       404: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -196,6 +207,7 @@ export interface EndPoint {
   'GET /users/{userId}/works': {
     responses: {
       200: Work[];
+      500: ErrorMessage;
     };
   };
 
@@ -209,6 +221,7 @@ export interface EndPoint {
           UserInfo: Pick<UserInfo, 'realname'>;
         };
       })[];
+      500: ErrorMessage;
     };
   };
   /**
@@ -224,6 +237,7 @@ export interface EndPoint {
         UserId: null;
       };
       400: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -240,6 +254,7 @@ export interface EndPoint {
           UserInfo: Pick<UserInfo, 'realname'>;
         };
       };
+      500: ErrorMessage;
     };
   };
   /**
@@ -250,6 +265,7 @@ export interface EndPoint {
       200: Work;
       403: ErrorMessage;
       404: ErrorMessage;
+      500: ErrorMessage;
     };
   };
   /**
@@ -259,6 +275,7 @@ export interface EndPoint {
     responses: {
       200: Work;
       404: ErrorMessage;
+      500: ErrorMessage;
     };
   };
 

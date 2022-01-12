@@ -1,14 +1,15 @@
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Input, Form, Button, FormProps, message } from 'antd';
+import { Input, Form, Button, FormProps } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
-import httpClient from '@utils/axios';
+import httpClient, { logAxiosError } from '@utils/axios';
 import type { AxiosError } from 'axios';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
 
 type RequestBody = EndPoint['POST /user/login']['requestBody'];
-type Responses = EndPoint['POST /user/login']['responses'];
+type User = EndPoint['POST /user/login']['responses']['200'];
+type RequestError = EndPoint['POST /user/login']['responses']['409'] | EndPoint['POST /user/login']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },
@@ -21,7 +22,7 @@ const LoginForm = () => {
 
   const onFinish: FormProps<RequestBody>['onFinish'] = async (values) => {
     try {
-      const user = await httpClient.post<Responses['200']>('/user/login', values).then((res) => res.data);
+      const user = await httpClient.post<User>('/user/login', values).then((res) => res.data);
 
       switch (user.role) {
         case 'admin':
@@ -33,9 +34,7 @@ const LoginForm = () => {
         default:
       }
     } catch (err) {
-      const errorMessage = (err as AxiosError).response?.data.message;
-      message.error(errorMessage);
-      console.error(errorMessage);
+      logAxiosError<RequestError>(err as AxiosError<RequestError>);
     }
   };
 
