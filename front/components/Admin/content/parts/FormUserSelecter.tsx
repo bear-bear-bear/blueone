@@ -16,7 +16,7 @@ type Props = {
 
 const { Option } = Select;
 
-const UserSelecter = ({ form, defaultUserId, disabled = false, immutable = false }: Props) => {
+const FormUserSelecter = ({ form, defaultUserId, disabled = false, immutable = false }: Props) => {
   const { data: users } = useSWR<Users>('/users', axiosFetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,
@@ -79,4 +79,4 @@ const UserSelecter = ({ form, defaultUserId, disabled = false, immutable = false
   );
 };
 
-export default memo(UserSelecter);
+export default memo(FormUserSelecter);

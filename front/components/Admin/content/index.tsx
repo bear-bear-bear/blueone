@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import WorkTable from './WorkTable';
+import WorkManagementTable from './WorkManagementTable';
 import WorkAddFormForMobile from './WorkAddFormForMobile';
-import UserList from './UserList';
+import UserManagementList from './UserManagementList';
 
 export type ContentTitle = '업무 목록' | '업무 등록' | '기사 관리' | '공지사항';
 export type Content = {
@@ -12,7 +12,7 @@ export type Content = {
 const contentList: Content[] = [
   {
     title: '업무 목록',
-    component: WorkTable,
+    component: WorkManagementTable,
   },
   {
     title: '업무 등록',
@@ -20,7 +20,7 @@ const contentList: Content[] = [
   },
   {
     title: '기사 관리',
-    component: UserList,
+    component: UserManagementList,
   },
   // {
   //   title: '공지사항',

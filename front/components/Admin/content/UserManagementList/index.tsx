@@ -9,7 +9,7 @@ import * as S from './styles';
 export type FullUsers = EndPoint['GET /users']['responses']['200'];
 export type FullUser = Unpacked<FullUsers>;
 
-const UserList = () => {
+const UserManagementList = () => {
   const { data: users } = useSWRImmutable<FullUsers>('/users', axiosFetcher, {
     revalidateOnMount: true,
   });
@@ -32,4 +32,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default UserManagementList;

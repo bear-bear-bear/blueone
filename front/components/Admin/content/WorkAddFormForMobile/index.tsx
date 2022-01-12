@@ -4,7 +4,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import httpClient, { logAxiosError } from '@utils/axios';
-import UserSelecter from '@components/Admin/content/parts/UserSelecter';
+import UserSelecter from '@components/Admin/content/parts/FormUserSelecter';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
 

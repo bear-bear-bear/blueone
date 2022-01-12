@@ -23,7 +23,7 @@ const EmptyContent = () => (
 );
 
 const AdminLayout: FC = () => {
-  // WorkTable 에서 users 를 useSWRImmutable(revalidateOnMount: false)과 함께 사용하기 위한 initial fetch
+  // WorkManagementTable 에서 users 를 useSWRImmutable(revalidateOnMount: false)과 함께 사용하기 위한 initial fetch
   useSWRImmutable<Users>('/users', axiosFetcher, {
     revalidateOnMount: true,
   });

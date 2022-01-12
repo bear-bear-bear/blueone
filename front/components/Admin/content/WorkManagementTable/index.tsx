@@ -59,7 +59,7 @@ const Remark = ({ work }: { work: ProcessedWork }) => (
 );
 
 // TODO: 확인과 완료 check box 로 work 필터링 하는 기능 작성
-const WorkTable = () => {
+const WorkManagementTable = () => {
   const today = dayjs();
   const TODAY_START_MS = today.startOf('d').valueOf();
   const TODAY_YYYY_MM_DD = today.format('YYYY-MM-DD');
@@ -146,4 +146,4 @@ const WorkTable = () => {
   );
 };
 
-export default WorkTable;
+export default WorkManagementTable;
