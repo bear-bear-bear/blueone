@@ -19,7 +19,7 @@ type RequestError =
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
 const DeleteButton = ({ record }: Props) => {
-  const INITIAL_POPOVER_TEXT = '업무 삭제';
+  const INITIAL_POPOVER_TEXT = '업무 완전히 삭제';
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
   const [popoverText, setPopoverText] = useState<ReactNode>(INITIAL_POPOVER_TEXT);
