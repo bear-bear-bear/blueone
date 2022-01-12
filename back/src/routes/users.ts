@@ -3,12 +3,7 @@ import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
-import type {
-  CreateUserRequestBody,
-  PaginationQuery,
-  UpdateUserRequestBody,
-  QueryTypedRequest,
-} from 'typings';
+import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
 
 const router = express.Router();
 const omitPassword = (user: User) =>
@@ -17,34 +12,22 @@ const omitPassword = (user: User) =>
 /**
  * 유저 리스트 가져오기
  */
-router.get(
-  '/',
-  isLoggedIn,
-  isAdmin,
-  async (req: QueryTypedRequest<PaginationQuery>, res, next) => {
-    const { per_page = '30', page = '1' } = req.query;
-
-    const limit = parseInt(per_page, 10);
-    const offset = (parseInt(page, 10) - 1) * limit;
-
-    try {
-      const users = await User.findAll({
-        where: { role: 'user' },
-        order: [['createdAt', 'DESC']],
-        limit,
-        offset,
-        attributes: {
-          exclude: ['password'],
-        },
-        include: [UserInfo, Work],
-      });
-      res.status(200).json(users);
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  },
-);
+router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    const users = await User.findAll({
+      where: { role: 'user' },
+      attributes: {
+        exclude: ['password'],
+      },
+      include: [UserInfo, Work],
+      order: [[UserInfo, 'realname', 'ASC']],
+    });
+    res.status(200).json(users);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 /**
  * 유저 추가
