@@ -56,8 +56,15 @@ export const TableHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.33rem;
-  margin-bottom: 0.33rem;
+  gap: 0.66rem;
+  margin-bottom: 0.66rem;
+
+  section {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.66rem;
+  }
 `;
 
 export const SpinnerWrapper = styled.div`

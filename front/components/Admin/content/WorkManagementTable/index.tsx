@@ -1,13 +1,14 @@
-import { MouseEventHandler, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import qs from 'qs';
 import useSWR from 'swr';
-import { axiosFetcher } from '@utils/swr';
 import { Button, Checkbox, Spin, Table } from 'antd';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
-import type { EndPoint, UserInfo, Unpacked } from '@typings';
+import { axiosFetcher } from '@utils/swr';
+import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
 import DatePicker from './DatePicker';
+import UserPicker from './UserPicker';
 import AddButton from './AddButton';
 import columns from './columns';
 import * as S from './styles';
@@ -58,13 +59,13 @@ const Remark = ({ work }: { work: ProcessedWork }) => (
   </S.Remark>
 );
 
-// TODO: 확인과 완료 check box 로 work 필터링 하는 기능 작성
 const WorkManagementTable = () => {
   const today = dayjs();
   const TODAY_START_MS = today.startOf('d').valueOf();
   const TODAY_YYYY_MM_DD = today.format('YYYY-MM-DD');
   const THREE_DAYS_AGO_YYYY_MM_DD = today.subtract(3, 'days').format('YYYY-MM-DD');
 
+  const [pickedUserId, setPickedUserId] = useState<User['id'] | null>(null);
   const [dateRange, setDateRange] = useState<DateRange>({
     start: THREE_DAYS_AGO_YYYY_MM_DD,
     end: TODAY_YYYY_MM_DD,
@@ -82,6 +83,10 @@ const WorkManagementTable = () => {
         const isDoneAtPast = work.endTime !== null && +new Date(work.endTime) < TODAY_START_MS;
         return isVisiblePastDoneWork || !isDoneAtPast;
       })
+      .filter((work) => {
+        if (pickedUserId === null) return true;
+        return work.UserId === pickedUserId;
+      })
       .map((work) => ({
         ...work,
         ...processWorkDateTimes(work),
@@ -90,7 +95,7 @@ const WorkManagementTable = () => {
         isDone: work.endTime !== null,
         swrKey,
       }));
-  }, [works, TODAY_START_MS, swrKey, isVisiblePastDoneWork]);
+  }, [works, TODAY_START_MS, swrKey, isVisiblePastDoneWork, pickedUserId]);
 
   const handleChangeCheckbox = () => {
     setIsVisiblePastDoneWork((prev) => !prev);
@@ -109,9 +114,8 @@ const WorkManagementTable = () => {
       <S.TableHeader>
         <section>
           <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
-          <Checkbox onChange={handleChangeCheckbox} style={{ marginLeft: '0.66rem' }}>
-            지난 날짜에 완료된 작업 표시
-          </Checkbox>
+          <UserPicker pickedUserId={pickedUserId} setPickedUserId={setPickedUserId} />
+          <Checkbox onChange={handleChangeCheckbox}>지난 날짜에 완료된 작업 표시</Checkbox>
         </section>
         <AddButton
           swrKey={swrKey}

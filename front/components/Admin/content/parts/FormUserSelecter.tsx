@@ -1,6 +1,6 @@
 import { useCallback, useMemo, memo } from 'react';
 import useSWR from 'swr';
-import { Divider, FormInstance, Select, SelectProps, Spin } from 'antd';
+import { Divider, FormInstance, Select, SelectProps, Skeleton } from 'antd';
 import { axiosFetcher } from '@utils/swr';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import type { EndPoint } from '@typings';
@@ -70,7 +70,7 @@ const FormUserSelecter = ({ form, defaultUserId, disabled = false, immutable = f
     >
       {!userOptions ? (
         <Option value="" disabled>
-          <Spin size="small" />
+          <Skeleton title={false} paragraph={{ width: '100%', rows: 3 }} active />
         </Option>
       ) : (
         userOptions
