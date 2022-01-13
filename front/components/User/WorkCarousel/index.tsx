@@ -5,7 +5,7 @@ import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import type { Settings } from '@ant-design/react-slick';
-import EmptyContent from '@components/User/parts/Empty';
+import EmptyContent from '@components/User/commonParts/Empty';
 import WorkCard from './WorkCard';
 import * as S from './styles';
 

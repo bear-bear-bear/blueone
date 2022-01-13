@@ -66,6 +66,44 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 });
 
 /**
+ * 활성화된 공지사항 가져오기
+ */
+router.get('/activation', isLoggedIn, async (req, res, next) => {
+  const today = dayjs().format('YYYY-MM-DD');
+
+  try {
+    const allNoticeList = await Notice.findAll({
+      order: [['createdAt', 'DESC']],
+    });
+    const activatedNoticeList = await Notice.findAll({
+      where: {
+        [Op.and]: {
+          startDate: {
+            [Op.lte]: today,
+          },
+          endDate: {
+            [Op.gte]: today,
+          },
+        },
+      },
+      order: [['createdAt', 'DESC']],
+    });
+    console.log(
+      'allNoticeList',
+      allNoticeList.map((notice) => notice.get()),
+    );
+    console.log(
+      'activatedNoticeList',
+      activatedNoticeList.map((notice) => notice.get()),
+    );
+    res.status(200).json(activatedNoticeList);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+/**
  * 공지사항 가져오기
  */
 router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
@@ -83,31 +121,6 @@ router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
 
     res.status(200).json(notice);
   } catch (err) {
-    next(err);
-  }
-});
-
-/**
- * 활성화된 공지사항 가져오기
- */
-router.get('/activation', isLoggedIn, async (req, res, next) => {
-  const today = dayjs().toISOString();
-
-  try {
-    const activatedNoticeList = await Notice.findAll({
-      where: {
-        startDate: {
-          [Op.gt]: today,
-        },
-        endDate: {
-          [Op.lt]: today,
-        },
-      },
-      order: [['createdAt', 'DESC']],
-    });
-    res.status(200).json(activatedNoticeList);
-  } catch (err) {
-    console.error(err);
     next(err);
   }
 });

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { message } from 'antd';
 import useUser from '@hooks/useUser';
 import UserLayout from '@components/User/Layout';
-import EmptyContent from '@components/User/parts/Empty';
+import NoticeList from '@components/User/Notice/List';
 
 const NoticePage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
@@ -20,7 +20,7 @@ const NoticePage: NextPage = () => {
   if (!isLoggedIn) return null;
   return (
     <UserLayout>
-      <EmptyContent description="공지사항이 아직 등록되지 않았어요." />
+      <NoticeList />
     </UserLayout>
   );
 };

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { Skeleton } from 'antd';
 import { Column } from '@ant-design/plots';
 import { axiosFetcher } from '@utils/swr';
-import EmptyContent from '@components/User/parts/Empty';
+import EmptyContent from '@components/User/commonParts/Empty';
 import type { EndPoint } from '@typings';
 import * as S from './styles';
 

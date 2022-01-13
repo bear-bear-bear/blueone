@@ -38,6 +38,7 @@ export const BoxMain = styled.main<{ noPadding?: boolean }>`
   flex: 1;
   padding: ${({ noPadding }) => (noPadding ? 'initial' : BOX_ITEM_PADDING)};
   position: relative;
+  overflow-y: auto;
 `;
 
 export const BoxFooter = styled.footer`

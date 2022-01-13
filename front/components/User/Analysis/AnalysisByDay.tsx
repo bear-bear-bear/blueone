@@ -3,7 +3,7 @@ import useSWRImmutable from 'swr/immutable';
 import dayjs from 'dayjs';
 import { Divider, Skeleton } from 'antd';
 import { Column } from '@ant-design/plots';
-import EmptyContent from '@components/User/parts/Empty';
+import EmptyContent from '@components/User/commonParts/Empty';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import * as S from './styles';

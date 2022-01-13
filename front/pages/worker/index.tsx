@@ -6,6 +6,7 @@ import useInsuranceExpiredInfo from '@hooks/useInsuranceExpiredInfo';
 import UserLayout from '@components/User/Layout';
 import WorkCarousel from '@components/User/WorkCarousel';
 import NotificationBadge from '@components/User/NotificationBadge';
+import LatestNoticeAlert from '@components/User/Notice/LatestNoticeAlert';
 
 const WorkPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
@@ -21,13 +22,13 @@ const WorkPage: NextPage = () => {
   }, [isLoggedIn, user]);
 
   if (!isLoggedIn) return null;
-
   return (
     <UserLayout>
       {insuranceDate.state === 'warn' && (
         <NotificationBadge type="warn" content={`보험 만료 ${insuranceDate.from} 입니다.`} />
       )}
       {insuranceDate.state === 'danger' && <NotificationBadge type="danger" content="보험이 만료되었습니다." />}
+      <LatestNoticeAlert />
       <WorkCarousel />
     </UserLayout>
   );

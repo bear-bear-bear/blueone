@@ -346,8 +346,7 @@ export interface EndPoint {
    */
   'GET /notice/activation': {
     responses: {
-      200: Notice;
-      404: ErrorMessage;
+      200: Notice[];
       500: ErrorMessage;
     };
   };
