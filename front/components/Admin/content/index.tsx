@@ -2,6 +2,7 @@ import { FC } from 'react';
 import WorkManagementTable from './WorkManagementTable';
 import WorkAddFormForMobile from './WorkAddFormForMobile';
 import UserManagementList from './UserManagementList';
+import NoticeBoard from './NoticeBoard';
 
 export type ContentTitle = '업무 목록' | '업무 등록' | '기사 관리' | '공지사항';
 export type Content = {
@@ -22,10 +23,10 @@ const contentList: Content[] = [
     title: '기사 관리',
     component: UserManagementList,
   },
-  // {
-  //   title: '공지사항',
-  //   component: () => <div>임시 컨텐츠</div>,
-  // },
+  {
+    title: '공지사항',
+    component: NoticeBoard,
+  },
 ];
 
 export default contentList;

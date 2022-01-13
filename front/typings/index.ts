@@ -282,21 +282,53 @@ export interface EndPoint {
   /**
    * 공지사항 목록 가져오기
    */
-  'GET /notice': undefined;
+  'GET /notice': {
+    responses: {
+      200: Notice[];
+      500: ErrorMessage;
+    };
+  };
   /**
    * 공지사항 작성
    */
-  'POST /notice': undefined;
+  'POST /notice': {
+    requestBody: {
+      title: Notice['title'];
+      content: Notice['content'];
+    };
+    responses: {
+      202: Notice;
+      500: ErrorMessage;
+    };
+  };
   /**
    * 공지사항 가져오기
    */
-  'GET /notice/{noticeId}': undefined;
+  'GET /notice/{noticeId}': {
+    responses: {
+      200: Notice;
+      404: ErrorMessage;
+      500: ErrorMessage;
+    };
+  };
   /**
    * 공지사항 수정
    */
-  'PUT /notice/{noticeId}': undefined;
+  'PUT /notice/{noticeId}': {
+    responses: {
+      200: Notice;
+      404: ErrorMessage;
+      500: ErrorMessage;
+    };
+  };
   /**
    * 공지사항 삭제
    */
-  'DELETE /notice/{noticeId}': undefined;
+  'DELETE /notice/{noticeId}': {
+    responses: {
+      200: Notice;
+      404: ErrorMessage;
+      500: ErrorMessage;
+    };
+  };
 }

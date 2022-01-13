@@ -1,40 +1,24 @@
 import express from 'express';
-import { Notice, User } from '@/models';
+import { Notice } from '@/models';
 import { isAdmin, isLoggedIn } from '@/middlewares';
-import type {
-  PaginationQuery,
-  QueryTypedRequest,
-  CreateNoticeRequestBody,
-  UpdateNoticeRequestBody,
-} from 'typings';
+import type { CreateNoticeRequestBody, UpdateNoticeRequestBody } from 'typings';
 
 const router = express.Router();
 
 /**
  * 공지사항 목록 가져오기
  */
-router.get(
-  '/',
-  isLoggedIn,
-  async (req: QueryTypedRequest<PaginationQuery>, res, next) => {
-    const { per_page = '30', page = '1' } = req.query;
-
-    const limit = parseInt(per_page, 10);
-    const offset = (parseInt(page, 10) - 1) * limit;
-
-    try {
-      const noticeList = await Notice.findAll({
-        order: [['createdAt', 'DESC']],
-        limit,
-        offset,
-      });
-      res.status(200).json(noticeList);
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  },
-);
+router.get('/', isLoggedIn, async (req, res, next) => {
+  try {
+    const noticeList = await Notice.findAll({
+      order: [['createdAt', 'DESC']],
+    });
+    res.status(200).json(noticeList);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 /**
  * 공지사항 작성
@@ -63,6 +47,14 @@ router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
 
   try {
     const notice = await Notice.findByPk(noticeId);
+
+    if (!notice) {
+      res.status(404).json({
+        message: `id ${noticeId} 공지사항을 찾을 수 없습니다`,
+      });
+      return;
+    }
+
     res.status(200).json(notice);
   } catch (err) {
     next(err);
