@@ -90,7 +90,7 @@ router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 공지사항 삭제
  */
-router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
+router.delete('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { noticeId } = req.params;
 
   try {
