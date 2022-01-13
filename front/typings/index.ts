@@ -51,6 +51,8 @@ export type Notice = {
   UserId: number;
   title: string;
   content: string;
+  startDate: ISODateString;
+  endDate: ISODateString;
   createdAt: ISODateString;
   updatedAt: ISODateString;
 };
@@ -295,6 +297,8 @@ export interface EndPoint {
     requestBody: {
       title: Notice['title'];
       content: Notice['content'];
+      startDate: Notice['startDate'];
+      endDate: Notice['endDate'];
     };
     responses: {
       202: Notice;
@@ -318,6 +322,8 @@ export interface EndPoint {
     requestBody: {
       title: Notice['title'];
       content: Notice['content'];
+      startDate: Notice['startDate'];
+      endDate: Notice['endDate'];
     };
     responses: {
       200: Notice;
@@ -329,6 +335,16 @@ export interface EndPoint {
    * 공지사항 삭제
    */
   'DELETE /notice/{noticeId}': {
+    responses: {
+      200: Notice;
+      404: ErrorMessage;
+      500: ErrorMessage;
+    };
+  };
+  /**
+   * 활성화된 공지사항 가져오기
+   */
+  'GET /notice/activation': {
     responses: {
       200: Notice;
       404: ErrorMessage;

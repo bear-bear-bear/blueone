@@ -6,7 +6,7 @@ import qs from 'qs';
 import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, Unpacked } from '@typings';
-import DatePicker from './DatePicker';
+import TableRangePicker from './TableRangePicker';
 import AddButton from './AddButton';
 import columns from './columns';
 import * as S from './styles';
@@ -19,15 +19,21 @@ export type NoticeList = EndPoint['GET /notice']['responses']['200'];
 export type Notice = Unpacked<NoticeList>;
 export type ProcessedNotice = Notice & {
   processedCreatedAt: string;
+  processedStartDate: string;
+  processedEndDate: string;
   swrKey: string;
 };
 
 const processNoticeCreatedAt = (notice: Notice) => {
   const thisYear = dayjs().year();
   const createdAt = dayjs(notice.createdAt);
+  const startDate = dayjs(notice.startDate);
+  const endDate = dayjs(notice.endDate);
 
   return {
     processedCreatedAt: createdAt.format(createdAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
+    processedStartDate: startDate.format(startDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
+    processedEndDate: endDate.format(endDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
   };
 };
 
@@ -65,7 +71,7 @@ const NoticeBoard = () => {
     <S.Container>
       <Global styles={S.globalStyles} />
       <S.TableHeader>
-        <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
+        <TableRangePicker dateRange={dateRange} setDateRange={setDateRange} />
         <AddButton swrKey={swrKey} />
       </S.TableHeader>
       <Table
@@ -77,7 +83,6 @@ const NoticeBoard = () => {
           expandedRowRender: (notice) => <S.ExpandContent>{notice.content}</S.ExpandContent>,
           expandRowByClick: true,
           showExpandColumn: false,
-          expandedRowClassName: () => 'notice-board__expanded-row',
         }}
         pagination={{ position: ['bottomLeft'] }}
         size="middle"

@@ -46,5 +46,8 @@ export type CreateWorkRequestBody = { UserId?: User['id'] } & Pick<
 >;
 export type UpdateWorkRequestBody = CreateWorkRequestBody;
 
-export type CreateNoticeRequestBody = Pick<Notice, 'title' | 'content'>;
+export type CreateNoticeRequestBody = Pick<
+  Notice,
+  'title' | 'content' | 'startDate' | 'endDate'
+>;
 export type UpdateNoticeRequestBody = CreateNoticeRequestBody;

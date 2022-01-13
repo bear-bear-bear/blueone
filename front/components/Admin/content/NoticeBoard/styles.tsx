@@ -3,8 +3,12 @@ import { css } from '@emotion/react';
 import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/RangePicker';
 
 export const globalStyles = css`
-  .notice-board__content-row {
+  .ant-table-row {
     cursor: pointer;
+  }
+
+  .notice-board__non-padding-td {
+    padding: 0 !important;
   }
 
   .notice-board__expanded-row {

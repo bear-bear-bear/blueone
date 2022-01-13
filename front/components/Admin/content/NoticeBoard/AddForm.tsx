@@ -3,9 +3,11 @@ import useSWRImmutable from 'swr/immutable';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
+import RangePicker from '@components/Admin/content/commonParts/RangePicker';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
+import dayjs from 'dayjs';
 import type { NoticeList } from './index';
 
 type RequestBody = EndPoint['POST /notice']['requestBody'];
@@ -41,9 +43,16 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
 
   const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
     async (values) => {
+      const body: RequestBody = {
+        title: values.title,
+        content: values.content,
+        startDate: values.dateRange[0].format('YYYY-MM-DD'),
+        endDate: values.dateRange[1].format('YYYY-MM-DD'),
+      };
+
       setSubmitLoading(true);
       try {
-        const createdNotice = await httpClient.post<Response>('/notice', values).then((res) => res.data);
+        const createdNotice = await httpClient.post<Response>('/notice', body).then((res) => res.data);
 
         const nextNoticeList = noticeList!.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
         await mutateNoticeList(nextNoticeList);
@@ -62,8 +71,11 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
       <Form.Item name="title" label="제목" rules={[{ required: true }, { type: 'string', max: 20 }]}>
         <Input autoComplete="off" maxLength={20} />
       </Form.Item>
-      <Form.Item name="content" label="내용" rules={[{ required: true }]} style={{ marginBottom: 0 }}>
+      <Form.Item name="content" label="내용" rules={[{ required: true }]}>
         <Input.TextArea autoComplete="off" style={{ height: '10rem' }} />
+      </Form.Item>
+      <Form.Item name="dateRange" label="기간" rules={[{ required: true }]} style={{ marginBottom: 0 }}>
+        <RangePicker disabledDate={(current: dayjs.Dayjs) => current < dayjs().startOf('day')} />
       </Form.Item>
     </Form>
   );

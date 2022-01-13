@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
@@ -6,6 +6,8 @@ import type { AxiosError } from 'axios';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
+import RangePicker from '@components/Admin/content/commonParts/RangePicker';
+import dayjs from 'dayjs';
 import type { NoticeList, ProcessedNotice } from './index';
 
 type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];
@@ -45,12 +47,27 @@ const NoticeEditForm = ({
     axiosFetcher,
   );
 
+  const formInitialValues = useMemo(
+    () => ({
+      ...prevNotice,
+      dateRange: [dayjs(prevNotice.startDate), dayjs(prevNotice.endDate)],
+    }),
+    [prevNotice],
+  );
+
   const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
     async (values) => {
+      const body: RequestBody = {
+        title: values.title,
+        content: values.content,
+        startDate: values.dateRange[0].format('YYYY-MM-DD'),
+        endDate: values.dateRange[1].format('YYYY-MM-DD'),
+      };
+
       setSubmitLoading(true);
       try {
         const updatedNotice = await httpClient
-          .put<EditedNotice>(`/notice/${prevNotice.id}`, values)
+          .put<EditedNotice>(`/notice/${prevNotice.id}`, body)
           .then((res) => res.data);
 
         const nextNoticeList = noticeList!.map((notice) => (notice.id !== updatedNotice.id ? notice : updatedNotice));
@@ -72,7 +89,7 @@ const NoticeEditForm = ({
   return (
     <Form
       form={form}
-      initialValues={prevNotice}
+      initialValues={formInitialValues}
       onFinish={onFormFinish}
       onFinishFailed={onFormFinishFailed}
       validateTrigger={validateTrigger}
@@ -83,8 +100,11 @@ const NoticeEditForm = ({
       <Form.Item name="title" label="제목" rules={[{ required: true }, { type: 'string', max: 20 }]}>
         <Input autoComplete="off" maxLength={20} />
       </Form.Item>
-      <Form.Item name="content" label="내용" rules={[{ required: true }]} style={{ marginBottom: 0 }}>
+      <Form.Item name="content" label="내용" rules={[{ required: true }]}>
         <Input.TextArea autoComplete="off" style={{ height: '10rem' }} />
+      </Form.Item>
+      <Form.Item name="dateRange" label="기간" rules={[{ required: true }]} style={{ marginBottom: 0 }}>
+        <RangePicker disabledDate={(current: dayjs.Dayjs) => current < dayjs().startOf('day')} />
       </Form.Item>
     </Form>
   );

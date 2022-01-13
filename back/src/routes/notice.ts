@@ -47,12 +47,15 @@ router.get(
  * 공지사항 작성
  */
 router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
-  const { title, content }: CreateNoticeRequestBody = req.body;
+  const { title, content, startDate, endDate }: CreateNoticeRequestBody =
+    req.body;
 
   try {
     const notice = await Notice.create({
       title,
       content,
+      startDate,
+      endDate,
       userId: req.user?.id,
     });
 
@@ -80,6 +83,31 @@ router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
 
     res.status(200).json(notice);
   } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * 활성화된 공지사항 가져오기
+ */
+router.get('/activation', isLoggedIn, async (req, res, next) => {
+  const today = dayjs().toISOString();
+
+  try {
+    const activatedNoticeList = await Notice.findAll({
+      where: {
+        startDate: {
+          [Op.gt]: today,
+        },
+        endDate: {
+          [Op.lt]: today,
+        },
+      },
+      order: [['createdAt', 'DESC']],
+    });
+    res.status(200).json(activatedNoticeList);
+  } catch (err) {
+    console.error(err);
     next(err);
   }
 });

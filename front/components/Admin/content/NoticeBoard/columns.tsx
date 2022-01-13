@@ -1,7 +1,17 @@
+import type { FC } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 import type { ProcessedNotice } from './index';
+
+// row onclick expand 를 특정 td 에서 실행하지 않기 위한 escape
+// (style 은 row 의 'cursor: pointer' 를 해당 td 에서 완전히 무효화하기 위한 임시 escape)
+const PropagationStopper: FC = ({ children }) => (
+  // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+  <div onClick={(e) => e.stopPropagation()} style={{ padding: '0.66rem 0', cursor: 'initial' }}>
+    {children}
+  </div>
+);
 
 const columns: ColumnsType<ProcessedNotice> = [
   {
@@ -21,16 +31,24 @@ const columns: ColumnsType<ProcessedNotice> = [
     className: 'notice-board__content-row',
   },
   {
+    title: '기간',
+    dataIndex: 'dateRange',
+    key: 'dateRange',
+    width: 120,
+    render: (_, record) => `${record.processedStartDate} - ${record.processedEndDate}`,
+  },
+  {
     title: '',
     key: 'action',
     align: 'center',
     render: (_, record) => (
-      <>
+      <PropagationStopper>
         <EditButton record={record} />
         <DeleteButton record={record} />
-      </>
+      </PropagationStopper>
     ),
     width: 80,
+    className: 'notice-board__non-padding-td',
   },
 ];
 

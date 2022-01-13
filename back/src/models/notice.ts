@@ -7,6 +7,8 @@ class Notice extends Model {
   public userId!: number;
   public title!: string;
   public content!: string;
+  public startDate!: Date;
+  public endDate!: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
@@ -23,6 +25,14 @@ Notice.init(
     },
     content: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    startDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    endDate: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
   },
