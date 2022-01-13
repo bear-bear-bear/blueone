@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/RangePicker';
 
 export const globalCSS = css`
   tr {
@@ -27,28 +28,7 @@ export const globalCSS = css`
     margin-bottom: 0;
   }
 
-  .ant-picker {
-    &-panels > *:first-of-type button.ant-picker-header-next-btn {
-      visibility: visible !important;
-    }
-
-    &-panels > *:first-of-type button.ant-picker-header-super-next-btn {
-      visibility: visible !important;
-    }
-
-    &-panels > *:last-of-type {
-      display: none;
-    }
-
-    &-panel-container,
-    &-footer {
-      width: 280px !important;
-    }
-
-    &-footer-extra > div {
-      flex-wrap: wrap !important;
-    }
-  }
+  ${rangePickerNextMonthSectionHideStyles}
 `;
 
 export const TableHeader = styled.div`

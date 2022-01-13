@@ -1,24 +1,47 @@
 import express from 'express';
+import dayjs from 'dayjs';
+import { Op } from 'sequelize';
 import { Notice } from '@/models';
 import { isAdmin, isLoggedIn } from '@/middlewares';
-import type { CreateNoticeRequestBody, UpdateNoticeRequestBody } from 'typings';
+import type {
+  CreateNoticeRequestBody,
+  UpdateNoticeRequestBody,
+  DatePickQuery,
+  QueryTypedRequest,
+} from 'typings';
 
 const router = express.Router();
 
 /**
  * 공지사항 목록 가져오기
  */
-router.get('/', isLoggedIn, async (req, res, next) => {
-  try {
-    const noticeList = await Notice.findAll({
-      order: [['createdAt', 'DESC']],
-    });
-    res.status(200).json(noticeList);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
+router.get(
+  '/',
+  isLoggedIn,
+  async (req: QueryTypedRequest<DatePickQuery>, res, next) => {
+    const today = dayjs();
+    const { start = today, end = today } = req.query;
+
+    const gt = dayjs(start).startOf('day').toISOString();
+    const lt = dayjs(end).endOf('day').toISOString();
+
+    try {
+      const noticeList = await Notice.findAll({
+        where: {
+          createdAt: {
+            [Op.gt]: gt,
+            [Op.lt]: lt,
+          },
+        },
+        order: [['createdAt', 'DESC']],
+      });
+      res.status(200).json(noticeList);
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  },
+);
 
 /**
  * 공지사항 작성

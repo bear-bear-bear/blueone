@@ -31,7 +31,7 @@ const CustomDatePicker = ({ dateRange, setDateRange }: Props) => {
   return (
     <RangePicker
       ranges={{
-        Default: [today.subtract(3, 'days'), today],
+        Default: [today.subtract(7, 'days'), today],
         Today: [today, today],
         'This Month': [today.startOf('month'), today],
       }}

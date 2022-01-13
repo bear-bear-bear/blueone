@@ -3,7 +3,7 @@ import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
-import UserSelecter from '@components/Admin/content/parts/FormUserSelecter';
+import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
