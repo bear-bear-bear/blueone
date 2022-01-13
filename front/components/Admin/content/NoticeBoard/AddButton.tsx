@@ -24,7 +24,7 @@ const AddButton: FC<Props> = ({ swrKey }) => {
 
   return (
     <>
-      <Button type="primary" onClick={handleEditIconClick}>
+      <Button type="default" onClick={handleEditIconClick}>
         등록
       </Button>
       <Modal
