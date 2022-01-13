@@ -18,9 +18,9 @@ type Props = {
   swrKey?: string;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
-type RequestBody = EndPoint['PUT /works/{workId}']['requestBody'];
-type Response = EndPoint['PUT /works/{workId}']['responses']['200'];
-type RequestError = EndPoint['PUT /works/{workId}']['responses']['500'];
+type RequestBody = EndPoint['POST /works']['requestBody'];
+type Response = EndPoint['POST /works']['responses']['201'];
+type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },
@@ -64,9 +64,9 @@ const WorkAddForm = ({
 
       setSubmitLoading(true);
       try {
-        const updatedWork = await httpClient.post<Response>('/works', reqBody).then((res) => res.data);
+        const createdWork = await httpClient.post<Response>('/works', reqBody).then((res) => res.data);
 
-        const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
+        const nextWorks = works!.map((work) => (work.id !== createdWork.id ? work : createdWork));
         await mutateWorks(nextWorks);
         message.success('업무 등록 완료');
         setValidateTrigger('onFinish');

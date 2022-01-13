@@ -23,17 +23,17 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
     setFormValidateTrigger('onFinish');
   }, [form]);
 
-  const handleEditIconClick: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
+  const handleAddIconClick: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
     setIsModalOpen(true);
   }, []);
 
   return (
     <>
       {Button ? (
-        <Button onClick={handleEditIconClick} />
+        <Button onClick={handleAddIconClick} />
       ) : (
         <Tooltip title="추가">
-          <AntdButton type="text" size="small" icon={<AiOutlinePlus />} onClick={handleEditIconClick} />
+          <AntdButton type="text" size="small" icon={<AiOutlinePlus />} onClick={handleAddIconClick} />
         </Tooltip>
       )}
       <Modal
