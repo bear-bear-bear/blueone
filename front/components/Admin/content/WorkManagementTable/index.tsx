@@ -11,6 +11,7 @@ import DatePicker from './DatePicker';
 import UserPicker from './UserPicker';
 import AddButton from './AddButton';
 import columns from './columns';
+import processWorkDateTimes from './processWorkDateTimes';
 import * as S from './styles';
 
 export type DateRange = {
@@ -28,27 +29,6 @@ export type ProcessedWork = FullWork & {
   realname?: UserInfo['realname'];
   isDone: boolean;
   swrKey: string;
-};
-
-const processWorkDateTimes = (work: FullWork) => {
-  const checkTime = dayjs(work.checkTime);
-  const endTime = dayjs(work.endTime);
-
-  const thisYear = dayjs().year();
-  const createdAt = dayjs(work.createdAt);
-  const createdAtDayStart = createdAt.startOf('day').valueOf();
-  const updatedAt = dayjs(work.updatedAt);
-
-  return {
-    processedCheckTime: work.checkTime
-      ? checkTime.format(checkTime.startOf('day').valueOf() === createdAtDayStart ? 'A hh:mm' : 'MM/DD_A hh:mm')
-      : '-',
-    processedEndTime: work.endTime
-      ? endTime.format(endTime.startOf('day').valueOf() === createdAtDayStart ? 'A hh:mm' : 'MM/DD_A hh:mm')
-      : '-',
-    processedCreatedAt: createdAt.format(createdAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-    processedUpdatedAt: updatedAt.format(updatedAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-  };
 };
 
 const Remark = ({ work }: { work: ProcessedWork }) => (
