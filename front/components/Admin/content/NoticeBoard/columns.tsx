@@ -18,6 +18,7 @@ const columns: ColumnsType<ProcessedNotice> = [
     title: '제목',
     dataIndex: 'title',
     key: 'title',
+    className: 'notice-board__content-row',
   },
   {
     title: '',

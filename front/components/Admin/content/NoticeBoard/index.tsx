@@ -4,7 +4,6 @@ import { Spin, Table } from 'antd';
 import dayjs from 'dayjs';
 import qs from 'qs';
 import { Global } from '@emotion/react';
-import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/RangePicker';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, Unpacked } from '@typings';
 import DatePicker from './DatePicker';
@@ -64,7 +63,7 @@ const NoticeBoard = () => {
   }
   return (
     <S.Container>
-      <Global styles={rangePickerNextMonthSectionHideStyles} />
+      <Global styles={S.globalStyles} />
       <S.TableHeader>
         <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
         <AddButton swrKey={swrKey} />
@@ -74,11 +73,12 @@ const NoticeBoard = () => {
         dataSource={dataSource}
         columns={columns}
         rowKey={(notice) => notice.id}
-        onRow={(record, rowIndex) => ({
-          onClick: (event) => {}, // click row
-          onDoubleClick: (event) => {}, // double click row
-          onContextMenu: (event) => {}, // right button click row
-        })}
+        expandable={{
+          expandedRowRender: (notice) => <S.ExpandContent>{notice.content}</S.ExpandContent>,
+          expandRowByClick: true,
+          showExpandColumn: false,
+          expandedRowClassName: () => 'notice-board__expanded-row',
+        }}
         pagination={{ position: ['bottomLeft'] }}
         size="middle"
         bordered
