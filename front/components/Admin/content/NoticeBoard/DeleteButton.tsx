@@ -6,21 +6,24 @@ import type { AxiosError } from 'axios';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
-import type { FullWorks, ProcessedWork } from './index';
+import type { NoticeList, ProcessedNotice } from './index';
 
 type Props = {
-  record: ProcessedWork;
+  record: ProcessedNotice;
 };
-type Response = EndPoint['DELETE /works/{workId}']['responses']['200'];
+type Response = EndPoint['DELETE /notice/{noticeId}']['responses']['200'];
 type RequestError =
-  | EndPoint['DELETE /works/{workId}']['responses']['404']
-  | EndPoint['DELETE /works/{workId}']['responses']['500'];
+  | EndPoint['DELETE /notice/{noticeId}']['responses']['404']
+  | EndPoint['DELETE /notice/{noticeId}']['responses']['500'];
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
 const DeleteButton = ({ record }: Props) => {
-  const INITIAL_POPOVER_TEXT = '업무 완전히 삭제';
-  const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
+  const INITIAL_POPOVER_TEXT = '공지사항 삭제';
+  const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
+    record.swrKey || '/notice',
+    axiosFetcher,
+  );
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
   const [popoverText, setPopoverText] = useState<ReactNode>(INITIAL_POPOVER_TEXT);
 
@@ -28,20 +31,21 @@ const DeleteButton = ({ record }: Props) => {
     setIsPopoverOpen(true);
   };
 
-  const deleteWork = useCallback(async () => {
+  const deleteNotice = useCallback(async () => {
     setPopoverText(Spinner);
 
+    console.log(record);
     try {
-      await httpClient.delete<Response>(`/works/${record.id}`);
-      const nextWorks = works!.filter((work) => work.id !== record.id);
-      await mutateWorks(nextWorks);
-      message.success('업무 삭제 완료');
+      await httpClient.delete<Response>(`/notice/${record.id}`);
+      const nextNoticeList = noticeList!.filter((work) => work.id !== record.id);
+      await mutateNoticeList(nextNoticeList);
+      message.success('공지사항 삭제 완료');
     } catch (err) {
       setIsPopoverOpen(false);
       setPopoverText(INITIAL_POPOVER_TEXT);
       logAxiosError<RequestError>(err as AxiosError<RequestError>);
     }
-  }, [works, record, mutateWorks]);
+  }, [noticeList, record, mutateNoticeList]);
 
   const handleCancel = () => {
     setIsPopoverOpen(false);
@@ -52,7 +56,7 @@ const DeleteButton = ({ record }: Props) => {
       <Popconfirm
         title={popoverText}
         visible={isPopoverOpen}
-        onConfirm={deleteWork}
+        onConfirm={deleteNotice}
         okText="삭제"
         okButtonProps={{ danger: true }}
         onCancel={handleCancel}
@@ -64,7 +68,7 @@ const DeleteButton = ({ record }: Props) => {
             type="text"
             size="small"
             icon={<DeleteOutlined />}
-            style={{ color: record.isDone ? '#7C3A38' : '#ff4d4f' }}
+            style={{ color: '#ff4d4f' }}
             onClick={showPopconfirm}
           />
         </Tooltip>

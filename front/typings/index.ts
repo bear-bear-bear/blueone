@@ -315,6 +315,10 @@ export interface EndPoint {
    * 공지사항 수정
    */
   'PUT /notice/{noticeId}': {
+    requestBody: {
+      title: Notice['title'];
+      content: Notice['content'];
+    };
     responses: {
       200: Notice;
       404: ErrorMessage;

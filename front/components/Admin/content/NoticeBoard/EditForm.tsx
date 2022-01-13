@@ -6,16 +6,18 @@ import type { AxiosError } from 'axios';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
-import type { NoticeList } from './index';
+import type { NoticeList, ProcessedNotice } from './index';
 
-type RequestBody = EndPoint['POST /notice']['requestBody'];
-type Response = EndPoint['POST /notice']['responses']['202'];
-type RequestError = EndPoint['POST /notice']['responses']['500'];
+type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];
+type EditedNotice = EndPoint['PUT /notice/{noticeId}']['responses']['200'];
+type RequestError = EndPoint['PUT /notice/{noticeId}']['responses']['500'];
 type Props = {
   form: FormInstance<RequestBody>;
-  setSubmitLoading: Dispatch<SetStateAction<boolean>>;
+  validateTrigger: FormProps['validateTrigger'];
+  setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
+  prevNotice: ProcessedNotice;
   closeModal: () => void;
-  swrKey: string;
+  setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const layout: { [ColName: string]: ColProps } = {
@@ -30,35 +32,54 @@ const validateMessages = {
   },
 };
 
-const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) => {
+const NoticeEditForm = ({
+  form,
+  validateTrigger,
+  setValidateTrigger,
+  prevNotice,
+  setSubmitLoading,
+  closeModal,
+}: Props) => {
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
-    swrKey || '/notice',
+    prevNotice.swrKey || '/notice',
     axiosFetcher,
-    {
-      revalidateOnMount: false,
-    },
   );
 
   const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
     async (values) => {
       setSubmitLoading(true);
       try {
-        const createdNotice = await httpClient.post<Response>('/notice', values).then((res) => res.data);
+        const updatedNotice = await httpClient
+          .put<EditedNotice>(`/notice/${prevNotice.id}`, values)
+          .then((res) => res.data);
 
-        const nextNoticeList = noticeList!.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
+        const nextNoticeList = noticeList!.map((notice) => (notice.id !== updatedNotice.id ? notice : updatedNotice));
         await mutateNoticeList(nextNoticeList);
-        message.success('공지사항 등록 완료');
+        message.success('공지사항 수정 완료');
         closeModal();
       } catch (err) {
         logAxiosError<RequestError>(err as AxiosError<RequestError>);
       }
       setSubmitLoading(false);
     },
-    [setSubmitLoading, noticeList, mutateNoticeList, closeModal],
+    [setSubmitLoading, prevNotice.id, noticeList, mutateNoticeList, closeModal],
   );
 
+  const onFormFinishFailed = useCallback(() => {
+    setValidateTrigger(['onFinish', 'onChange']);
+  }, [setValidateTrigger]);
+
   return (
-    <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
+    <Form
+      form={form}
+      initialValues={prevNotice}
+      onFinish={onFormFinish}
+      onFinishFailed={onFormFinishFailed}
+      validateTrigger={validateTrigger}
+      validateMessages={validateMessages}
+      size="middle"
+      {...layout}
+    >
       <Form.Item name="title" label="제목" rules={[{ required: true }, { type: 'string', max: 20 }]}>
         <Input autoComplete="off" maxLength={20} />
       </Form.Item>
@@ -69,4 +90,4 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
   );
 };
 
-export default NoticeAddForm;
+export default NoticeEditForm;

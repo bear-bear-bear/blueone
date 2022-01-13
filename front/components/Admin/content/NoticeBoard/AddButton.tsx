@@ -1,11 +1,14 @@
-import { MouseEventHandler, useCallback, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
 import type { EndPoint } from '@typings';
 import AddForm from './AddForm';
 
+type Props = {
+  swrKey: string;
+};
 type RequestBody = EndPoint['POST /notice']['requestBody'];
 
-const AddButton = () => {
+const AddButton: FC<Props> = ({ swrKey }) => {
   const [form] = Form.useForm<RequestBody>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
@@ -33,7 +36,7 @@ const AddButton = () => {
         cancelText="취소"
         confirmLoading={submitLoading}
       >
-        <AddForm form={form} setSubmitLoading={setSubmitLoading} closeModal={closeModal} />
+        <AddForm form={form} setSubmitLoading={setSubmitLoading} closeModal={closeModal} swrKey={swrKey} />
       </Modal>
     </>
   );

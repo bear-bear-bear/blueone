@@ -58,7 +58,7 @@ const DeleteButton = ({ user }: Props) => {
         okButtonProps={{ danger: true }}
         onCancel={handleCancel}
         cancelText="취소"
-        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+        icon={<QuestionCircleOutlined style={{ color: '#ff4d4f' }} />}
       >
         <Tooltip title="삭제">
           <Button

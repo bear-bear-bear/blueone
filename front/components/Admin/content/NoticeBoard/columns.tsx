@@ -1,4 +1,6 @@
 import { ColumnsType } from 'antd/es/table';
+import EditButton from './EditButton';
+import DeleteButton from './DeleteButton';
 import type { ProcessedNotice } from './index';
 
 const columns: ColumnsType<ProcessedNotice> = [
@@ -21,12 +23,12 @@ const columns: ColumnsType<ProcessedNotice> = [
     title: '',
     key: 'action',
     align: 'center',
-    // render: (_, record) => (
-    //   <>
-    //     <EditButton record={record} />
-    //     <DeleteButton record={record} />
-    //   </>
-    // ),
+    render: (_, record) => (
+      <>
+        <EditButton record={record} />
+        <DeleteButton record={record} />
+      </>
+    ),
     width: 80,
   },
 ];
