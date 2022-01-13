@@ -19,6 +19,7 @@ const NoticeList = () => {
   }
   return (
     <List
+      grid={{ gutter: 16, column: 1 }}
       dataSource={noticeList}
       renderItem={(item) => (
         <List.Item>
