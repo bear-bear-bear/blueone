@@ -1,8 +1,9 @@
-import { EndPoint } from '@typings';
 import useSWR from 'swr';
 import { Card, List } from 'antd';
 import { axiosFetcher } from '@utils/swr';
 import EmptyContent from '@components/User/commonParts/Empty';
+import type { EndPoint } from '@typings';
+import * as S from './styles';
 
 type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];
 
@@ -23,7 +24,9 @@ const NoticeList = () => {
       dataSource={noticeList}
       renderItem={(item) => (
         <List.Item>
-          <Card title={item.title}>{item.content}</Card>
+          <S.NoticeCard title={item.title}>
+            <pre>{item.content}</pre>
+          </S.NoticeCard>
         </List.Item>
       )}
     />

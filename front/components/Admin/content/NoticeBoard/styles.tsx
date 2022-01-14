@@ -1,3 +1,4 @@
+import { Card } from 'antd';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/RangePicker';
@@ -40,9 +41,12 @@ export const SpinnerWrapper = styled.div`
   align-items: center;
 `;
 
-export const ExpandContent = styled.p`
-  text-align: center;
+export const ExpandContent = styled.pre`
   margin: 0 auto;
-  max-width: 400px;
   padding: 0 16px;
+  width: fit-content;
+  max-width: 600px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: inherit;
 `;
