@@ -42,10 +42,7 @@ export const SpinnerWrapper = styled.div`
 `;
 
 export const LinkifyPre = styled(Linkify)`
-  margin: 0 auto;
-  padding: 0 16px;
-  width: fit-content;
-  max-width: 600px;
+  padding: 0.66rem 1.33rem;
   white-space: pre-wrap;
   word-wrap: break-word;
   font-family: inherit;
