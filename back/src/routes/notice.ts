@@ -72,9 +72,6 @@ router.get('/activation', isLoggedIn, async (req, res, next) => {
   const today = dayjs().format('YYYY-MM-DD');
 
   try {
-    const allNoticeList = await Notice.findAll({
-      order: [['createdAt', 'DESC']],
-    });
     const activatedNoticeList = await Notice.findAll({
       where: {
         [Op.and]: {
@@ -88,14 +85,6 @@ router.get('/activation', isLoggedIn, async (req, res, next) => {
       },
       order: [['createdAt', 'DESC']],
     });
-    console.log(
-      'allNoticeList',
-      allNoticeList.map((notice) => notice.get()),
-    );
-    console.log(
-      'activatedNoticeList',
-      activatedNoticeList.map((notice) => notice.get()),
-    );
     res.status(200).json(activatedNoticeList);
   } catch (err) {
     console.error(err);
