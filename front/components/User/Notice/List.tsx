@@ -25,7 +25,7 @@ const NoticeList = () => {
       renderItem={(item) => (
         <List.Item>
           <S.NoticeCard title={item.title}>
-            <pre>{item.content}</pre>
+            <S.LinkifyPre tagName="pre">{item.content}</S.LinkifyPre>
           </S.NoticeCard>
         </List.Item>
       )}

@@ -1,4 +1,4 @@
-import { Card } from 'antd';
+import Linkify from 'linkify-react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/RangePicker';
@@ -41,7 +41,7 @@ export const SpinnerWrapper = styled.div`
   align-items: center;
 `;
 
-export const ExpandContent = styled.pre`
+export const LinkifyPre = styled(Linkify)`
   margin: 0 auto;
   padding: 0 16px;
   width: fit-content;

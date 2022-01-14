@@ -101,7 +101,7 @@ const NoticeEditForm = ({
         <Input autoComplete="off" maxLength={20} />
       </Form.Item>
       <Form.Item name="content" label="내용" rules={[{ required: true }]}>
-        <Input.TextArea autoComplete="off" style={{ height: '10rem' }} />
+        <Input.TextArea autoComplete="off" spellCheck={false} style={{ height: '10rem' }} />
       </Form.Item>
       <Form.Item name="dateRange" label="기간" rules={[{ required: true }]} style={{ marginBottom: 0 }}>
         <RangePicker disabledDate={(current: dayjs.Dayjs) => current < dayjs().startOf('day')} />

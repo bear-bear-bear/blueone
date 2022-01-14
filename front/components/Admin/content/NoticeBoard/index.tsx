@@ -80,7 +80,7 @@ const NoticeBoard = () => {
         columns={columns}
         rowKey={(notice) => notice.id}
         expandable={{
-          expandedRowRender: (notice) => <S.ExpandContent>{notice.content}</S.ExpandContent>,
+          expandedRowRender: (notice) => <S.LinkifyPre tagName="pre">{notice.content}</S.LinkifyPre>,
           expandRowByClick: true,
           showExpandColumn: false,
         }}

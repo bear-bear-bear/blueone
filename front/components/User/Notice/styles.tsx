@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Card } from 'antd';
+import Linkify from 'linkify-react';
 
 export const NoticeCard = styled(Card)`
   .ant-card-head {
@@ -19,4 +20,10 @@ export const NoticeCard = styled(Card)`
       font-family: inherit;
     }
   }
+`;
+
+export const LinkifyPre = styled(Linkify)`
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: inherit;
 `;
