@@ -47,6 +47,11 @@ export const TableHeader = styled.div`
   }
 `;
 
+export const TotalFeeSection = styled.section`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export const SpinnerWrapper = styled.div`
   display: flex;
   height: 100%;

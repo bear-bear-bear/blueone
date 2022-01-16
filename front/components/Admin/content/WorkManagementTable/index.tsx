@@ -7,6 +7,7 @@ import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
+import TotalFee from './TotalFee';
 import DatePicker from './DatePicker';
 import UserPicker from './UserPicker';
 import AddButton from './AddButton';
@@ -55,6 +56,7 @@ const WorkManagementTable = () => {
     refreshInterval: 30 * 1000,
   });
   const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState<boolean>(false);
+  const [isShowTotalFee, setIsShowTotalFee] = useState<boolean>(false);
 
   const dataSource: ProcessedWork[] | undefined = useMemo(() => {
     if (!works) return undefined;
@@ -77,8 +79,11 @@ const WorkManagementTable = () => {
       }));
   }, [works, TODAY_START_MS, swrKey, isVisiblePastDoneWork, pickedUserId]);
 
-  const handleChangeCheckbox = () => {
+  const handleChangeVisiblePastDoneWorkCheckbox = () => {
     setIsVisiblePastDoneWork((prev) => !prev);
+  };
+  const handleChangeShowTotalFeeCheckbox = () => {
+    setIsShowTotalFee((prev) => !prev);
   };
 
   if (!dataSource) {
@@ -95,7 +100,8 @@ const WorkManagementTable = () => {
         <section>
           <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
           <UserPicker pickedUserId={pickedUserId} setPickedUserId={setPickedUserId} />
-          <Checkbox onChange={handleChangeCheckbox}>지난 날짜에 완료된 작업 표시</Checkbox>
+          <Checkbox onChange={handleChangeVisiblePastDoneWorkCheckbox}>지난 날짜에 완료된 작업 표시</Checkbox>
+          <Checkbox onChange={handleChangeShowTotalFeeCheckbox}>지수합계 표시</Checkbox>
         </section>
         <AddButton
           swrKey={swrKey}
@@ -125,6 +131,20 @@ const WorkManagementTable = () => {
         pagination={{ position: ['bottomLeft'] }}
         size="middle"
         bordered
+        summary={() => {
+          if (!isShowTotalFee) return null;
+          return (
+            <Table.Summary fixed>
+              <Table.Summary.Row>
+                <Table.Summary.Cell index={0} colSpan={columns.length + 1}>
+                  <S.TotalFeeSection>
+                    <TotalFee workData={dataSource} />
+                  </S.TotalFeeSection>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </Table.Summary>
+          );
+        }}
       />
     </>
   );
