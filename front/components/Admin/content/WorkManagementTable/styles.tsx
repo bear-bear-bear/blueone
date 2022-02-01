@@ -44,6 +44,10 @@ export const TableHeader = styled.div`
     align-items: center;
     flex-wrap: wrap;
     gap: 0.66rem;
+
+    .ant-checkbox-wrapper {
+      margin-left: 0;
+    }
   }
 `;
 

@@ -100,8 +100,8 @@ const WorkManagementTable = () => {
         <section>
           <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
           <UserPicker pickedUserId={pickedUserId} setPickedUserId={setPickedUserId} />
-          <Checkbox onChange={handleChangeVisiblePastDoneWorkCheckbox}>지난 날짜에 완료된 작업 표시</Checkbox>
-          <Checkbox onChange={handleChangeShowTotalFeeCheckbox}>지수합계 표시</Checkbox>
+          <Checkbox onChange={handleChangeVisiblePastDoneWorkCheckbox}>과거 목록</Checkbox>
+          <Checkbox onChange={handleChangeShowTotalFeeCheckbox}>지수 합계</Checkbox>
         </section>
         <AddButton
           swrKey={swrKey}
