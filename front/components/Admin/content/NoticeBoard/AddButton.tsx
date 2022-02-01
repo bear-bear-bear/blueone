@@ -35,6 +35,7 @@ const AddButton: FC<Props> = ({ swrKey }) => {
         okText="등록"
         cancelText="취소"
         confirmLoading={submitLoading}
+        maskClosable={false}
       >
         <AddForm form={form} setSubmitLoading={setSubmitLoading} closeModal={closeModal} swrKey={swrKey} />
       </Modal>

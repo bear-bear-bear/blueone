@@ -39,6 +39,7 @@ const EditButton = ({ user }: Props) => {
         okText="수정"
         cancelText="취소"
         confirmLoading={submitLoading}
+        maskClosable={false}
       >
         <EditForm
           form={form}
