@@ -68,6 +68,7 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'subsidy',
     align: 'right',
     width: 80,
+    render: (_, record) => record.subsidy || null,
   },
   {
     title: '최종지수',

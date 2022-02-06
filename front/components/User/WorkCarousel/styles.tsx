@@ -1,10 +1,7 @@
-import { Card, Empty } from 'antd';
-import { AiOutlineFileDone } from 'react-icons/ai';
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import media from '@utils/media';
+import { CARD_MARGIN_TOP } from '@components/User/WorkCard/styles';
 
-const CARD_MARGIN_TOP = '2rem';
 export const globalCSS = css`
   .ant-card-actions {
     li {
@@ -43,49 +40,4 @@ export const globalCSS = css`
       }
     }
   }
-`;
-
-export const StyledCard = styled(Card)`
-  position: relative;
-  max-height: 70vh;
-  overflow-y: auto;
-  margin-top: ${CARD_MARGIN_TOP};
-  border: none;
-`;
-
-export const StyledEmpty = styled(Empty)`
-  position: relative;
-  top: 42%;
-  transform: translateY(-50%);
-  color: #fafafa;
-`;
-
-export const WorkInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.66rem;
-  margin-top: 1.33rem;
-`;
-
-export const Row = styled.div`
-  display: flex;
-  gap: 0.66rem;
-  font-size: 16px;
-
-  p:first-of-type {
-    width: fit-content;
-    min-width: 4rem;
-    text-align: right;
-  }
-
-  p:last-of-type {
-    word-break: break-all;
-  }
-`;
-
-export const WorkDoneStamp = styled(AiOutlineFileDone)`
-  color: #008000;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
 `;

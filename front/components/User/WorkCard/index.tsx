@@ -2,15 +2,17 @@ import { FC } from 'react';
 import { Card, Tooltip, Typography } from 'antd';
 import { MoneyCollectOutlined } from '@ant-design/icons';
 import type { Unpacked } from '@typings';
-import CheckButton from '@components/User/WorkCarousel/WorkCard/CheckButton';
-import DoneButton from '@components/User/WorkCarousel/WorkCard/DoneButton';
+import CheckButton from '@components/User/WorkCard/CheckButton';
+import DoneButton from '@components/User/WorkCard/DoneButton';
 import { EndPoint } from '@typings';
-import * as S from '../styles';
+import dayjs from 'dayjs';
+import * as S from './styles';
 
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 type MyWork = Unpacked<MyWorks>;
 type Props = {
   work: MyWork;
+  readOnly?: boolean;
 };
 
 const { Meta } = Card;
@@ -36,22 +38,37 @@ const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ l
   </S.Row>
 );
 
-const WorkCard = ({ work }: Props) => {
+const WorkCard = ({ work, readOnly = false }: Props) => {
   const isWorkChecked = !!work.checkTime;
   const isWorkDone = !!work.endTime;
   const payout = ((work.charge + (work.subsidy ?? 0)) * 8) / 10;
 
   return (
     <S.StyledCard
-      actions={[
-        <CheckButton isWorkChecked={isWorkChecked} workId={work.id} key={`c_${work.id}`} />,
-        <DoneButton isWorkChecked={isWorkChecked} isWorkDone={isWorkDone} workId={work.id} key={`d_${work.id}`} />,
-      ]}
+      actions={
+        readOnly
+          ? undefined
+          : [
+              <CheckButton isWorkChecked={isWorkChecked} workId={work.id} key={`c_${work.id}`} />,
+              <DoneButton
+                isWorkChecked={isWorkChecked}
+                isWorkDone={isWorkDone}
+                workId={work.id}
+                key={`d_${work.id}`}
+              />,
+            ]
+      }
       bodyStyle={{
         backgroundColor: isWorkDone ? '#F5F5F5' : '#FFF',
       }}
+      readOnly={readOnly}
     >
       {isWorkDone && <WorkDoneStamp />}
+      {readOnly && !!work.endTime && (
+        <p style={{ fontSize: '16px', marginBottom: '10px' }}>
+          <b>{dayjs(work.endTime).format('MM-DD')}</b>
+        </p>
+      )}
       <Meta
         title={
           <p>
@@ -62,14 +79,14 @@ const WorkCard = ({ work }: Props) => {
         description={
           <div>
             <p>- 구간지수 {work.charge}</p>
-            {work.subsidy && <p>- 지원지수 {work.subsidy}</p>}
+            {!!work.subsidy && <p>- 지원지수 {work.subsidy}</p>}
           </div>
         }
       />
       <S.WorkInfo>
-        <InfoRow label="출발지" content={work.origin} copyable />
-        {work.waypoint && <InfoRow label="경유지" content={work.waypoint} copyable />}
-        <InfoRow label="도착지" content={work.destination} copyable />
+        <InfoRow label="출발지" content={work.origin} copyable={!readOnly} />
+        {work.waypoint && <InfoRow label="경유지" content={work.waypoint} copyable={!readOnly} />}
+        <InfoRow label="도착지" content={work.destination} copyable={!readOnly} />
         <InfoRow label="차종" content={work.carModel} />
         {work.remark && <InfoRow label="비고" content={work.remark} />}
       </S.WorkInfo>

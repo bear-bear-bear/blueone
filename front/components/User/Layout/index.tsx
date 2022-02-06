@@ -29,11 +29,11 @@ const navItems: NavItem[] = [
     text: '업무',
   },
   {
-    href: '/worker/work-search',
+    href: '/worker/done-work-search',
     parentPageHref: '/worker',
     outlineIcon: null,
     fillIcon: null,
-    text: '업무 열람',
+    text: '완료된 업무',
   },
   {
     href: '/worker/notice',
@@ -80,7 +80,9 @@ const UserLayout: FC<Props> = ({ children, bodyNoPadding, useBack = false }) => 
     <S.CenterLayout>
       <S.Box>
         <S.BoxHeader>
-          {useBack && <Button className="go-back" type="text" icon={<ArrowLeftOutlined />} onClick={goBack} />}
+          {useBack && (
+            <Button className="go-back" type="text" size="large" icon={<ArrowLeftOutlined />} onClick={goBack} />
+          )}
           <h1>{headerText}</h1>
         </S.BoxHeader>
         <S.BoxMain noPadding={bodyNoPadding}>{children}</S.BoxMain>

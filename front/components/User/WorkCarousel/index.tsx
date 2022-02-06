@@ -6,7 +6,7 @@ import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import type { Settings } from '@ant-design/react-slick';
 import EmptyContent from '@components/User/commonParts/Empty';
-import WorkCard from './WorkCard';
+import WorkCard from '../WorkCard';
 import * as S from './styles';
 
 export type MyWorks = EndPoint['GET /user/works']['responses']['200'];

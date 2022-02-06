@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
-import type { QueryTypedRequest } from 'typings';
+import type { DatePickQuery, QueryTypedRequest } from 'typings';
 
 const router = express.Router();
 
@@ -159,6 +159,38 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
     next(err);
   }
 });
+
+/**
+ * 지정한 기간 내 완료된 내 작업 목록 가져오기
+ */
+router.get(
+  '/works/prev',
+  isLoggedIn,
+  async (req: QueryTypedRequest<DatePickQuery>, res, next) => {
+    const today = dayjs();
+    const { start = today, end = today } = req.query;
+
+    const gt = dayjs(start).startOf('day').toISOString();
+    const lt = dayjs(end).endOf('day').toISOString();
+
+    try {
+      const works = await Work.findAll({
+        where: {
+          endTime: {
+            [Op.gt]: gt,
+            [Op.lt]: lt,
+            [Op.ne]: null,
+          },
+        },
+        order: [['createdAt', 'DESC']],
+      });
+      res.status(200).json(works);
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  },
+);
 
 /**
  * 올해 혹은 이번달 내 업무의 최종지수 통계 가져오기

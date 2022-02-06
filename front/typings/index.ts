@@ -123,6 +123,15 @@ export interface EndPoint {
     };
   };
   /**
+   * 지정한 기간 내 완료된 내 작업 목록 가져오기
+   */
+  'GET /user/works/prev': {
+    responses: {
+      200: Work[];
+      500: ErrorMessage;
+    };
+  };
+  /**
    * 올해 혹은 이번달 내 업무의 최종지수 통계 가져오기
    */
   'GET /user/works/analysis': {

@@ -14,7 +14,7 @@ import type {
 const router = express.Router();
 
 /**
- * 오늘자 작업 가져오기
+ * 지정한 기간 내 작업 목록 가져오기
  */
 router.get(
   '/',

@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { message } from 'antd';
 import useUser from '@hooks/useUser';
 import UserLayout from '@components/User/Layout';
-import WorkSearch from '@components/User/WorkSearch';
+import DoneWorkSearch from '@components/User/DoneWorkSearch';
 
-const WorkSearchPage: NextPage = () => {
+const DoneWorkSearchPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
     redirectTo: '/login',
   });
@@ -20,9 +20,9 @@ const WorkSearchPage: NextPage = () => {
   if (!isLoggedIn) return null;
   return (
     <UserLayout useBack>
-      <WorkSearch />
+      <DoneWorkSearch />
     </UserLayout>
   );
 };
 
-export default WorkSearchPage;
+export default DoneWorkSearchPage;

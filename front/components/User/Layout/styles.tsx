@@ -30,7 +30,7 @@ export const BoxHeader = styled.header`
 
   button.go-back {
     position: absolute;
-    left: 2rem;
+    left: 1rem;
     color: #fff;
   }
 

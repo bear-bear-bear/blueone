@@ -7,7 +7,7 @@ import UserLayout from '@components/User/Layout';
 import WorkCarousel from '@components/User/WorkCarousel';
 import NotificationBadge from '@components/User/NotificationBadge';
 import LatestNoticeAlert from '@components/User/Notice/LatestNoticeAlert';
-import ToWorkSearchButton from '@components/User/ToWorkSearchButton';
+import ToDoneWorkSearchButton from '@components/User/DoneWorkSearch/ToDoneWorkSearchButton';
 
 const WorkPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
@@ -39,7 +39,7 @@ const WorkPage: NextPage = () => {
           right: '1rem',
         }}
       >
-        <ToWorkSearchButton />
+        <ToDoneWorkSearchButton />
       </div>
     </UserLayout>
   );
