@@ -7,6 +7,7 @@ import UserLayout from '@components/User/Layout';
 import WorkCarousel from '@components/User/WorkCarousel';
 import NotificationBadge from '@components/User/NotificationBadge';
 import LatestNoticeAlert from '@components/User/Notice/LatestNoticeAlert';
+import ToWorkSearchButton from '@components/User/ToWorkSearchButton';
 
 const WorkPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
@@ -30,6 +31,16 @@ const WorkPage: NextPage = () => {
       {insuranceDate.state === 'danger' && <NotificationBadge type="danger" content="보험이 만료되었습니다." />}
       <LatestNoticeAlert />
       <WorkCarousel />
+
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '1rem',
+          right: '1rem',
+        }}
+      >
+        <ToWorkSearchButton />
+      </div>
     </UserLayout>
   );
 };

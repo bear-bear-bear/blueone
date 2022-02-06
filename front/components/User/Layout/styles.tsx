@@ -19,6 +19,7 @@ export const Box = styled.section`
 `;
 
 export const BoxHeader = styled.header`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,6 +27,12 @@ export const BoxHeader = styled.header`
   padding: ${BOX_ITEM_PADDING};
   padding-top: 1rem;
   gap: 1rem;
+
+  button.go-back {
+    position: absolute;
+    left: 2rem;
+    color: #fff;
+  }
 
   h1 {
     font-size: 1.33rem;

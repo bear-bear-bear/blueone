@@ -10,10 +10,13 @@ import {
   AiOutlineNotification,
   AiOutlineSetting,
 } from 'react-icons/ai';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import * as S from './styles';
 
 type NavItem = {
   href: `/${string}`;
+  parentPageHref?: `/${string}`;
   outlineIcon: ReactNode;
   fillIcon: ReactNode;
   text: string;
@@ -24,6 +27,13 @@ const navItems: NavItem[] = [
     outlineIcon: <AiOutlineCar size={20} />,
     fillIcon: <AiFillCar size={20} />,
     text: '업무',
+  },
+  {
+    href: '/worker/work-search',
+    parentPageHref: '/worker',
+    outlineIcon: null,
+    fillIcon: null,
+    text: '업무 열람',
   },
   {
     href: '/worker/notice',
@@ -54,23 +64,43 @@ const ActiveLink: FC<{ active: boolean; item: NavItem }> = ({ item, active }) =>
   </Link>
 );
 
-const UserLayout: FC<{ bodyNoPadding?: boolean }> = ({ children, bodyNoPadding }) => {
+type Props = {
+  bodyNoPadding?: boolean;
+  useBack?: boolean;
+};
+const UserLayout: FC<Props> = ({ children, bodyNoPadding, useBack = false }) => {
   const router = useRouter();
-
   const headerText = useMemo(() => navItems.find((item) => item.href === router.asPath)!.text, [router.asPath]);
+
+  const goBack = () => {
+    router.back();
+  };
 
   return (
     <S.CenterLayout>
       <S.Box>
         <S.BoxHeader>
+          {useBack && <Button className="go-back" type="text" icon={<ArrowLeftOutlined />} onClick={goBack} />}
           <h1>{headerText}</h1>
         </S.BoxHeader>
         <S.BoxMain noPadding={bodyNoPadding}>{children}</S.BoxMain>
         <S.BoxFooter>
           <nav>
-            {navItems.map((item) => (
-              <ActiveLink key={item.href} item={item} active={item.href === router.asPath} />
-            ))}
+            {navItems.map((item) => {
+              if (item.parentPageHref) {
+                return null;
+              }
+              // Warning: O(n^2)
+              const isParentOfCurrPage = !!navItems.find(
+                (t) =>
+                  t.parentPageHref && //
+                  t.parentPageHref === item.href && //
+                  t.href === router.asPath, //
+              );
+              return (
+                <ActiveLink key={item.href} item={item} active={item.href === router.asPath || isParentOfCurrPage} />
+              );
+            })}
           </nav>
         </S.BoxFooter>
       </S.Box>
