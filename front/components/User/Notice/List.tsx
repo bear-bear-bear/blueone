@@ -23,7 +23,7 @@ const NoticeList = () => {
       grid={{ gutter: 16, column: 1 }}
       dataSource={noticeList}
       renderItem={(item) => (
-        <List.Item>
+        <List.Item style={{ borderTop: '7px solid #0076bb' }}>
           <S.NoticeCard title={item.title}>
             <S.LinkifyPre tagName="pre">{item.content}</S.LinkifyPre>
           </S.NoticeCard>
