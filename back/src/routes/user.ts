@@ -176,6 +176,7 @@ router.get(
     try {
       const works = await Work.findAll({
         where: {
+          UserId: req.user?.id,
           endTime: {
             [Op.gt]: gt,
             [Op.lt]: lt,
