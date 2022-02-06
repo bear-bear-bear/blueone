@@ -117,7 +117,7 @@ const WorkAddForm = ({
         name="subsidy"
         label="지원지수"
         tooltip="단위: 1000"
-        rules={[{ type: 'number', min: 0, max: 16777216 }]}
+        rules={[{ type: 'number', min: -16777215, max: 16777216 }]}
       >
         <InputNumber autoComplete="off" />
       </Form.Item>

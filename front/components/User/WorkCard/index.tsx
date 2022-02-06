@@ -41,7 +41,10 @@ const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ l
 const WorkCard = ({ work, readOnly = false }: Props) => {
   const isWorkChecked = !!work.checkTime;
   const isWorkDone = !!work.endTime;
-  const payout = ((work.charge + (work.subsidy ?? 0)) * 8) / 10;
+
+  // 지원지수가 음수라면 수식을 다르게 해달라는 요청사항 반영
+  const subsidy = work.subsidy ?? 0;
+  const payout = subsidy >= 0 ? ((work.charge + subsidy) * 8) / 10 : (work.charge * 8) / 10 + subsidy;
 
   return (
     <S.StyledCard

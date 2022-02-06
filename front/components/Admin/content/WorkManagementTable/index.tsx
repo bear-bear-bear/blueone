@@ -72,7 +72,11 @@ const WorkManagementTable = () => {
       .map((work) => ({
         ...work,
         ...processWorkDateTimes(work),
-        payout: ((work.charge + (work.subsidy || 0)) * (8 / 10)).toFixed(1),
+        payout: (() => {
+          // 지원지수가 음수라면 수식을 다르게 해달라는 요청사항 반영
+          const subsidy = work.subsidy ?? 0;
+          return subsidy >= 0 ? ((work.charge + subsidy) * 8) / 10 : (work.charge * 8) / 10 + subsidy;
+        })(),
         realname: work.User?.UserInfo?.realname,
         isDone: work.endTime !== null,
         swrKey,
