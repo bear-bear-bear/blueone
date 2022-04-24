@@ -22,10 +22,17 @@ const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
   );
 
   const disabledDate = useCallback(
-    (current: dayjs.Dayjs) =>
-      // Can not select days before today and today
-      current && current > dayjs().endOf('day'),
-    [],
+    (current: dayjs.Dayjs) => {
+      if (!current) {
+        return false;
+      }
+
+      const tooEarly = today.diff(current, 'days') > 100; // 100일 이전
+      const tooLate = current > dayjs().endOf('day'); // 오늘 이후
+
+      return tooEarly || tooLate;
+    },
+    [today],
   );
 
   return (
