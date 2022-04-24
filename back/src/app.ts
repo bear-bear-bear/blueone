@@ -15,6 +15,7 @@ import db from '@/models';
 import { userRouter, usersRouter, worksRouter, noticeRouter } from '@/routes';
 import { errorHandler, errorLogger } from '@/middlewares';
 import passportConfig from '@/auth';
+import runJobs from '@/schedule';
 passportConfig();
 
 db.sequelize
@@ -85,6 +86,8 @@ app.use('/works', worksRouter);
 app.use('/notice', noticeRouter);
 app.use(errorLogger);
 app.use(errorHandler);
+
+runJobs();
 
 app.listen('8001', () => {
   console.log('Server listening on port: 8001');

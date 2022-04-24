@@ -102,7 +102,22 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { UserId }: UpdateWorkRequestBody = req.body;
 
   try {
-    const work = await Work.findByPk(workId);
+    const work = await Work.findByPk(workId, {
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ['password'],
+          },
+          include: [
+            {
+              model: UserInfo,
+              attributes: ['realname'],
+            },
+          ],
+        },
+      ],
+    });
 
     if (!work) {
       res.status(404).json({
@@ -122,25 +137,18 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
       }
     }
 
-    await work.update(req.body);
-
-    const updatedWork = await Work.findByPk(workId, {
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: ['password'],
-          },
-          include: [
-            {
-              model: UserInfo,
-              attributes: ['realname'],
-            },
-          ],
-        },
-      ],
+    Object.keys(req.body).forEach((key) => {
+      // @ts-ignore
+      work[key] = req.body[key];
     });
-    res.status(200).json(updatedWork);
+
+    if (work.subsidy !== req.body.subsidy) {
+      work.penalty = false;
+    }
+
+    await work.save();
+
+    res.status(200).json(work);
   } catch (err) {
     next(err);
   }
