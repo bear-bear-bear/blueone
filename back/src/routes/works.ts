@@ -137,14 +137,14 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
       }
     }
 
+    if (work.subsidy !== req.body.subsidy) {
+      work.penalty = false;
+    }
+
     Object.keys(req.body).forEach((key) => {
       // @ts-ignore
       work[key] = req.body[key];
     });
-
-    if (work.subsidy !== req.body.subsidy) {
-      work.penalty = false;
-    }
 
     await work.save();
 
