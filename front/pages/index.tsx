@@ -12,7 +12,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Blueone | Admin</title>
+        <title>BLUEONE | Admin</title>
       </Head>
       <AdminLayout />
     </>

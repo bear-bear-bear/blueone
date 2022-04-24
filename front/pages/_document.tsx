@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
 
-const APP_NAME = 'Blueone';
+const APP_NAME = 'BLUEONE';
 const APP_DESCRIPTION = '탁송 서비스 관리 솔루션';
 
 export default class MyDocument extends Document {

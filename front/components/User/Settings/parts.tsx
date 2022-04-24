@@ -30,4 +30,4 @@ export const SettingsHeader: FC<{ user: UserWithInfo }> = ({ user }) => (
   </S.StyledCard>
 );
 
-export const SettingsFooter: FC = () => <S.Footer>Copyright ©2014-2022 Blueone, Inc. All rights reserved.</S.Footer>;
+export const SettingsFooter: FC = () => <S.Footer>Copyright ©2014-2022 BLUEONE, Inc. All rights reserved.</S.Footer>;
