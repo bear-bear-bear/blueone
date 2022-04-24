@@ -30,12 +30,15 @@ const jobs = [
             endTime: {
               [Op.eq]: null,
             },
+            penalty: {
+              [Op.eq]: false,
+            },
           },
         });
 
         await Promise.all(
-          notDoneWorks.map((work) => async () => {
-            work.subsidy = work.subsidy ?? 0 - 10;
+          notDoneWorks.map(async (work) => {
+            work.subsidy = (work.subsidy ?? 0) - 10;
             work.penalty = true;
 
             await work.save();
