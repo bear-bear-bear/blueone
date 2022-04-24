@@ -1,5 +1,6 @@
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
+import { Tooltip } from 'antd';
 import AddButton from './AddButton';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
@@ -68,7 +69,25 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'subsidy',
     align: 'right',
     width: 80,
-    render: (_, record) => record.subsidy || null,
+    render: (_, record) => {
+      const subsidy = record.subsidy ?? 0;
+
+      if (record.penalty) {
+        return (
+          <Tooltip title="패널티">
+            <p style={{ color: 'red', fontWeight: 500 }}>{subsidy}</p>
+          </Tooltip>
+        );
+      }
+
+      if (subsidy < 0) {
+        return (
+            <p style={{ color: 'red', fontWeight: 500 }}>{subsidy}</p>
+        );
+      }
+
+      return subsidy || null;
+    },
   },
   {
     title: '최종지수',

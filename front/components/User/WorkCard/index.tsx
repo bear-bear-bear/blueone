@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Card, Tooltip, Typography } from 'antd';
 import { MoneyCollectOutlined } from '@ant-design/icons';
 import type { Unpacked } from '@typings';
@@ -37,6 +37,11 @@ const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ l
     )}
   </S.Row>
 );
+
+const emphasisStyle = {
+  color: 'red',
+  fontWeight: 500,
+};
 
 const WorkCard = ({ work, readOnly = false }: Props) => {
   const isWorkChecked = !!work.checkTime;
@@ -81,8 +86,12 @@ const WorkCard = ({ work, readOnly = false }: Props) => {
         }
         description={
           <div>
-            <p>- 구간지수 {work.charge}</p>
-            {!!work.subsidy && <p>- 지원지수 {work.subsidy}</p>}
+            <p>* 구간지수 {work.charge}</p>
+            {subsidy !== 0 && (
+              <p>* 지원지수{' '}
+                <span style={subsidy < 0 ? emphasisStyle : undefined}>{subsidy}</span>
+              </p>
+            )}
           </div>
         }
       />
