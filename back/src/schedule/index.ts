@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 const jobs = [
   {
     name: 'Adjust subsidy penalty',
-    cron: '0/10 * * * * ?',
+    cron: '30 0 0 * * ?',
     timezone: 'Asia/Seoul',
     callback: async () => {
       const yesterday = dayjs().subtract(1, 'days');
