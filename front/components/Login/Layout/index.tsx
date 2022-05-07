@@ -7,7 +7,7 @@ const LoginLayout: FC = ({ children }) => (
   <S.CenterLayout>
     <S.Box>
       <S.BoxHeader>
-        <Image src="/logo_fill.svg" alt="로고" width={120} height={20} />
+        <Image src="/logo_fill.svg" alt="로고" width={180} height={30} />
       </S.BoxHeader>
       {children}
     </S.Box>
