@@ -59,7 +59,7 @@ const WorkAddForm = ({
         ...values,
         waypoint: values.waypoint ?? null,
         UserId: values.UserId ?? null,
-        remark: values.remark ?? null,
+        remark: values.remark?.trim() ?? null,
       };
 
       setSubmitLoading(true);

@@ -18,7 +18,7 @@ const jobs = [
         const notDoneWorks = await Work.findAll({
           where: {
             remark: {
-              [Op.ne]: '익일입고',
+              [Op.or]: [{ [Op.ne]: '익일입고' }, { [Op.eq]: null }],
             },
             createdAt: {
               [Op.gt]: YESTERDAY_START,
