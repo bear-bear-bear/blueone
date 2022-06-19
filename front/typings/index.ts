@@ -280,6 +280,14 @@ export interface EndPoint {
       500: ErrorMessage;
     };
   };
+  'PATCH /works/{workId}/force-finish': {
+    responses: {
+      200: Work;
+      403: ErrorMessage;
+      404: ErrorMessage;
+      500: ErrorMessage;
+    };
+  };
   /**
    * 업무 삭제
    */

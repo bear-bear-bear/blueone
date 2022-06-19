@@ -221,6 +221,74 @@ router.patch(
 );
 
 /**
+ * 작업 강제 완료
+ */
+router.patch(
+  '/:workId/force-finish',
+  isLoggedIn,
+  isAdmin,
+  async (req, res, next) => {
+    const { workId } = req.params;
+    const { UserId }: UpdateWorkRequestBody = req.body;
+
+    try {
+      const work = await Work.findByPk(workId, {
+        include: [
+          {
+            model: User,
+            attributes: {
+              exclude: ['password'],
+            },
+            include: [
+              {
+                model: UserInfo,
+                attributes: ['realname'],
+              },
+            ],
+          },
+        ],
+      });
+
+      if (!work) {
+        res.status(404).json({
+          message: `id ${workId} work 를 찾을 수 없습니다`,
+        });
+        return;
+      }
+
+      if (UserId) {
+        const user = await User.findByPk(UserId);
+
+        if (!user) {
+          res.status(404).json({
+            message: `id ${UserId} 유저를 찾을 수 없습니다`,
+          });
+          return;
+        }
+      }
+
+      if (work.endTime) {
+        res.status(403).json({
+          message: `이미 완료된 업무입니다.`,
+        });
+        return;
+      }
+
+      if (!work.checkTime) {
+        work.checkTime = new Date();
+      }
+      work.endTime = new Date();
+
+      await work.save();
+
+      res.status(200).json(work);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
  * 작업 삭제
  */
 router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
