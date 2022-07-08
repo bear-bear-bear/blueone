@@ -43,7 +43,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
         </Tooltip>
       )}
       <Modal
-        title="업무 등록"
+        title={isBooking ? '업무 예약' : '업무 등록'}
         visible={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
@@ -60,7 +60,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
             취소
           </AntdButton>,
           <AntdButton key="submit" type="primary" onClick={form.submit}>
-            {isBooking ? '예약' : '등록'}
+            등록
           </AntdButton>,
         ]}
       >

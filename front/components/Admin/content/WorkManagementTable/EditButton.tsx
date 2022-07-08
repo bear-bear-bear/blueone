@@ -56,7 +56,7 @@ const EditButton = ({ record }: Props) => {
         <Button type="text" size="small" icon={<EditOutlined />} onClick={handleEditIconClick} />
       </Tooltip>
       <Modal
-        title="업무 수정"
+        title={record.bookingDate ? '예약 수정' : '업무 수정'}
         visible={isModalOpen}
         maskClosable={false}
         confirmLoading={submitLoading}
@@ -65,25 +65,28 @@ const EditButton = ({ record }: Props) => {
         okText="수정"
         cancelText="취소"
         footer={[
-          <Popconfirm
-            key="done"
-            placement="topLeft"
-            title="정말로 완료 처리 하시겠습니까?"
-            onConfirm={forceFinishWork}
-            okText="완료"
-            cancelText="취소"
-            okButtonProps={{ danger: true }}
-          >
-            <Button danger style={{ float: 'left' }}>
-              완료
-            </Button>
-          </Popconfirm>,
-
+          ...(record.bookingDate
+            ? []
+            : [
+                <Popconfirm
+                  key="done"
+                  placement="topLeft"
+                  title="정말로 완료 처리 하시겠습니까?"
+                  onConfirm={forceFinishWork}
+                  okText="완료"
+                  cancelText="취소"
+                  okButtonProps={{ danger: true }}
+                >
+                  <Button danger style={{ float: 'left' }}>
+                    완료
+                  </Button>
+                </Popconfirm>,
+              ]),
           <Button key="cancel" onClick={closeModal}>
             취소
           </Button>,
           <Button key="submit" type="primary" onClick={form.submit}>
-            {record.bookingDate ? '예약 수정' : '수정'}
+            수정
           </Button>,
         ]}
       >
