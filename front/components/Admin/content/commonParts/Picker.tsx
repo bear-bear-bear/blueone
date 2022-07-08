@@ -4,10 +4,8 @@ import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import generatePicker from 'antd/lib/date-picker/generatePicker';
 import 'antd/lib/date-picker/style/index';
 
-const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
-const { RangePicker } = DatePicker;
-
-export default RangePicker;
+export const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
+export const { RangePicker } = DatePicker;
 
 export const rangePickerNextMonthSectionHideStyles = css`
   .ant-picker {

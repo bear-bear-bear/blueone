@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import dayjs from 'dayjs';
-import RangePicker from '@components/Admin/content/commonParts/RangePicker';
+import { RangePicker } from '@components/Admin/content/commonParts/Picker';
 import type { DateRange } from './index';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   setDateRange: Dispatch<SetStateAction<DateRange>>;
 };
 
-const TableRangePicker = ({ dateRange, setDateRange }: Props) => {
+const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
   const today = dayjs();
 
   const handleChange = useCallback(
@@ -43,4 +43,4 @@ const TableRangePicker = ({ dateRange, setDateRange }: Props) => {
   );
 };
 
-export default TableRangePicker;
+export default CustomRangePicker;

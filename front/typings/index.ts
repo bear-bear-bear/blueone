@@ -43,6 +43,7 @@ export type Work = {
   checkTime: ISODateString | null;
   endTime: ISODateString | null;
   penalty: boolean | null;
+  bookingDate: boolean | null;
   createdAt: ISODateString;
   updatedAt: ISODateString;
 };
@@ -242,7 +243,7 @@ export interface EndPoint {
   'POST /works': {
     requestBody: Pick<
       Work,
-      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
+      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
     >;
     responses: {
       201: Work & {

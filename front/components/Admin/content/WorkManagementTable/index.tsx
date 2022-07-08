@@ -7,8 +7,8 @@ import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
+import DatePicker from 'components/Admin/content/WorkManagementTable/CustomRangePicker';
 import TotalFee from './TotalFee';
-import DatePicker from './DatePicker';
 import UserPicker from './UserPicker';
 import AddButton from './AddButton';
 import columns from './columns';
@@ -102,7 +102,7 @@ const WorkManagementTable = () => {
       <Global styles={S.globalCSS} />
       <S.TableHeader>
         <section>
-          <DatePicker dateRange={dateRange} setDateRange={setDateRange} />
+          <DatePicker defaultDateRange={dateRange} setDateRange={setDateRange} />
           <UserPicker pickedUserId={pickedUserId} setPickedUserId={setPickedUserId} />
           <Checkbox onChange={handleChangeVisiblePastDoneWorkCheckbox}>과거 목록</Checkbox>
           <Checkbox onChange={handleChangeShowTotalFeeCheckbox}>지수 합계</Checkbox>

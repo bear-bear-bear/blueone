@@ -4,12 +4,12 @@ import { Divider, FormInstance, Select, SelectProps, Skeleton } from 'antd';
 import { axiosFetcher } from '@utils/swr';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import type { EndPoint } from '@typings';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 
 type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {
-  form: FormInstance<WorkAddAntdFormFields>;
-  defaultUserId?: WorkAddAntdFormFields['UserId'];
+  form: FormInstance<WorkAddFormFields>;
+  defaultUserId?: WorkAddFormFields['UserId'];
   disabled?: boolean;
   immutable?: boolean;
 };
@@ -39,7 +39,7 @@ const FormUserSelecter = ({ form, defaultUserId, disabled = false, immutable = f
     ));
   }, [users]);
 
-  const selectSearchFilter: SelectProps<WorkAddAntdFormFields['UserId']>['filterOption'] = useCallback(
+  const selectSearchFilter: SelectProps<WorkAddFormFields['UserId']>['filterOption'] = useCallback(
     (inputValue, option) =>
       option?.children
         .filter((v: unknown) => typeof v === 'string')
@@ -49,11 +49,11 @@ const FormUserSelecter = ({ form, defaultUserId, disabled = false, immutable = f
     [],
   );
 
-  const onSelect: SelectProps<WorkAddAntdFormFields['UserId']>['onSelect'] = (v) => {
+  const onSelect: SelectProps<WorkAddFormFields['UserId']>['onSelect'] = (v) => {
     form.setFieldsValue({ UserId: Number(v) });
   };
 
-  const onClear: SelectProps<WorkAddAntdFormFields['UserId']>['onClear'] = () => {
+  const onClear: SelectProps<WorkAddFormFields['UserId']>['onClear'] = () => {
     form.setFieldsValue({ UserId: undefined });
   };
 

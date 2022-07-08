@@ -6,7 +6,7 @@ import qs from 'qs';
 import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, Unpacked } from '@typings';
-import TableRangePicker from './TableRangePicker';
+import CustomRangePicker from 'components/Admin/content/NoticeBoard/CustomRangePicker';
 import AddButton from './AddButton';
 import columns from './columns';
 import * as S from './styles';
@@ -71,7 +71,7 @@ const NoticeBoard = () => {
     <S.Container>
       <Global styles={S.globalStyles} />
       <S.TableHeader>
-        <TableRangePicker dateRange={dateRange} setDateRange={setDateRange} />
+        <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} />
         <AddButton swrKey={swrKey} />
       </S.TableHeader>
       <Table

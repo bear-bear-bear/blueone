@@ -6,12 +6,12 @@ import type { AxiosError } from 'axios';
 import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import type { EndPoint, Work } from '@typings';
 import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
-  form: FormInstance<WorkAddAntdFormFields>;
+  form: FormInstance<WorkAddFormFields>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork: ProcessedWork;
@@ -62,7 +62,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
     [prevWork.endTime],
   );
 
-  const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
+  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
       const reqBody: WorkPutRequestBody = {
         ...values,

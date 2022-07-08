@@ -1,7 +1,7 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, FormProps, message, Modal, Popconfirm, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import { EndPoint, Work } from '@typings';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { AxiosError } from 'axios';
@@ -21,7 +21,7 @@ type WorkPatchError =
 
 const EditButton = ({ record }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
-  const [form] = Form.useForm<WorkAddAntdFormFields>();
+  const [form] = Form.useForm<WorkAddFormFields>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
