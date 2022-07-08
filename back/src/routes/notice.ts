@@ -1,8 +1,9 @@
 import express from 'express';
-import dayjs from 'dayjs';
 import { Op } from 'sequelize';
 import { Notice } from '@/models';
 import { isAdmin, isLoggedIn } from '@/middlewares';
+import dayjs from '@/utils/day';
+
 import type {
   CreateNoticeRequestBody,
   UpdateNoticeRequestBody,

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import dayjs from 'dayjs';
-import RangePicker from '@components/Admin/content/commonParts/RangePicker';
+import dayjs from '@utils/day';
+import { RangePicker } from '@components/Admin/content/commonParts/Picker';
 import type { DateRange } from './index';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   setDateRange: Dispatch<SetStateAction<DateRange>>;
 };
 
-const CustomDatePicker = ({ dateRange, setDateRange }: Props) => {
+const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
   const today = dayjs();
 
   const handleChange = useCallback(
@@ -31,7 +31,7 @@ const CustomDatePicker = ({ dateRange, setDateRange }: Props) => {
   return (
     <RangePicker
       ranges={{
-        Default: [today.subtract(3, 'days'), today],
+        Default: [today.subtract(7, 'days'), today],
         Today: [today, today],
         'This Month': [today.startOf('month'), today],
       }}
@@ -43,4 +43,4 @@ const CustomDatePicker = ({ dateRange, setDateRange }: Props) => {
   );
 };
 
-export default CustomDatePicker;
+export default CustomRangePicker;

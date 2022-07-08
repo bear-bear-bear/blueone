@@ -2,7 +2,7 @@ import schedule from 'node-schedule-tz';
 import logger from '@/utils/logger';
 import { Work } from '@/models';
 import { Op } from 'sequelize';
-import dayjs from 'dayjs';
+import dayjs from '@/utils/day';
 
 const jobs = [
   {
@@ -42,6 +42,38 @@ const jobs = [
             work.penalty = true;
 
             await work.save();
+          }),
+        );
+      } catch (err) {
+        logger.error(err);
+      }
+    },
+  },
+  {
+    name: 'Adjust booking deadline',
+    cron: '*/20 * * * * ?',
+    timezone: 'Asia/Seoul',
+    callback: async () => {
+      const todayStart = dayjs().startOf('day');
+      const todayEnd = dayjs().endOf('day');
+
+      try {
+        const recentBookingWorks = await Work.findAll({
+          where: {
+            bookingDate: {
+              [Op.and]: {
+                [Op.gte]: todayStart.toISOString(),
+                [Op.lte]: todayEnd.toISOString(),
+              },
+            },
+          },
+        });
+
+        await Promise.all(
+          recentBookingWorks.map(async (bookingWork) => {
+            bookingWork.bookingDate = null;
+            bookingWork.createdAt = dayjs().toDate();
+            await bookingWork.save();
           }),
         );
       } catch (err) {

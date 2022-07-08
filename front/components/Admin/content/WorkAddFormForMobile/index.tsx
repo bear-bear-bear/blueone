@@ -1,21 +1,19 @@
-import { useCallback, useState } from 'react';
-import { Form, Input, InputNumber, Button, FormProps, message } from 'antd';
+import { useCallback, useMemo, useState } from 'react';
+import { Form, Input, InputNumber, Button, FormProps, message, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import httpClient, { logAxiosError } from '@utils/axios';
 import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
-import type { EndPoint } from '@typings';
+import type {
+  RequestBody,
+  RequestError,
+  WorkAddFormFields,
+} from '@components/Admin/content/WorkManagementTable/AddForm';
+import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
+import dayjs from '@utils/day';
 import * as S from './styles';
-
-type RequestBody = EndPoint['POST /works']['requestBody'];
-type Response = EndPoint['POST /works']['responses']['201'];
-type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
-export type WorkAddAntdFormFields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
-  UserId?: RequestBody['UserId'];
-  waypoint?: RequestBody['waypoint'];
-  remark?: RequestBody['remark'];
-};
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },
@@ -38,36 +36,52 @@ const validateMessages = {
 };
 
 const WorkAddForm = () => {
-  const [form] = Form.useForm<WorkAddAntdFormFields>();
+  const [form] = Form.useForm<WorkAddFormFields>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
+  const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
+  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
+  const [isBooking, setIsBooking] = useState<boolean>(false);
+
+  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
 
   const clearForm = useCallback(() => {
     form.resetFields();
   }, [form]);
 
-  const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(async (values) => {
-    const reqBody: RequestBody = {
-      ...values,
-      waypoint: values.waypoint ?? null,
-      UserId: values.UserId ?? null,
-      remark: values.remark?.trim() ?? null,
-    };
+  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
+    async (values) => {
+      const reqBody: RequestBody = {
+        ...values,
+        waypoint: values.waypoint ?? null,
+        UserId: values.UserId ?? null,
+        remark: values.remark?.trim() ?? null,
+        bookingDate: bookingDate.format('YYYY-MM-DD'),
+      };
 
-    try {
-      await httpClient.post<Response>('/works', reqBody);
-      message.success('업무 등록 완료');
-    } catch (err) {
-      logAxiosError<RequestError>(err as AxiosError<RequestError>);
-    }
-  }, []);
+      try {
+        await httpClient.post<Response>('/works', reqBody);
+        message.success('업무 등록 완료');
+      } catch (err) {
+        logAxiosError<RequestError>(err as AxiosError<RequestError>);
+      }
+    },
+    [bookingDate],
+  );
 
   const onFormFinishFailed = useCallback(() => {
     setValidateTrigger(['onFinish', 'onChange']);
   }, [setValidateTrigger]);
 
+  const onChangeBookingCheckbox = useCallback((e: CheckboxChangeEvent) => {
+    setIsBooking(e.target.checked);
+  }, []);
+
   return (
     <S.Container>
       <S.ActionsWrapper>
+        <Checkbox onChange={onChangeBookingCheckbox} style={{ padding: '5px 0' }}>
+          예약
+        </Checkbox>
         <Button type="ghost" icon={<DeleteOutlined />} onClick={clearForm}>
           초기화
         </Button>
@@ -116,6 +130,12 @@ const WorkAddForm = () => {
         <Form.Item name="remark" label="비고">
           <Input.TextArea autoComplete="off" />
         </Form.Item>
+
+        {isBooking && (
+          <Form.Item name="bookingDate" label="예약일" required>
+            <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
+          </Form.Item>
+        )}
         <Form.Item wrapperCol={submitButtonWrapperCol}>
           <Button type="primary" htmlType="submit" block>
             등록

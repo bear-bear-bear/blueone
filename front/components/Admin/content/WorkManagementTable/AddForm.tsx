@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
@@ -6,21 +6,29 @@ import type { AxiosError } from 'axios';
 import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { WorkAddAntdFormFields } from '@components/Admin/content/WorkAddFormForMobile';
 import type { EndPoint } from '@typings';
+import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import dayjs from '@utils/day';
 import type { FullWorks, ProcessedWork } from './index';
 
+export type RequestBody = EndPoint['POST /works']['requestBody'];
+export type Response = EndPoint['POST /works']['responses']['201'];
+export type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
+export type WorkAddFormFields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
+  UserId?: RequestBody['UserId'];
+  waypoint?: RequestBody['waypoint'];
+  remark?: RequestBody['remark'];
+};
+
 type Props = {
-  form: FormInstance<WorkAddAntdFormFields>;
+  form: FormInstance<WorkAddFormFields>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork?: ProcessedWork;
   swrKey?: string;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
+  isBooking?: boolean;
 };
-type RequestBody = EndPoint['POST /works']['requestBody'];
-type Response = EndPoint['POST /works']['responses']['201'];
-type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },
@@ -48,18 +56,24 @@ const WorkAddForm = ({
   setSubmitLoading,
   prevWork,
   swrKey = prevWork?.swrKey,
+  isBooking = false,
 }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher, {
     revalidateOnMount: false,
   });
+  const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
+  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
 
-  const onFormFinish: FormProps<WorkAddAntdFormFields>['onFinish'] = useCallback(
+  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
+
+  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
       const reqBody: RequestBody = {
         ...values,
         waypoint: values.waypoint ?? null,
         UserId: values.UserId ?? null,
         remark: values.remark?.trim() ?? null,
+        bookingDate: bookingDate.format('YYYY-MM-DD'),
       };
 
       setSubmitLoading(true);
@@ -75,7 +89,7 @@ const WorkAddForm = ({
       }
       setSubmitLoading(false);
     },
-    [setSubmitLoading, works, mutateWorks, setValidateTrigger],
+    [bookingDate, setSubmitLoading, works, mutateWorks, setValidateTrigger],
   );
 
   const onFormFinishFailed = useCallback(() => {
@@ -127,6 +141,12 @@ const WorkAddForm = ({
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />
       </Form.Item>
+
+      {isBooking && (
+        <Form.Item name="bookingDate" label="예약일" required>
+          <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
+        </Form.Item>
+      )}
     </Form>
   );
 };

@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import express from 'express';
 import passport from 'passport';
 import { Op } from 'sequelize';
@@ -6,6 +5,8 @@ import bcrypt from 'bcrypt';
 import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
+import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
+import dayjs from '@/utils/day';
 
 const router = express.Router();
 
@@ -126,6 +127,7 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
   try {
     const works = await Work.findAll({
       where: {
+        ...getDefaultWhereParamsQueriedByWork(),
         UserId: req.user?.id,
         [Op.or]: [
           {
@@ -176,6 +178,7 @@ router.get(
     try {
       const works = await Work.findAll({
         where: {
+          ...getDefaultWhereParamsQueriedByWork(),
           UserId: req.user?.id,
           endTime: {
             [Op.gt]: gt,
@@ -212,6 +215,7 @@ router.get(
     try {
       const doneWorks = await Work.findAll({
         where: {
+          ...getDefaultWhereParamsQueriedByWork(),
           UserId: req.user?.id,
           endTime: {
             [Op.ne]: null,

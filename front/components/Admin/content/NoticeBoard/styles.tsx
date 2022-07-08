@@ -1,7 +1,7 @@
 import Linkify from 'linkify-react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/RangePicker';
+import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/Picker';
 
 export const globalStyles = css`
   .ant-table-row {

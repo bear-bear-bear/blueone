@@ -15,7 +15,8 @@ class Work extends Model {
   public checkTime!: Date | null;
   public endTime!: Date | null;
   public penalty!: boolean;
-  public readonly createdAt!: Date;
+  public bookingDate!: Date | null;
+  public createdAt!: Date | null;
   public readonly updatedAt!: Date;
 
   public static associate = (db: Database): void => {
@@ -55,6 +56,10 @@ Work.init(
     },
     endTime: {
       type: DataTypes.DATE,
+    },
+    bookingDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     penalty: {
       type: DataTypes.BOOLEAN,

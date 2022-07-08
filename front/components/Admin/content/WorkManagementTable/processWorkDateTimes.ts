@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from '@utils/day';
 import type { FullWork } from './index';
 
 export default function processWorkDateTimes(work: FullWork) {
@@ -12,7 +12,9 @@ export default function processWorkDateTimes(work: FullWork) {
     return time.format(timeDayStart === createdAtDayStart ? 'HH:mm' : 'MM/DD_HH:mm');
   };
 
-  const processToDate = (dateISOString: string) => {
+  const processToDate = (dateISOString: string | null) => {
+    if (dateISOString === null) return '-';
+
     const time = dayjs(dateISOString);
     const thisYear = dayjs().year();
 
@@ -24,5 +26,6 @@ export default function processWorkDateTimes(work: FullWork) {
     processedEndTime: processToTime(work.endTime),
     processedCreatedAt: processToDate(work.createdAt),
     processedUpdatedAt: processToDate(work.updatedAt),
+    processedBookingDate: processToDate(work.bookingDate),
   };
 }
