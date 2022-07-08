@@ -6,10 +6,12 @@ import { User, UserInfo, Work } from '@/models';
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
-  DatePickQuery,
   UpdateWorkRequestBody,
   WorkState,
+  DatePickQuery
 } from 'typings';
+import { getWorksByConditionallyAsBooking } from "@/utils/query/work";
+import { convertStrToBool } from "@/utils/boolean";
 
 const router = express.Router();
 
@@ -20,37 +22,16 @@ router.get(
   '/',
   isLoggedIn,
   isAdmin,
-  async (req: QueryTypedRequest<DatePickQuery>, res, next) => {
+  async (req: QueryTypedRequest<DatePickQuery & { booked?: 'true' | 'false' }>, res, next) => {
     const today = dayjs();
-    const { start = today, end = today } = req.query;
+    const { start = today, end = today, booked = 'false' } = req.query;
+    const isBooked = convertStrToBool(booked);
 
     const gt = dayjs(start).startOf('day').toISOString();
     const lt = dayjs(end).endOf('day').toISOString();
 
     try {
-      const works = await Work.findAll({
-        where: {
-          createdAt: {
-            [Op.gt]: gt,
-            [Op.lt]: lt,
-          },
-        },
-        order: [['createdAt', 'DESC']],
-        include: [
-          {
-            model: User,
-            attributes: {
-              exclude: ['password'],
-            },
-            include: [
-              {
-                model: UserInfo,
-                attributes: ['realname'],
-              },
-            ],
-          },
-        ],
-      });
+      const works = await getWorksByConditionallyAsBooking(gt, lt, isBooked);
       res.status(200).json(works);
     } catch (err) {
       console.error(err);
@@ -184,6 +165,7 @@ router.patch(
           }
           work.checkTime = null;
           await work.save();
+          // TODO: 예약 강제 완료 기능 작성
           break;
         case 'checked':
           if (work.checkTime) {
@@ -309,6 +291,10 @@ router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+router.post('/booking', isLoggedIn, isAdmin, async (req, res) => {
+
 });
 
 export default router;
