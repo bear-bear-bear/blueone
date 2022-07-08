@@ -34,7 +34,6 @@ const DeleteButton = ({ record }: Props) => {
   const deleteNotice = useCallback(async () => {
     setPopoverText(Spinner);
 
-    console.log(record);
     try {
       await httpClient.delete<Response>(`/notice/${record.id}`);
       const nextNoticeList = noticeList!.filter((work) => work.id !== record.id);
