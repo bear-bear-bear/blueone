@@ -51,7 +51,7 @@ export const getWorksByConditionallyAsBooking = (
 /**
  * @description work 관련 Sequelize Query 에서 기본 Where 옵션을 부여합니다.
  */
-export const spreadDefaultWhereParamsQueriedByWork = () => ({
+export const getDefaultWhereParamsQueriedByWork = () => ({
   bookingDate: {
     [Op.eq]: null,
   }

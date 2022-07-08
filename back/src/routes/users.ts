@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
-import { spreadDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
+import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
 const router = express.Router();
 const omitPassword = (user: User) =>
@@ -68,7 +68,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 
 /**
  * 어드민 추가 (임시)
- */
+//  */
 // router.post('/admin', async (req, res, next) => {
 //   const { phoneNumber } = req.body;
 //   const INITIAL_PASSWORD = '1234';
@@ -97,7 +97,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 //   }
 // });
 
-/**
+ /**
  * 유저 가져오기
  */
 router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
@@ -195,7 +195,7 @@ router.get('/:userId/works', isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     const activatedWorks = await Work.findAll({
       where: {
-        ...spreadDefaultWhereParamsQueriedByWork(),
+        ...getDefaultWhereParamsQueriedByWork(),
         UserId: userId,
         endTime: null,
       },
