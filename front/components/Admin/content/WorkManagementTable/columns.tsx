@@ -12,6 +12,12 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'processedCreatedAt',
     key: 'processedCreatedAt',
     align: 'center',
+    render: (_, { processedBookingDate, processedCreatedAt }) => {
+      if (processedBookingDate && processedBookingDate !== '-') {
+        return processedBookingDate;
+      }
+      return processedCreatedAt;
+    },
     sorter: {
       compare: (a, b) => +(new Date(b.createdAt) || 0) - +(new Date(a.createdAt) || 0),
     },
@@ -81,9 +87,7 @@ const columns: ColumnsType<ProcessedWork> = [
       }
 
       if (subsidy < 0) {
-        return (
-            <p style={{ color: 'red', fontWeight: 500 }}>{subsidy}</p>
-        );
+        return <p style={{ color: 'red', fontWeight: 500 }}>{subsidy}</p>;
       }
 
       return subsidy || null;

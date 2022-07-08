@@ -8,6 +8,8 @@ import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
 import DatePicker from 'components/Admin/content/WorkManagementTable/CustomRangePicker';
+import { filter, merge, omit } from 'lodash';
+import { ColumnsType } from 'antd/es/table';
 import TotalFee from './TotalFee';
 import UserPicker from './UserPicker';
 import AddButton from './AddButton';
@@ -26,6 +28,7 @@ export type ProcessedWork = FullWork & {
   processedEndTime: string;
   processedCreatedAt: string | null;
   processedUpdatedAt: string | null;
+  processedBookingDate: string | null;
   payout: string | number;
   realname?: UserInfo['realname'];
   isDone: boolean;
@@ -51,12 +54,18 @@ const WorkManagementTable = () => {
     start: THREE_DAYS_AGO_YYYY_MM_DD,
     end: TODAY_YYYY_MM_DD,
   });
-  const swrKey = `/works?${qs.stringify(dateRange)}`;
+
+  const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState<boolean>(false);
+  const [isVisibleBookedWork, setIsVisibleBookedWork] = useState<boolean>(false);
+  const [isShowTotalFee, setIsShowTotalFee] = useState<boolean>(false);
+
+  const swrKey = useMemo(
+    () => `/works?${qs.stringify(merge(dateRange, { booked: isVisibleBookedWork }))}`,
+    [dateRange, isVisibleBookedWork],
+  );
   const { data: works } = useSWR<FullWorks>(swrKey, axiosFetcher, {
     refreshInterval: 30 * 1000,
   });
-  const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState<boolean>(false);
-  const [isShowTotalFee, setIsShowTotalFee] = useState<boolean>(false);
 
   const dataSource: ProcessedWork[] | undefined = useMemo(() => {
     if (!works) return undefined;
@@ -83,8 +92,18 @@ const WorkManagementTable = () => {
       }));
   }, [works, TODAY_START_MS, swrKey, isVisiblePastDoneWork, pickedUserId]);
 
+  const filteredColumns = useMemo<ColumnsType<ProcessedWork>>(() => {
+    if (isVisibleBookedWork) {
+      return columns.filter((v) => v.key !== 'processedCreatedAt');
+    }
+    return columns.filter((v) => v.key !== 'processedBookingDate');
+  }, [isVisibleBookedWork]);
+
   const handleChangeVisiblePastDoneWorkCheckbox = () => {
     setIsVisiblePastDoneWork((prev) => !prev);
+  };
+  const handleChangeVisibleBookedWorkCheckbox = () => {
+    setIsVisibleBookedWork((prev) => !prev);
   };
   const handleChangeShowTotalFeeCheckbox = () => {
     setIsShowTotalFee((prev) => !prev);
@@ -104,8 +123,15 @@ const WorkManagementTable = () => {
         <section>
           <DatePicker defaultDateRange={dateRange} setDateRange={setDateRange} />
           <UserPicker pickedUserId={pickedUserId} setPickedUserId={setPickedUserId} />
-          <Checkbox onChange={handleChangeVisiblePastDoneWorkCheckbox}>과거 목록</Checkbox>
-          <Checkbox onChange={handleChangeShowTotalFeeCheckbox}>지수 합계</Checkbox>
+          <Checkbox checked={isVisiblePastDoneWork} onChange={handleChangeVisiblePastDoneWorkCheckbox}>
+            과거 목록
+          </Checkbox>
+          <Checkbox checked={isVisibleBookedWork} onChange={handleChangeVisibleBookedWorkCheckbox}>
+            예약 목록
+          </Checkbox>
+          <Checkbox checked={isShowTotalFee} onChange={handleChangeShowTotalFeeCheckbox}>
+            지수 합계
+          </Checkbox>
         </section>
         <AddButton
           swrKey={swrKey}

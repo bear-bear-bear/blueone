@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
@@ -8,6 +8,8 @@ import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import type { EndPoint, Work } from '@typings';
+import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import dayjs from 'dayjs';
 import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
@@ -47,6 +49,11 @@ const validateMessages = {
 
 const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
+  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(
+    prevWork.bookingDate ? dayjs(prevWork.bookingDate) : dayjs(),
+  );
+
+  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
 
   const cancelWorkCheck = useCallback(
     async (workId: Work['id']) => {
@@ -141,6 +148,12 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />
       </Form.Item>
+
+      {prevWork.bookingDate && (
+        <Form.Item name="bookingDate" label="예약일" required>
+          <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
+        </Form.Item>
+      )}
     </Form>
   );
 };

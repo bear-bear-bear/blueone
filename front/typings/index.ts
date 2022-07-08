@@ -43,7 +43,7 @@ export type Work = {
   checkTime: ISODateString | null;
   endTime: ISODateString | null;
   penalty: boolean | null;
-  bookingDate: boolean | null;
+  bookingDate: ISODateString | null;
   createdAt: ISODateString;
   updatedAt: ISODateString;
 };
