@@ -19,7 +19,7 @@ class Work extends Model {
   public readonly updatedAt!: Date;
 
   // 예약용
-  public readonly bookingDate!: Date | null;
+  public bookingDate!: Date | null;
 
   public static associate = (db: Database): void => {
     db.Work.belongsTo(db.User);

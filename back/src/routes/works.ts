@@ -164,8 +164,9 @@ router.patch(
             return;
           }
           work.checkTime = null;
+          work.bookingDate = null;
           await work.save();
-          // TODO: 예약 강제 완료 기능 작성
+
           break;
         case 'checked':
           if (work.checkTime) {
