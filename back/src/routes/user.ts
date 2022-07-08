@@ -6,7 +6,7 @@ import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
-import dayjs from '@/utils/day';
+import dayjs from '@/utils/dayjs';
 
 const router = express.Router();
 

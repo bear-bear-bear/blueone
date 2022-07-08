@@ -1,4 +1,4 @@
-import dayjs from '@/utils/day';
+import dayjs from '@/utils/dayjs';
 import { Model, DataTypes, ModelValidateOptions } from 'sequelize';
 import sequelize from './_sequelize';
 import type { Database } from './index';

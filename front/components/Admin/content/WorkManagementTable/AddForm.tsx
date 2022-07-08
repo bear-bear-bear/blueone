@@ -8,7 +8,7 @@ import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
 import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
-import dayjs from '@utils/day';
+import dayjs from '@utils/dayjs';
 import type { FullWorks, ProcessedWork } from './index';
 
 export type RequestBody = EndPoint['POST /works']['requestBody'];

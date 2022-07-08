@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { DatePicker } from '@components/Admin/content/commonParts/Picker';
 import { PickerProps } from 'antd/lib/date-picker/generatePicker';
-import dayjs from '@utils/day';
+import dayjs from '@utils/dayjs';
 
 type Props = {
   defaultDate: dayjs.Dayjs;

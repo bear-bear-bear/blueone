@@ -1,7 +1,7 @@
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko';
 import useUser from '@hooks/useUser';
-import dayjs from '@utils/day';
+import dayjs from '@utils/dayjs';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);

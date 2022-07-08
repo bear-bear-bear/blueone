@@ -1,8 +1,8 @@
 import schedule from 'node-schedule-tz';
 import logger from '@/utils/logger';
+import dayjs from '@/utils/dayjs';
 import { Work } from '@/models';
 import { Op } from 'sequelize';
-import dayjs from '@/utils/day';
 
 const jobs = [
   {

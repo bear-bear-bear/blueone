@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import dayjs from '@utils/day';
+import dayjs from '@utils/dayjs';
 import { RangePicker } from '@components/Admin/content/commonParts/Picker';
 import type { DateRange } from './index';
 

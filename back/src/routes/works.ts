@@ -6,11 +6,11 @@ import type {
   QueryTypedRequest,
   UpdateWorkRequestBody,
   WorkState,
-  DatePickQuery
+  DatePickQuery,
 } from 'typings';
-import { getWorksByConditionallyAsBooking } from "@/utils/query/work";
-import { convertStrToBool } from "@/utils/boolean";
-import dayjs from '@/utils/day';
+import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
+import { convertStrToBool } from '@/utils/boolean';
+import dayjs from '@/utils/dayjs';
 
 const router = express.Router();
 
@@ -21,7 +21,11 @@ router.get(
   '/',
   isLoggedIn,
   isAdmin,
-  async (req: QueryTypedRequest<DatePickQuery & { booked?: 'true' | 'false' }>, res, next) => {
+  async (
+    req: QueryTypedRequest<DatePickQuery & { booked?: 'true' | 'false' }>,
+    res,
+    next,
+  ) => {
     const today = dayjs();
     const { start = today, end = today, booked = 'false' } = req.query;
     const isBooked = convertStrToBool(booked);

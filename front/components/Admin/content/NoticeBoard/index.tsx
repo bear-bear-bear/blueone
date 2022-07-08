@@ -4,7 +4,7 @@ import { Spin, Table } from 'antd';
 import qs from 'qs';
 import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
-import dayjs from '@utils/day';
+import dayjs from '@utils/dayjs';
 import type { EndPoint, Unpacked } from '@typings';
 import CustomRangePicker from 'components/Admin/content/NoticeBoard/CustomRangePicker';
 import AddButton from './AddButton';
