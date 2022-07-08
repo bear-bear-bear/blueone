@@ -6,8 +6,8 @@ import type { AxiosError } from 'axios';
 import { RangePicker } from '@components/Admin/content/commonParts/Picker';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
+import dayjs from '@utils/day';
 import type { EndPoint } from '@typings';
-import dayjs from 'dayjs';
 import type { NoticeList } from './index';
 
 type RequestBody = EndPoint['POST /notice']['requestBody'];

@@ -51,17 +51,21 @@ const jobs = [
   },
   {
     name: 'Adjust booking deadline',
-    cron: '*/20 * * * * ?',
+    cron: '*/3 * * * * ?',
     timezone: 'Asia/Seoul',
     callback: async () => {
-      const today = dayjs();
-      const todayYYYYMMDD = today.format('YYYY-MM-DD');
+      const gt = dayjs.tz('Asia/Seoul').startOf('day').toISOString();
+      const lt = dayjs.tz('Asia/Seoul').endOf('day').toISOString();
+
+      console.log(dayjs().toISOString());
+      console.log({ gt, lt });
 
       try {
         const recentBookingWorks = await Work.findAll({
           where: {
             bookingDate: {
-              [Op.eq]: todayYYYYMMDD,
+              [Op.gt]: gt,
+              [Op.lt]: lt,
             },
           },
         });
@@ -69,7 +73,7 @@ const jobs = [
         await Promise.all(
           recentBookingWorks.map(async (bookingWork) => {
             bookingWork.bookingDate = null;
-            bookingWork.createdAt = today.toDate();
+            bookingWork.createdAt = dayjs.tz('Asia/Seoul').toDate();
             await bookingWork.save();
           }),
         );

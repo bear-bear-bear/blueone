@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from '@utils/day';
 import type { FullWork } from './index';
 
 export default function processWorkDateTimes(work: FullWork) {

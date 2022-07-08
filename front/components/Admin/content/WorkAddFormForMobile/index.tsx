@@ -11,8 +11,8 @@ import type {
   WorkAddFormFields,
 } from '@components/Admin/content/WorkManagementTable/AddForm';
 import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
-import dayjs from 'dayjs';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
+import dayjs from '@utils/day';
 import * as S from './styles';
 
 const layout: { [ColName: string]: ColProps } = {

@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import dayjs from 'dayjs';
 import { RangePicker } from '@components/Admin/content/commonParts/Picker';
 import { RangePickerProps } from 'antd/lib/date-picker/generatePicker';
 import type { DateRange } from './index';
+import dayjs from '@utils/day';
 
 type Props = {
   defaultDateRange: DateRange;

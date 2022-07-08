@@ -9,7 +9,7 @@ import { axiosFetcher } from '@utils/swr';
 import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import type { EndPoint, Work } from '@typings';
 import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
-import dayjs from 'dayjs';
+import dayjs from '@utils/day';
 import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {

@@ -7,8 +7,8 @@ import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
-import dayjs from 'dayjs';
 import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import dayjs from '@utils/day';
 import type { FullWorks, ProcessedWork } from './index';
 
 export type RequestBody = EndPoint['POST /works']['requestBody'];
@@ -64,7 +64,8 @@ const WorkAddForm = ({
   const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
   const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
 
-  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
+  // const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
+  const disabledBookingDate = undefined;
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
