@@ -49,6 +49,31 @@ const jobs = [
       }
     },
   },
+  {
+    name: 'adjust booking deadline',
+    cron: '30 0 0 * * ?',
+    timezone: 'Asia/Seoul',
+    callback: async () => {
+      const TODAY = dayjs().format();
+      try {
+        const recentBookingWorks = await Work.findAll({
+          where: {
+            bookingDate: {
+              [Op.lte]: TODAY,
+            },
+          },
+        });
+        await Promise.all(
+          recentBookingWorks.map(async bookingWork => {
+            bookingWork.bookingDate = null;
+            await bookingWork.save();
+          })
+        );
+      } catch (err) {
+        logger.error(err);
+      }
+    },
+  },
 ];
 
 export default () => {
