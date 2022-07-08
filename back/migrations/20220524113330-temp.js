@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     /**
      * Add altering commands here.
      *
@@ -10,7 +10,7 @@ module.exports = {
      */
     await queryInterface.addColumn(
       'work', // table name
-      'bookingDate', // new field name
+      'booking_date', // new field name
       {
         type: DataTypes.DATE,
         defaultValue: null,
