@@ -15,7 +15,7 @@ class Work extends Model {
   public checkTime!: Date | null;
   public endTime!: Date | null;
   public penalty!: boolean;
-  public readonly createdAt!: Date;
+  public createdAt!: Date | null;
   public readonly updatedAt!: Date;
 
   // 예약용
