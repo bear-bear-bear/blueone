@@ -18,6 +18,9 @@ class Work extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
+  // 예약용
+  public readonly bookingDate!: Date | null;
+
   public static associate = (db: Database): void => {
     db.Work.belongsTo(db.User);
   };
@@ -55,6 +58,11 @@ Work.init(
     },
     endTime: {
       type: DataTypes.DATE,
+    },
+    // 예약용 컬럼
+    bookingDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     penalty: {
       type: DataTypes.BOOLEAN,
