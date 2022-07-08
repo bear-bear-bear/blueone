@@ -6,17 +6,16 @@ import { PickerProps } from 'antd/lib/date-picker/generatePicker';
 type Props = {
   defaultDate: dayjs.Dayjs;
   setDate: Dispatch<SetStateAction<dayjs.Dayjs>>;
+  disabledDate?: PickerProps<dayjs.Dayjs>['disabledDate'];
 };
 
-const CustomDatePicker = ({ defaultDate, setDate }: Props) => {
+const CustomDatePicker = ({ defaultDate, setDate, disabledDate }: Props) => {
   const handleChange: PickerProps<dayjs.Dayjs>['onChange'] = useCallback(
     (_, date) => {
       setDate(dayjs(date));
     },
     [setDate],
   );
-
-  const disabledDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
 
   return (
     <DatePicker

@@ -64,6 +64,8 @@ const WorkAddForm = ({
   const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
   const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
 
+  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
+
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
       const reqBody: RequestBody = {
@@ -142,7 +144,7 @@ const WorkAddForm = ({
 
       {isBooking && (
         <Form.Item name="bookingDate" label="예약일" required>
-          <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} />
+          <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
         </Form.Item>
       )}
     </Form>

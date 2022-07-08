@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, FormProps, message, Modal, Popconfirm, Tooltip } from 'antd';
+import { Button, Checkbox, Form, FormProps, message, Modal, Popconfirm, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import { EndPoint, Work } from '@typings';
@@ -83,7 +83,7 @@ const EditButton = ({ record }: Props) => {
             취소
           </Button>,
           <Button key="submit" type="primary" onClick={form.submit}>
-            수정
+            {record.bookingDate ? '예약 수정' : '수정'}
           </Button>,
         ]}
       >
