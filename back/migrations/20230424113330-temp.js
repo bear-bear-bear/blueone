@@ -10,10 +10,10 @@ module.exports = {
      */
     await queryInterface.addColumn(
       'work', // table name
-      'penalty', // new field name
+      'bookingDate', // new field name
       {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        type: DataTypes.DATE,
+        defaultValue: null,
       },
     );
   },
