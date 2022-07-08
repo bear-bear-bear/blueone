@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
+import { spreadDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
 const router = express.Router();
 const omitPassword = (user: User) =>
@@ -194,6 +195,7 @@ router.get('/:userId/works', isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     const activatedWorks = await Work.findAll({
       where: {
+        ...spreadDefaultWhereParamsQueriedByWork(),
         UserId: userId,
         endTime: null,
       },

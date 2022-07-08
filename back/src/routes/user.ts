@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt';
 import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
+import { spreadDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
 const router = express.Router();
 
@@ -126,6 +127,7 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
   try {
     const works = await Work.findAll({
       where: {
+        ...spreadDefaultWhereParamsQueriedByWork(),
         UserId: req.user?.id,
         [Op.or]: [
           {
@@ -176,6 +178,7 @@ router.get(
     try {
       const works = await Work.findAll({
         where: {
+          ...spreadDefaultWhereParamsQueriedByWork(),
           UserId: req.user?.id,
           endTime: {
             [Op.gt]: gt,
@@ -212,6 +215,7 @@ router.get(
     try {
       const doneWorks = await Work.findAll({
         where: {
+          ...spreadDefaultWhereParamsQueriedByWork(),
           UserId: req.user?.id,
           endTime: {
             [Op.ne]: null,
