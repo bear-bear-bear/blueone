@@ -64,11 +64,11 @@ const jobs = [
               [Op.and]: {
                 [Op.gte]: todayStart.toISOString(),
                 [Op.lte]: todayEnd.toISOString(),
-              }
+              },
             },
           },
         });
-        console.log('recentBookingWorks', recentBookingWorks);
+
         await Promise.all(
           recentBookingWorks.map(async (bookingWork) => {
             bookingWork.bookingDate = null;

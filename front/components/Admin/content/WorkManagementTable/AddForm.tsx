@@ -64,8 +64,7 @@ const WorkAddForm = ({
   const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
   const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
 
-  // const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
-  const disabledBookingDate = undefined;
+  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
@@ -90,7 +89,7 @@ const WorkAddForm = ({
       }
       setSubmitLoading(false);
     },
-    [setSubmitLoading, works, mutateWorks, setValidateTrigger],
+    [bookingDate, setSubmitLoading, works, mutateWorks, setValidateTrigger],
   );
 
   const onFormFinishFailed = useCallback(() => {
