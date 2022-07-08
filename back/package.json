@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/app.ts",
   "engines": {
-    "node": ">=16.16.0",
-    "npm": ">=8.11.0"
+    "node": "v16.15.0",
+    "npm": "8.5.5"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production pm2 start dist/src/app.js --node-args=\"-r ts-node/register/transpile-only -r tsconfig-paths/register\" && npx pm2 monit",
