@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import express from 'express';
 import passport from 'passport';
 import { Op } from 'sequelize';
@@ -7,6 +6,7 @@ import { User, UserInfo, Work } from '@/models';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
+import dayjs from '@/utils/day';
 
 const router = express.Router();
 
