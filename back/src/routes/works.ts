@@ -1,5 +1,4 @@
 import express from 'express';
-import { Op } from 'sequelize';
 import dayjs from 'dayjs';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
@@ -292,10 +291,6 @@ router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
-
-router.post('/booking', isLoggedIn, isAdmin, async (req, res) => {
-
 });
 
 export default router;
