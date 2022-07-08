@@ -66,6 +66,7 @@ const jobs = [
         await Promise.all(
           recentBookingWorks.map(async bookingWork => {
             bookingWork.bookingDate = null;
+            bookingWork.createdAt = dayjs(TODAY).toDate();
             await bookingWork.save();
           })
         );
