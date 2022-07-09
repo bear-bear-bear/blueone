@@ -19,10 +19,17 @@ type Props = {
   record: ProcessedWork;
 };
 
-type WorkPatchError =
+type WorkForceFinishResponse = EndPoint['PATCH /works/{workId}/force-finish']['responses']['200'];
+type WorkForceFinishError =
   | EndPoint['PATCH /works/{workId}/force-finish']['responses']['403']
   | EndPoint['PATCH /works/{workId}/force-finish']['responses']['404']
   | EndPoint['PATCH /works/{workId}/force-finish']['responses']['500'];
+
+type WorkForceActivateResponse = EndPoint['PATCH /works/{workId}/force-activate']['responses']['200'];
+type WorkForceActivateError =
+  | EndPoint['PATCH /works/{workId}/force-activate']['responses']['403']
+  | EndPoint['PATCH /works/{workId}/force-activate']['responses']['404']
+  | EndPoint['PATCH /works/{workId}/force-activate']['responses']['500'];
 
 const EditButton = ({ record }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
@@ -43,15 +50,33 @@ const EditButton = ({ record }: Props) => {
 
   const forceFinishWork = useCallback(async () => {
     try {
-      const updatedWork = await httpClient.patch(`/works/${record.id}/force-finish`).then((res) => res.data);
+      const updatedWork = await httpClient
+        .patch<WorkForceFinishResponse>(`/works/${record.id}/force-finish`)
+        .then((res) => res.data);
 
       const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
       await mutateWorks(nextWorks);
 
-      message.error('업무 강제 종료 완료');
+      message.info('업무 강제 종료 완료');
       closeModal();
     } catch (err) {
-      logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
+      logAxiosError<WorkForceFinishError>(err as AxiosError<WorkForceFinishError>);
+    }
+  }, [closeModal, mutateWorks, record.id, works]);
+
+  const activateWork = useCallback(async () => {
+    try {
+      const updatedWork = await httpClient
+        .patch<WorkForceActivateResponse>(`/works/${record.id}/force-activate`)
+        .then((res) => res.data);
+
+      const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
+      await mutateWorks(nextWorks);
+
+      message.info('예약된 업무 활성화 완료');
+      closeModal();
+    } catch (err) {
+      logAxiosError<WorkForceActivateError>(err as AxiosError<WorkForceActivateError>);
     }
   }, [closeModal, mutateWorks, record.id, works]);
 
@@ -71,7 +96,18 @@ const EditButton = ({ record }: Props) => {
         cancelText="취소"
         footer={[
           ...(record.bookingDate
-            ? []
+            ? [
+                <Popconfirm
+                  key="done"
+                  placement="topLeft"
+                  title="정말로 활성화 하시겠습니까?"
+                  onConfirm={activateWork}
+                  okText="활성화"
+                  cancelText="취소"
+                >
+                  <Button style={{ float: 'left' }}>활성화</Button>
+                </Popconfirm>,
+              ]
             : [
                 <Popconfirm
                   key="done"

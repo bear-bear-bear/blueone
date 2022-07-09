@@ -9,7 +9,6 @@ import type {
   DatePickQuery,
 } from 'typings';
 import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
-import { convertStrToBool } from '@/utils/boolean';
 import dayjs from '@/utils/dayjs';
 
 const router = express.Router();
@@ -28,13 +27,16 @@ router.get(
   ) => {
     const today = dayjs();
     const { start = today, end = today, booked = 'false' } = req.query;
-    const isBooked = convertStrToBool(booked);
 
     const gt = dayjs(start).startOf('day').toISOString();
     const lt = dayjs(end).endOf('day').toISOString();
 
     try {
-      const works = await getWorksByConditionallyAsBooking(gt, lt, isBooked);
+      const works = await getWorksByConditionallyAsBooking(
+        gt,
+        lt,
+        booked === 'true',
+      );
       res.status(200).json(works);
     } catch (err) {
       console.error(err);
@@ -207,7 +209,73 @@ router.patch(
 );
 
 /**
- * 작업 강제 완료
+ * 예약 작업 강제 활성화
+ */
+router.patch(
+  '/:workId/force-activate',
+  isLoggedIn,
+  isAdmin,
+  async (req, res, next) => {
+    const { workId } = req.params;
+    const { UserId }: UpdateWorkRequestBody = req.body;
+
+    try {
+      const work = await Work.findByPk(workId, {
+        include: [
+          {
+            model: User,
+            attributes: {
+              exclude: ['password'],
+            },
+            include: [
+              {
+                model: UserInfo,
+                attributes: ['realname'],
+              },
+            ],
+          },
+        ],
+      });
+
+      if (!work) {
+        res.status(404).json({
+          message: `id ${workId} work 를 찾을 수 없습니다`,
+        });
+        return;
+      }
+
+      if (UserId) {
+        const user = await User.findByPk(UserId);
+
+        if (!user) {
+          res.status(404).json({
+            message: `id ${UserId} 유저를 찾을 수 없습니다`,
+          });
+          return;
+        }
+      }
+
+      if (work.checkTime || work.endTime || !work.bookingDate) {
+        res.status(403).json({
+          message: `이미 활성화된 업무입니다.`,
+        });
+        return;
+      }
+
+      work.bookingDate = null;
+      work.createdAt = new Date();
+
+      await work.save();
+
+      res.status(200).json(work);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * 작업 강제 종료
  */
 router.patch(
   '/:workId/force-finish',

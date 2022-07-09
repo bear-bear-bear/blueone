@@ -281,7 +281,21 @@ export interface EndPoint {
       500: ErrorMessage;
     };
   };
+  /**
+   * 업무 강제 완료
+   */
   'PATCH /works/{workId}/force-finish': {
+    responses: {
+      200: Work;
+      403: ErrorMessage;
+      404: ErrorMessage;
+      500: ErrorMessage;
+    };
+  };
+  /**
+   * 예약 업무 강제 활성화
+   */
+  'PATCH /works/{workId}/force-activate': {
     responses: {
       200: Work;
       403: ErrorMessage;
