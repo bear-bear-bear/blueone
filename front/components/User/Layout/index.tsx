@@ -1,4 +1,7 @@
 import { useMemo, FC, ReactNode } from 'react';
+
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -10,8 +13,7 @@ import {
   AiOutlineNotification,
   AiOutlineSetting,
 } from 'react-icons/ai';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+
 import * as S from './styles';
 
 type NavItem = {
@@ -70,7 +72,7 @@ type Props = {
 };
 const UserLayout: FC<Props> = ({ children, bodyNoPadding, useBack = false }) => {
   const router = useRouter();
-  const headerText = useMemo(() => navItems.find((item) => item.href === router.asPath)!.text, [router.asPath]);
+  const headerText = useMemo(() => navItems.find((item) => item.href === router.asPath)?.text, [router.asPath]);
 
   const goBack = () => {
     router.back();

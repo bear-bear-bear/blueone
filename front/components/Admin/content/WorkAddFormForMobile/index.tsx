@@ -1,19 +1,26 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Form, Input, InputNumber, Button, FormProps, message, Checkbox } from 'antd';
+
 import { DeleteOutlined } from '@ant-design/icons';
+
+import { Form, Input, InputNumber, Button, FormProps, message, Checkbox } from 'antd';
+
+import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
+
 import type { ColProps } from 'antd/lib/grid/col';
+
 import type { AxiosError } from 'axios';
-import httpClient, { logAxiosError } from '@utils/axios';
-import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
+
+import * as S from './styles';
+
 import type {
   RequestBody,
   RequestError,
   WorkAddFormFields,
 } from '@components/Admin/content/WorkManagementTable/AddForm';
 import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
+import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
+import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
-import * as S from './styles';
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },

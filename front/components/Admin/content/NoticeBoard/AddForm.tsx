@@ -1,14 +1,20 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import useSWRImmutable from 'swr/immutable';
+
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
+
 import type { ColProps } from 'antd/lib/grid/col';
+
 import type { AxiosError } from 'axios';
-import { RangePicker } from '@components/Admin/content/commonParts/Picker';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
-import dayjs from '@utils/dayjs';
-import type { EndPoint } from '@typings';
+
+import useSWRImmutable from 'swr/immutable';
+
 import type { NoticeList } from './index';
+
+import { RangePicker } from '@components/Admin/content/commonParts/Picker';
+import type { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import dayjs from '@utils/dayjs';
+import { axiosFetcher } from '@utils/swr';
 
 type RequestBody = EndPoint['POST /notice']['requestBody'];
 type Response = EndPoint['POST /notice']['responses']['202'];
@@ -54,7 +60,7 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
       try {
         const createdNotice = await httpClient.post<Response>('/notice', body).then((res) => res.data);
 
-        const nextNoticeList = noticeList!.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
+        const nextNoticeList = noticeList?.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
         await mutateNoticeList(nextNoticeList);
         message.success('공지사항 등록 완료');
         closeModal();

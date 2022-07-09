@@ -1,18 +1,20 @@
-import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import { DatePicker } from '@components/Admin/content/commonParts/Picker';
+import { useCallback } from 'react';
+
 import { PickerProps } from 'antd/lib/date-picker/generatePicker';
+
+import { DatePicker } from '@components/Admin/content/commonParts/Picker';
 import dayjs from '@utils/dayjs';
 
 type Props = {
-  defaultDate: dayjs.Dayjs;
-  setDate: Dispatch<SetStateAction<dayjs.Dayjs>>;
+  defaultDate?: dayjs.Dayjs;
+  setDate?: (data: dayjs.Dayjs) => void;
   disabledDate?: PickerProps<dayjs.Dayjs>['disabledDate'];
 };
 
 const CustomDatePicker = ({ defaultDate, setDate, disabledDate }: Props) => {
   const handleChange: PickerProps<dayjs.Dayjs>['onChange'] = useCallback(
     (_, date) => {
-      setDate(dayjs(date));
+      setDate?.(dayjs(date));
     },
     [setDate],
   );

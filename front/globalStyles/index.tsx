@@ -1,8 +1,9 @@
 import { Global, css } from '@emotion/react';
 
-import media from '@utils/media';
-import Resets from './_Resets';
 import FontFace from './_FontFace';
+import Resets from './_Resets';
+
+import media from '@utils/media';
 
 export const globalCSS = css`
   *,
@@ -47,8 +48,7 @@ export const globalCSS = css`
 
   body {
     // TODO: 폰트 렌더링 최적화하기
-    font-family: 'Noto Sans KR', 'Roboto', 'HelveticaNeue', 'Helvetica Neue',
-      sans-serif;
+    font-family: 'Noto Sans KR', 'Roboto', 'HelveticaNeue', 'Helvetica Neue', sans-serif;
   }
 `;
 

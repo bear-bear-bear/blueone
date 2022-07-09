@@ -1,11 +1,15 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
+
 import { Button, message } from 'antd';
-import useSWRImmutable from 'swr/immutable';
+
 import type { AxiosError } from 'axios';
+
+import useSWRImmutable from 'swr/immutable';
+
+import type { MyWorks } from '@components/User/WorkCarousel';
+import type { EndPoint, Work } from '@typings';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { EndPoint, Work } from '@typings';
-import type { MyWorks } from '@components/User/WorkCarousel';
 
 type Props = {
   workId: Work['id'];

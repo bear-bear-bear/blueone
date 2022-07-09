@@ -1,16 +1,22 @@
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
-import useSWRImmutable from 'swr/immutable';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
+
 import type { ColProps } from 'antd/lib/grid/col';
+
 import type { AxiosError } from 'axios';
-import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
-import type { EndPoint, Work } from '@typings';
-import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
-import dayjs from '@utils/dayjs';
+
+import useSWRImmutable from 'swr/immutable';
+
 import type { FullWorks, ProcessedWork } from './index';
+
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
+import type { EndPoint, Work } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import dayjs from '@utils/dayjs';
+import { axiosFetcher } from '@utils/swr';
 
 type Props = {
   form: FormInstance<WorkAddFormFields>;
@@ -87,7 +93,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
           updatedWork.checkTime = null;
         }
 
-        const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
+        const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
         await mutateWorks(nextWorks);
         message.success('업무 수정 완료');
         closeModal();

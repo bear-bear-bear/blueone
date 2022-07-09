@@ -4,12 +4,12 @@ const APP_NAME = 'BLUEONE';
 const APP_DESCRIPTION = '탁송 서비스 관리 솔루션';
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
+  public static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
     return { ...initialProps };
   }
 
-  render() {
+  public render() {
     return (
       <Html lang="ko" dir="ltr">
         <Head>

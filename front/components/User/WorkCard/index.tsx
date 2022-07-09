@@ -1,12 +1,17 @@
-import { FC, useMemo } from 'react';
-import { Card, Tooltip, Typography } from 'antd';
+import { FC } from 'react';
+
 import { MoneyCollectOutlined } from '@ant-design/icons';
-import type { Unpacked } from '@typings';
+
+import { Card, Tooltip, Typography } from 'antd';
+
+import dayjs from 'dayjs';
+
+import * as S from './styles';
+
 import CheckButton from '@components/User/WorkCard/CheckButton';
 import DoneButton from '@components/User/WorkCard/DoneButton';
+import type { Unpacked } from '@typings';
 import { EndPoint } from '@typings';
-import dayjs from 'dayjs';
-import * as S from './styles';
 
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 type MyWork = Unpacked<MyWorks>;
@@ -88,8 +93,8 @@ const WorkCard = ({ work, readOnly = false }: Props) => {
           <div>
             <p>* 구간지수 {work.charge}</p>
             {subsidy !== 0 && (
-              <p>* 지원지수{' '}
-                <span style={subsidy < 0 ? emphasisStyle : undefined}>{subsidy}</span>
+              <p>
+                * 지원지수 <span style={subsidy < 0 ? emphasisStyle : undefined}>{subsidy}</span>
               </p>
             )}
           </div>

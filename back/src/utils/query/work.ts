@@ -12,26 +12,26 @@ export const getWorksByConditionallyAsBooking = async (
   lt: string,
   booked = false,
 ) => {
-  const bookingField = booked
+  const where = booked
     ? {
         bookingDate: {
           [Op.ne]: null,
+          [Op.gt]: gt,
+          [Op.lt]: lt,
         },
       }
     : {
+        createdAt: {
+          [Op.gt]: gt,
+          [Op.lt]: lt,
+        },
         bookingDate: {
           [Op.eq]: null,
         },
       };
 
   return await Work.findAll({
-    where: {
-      createdAt: {
-        [Op.gt]: gt,
-        [Op.lt]: lt,
-      },
-      ...bookingField,
-    },
+    where,
     order: [['createdAt', 'DESC']],
     include: [
       {

@@ -1,5 +1,5 @@
-import { NextPage } from 'next';
 import { Empty } from 'antd';
+import { NextPage } from 'next';
 import 'antd/dist/antd.css';
 
 const OfflinePage: NextPage = () => (

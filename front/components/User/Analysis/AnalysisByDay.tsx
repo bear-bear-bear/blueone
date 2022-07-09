@@ -1,12 +1,16 @@
 import { useMemo } from 'react';
-import useSWRImmutable from 'swr/immutable';
-import dayjs from 'dayjs';
-import { Skeleton } from 'antd';
+
 import { Column } from '@ant-design/plots';
-import EmptyContent from '@components/User/commonParts/Empty';
-import { axiosFetcher } from '@utils/swr';
-import type { EndPoint } from '@typings';
+
+import { Skeleton } from 'antd';
+import dayjs from 'dayjs';
+import useSWRImmutable from 'swr/immutable';
+
 import * as S from './styles';
+
+import EmptyContent from '@components/User/commonParts/Empty';
+import type { EndPoint } from '@typings';
+import { axiosFetcher } from '@utils/swr';
 
 type Response = EndPoint['GET /user/works/analysis']['responses']['200'];
 

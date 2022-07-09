@@ -1,5 +1,6 @@
-import axios, { AxiosError } from 'axios';
 import { message } from 'antd';
+import axios, { AxiosError } from 'axios';
+
 import type { ErrorMessage } from '@typings';
 
 const MESSAGE_DURATION = 4;

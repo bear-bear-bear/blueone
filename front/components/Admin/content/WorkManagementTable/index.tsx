@@ -1,21 +1,27 @@
-import { useMemo, useState } from 'react';
-import dayjs from 'dayjs';
-import qs from 'qs';
-import useSWR from 'swr';
-import { Button, Checkbox, Spin, Table } from 'antd';
+import { useCallback, useMemo, useState } from 'react';
+
 import { SnippetsOutlined } from '@ant-design/icons';
 import { Global } from '@emotion/react';
-import { axiosFetcher } from '@utils/swr';
-import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
-import DatePicker from 'components/Admin/content/WorkManagementTable/CustomRangePicker';
-import { filter, merge, omit } from 'lodash';
+
+import { Button, Checkbox, Spin, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+
+import dayjs from 'dayjs';
+import { merge } from 'lodash';
+import qs from 'qs';
+import useSWR from 'swr';
+
+import AddButton from './AddButton';
 import TotalFee from './TotalFee';
 import UserPicker from './UserPicker';
-import AddButton from './AddButton';
 import columns from './columns';
 import processWorkDateTimes from './processWorkDateTimes';
 import * as S from './styles';
+
+import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
+import { formatTime } from '@utils/day';
+import { axiosFetcher } from '@utils/swr';
+import CustomRangePicker from 'components/Admin/content/WorkManagementTable/CustomRangePicker';
 
 export type DateRange = {
   start: string;
@@ -44,25 +50,46 @@ const Remark = ({ work }: { work: ProcessedWork }) => (
 );
 
 const WorkManagementTable = () => {
-  const today = dayjs();
-  const TODAY_START_MS = today.startOf('d').valueOf();
-  const TODAY_YYYY_MM_DD = today.format('YYYY-MM-DD');
-  const THREE_DAYS_AGO_YYYY_MM_DD = today.subtract(3, 'days').format('YYYY-MM-DD');
-
   const [pickedUserId, setPickedUserId] = useState<User['id'] | null>(null);
-  const [dateRange, setDateRange] = useState<DateRange>({
-    start: THREE_DAYS_AGO_YYYY_MM_DD,
-    end: TODAY_YYYY_MM_DD,
-  });
-
   const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState<boolean>(false);
   const [isVisibleBookedWork, setIsVisibleBookedWork] = useState<boolean>(false);
   const [isShowTotalFee, setIsShowTotalFee] = useState<boolean>(false);
 
-  const swrKey = useMemo(
-    () => `/works?${qs.stringify(merge(dateRange, { booked: isVisibleBookedWork }))}`,
-    [dateRange, isVisibleBookedWork],
+  const now = useMemo(() => dayjs(), []);
+  const times = useMemo(() => formatTime(now), [now]);
+
+  const defaultDateRange = useMemo(
+    () => ({
+      start: times.threeDaysAgoDate,
+      end: times.todayDate,
+    }),
+    [times],
   );
+  const defaultBookingDateRange = useMemo(
+    () => ({
+      start: times.tomorrowDate,
+      end: times.fourDaysLaterDate,
+    }),
+    [times],
+  );
+  const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
+
+  const disabledDate = useCallback(
+    (current: dayjs.Dayjs) => {
+      if (isVisibleBookedWork) {
+        return current && current < dayjs().endOf('day');
+      }
+      return current && current > dayjs().endOf('day');
+    },
+    [isVisibleBookedWork],
+  );
+
+  const swrKey = useMemo(() => {
+    if (isVisibleBookedWork) {
+      return `/works?${qs.stringify(merge(dateRange, { booked: true }))}`;
+    }
+    return `/works?${qs.stringify(dateRange)}`;
+  }, [dateRange, isVisibleBookedWork]);
   const { data: works } = useSWR<FullWorks>(swrKey, axiosFetcher, {
     refreshInterval: 30 * 1000,
   });
@@ -71,7 +98,7 @@ const WorkManagementTable = () => {
     if (!works) return undefined;
     return works
       .filter((work) => {
-        const isDoneAtPast = work.endTime !== null && +new Date(work.endTime) < TODAY_START_MS;
+        const isDoneAtPast = work.endTime !== null && +new Date(work.endTime) < times.todayStartMS;
         return isVisiblePastDoneWork || !isDoneAtPast;
       })
       .filter((work) => {
@@ -90,7 +117,7 @@ const WorkManagementTable = () => {
         isDone: work.endTime !== null,
         swrKey,
       }));
-  }, [works, TODAY_START_MS, swrKey, isVisiblePastDoneWork, pickedUserId]);
+  }, [works, times.todayStartMS, isVisiblePastDoneWork, pickedUserId, swrKey]);
 
   const filteredColumns = useMemo<ColumnsType<ProcessedWork>>(() => {
     if (isVisibleBookedWork) {
@@ -103,7 +130,17 @@ const WorkManagementTable = () => {
     setIsVisiblePastDoneWork((prev) => !prev);
   };
   const handleChangeVisibleBookedWorkCheckbox = () => {
-    setIsVisibleBookedWork((prev) => !prev);
+    setIsVisibleBookedWork((prev) => {
+      const next = !prev;
+
+      if (next) {
+        setDateRange(defaultBookingDateRange);
+      } else {
+        setDateRange(defaultDateRange);
+      }
+
+      return next;
+    });
   };
   const handleChangeShowTotalFeeCheckbox = () => {
     setIsShowTotalFee((prev) => !prev);
@@ -121,12 +158,20 @@ const WorkManagementTable = () => {
       <Global styles={S.globalCSS} />
       <S.TableHeader>
         <section>
-          <DatePicker defaultDateRange={dateRange} setDateRange={setDateRange} />
+          <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} disabledDate={disabledDate} />
           <UserPicker pickedUserId={pickedUserId} setPickedUserId={setPickedUserId} />
-          <Checkbox checked={isVisiblePastDoneWork} onChange={handleChangeVisiblePastDoneWorkCheckbox}>
+          <Checkbox
+            checked={isVisiblePastDoneWork}
+            disabled={isVisibleBookedWork}
+            onChange={handleChangeVisiblePastDoneWorkCheckbox}
+          >
             과거 목록
           </Checkbox>
-          <Checkbox checked={isVisibleBookedWork} onChange={handleChangeVisibleBookedWorkCheckbox}>
+          <Checkbox
+            checked={isVisibleBookedWork}
+            disabled={isVisiblePastDoneWork}
+            onChange={handleChangeVisibleBookedWorkCheckbox}
+          >
             예약 목록
           </Checkbox>
           <Checkbox checked={isShowTotalFee} onChange={handleChangeShowTotalFeeCheckbox}>
@@ -145,7 +190,7 @@ const WorkManagementTable = () => {
       <Table
         id="workListTable"
         dataSource={dataSource}
-        columns={columns}
+        columns={filteredColumns}
         rowClassName={(record) => (record.isDone ? 'row--work-done' : '')}
         expandable={{
           expandedRowRender: (work) => <Remark work={work} />,

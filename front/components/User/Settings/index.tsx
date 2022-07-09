@@ -1,11 +1,13 @@
 import { List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
-import { axiosFetcher } from '@utils/swr';
+
+import PasswordChangeButton from './PasswordChangeButton';
+import { SettingsFooter, SettingsHeader, SettingsSkeleton } from './parts';
+import * as S from './styles';
+
 import LogoutButton from '@components/LogoutButton';
 import type { EndPoint } from '@typings';
-import { SettingsFooter, SettingsHeader, SettingsSkeleton } from './parts';
-import PasswordChangeButton from './PasswordChangeButton';
-import * as S from './styles';
+import { axiosFetcher } from '@utils/swr';
 
 export type UserWithInfo = EndPoint['GET /user']['responses']['200'];
 

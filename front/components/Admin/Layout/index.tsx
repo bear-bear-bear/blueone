@@ -1,14 +1,18 @@
 import { useState, FC, useCallback } from 'react';
-import useSWRImmutable from 'swr/immutable';
-import Image from 'next/image';
+
+import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/icons';
+
 import { Layout, Empty, Menu, MenuProps } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
-import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/icons';
+import Image from 'next/image';
+import useSWRImmutable from 'swr/immutable';
+
+import * as S from './styles';
+
 import contentList, { ContentTitle } from '@components/Admin/content';
 import LogoutButton from '@components/LogoutButton';
-import { axiosFetcher } from '@utils/swr';
 import type { EndPoint } from '@typings';
-import * as S from './styles';
+import { axiosFetcher } from '@utils/swr';
 
 type Users = EndPoint['GET /users']['responses']['200'];
 

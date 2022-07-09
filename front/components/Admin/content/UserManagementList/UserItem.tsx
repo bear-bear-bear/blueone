@@ -1,12 +1,18 @@
 import { ReactNode } from 'react';
-import { Avatar, List, Tooltip } from 'antd';
+
 import { UserOutlined, WarningOutlined } from '@ant-design/icons';
+
+import { Avatar, List, Tooltip } from 'antd';
+
+import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
+
+import * as S from './styles';
+
+import type { FullUser } from './index';
+
 import useInsuranceExpiredInfo from '@hooks/useInsuranceExpiredInfo';
 import processPhoneNumber from '@utils/processPhoneNumber';
-import EditButton from './EditButton';
-import DeleteButton from './DeleteButton';
-import type { FullUser } from './index';
-import * as S from './styles';
 
 type NotUndefined<T> = T extends undefined ? never : T;
 type InsuranceState = NotUndefined<ReturnType<typeof useInsuranceExpiredInfo>['state']>;

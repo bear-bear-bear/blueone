@@ -1,7 +1,9 @@
 import type { NextPage } from 'next';
-import useAdmin from '@hooks/useAdmin';
-import AdminLayout from '@components/Admin/Layout';
+
 import Head from 'next/head';
+
+import AdminLayout from '@components/Admin/Layout';
+import useAdmin from '@hooks/useAdmin';
 
 const Home: NextPage = () => {
   const { isAdminLoggedIn } = useAdmin({

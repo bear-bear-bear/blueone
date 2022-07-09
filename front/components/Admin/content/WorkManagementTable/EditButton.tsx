@@ -1,14 +1,19 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Checkbox, Form, FormProps, message, Modal, Popconfirm, Tooltip } from 'antd';
+
 import { EditOutlined } from '@ant-design/icons';
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
-import { EndPoint, Work } from '@typings';
-import httpClient, { logAxiosError } from '@utils/axios';
+
+import { Button, Form, FormProps, message, Modal, Popconfirm, Tooltip } from 'antd';
 import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
-import { axiosFetcher } from '@utils/swr';
+
 import EditForm from './EditForm';
+
 import type { ProcessedWork, FullWorks } from './index';
+
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+import { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import { axiosFetcher } from '@utils/swr';
 
 type Props = {
   record: ProcessedWork;
@@ -40,7 +45,7 @@ const EditButton = ({ record }: Props) => {
     try {
       const updatedWork = await httpClient.patch(`/works/${record.id}/force-finish`).then((res) => res.data);
 
-      const nextWorks = works!.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
+      const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
       await mutateWorks(nextWorks);
 
       message.error('업무 강제 종료 완료');

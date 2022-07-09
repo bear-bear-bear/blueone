@@ -1,14 +1,20 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import useSWRImmutable from 'swr/immutable';
+
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
+
 import type { ColProps } from 'antd/lib/grid/col';
+
 import type { AxiosError } from 'axios';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
-import type { EndPoint } from '@typings';
-import { RangePicker } from '@components/Admin/content/commonParts/Picker';
-import dayjs from '@utils/dayjs';
+
+import useSWRImmutable from 'swr/immutable';
+
 import type { NoticeList, ProcessedNotice } from './index';
+
+import { RangePicker } from '@components/Admin/content/commonParts/Picker';
+import type { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import dayjs from '@utils/dayjs';
+import { axiosFetcher } from '@utils/swr';
 
 type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];
 type EditedNotice = EndPoint['PUT /notice/{noticeId}']['responses']['200'];
@@ -70,7 +76,7 @@ const NoticeEditForm = ({
           .put<EditedNotice>(`/notice/${prevNotice.id}`, body)
           .then((res) => res.data);
 
-        const nextNoticeList = noticeList!.map((notice) => (notice.id !== updatedNotice.id ? notice : updatedNotice));
+        const nextNoticeList = noticeList?.map((notice) => (notice.id !== updatedNotice.id ? notice : updatedNotice));
         await mutateNoticeList(nextNoticeList);
         message.success('공지사항 수정 완료');
         closeModal();

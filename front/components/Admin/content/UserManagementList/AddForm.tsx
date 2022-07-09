@@ -1,13 +1,16 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import useSWRImmutable from 'swr/immutable';
+
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
-import regex from '@utils/regex';
-import type { EndPoint } from '@typings';
+import useSWRImmutable from 'swr/immutable';
+
 import type { CreateRequestBody } from './AddButton';
+
+import type { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import regex from '@utils/regex';
+import { axiosFetcher } from '@utils/swr';
 
 type Props = {
   form: FormInstance<CreateRequestBody>;
@@ -43,7 +46,7 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
       setSubmitLoading(true);
       try {
         const createdUser = await httpClient.post<CreatedUser>('/users', values).then((res) => res.data);
-        const nextUsers = [createdUser, ...users!];
+        const nextUsers = [createdUser, ...(users ?? [])];
         await mutateUsers(nextUsers);
         message.success('기사 등록 완료');
         closeModal();

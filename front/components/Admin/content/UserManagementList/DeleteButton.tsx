@@ -1,12 +1,16 @@
 import { ReactNode, useCallback, useState } from 'react';
-import useSWRImmutable from 'swr/immutable';
-import { Button, message, Popconfirm, Tooltip } from 'antd';
+
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+
+import { Button, message, Popconfirm, Tooltip } from 'antd';
 import type { AxiosError } from 'axios';
+import useSWRImmutable from 'swr/immutable';
+
+import type { FullUsers, FullUser } from './index';
+
+import type { EndPoint } from '@typings';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { EndPoint } from '@typings';
-import type { FullUsers, FullUser } from './index';
 
 type Props = {
   user: FullUser;
@@ -33,7 +37,7 @@ const DeleteButton = ({ user }: Props) => {
 
     try {
       const deletedUser = await httpClient.delete<DeletedUser>(`/users/${user.id}`).then((res) => res.data);
-      const nextUsers = users!.filter((prevUser) => prevUser.id !== deletedUser.id);
+      const nextUsers = users?.filter((prevUser) => prevUser.id !== deletedUser.id);
       await mutateUsers(nextUsers);
       message.success('기사 정보 삭제 완료');
     } catch (err) {

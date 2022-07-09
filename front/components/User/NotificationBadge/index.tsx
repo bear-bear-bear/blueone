@@ -1,6 +1,8 @@
 import { useEffect, FC, ReactNode } from 'react';
+
 import { InfoOutlined, WarningOutlined } from '@ant-design/icons';
 import { Button, message, Tooltip } from 'antd';
+
 import * as S from './styles';
 
 export type Props = {
@@ -46,7 +48,7 @@ const NotificationBadge: FC<Props> = ({ type, content, tooltip }) => {
       document.cookie = `notified_${content}=true; expires=${cookieExpires};`;
       messageFunc[type](content);
     }
-  }, [document.cookie]);
+  }, [content, type]);
 
   return (
     <S.RightTopLayout>

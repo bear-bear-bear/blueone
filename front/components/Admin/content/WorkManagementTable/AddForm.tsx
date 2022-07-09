@@ -1,15 +1,21 @@
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
-import useSWRImmutable from 'swr/immutable';
+
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
+
 import type { ColProps } from 'antd/lib/grid/col';
+
 import type { AxiosError } from 'axios';
-import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
-import type { EndPoint } from '@typings';
-import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
-import dayjs from '@utils/dayjs';
+
+import useSWRImmutable from 'swr/immutable';
+
 import type { FullWorks, ProcessedWork } from './index';
+
+import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
+import type { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import dayjs from '@utils/dayjs';
+import { axiosFetcher } from '@utils/swr';
 
 export type RequestBody = EndPoint['POST /works']['requestBody'];
 export type Response = EndPoint['POST /works']['responses']['201'];
@@ -64,7 +70,9 @@ const WorkAddForm = ({
   const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
   const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
 
-  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
+  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => {
+    return current && current < dayjs().endOf('day');
+  }, []);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
@@ -73,14 +81,14 @@ const WorkAddForm = ({
         waypoint: values.waypoint ?? null,
         UserId: values.UserId ?? null,
         remark: values.remark?.trim() ?? null,
-        bookingDate: bookingDate.format('YYYY-MM-DD'),
+        bookingDate: isBooking ? bookingDate.format('YYYY-MM-DD') : null,
       };
 
       setSubmitLoading(true);
       try {
         const createdWork = await httpClient.post<Response>('/works', reqBody).then((res) => res.data);
 
-        const nextWorks = works!.map((work) => (work.id !== createdWork.id ? work : createdWork));
+        const nextWorks = works?.map((work) => (work.id !== createdWork.id ? work : createdWork));
         await mutateWorks(nextWorks);
         message.success('업무 등록 완료');
         setValidateTrigger('onFinish');
@@ -89,7 +97,7 @@ const WorkAddForm = ({
       }
       setSubmitLoading(false);
     },
-    [bookingDate, setSubmitLoading, works, mutateWorks, setValidateTrigger],
+    [isBooking, bookingDate, setSubmitLoading, works, mutateWorks, setValidateTrigger],
   );
 
   const onFormFinishFailed = useCallback(() => {

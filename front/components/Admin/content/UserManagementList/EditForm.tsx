@@ -1,14 +1,18 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import useSWRImmutable from 'swr/immutable';
+
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
-import regex from '@utils/regex';
-import type { EndPoint } from '@typings';
 import { AxiosError } from 'axios';
-import type { FullUser } from './index';
+import useSWRImmutable from 'swr/immutable';
+
 import type { UpdateRequestBody } from './EditButton';
+
+import type { FullUser } from './index';
+
+import type { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import regex from '@utils/regex';
+import { axiosFetcher } from '@utils/swr';
 
 type Props = {
   form: FormInstance<UpdateRequestBody>;
@@ -56,7 +60,7 @@ const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, set
       insuranceNumber,
       insuranceExpirationDate,
     }),
-    [prevUser],
+    [dateOfBirth, insuranceExpirationDate, insuranceNumber, licenseNumber, licenseType, phoneNumber, realname],
   );
 
   const onFormFinish: FormProps<UpdateRequestBody>['onFinish'] = useCallback(
@@ -64,7 +68,7 @@ const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, set
       setSubmitLoading(true);
       try {
         const updatedUser = await httpClient.put<UpdatedUser>(`/users/${prevUser.id}`, values).then((res) => res.data);
-        const nextUsers = users!.map((user) => (user.id !== updatedUser.id ? user : updatedUser));
+        const nextUsers = users?.map((user) => (user.id !== updatedUser.id ? user : updatedUser));
         await mutateUsers(nextUsers);
         message.success('기사 정보 수정 완료');
         closeModal();

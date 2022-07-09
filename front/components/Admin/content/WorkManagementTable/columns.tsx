@@ -1,9 +1,11 @@
+import { Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import { Tooltip } from 'antd';
+
 import AddButton from './AddButton';
-import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
+
 import type { ProcessedWork } from './index';
 
 const columns: ColumnsType<ProcessedWork> = [
@@ -12,16 +14,20 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'processedCreatedAt',
     key: 'processedCreatedAt',
     align: 'center',
-    render: (_, { processedBookingDate, processedCreatedAt }) => {
-      if (processedBookingDate && processedBookingDate !== '-') {
-        return processedBookingDate;
-      }
-      return processedCreatedAt;
-    },
     sorter: {
-      compare: (a, b) => +(new Date(b.createdAt) || 0) - +(new Date(a.createdAt) || 0),
+      compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
     },
     width: 60,
+  },
+  {
+    title: '예약 일자',
+    dataIndex: 'processedBookingDate',
+    key: 'processedBookingDate',
+    align: 'center',
+    sorter: {
+      compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
+    },
+    width: 70,
   },
   {
     title: '출발지',

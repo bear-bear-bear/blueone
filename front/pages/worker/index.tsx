@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
-import type { NextPage } from 'next';
+
 import { message } from 'antd';
-import useUser from '@hooks/useUser';
-import useInsuranceExpiredInfo from '@hooks/useInsuranceExpiredInfo';
-import UserLayout from '@components/User/Layout';
-import WorkCarousel from '@components/User/WorkCarousel';
-import NotificationBadge from '@components/User/NotificationBadge';
-import LatestNoticeAlert from '@components/User/Notice/LatestNoticeAlert';
+
+import type { NextPage } from 'next';
+
 import ToDoneWorkSearchButton from '@components/User/DoneWorkSearch/ToDoneWorkSearchButton';
+import UserLayout from '@components/User/Layout';
+import LatestNoticeAlert from '@components/User/Notice/LatestNoticeAlert';
+import NotificationBadge from '@components/User/NotificationBadge';
+import WorkCarousel from '@components/User/WorkCarousel';
+import useInsuranceExpiredInfo from '@hooks/useInsuranceExpiredInfo';
+import useUser from '@hooks/useUser';
 
 const WorkPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({

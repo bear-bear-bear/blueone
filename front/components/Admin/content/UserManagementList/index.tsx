@@ -1,10 +1,12 @@
-import useSWRImmutable from 'swr/immutable';
 import { List, Spin } from 'antd';
-import { axiosFetcher } from '@utils/swr';
-import type { EndPoint, Unpacked } from '@typings';
-import UserItem from './UserItem';
+import useSWRImmutable from 'swr/immutable';
+
 import AddButton from './AddButton';
+import UserItem from './UserItem';
 import * as S from './styles';
+
+import type { EndPoint, Unpacked } from '@typings';
+import { axiosFetcher } from '@utils/swr';
 
 export type FullUsers = EndPoint['GET /users']['responses']['200'];
 export type FullUser = Unpacked<FullUsers>;

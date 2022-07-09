@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
-import media from '@utils/media';
+
 import { CARD_MARGIN_TOP } from '@components/User/WorkCard/styles';
+import media from '@utils/media';
 
 export const globalCSS = css`
   .ant-card-actions {

@@ -1,10 +1,13 @@
 import type { FC } from 'react';
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import useSWR from 'swr';
+
 import { Divider, Select, SelectProps, Skeleton } from 'antd';
-import { axiosFetcher } from '@utils/swr';
-import processPhoneNumber from '@utils/processPhoneNumber';
+
+import useSWR from 'swr';
+
 import type { EndPoint, User } from '@typings';
+import processPhoneNumber from '@utils/processPhoneNumber';
+import { axiosFetcher } from '@utils/swr';
 
 type Props = {
   pickedUserId: User['id'] | null;

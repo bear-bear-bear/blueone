@@ -1,6 +1,9 @@
-import { HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
-import { Button, message } from 'antd';
+import { HTMLAttributes, useEffect, useRef, useState } from 'react';
+
 import { DownloadOutlined } from '@ant-design/icons';
+
+import { Button, message } from 'antd';
+
 import type { BeforeInstallPromptEvent } from '@typings/window';
 
 const MOBILE_REGEX = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
@@ -50,6 +53,7 @@ export default function useInstallPWA() {
       icon={<DownloadOutlined />}
       onClick={installPWA}
       style={{
+        display: buttonVisible ? 'initial' : 'none',
         position: 'absolute',
         bottom: '1.33rem',
         right: '1.33rem',

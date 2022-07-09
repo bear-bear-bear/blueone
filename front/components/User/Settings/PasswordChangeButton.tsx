@@ -1,7 +1,10 @@
 import { MouseEventHandler, FC, useCallback, useState } from 'react';
+
 import { Button, Form, Modal } from 'antd';
-import type { EndPoint } from '@typings';
+
 import PasswordChangeForm from './PasswordChangeForm';
+
+import type { EndPoint } from '@typings';
 
 type RequestBody = EndPoint['POST /user/password']['requestBody'];
 

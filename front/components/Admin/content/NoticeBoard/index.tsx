@@ -1,15 +1,20 @@
 import { useMemo, useState } from 'react';
-import useSWRImmutable from 'swr/immutable';
-import { Spin, Table } from 'antd';
-import qs from 'qs';
+
 import { Global } from '@emotion/react';
-import { axiosFetcher } from '@utils/swr';
-import dayjs from '@utils/dayjs';
-import type { EndPoint, Unpacked } from '@typings';
-import CustomRangePicker from 'components/Admin/content/NoticeBoard/CustomRangePicker';
+
+import { Spin, Table } from 'antd';
+
+import qs from 'qs';
+import useSWRImmutable from 'swr/immutable';
+
 import AddButton from './AddButton';
 import columns from './columns';
 import * as S from './styles';
+
+import type { EndPoint, Unpacked } from '@typings';
+import dayjs from '@utils/dayjs';
+import { axiosFetcher } from '@utils/swr';
+import CustomRangePicker from 'components/Admin/content/NoticeBoard/CustomRangePicker';
 
 export type DateRange = {
   start: string;

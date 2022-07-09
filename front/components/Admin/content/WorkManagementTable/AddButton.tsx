@@ -1,10 +1,14 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
-import { Button as AntdButton, Checkbox, Form, FormProps, Modal, Switch, Tooltip } from 'antd';
-import { AiOutlinePlus } from 'react-icons/ai';
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+
+import { Button as AntdButton, Checkbox, Form, FormProps, Modal, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
+import { AiOutlinePlus } from 'react-icons/ai';
+
 import AddForm from './AddForm';
+
 import type { ProcessedWork } from './index';
+
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 
 type Props = {
   record?: ProcessedWork;
@@ -17,7 +21,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
-  const [isBooking, setIsBooking] = useState<boolean>(false);
+  const [isBooking, setIsBooking] = useState<boolean>(!!record?.bookingDate);
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
@@ -52,7 +56,12 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
         confirmLoading={submitLoading}
         maskClosable={false}
         footer={[
-          <Checkbox key="booking" onChange={onChangeBookingCheckbox} style={{ float: 'left', padding: '5px 0' }}>
+          <Checkbox
+            key="booking"
+            checked={isBooking}
+            onChange={onChangeBookingCheckbox}
+            style={{ float: 'left', padding: '5px 0' }}
+          >
             예약
           </Checkbox>,
 

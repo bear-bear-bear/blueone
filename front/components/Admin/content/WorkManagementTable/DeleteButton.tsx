@@ -1,12 +1,16 @@
 import { ReactNode, useCallback, useState } from 'react';
-import useSWRImmutable from 'swr/immutable';
-import { Button, message, Popconfirm, Tooltip } from 'antd';
+
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+
+import { Button, message, Popconfirm, Tooltip } from 'antd';
 import type { AxiosError } from 'axios';
+import useSWRImmutable from 'swr/immutable';
+
+import type { FullWorks, ProcessedWork } from './index';
+
+import type { EndPoint } from '@typings';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
-import type { EndPoint } from '@typings';
-import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
   record: ProcessedWork;
@@ -33,7 +37,7 @@ const DeleteButton = ({ record }: Props) => {
 
     try {
       await httpClient.delete<Response>(`/works/${record.id}`);
-      const nextWorks = works!.filter((work) => work.id !== record.id);
+      const nextWorks = works?.filter((work) => work.id !== record.id);
       await mutateWorks(nextWorks);
       message.success('업무 삭제 완료');
     } catch (err) {
