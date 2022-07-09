@@ -51,7 +51,7 @@ const jobs = [
   },
   {
     name: 'Adjust booking deadline',
-    cron: '*/20 * * * * ?',
+    cron: '30 0 0 * * ?',
     timezone: 'Asia/Seoul',
     callback: async () => {
       const todayStart = dayjs().startOf('day');
