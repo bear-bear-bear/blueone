@@ -13,7 +13,7 @@ export function logAxiosError<T extends ErrorMessage, D = unknown>(err: AxiosErr
     return;
   }
   if (!err.response) {
-    message.error(`요청이 생성되었으나 서버가 응답하지 않습니다. ${suffix}`, MESSAGE_DURATION);
+    message.error(`요청이 수행되었으나 서버가 응답하지 않습니다. ${suffix}`, MESSAGE_DURATION);
     return;
   }
   if (err.response.status >= 500) {

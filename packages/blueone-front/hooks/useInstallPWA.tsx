@@ -39,7 +39,7 @@ export default function useInstallPWA() {
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('되긴함?');
+      console.log('Event: beforeinstallprompt');
       prepareInstall(e);
     });
     return () => {
