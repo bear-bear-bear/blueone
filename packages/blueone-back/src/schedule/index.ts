@@ -1,6 +1,8 @@
+import { omit } from 'lodash';
 import schedule from 'node-schedule-tz';
 import { Op } from 'sequelize';
 import { Work } from '@/models';
+import work from '@/models/work';
 import dayjs from '@/utils/dayjs';
 import logger from '@/utils/logger';
 
@@ -71,17 +73,9 @@ const jobs = [
 
         await Promise.all(
           recentBookingWorks.map(async (bookingWork) => {
-            bookingWork.bookingDate = null;
-
-            bookingWork.changed('createdAt', true);
-            bookingWork.changed('updatedAt', true);
-
-            bookingWork.set('createdAt', todayStart.toDate(), { raw: true });
-            bookingWork.set('updatedAt', todayStart.toDate(), { raw: true });
-
-            await bookingWork.save({
-              silent: true,
-            });
+            const newWork = omit(bookingWork.get(), ['id', 'bookingDate']);
+            await work.create(newWork);
+            await bookingWork.destroy();
           }),
         );
       } catch (err) {
