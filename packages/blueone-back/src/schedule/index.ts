@@ -84,10 +84,10 @@ const jobs = [
 ];
 
 export default () => {
-  jobs.forEach((job) => {
-    schedule.scheduleJob(job.name, job.cron, job.timezone, async () => {
-      logger.info(`[Run job] ${job.name}`);
-      await job.callback();
+  jobs.forEach(({ name, cron, timezone, callback }) => {
+    schedule.scheduleJob(name, cron, timezone, async () => {
+      logger.info(`[Run job] ${name}`);
+      await callback();
     });
   });
 };
