@@ -6,8 +6,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production pm2 start dist/src/app.js --node-args=\"-r ts-node/register/transpile-only -r tsconfig-paths/register\" && npx pm2 monit",
     "exit": "pm2 kill",
-    "restart": "npm run exit && npm run start",
     "build": "tsc -p .",
+    "restart": "npm run exit && npm run build && npm run start",
     "dev": "cross-env NODE_ENV=development nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" -r tsconfig-paths/register --files src/app.ts",
     "db:create": "cross-env NODE_ENV=production ts-node -r tsconfig-paths/register --files src/config/exec.ts --create",
     "db:migrate": "cross-env NODE_ENV=production ts-node -r tsconfig-paths/register --files src/config/exec.ts --migrate"
