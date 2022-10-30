@@ -73,8 +73,8 @@ const jobs = [
 
         await Promise.all(
           recentBookingWorks.map(async (bookingWork) => {
-            const newWork = omit(bookingWork.get(), ['id', 'bookingDate']);
-            await work.create(newWork);
+            const newWorkInfo = omit(bookingWork.get(), ['id', 'bookingDate']);
+            await work.create(newWorkInfo);
             await bookingWork.destroy();
           }),
         );

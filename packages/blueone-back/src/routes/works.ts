@@ -1,4 +1,5 @@
 import express from 'express';
+import { omit } from 'lodash';
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
@@ -8,6 +9,7 @@ import type {
 } from 'typings';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
+import work from '@/models/work';
 import dayjs from '@/utils/dayjs';
 import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
 
@@ -221,7 +223,7 @@ router.patch(
     const { UserId }: UpdateWorkRequestBody = req.body;
 
     try {
-      const work = await Work.findByPk(workId, {
+      const bookingWork = await Work.findByPk(workId, {
         include: [
           {
             model: User,
@@ -238,7 +240,7 @@ router.patch(
         ],
       });
 
-      if (!work) {
+      if (!bookingWork) {
         res.status(404).json({
           message: `id ${workId} work 를 찾을 수 없습니다`,
         });
@@ -256,19 +258,22 @@ router.patch(
         }
       }
 
-      if (work.checkTime || work.endTime || !work.bookingDate) {
+      if (
+        bookingWork.checkTime ||
+        bookingWork.endTime ||
+        !bookingWork.bookingDate
+      ) {
         res.status(403).json({
           message: `이미 활성화된 업무입니다.`,
         });
         return;
       }
 
-      work.bookingDate = null;
-      work.createdAt = new Date();
+      const newWorkInfo = omit(bookingWork.get(), ['id', 'bookingDate']);
+      const newWork = await work.create(newWorkInfo);
+      await bookingWork.destroy();
 
-      await work.save();
-
-      res.status(200).json(work);
+      res.status(200).json(newWork);
     } catch (err) {
       next(err);
     }
