@@ -17,7 +17,7 @@ class Work extends Model {
   public penalty!: boolean;
   public bookingDate!: Date | null;
   public createdAt!: Date | null;
-  public readonly updatedAt!: Date;
+  public updatedAt!: Date;
 
   public static associate = (db: Database): void => {
     db.Work.belongsTo(db.User);

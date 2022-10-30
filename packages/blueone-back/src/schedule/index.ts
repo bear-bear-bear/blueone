@@ -72,8 +72,16 @@ const jobs = [
         await Promise.all(
           recentBookingWorks.map(async (bookingWork) => {
             bookingWork.bookingDate = null;
-            bookingWork.createdAt = dayjs().toDate();
-            await bookingWork.save();
+
+            bookingWork.changed('createdAt', true);
+            bookingWork.changed('updatedAt', true);
+
+            bookingWork.set('createdAt', todayStart.toDate(), { raw: true });
+            bookingWork.set('updatedAt', todayStart.toDate(), { raw: true });
+
+            await bookingWork.save({
+              silent: true,
+            });
           }),
         );
       } catch (err) {
