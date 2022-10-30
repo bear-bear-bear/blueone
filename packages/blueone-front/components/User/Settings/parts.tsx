@@ -2,12 +2,11 @@ import type { FC } from 'react';
 
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 
+import type { UserWithInfo } from '@components/User/Settings/index';
+import processPhoneNumber from '@utils/processPhoneNumber';
 import { Avatar, Card, Skeleton, Space } from 'antd';
 
 import * as S from './styles';
-
-import type { UserWithInfo } from '@components/User/Settings/index';
-import processPhoneNumber from '@utils/processPhoneNumber';
 
 export const SettingsSkeleton = () => (
   <div style={{ padding: '1.66rem 1rem' }}>

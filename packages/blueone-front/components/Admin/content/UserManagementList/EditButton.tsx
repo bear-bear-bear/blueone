@@ -2,13 +2,12 @@ import { MouseEventHandler, useCallback, useState } from 'react';
 
 import { EditOutlined } from '@ant-design/icons';
 
+import type { EndPoint } from '@typings';
 import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
 
 import EditForm from './EditForm';
 
 import type { FullUser } from './index';
-
-import type { EndPoint } from '@typings';
 
 type Props = {
   user: FullUser;

@@ -1,8 +1,9 @@
-import sequelize from './_sequelize';
 import { Sequelize } from 'sequelize';
+
+import sequelize from './_sequelize';
+import Notice from './notice';
 import User from './user';
 import UserInfo from './userInfo';
-import Notice from './notice';
 import Work from './work';
 
 const db = {

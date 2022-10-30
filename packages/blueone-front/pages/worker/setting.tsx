@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 
-import { message } from 'antd';
-
-import type { NextPage } from 'next';
-
 import UserLayout from '@components/User/Layout';
 import Settings from '@components/User/Settings';
 import useUser from '@hooks/useUser';
+import { message } from 'antd';
+import type { NextPage } from 'next';
 
 const SettingPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({

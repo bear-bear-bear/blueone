@@ -1,6 +1,5 @@
 import express from 'express';
-import { isAdmin, isLoggedIn } from '@/middlewares';
-import { User, UserInfo, Work } from '@/models';
+
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
@@ -8,8 +7,11 @@ import type {
   WorkState,
   DatePickQuery,
 } from 'typings';
-import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
+
+import { isAdmin, isLoggedIn } from '@/middlewares';
+import { User, UserInfo, Work } from '@/models';
 import dayjs from '@/utils/dayjs';
+import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
 
 const router = express.Router();
 
@@ -128,6 +130,7 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     Object.keys(req.body).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       work[key] = req.body[key];
     });

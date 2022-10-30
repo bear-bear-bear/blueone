@@ -10,7 +10,6 @@ import type { ProcessedNotice } from './index';
 // row onclick expand 를 특정 td 에서 실행하지 않기 위한 escape
 // (style 은 row 의 'cursor: pointer' 를 해당 td 에서 완전히 무효화하기 위한 임시 escape)
 const PropagationStopper: FC = ({ children }) => (
-  // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
   <div onClick={(e) => e.stopPropagation()} style={{ padding: '0.66rem 0', cursor: 'initial' }}>
     {children}
   </div>

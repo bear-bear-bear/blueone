@@ -1,6 +1,6 @@
+import { CARD_MARGIN_TOP } from '@components/User/WorkCard/styles';
 import { css } from '@emotion/react';
 
-import { CARD_MARGIN_TOP } from '@components/User/WorkCard/styles';
 import media from '@utils/media';
 
 export const globalCSS = css`

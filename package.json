@@ -10,7 +10,7 @@
     "prepare": "husky install",
     "lint:staged": "lint-staged",
     "lint": "npm run lint:front && npm run lint:back && npm run prettier",
-    "lint:front": "eslint packages/blueone-front/src/ --fix --ext .ts,.tsx",
+    "lint:front": "eslint packages/blueone-front/ --fix --ext .ts,.tsx",
     "lint:back": "eslint packages/blueone-back/src/ --fix --ext .ts",
     "prettier": "prettier --parser babel-ts --write \"packages/**/*.{ts,tsx}\"",
     "postinstall": "npm run bootstrap",

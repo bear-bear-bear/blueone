@@ -1,10 +1,9 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
 
+import type { EndPoint } from '@typings';
 import { Button, Form, Modal } from 'antd';
 
 import AddForm from './AddForm';
-
-import type { EndPoint } from '@typings';
 
 type Props = {
   swrKey: string;

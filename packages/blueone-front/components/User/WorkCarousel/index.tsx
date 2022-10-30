@@ -2,17 +2,16 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import type { Settings } from '@ant-design/react-slick';
 
+import EmptyContent from '@components/User/commonParts/Empty';
 import { Global } from '@emotion/react';
 
+import type { EndPoint } from '@typings';
+import { axiosFetcher } from '@utils/swr';
 import { Card, Carousel, message } from 'antd';
 import useSWR from 'swr';
 
 import WorkCard from '../WorkCard';
 import * as S from './styles';
-
-import EmptyContent from '@components/User/commonParts/Empty';
-import type { EndPoint } from '@typings';
-import { axiosFetcher } from '@utils/swr';
 
 export type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 

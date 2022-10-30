@@ -1,7 +1,9 @@
-import path from 'path';
-import { sync as rm } from 'del';
-import { mkdir, writeFile } from 'fs';
 import { execSync } from 'child_process';
+import { mkdir, writeFile } from 'fs';
+import path from 'path';
+
+import { sync as rm } from 'del';
+
 import config from '@/config/config';
 
 /**

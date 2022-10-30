@@ -1,5 +1,5 @@
-import type { Dialect } from 'sequelize';
 import dotenv from 'dotenv';
+import type { Dialect } from 'sequelize';
 dotenv.config();
 
 type NodeEnv = 'development' | 'production';

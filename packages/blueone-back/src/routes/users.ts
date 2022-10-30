@@ -1,9 +1,12 @@
+import bcrypt from 'bcrypt';
 import express from 'express';
 import _ from 'lodash';
-import bcrypt from 'bcrypt';
+
+import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
+
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
-import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
+
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
 const router = express.Router();
@@ -97,7 +100,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 //   }
 // });
 
- /**
+/**
  * 유저 가져오기
  */
 router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {

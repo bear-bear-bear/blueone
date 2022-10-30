@@ -1,7 +1,11 @@
 import { useState } from 'react';
 
+import CustomRangePicker from '@components/User/DoneWorkSearch/RangePicker';
+import WorkCard from '@components/User/WorkCard';
 import { Global } from '@emotion/react';
 
+import { EndPoint, Unpacked } from '@typings';
+import { axiosFetcher } from '@utils/swr';
 import { Alert, List } from 'antd';
 import dayjs from 'dayjs';
 
@@ -9,11 +13,6 @@ import qs from 'qs';
 import useSWR from 'swr';
 
 import * as S from './styles';
-
-import CustomRangePicker from '@components/User/DoneWorkSearch/RangePicker';
-import WorkCard from '@components/User/WorkCard';
-import { EndPoint, Unpacked } from '@typings';
-import { axiosFetcher } from '@utils/swr';
 
 export type DateRange = {
   start: string;

@@ -1,9 +1,9 @@
 import { Global, css } from '@emotion/react';
 
+import media from '@utils/media';
+
 import FontFace from './_FontFace';
 import Resets from './_Resets';
-
-import media from '@utils/media';
 
 export const globalCSS = css`
   *,

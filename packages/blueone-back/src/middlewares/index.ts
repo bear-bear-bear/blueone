@@ -1,4 +1,5 @@
 import type { RequestHandler, ErrorRequestHandler } from 'express';
+
 import logger from '@/utils/logger';
 
 export const isLoggedIn: RequestHandler = (req, res, next) => {

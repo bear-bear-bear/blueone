@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 
-import type { NextPage } from 'next';
-
-import { useRouter } from 'next/router';
-
 import LoginForm from '@components/Login/Form';
 import LoginLayout from '@components/Login/Layout';
 import useInstallPWA from '@hooks/useInstallPWA';
 import useUser from '@hooks/useUser';
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 const LoginPage: NextPage = () => {
   const router = useRouter();

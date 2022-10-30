@@ -1,5 +1,6 @@
-import { User, UserInfo, Work } from '@/models';
 import { Op } from 'sequelize';
+
+import { User, UserInfo, Work } from '@/models';
 
 /**
  * @param gt string 형식의 날짜 데이터입니다. ( greater then )

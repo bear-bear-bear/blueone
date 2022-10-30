@@ -1,10 +1,9 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 
+import type { EndPoint } from '@typings';
 import { Button, Form, FormProps, Modal } from 'antd';
 
 import AddForm from './AddForm';
-
-import type { EndPoint } from '@typings';
 
 export type CreateRequestBody = EndPoint['POST /users']['requestBody'];
 

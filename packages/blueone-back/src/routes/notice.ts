@@ -1,8 +1,5 @@
 import express from 'express';
 import { Op } from 'sequelize';
-import { Notice } from '@/models';
-import { isAdmin, isLoggedIn } from '@/middlewares';
-import dayjs from '@/utils/dayjs';
 
 import type {
   CreateNoticeRequestBody,
@@ -10,6 +7,10 @@ import type {
   DatePickQuery,
   QueryTypedRequest,
 } from 'typings';
+
+import { isAdmin, isLoggedIn } from '@/middlewares';
+import { Notice } from '@/models';
+import dayjs from '@/utils/dayjs';
 
 const router = express.Router();
 
