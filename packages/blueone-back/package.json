@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=production pm2 start dist/src/app.js --node-args=\"-r ts-node/register/transpile-only -r tsconfig-paths/register\" && npx pm2 monit",
+    "start": "cross-env NODE_ENV=production pm2 start dist/src/app.js --node-args=\"-r ts-node/register/transpile-only -r tsconfig-paths/register\" && pm2 monit",
     "exit": "pm2 kill",
     "build": "tsc -p .",
     "restart": "npm run exit && npm run build && npm run start",

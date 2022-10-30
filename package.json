@@ -17,14 +17,7 @@
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean --yes",
     "audit": "lerna-audit",
-    "build:front": "lerna run build --stream --scope=blueone-front",
-    "build:back": "lerna run build --stream --scope=blueone-back",
-    "start:back": "lerna run start --stream --scope=blueone-back",
-    "exit:back": "lerna run exit --stream --scope=blueone-back",
-    "restart:back": "lerna run restart --stream --scope=blueone-back",
-    "dev": "lerna run dev --parallel --scope=blueone-*",
-    "db:create": "lerna run db:create --parallel --scope=blueone-back",
-    "db:migrate": "lerna run db:migrate --parallel --scope=blueone-back"
+    "dev": "lerna run dev --parallel --scope=blueone-*"
   },
   "repository": {
     "type": "git",
