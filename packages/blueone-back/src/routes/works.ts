@@ -1,5 +1,4 @@
 import express from 'express';
-
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
@@ -7,7 +6,6 @@ import type {
   WorkState,
   DatePickQuery,
 } from 'typings';
-
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import dayjs from '@/utils/dayjs';

@@ -5,9 +5,7 @@ import {
   HasOneSetAssociationMixin,
   HasManyAddAssociationMixin,
 } from 'sequelize';
-
 import sequelize from './_sequelize';
-
 import type { Database, UserInfo, Work } from './index';
 
 class User extends Model {

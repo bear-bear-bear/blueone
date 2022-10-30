@@ -1,8 +1,6 @@
 import { useEffect, FC, ReactNode } from 'react';
-
-import { InfoOutlined, WarningOutlined } from '@ant-design/icons';
 import { Button, message, Tooltip } from 'antd';
-
+import { InfoOutlined, WarningOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
 export type Props = {

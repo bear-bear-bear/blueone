@@ -1,14 +1,11 @@
 import { FC } from 'react';
-
-import { MoneyCollectOutlined } from '@ant-design/icons';
-
-import CheckButton from '@components/User/WorkCard/CheckButton';
-import DoneButton from '@components/User/WorkCard/DoneButton';
-import type { Unpacked } from '@typings';
-import { EndPoint } from '@typings';
 import { Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
-
+import type { Unpacked } from '@typings';
+import { EndPoint } from '@typings';
+import { MoneyCollectOutlined } from '@ant-design/icons';
+import CheckButton from '@components/User/WorkCard/CheckButton';
+import DoneButton from '@components/User/WorkCard/DoneButton';
 import * as S from './styles';
 
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];

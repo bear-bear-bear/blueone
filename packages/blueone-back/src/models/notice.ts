@@ -1,7 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-
 import sequelize from './_sequelize';
-
 import type { Database } from './index';
 
 class Notice extends Model {

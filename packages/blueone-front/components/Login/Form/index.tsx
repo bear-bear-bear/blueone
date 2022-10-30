@@ -1,12 +1,10 @@
 import { useCallback, useState } from 'react';
-
-import type { EndPoint } from '@typings';
-import httpClient, { logAxiosError } from '@utils/axios';
 import { Input, Form, Button, FormProps } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-
+import type { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
 import * as S from './styles';
 
 type RequestBody = EndPoint['POST /user/login']['requestBody'];

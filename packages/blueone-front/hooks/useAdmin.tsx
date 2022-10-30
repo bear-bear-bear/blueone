@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-
-import useUser, { Props } from '@hooks/useUser';
 import { useRouter } from 'next/router';
+import useUser, { Props } from '@hooks/useUser';
 
 export default function useAdmin({ redirectTo, redirectIfFound = false }: Props = {}) {
   const router = useRouter();

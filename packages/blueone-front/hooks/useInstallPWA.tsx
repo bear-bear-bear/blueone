@@ -1,9 +1,7 @@
 import { HTMLAttributes, useEffect, useRef, useState } from 'react';
-
-import { DownloadOutlined } from '@ant-design/icons';
-
-import type { BeforeInstallPromptEvent } from '@typings/window';
 import { Button, message } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import type { BeforeInstallPromptEvent } from '@typings/window';
 
 const MOBILE_REGEX = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
 

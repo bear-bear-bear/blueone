@@ -1,6 +1,4 @@
 import { useMemo, FC, ReactNode } from 'react';
-
-import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,7 +11,7 @@ import {
   AiOutlineNotification,
   AiOutlineSetting,
 } from 'react-icons/ai';
-
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
 type NavItem = {

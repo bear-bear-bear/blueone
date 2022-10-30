@@ -40,6 +40,7 @@ module.exports = {
     ],
     "@typescript-eslint/no-use-before-define": 0,
     "@typescript-eslint/no-var-requires": 0,
+    "no-multiple-empty-lines": 2,
     "import/order": [
       2,
       {
@@ -55,13 +56,23 @@ module.exports = {
             group: "builtin",
             position: "before",
           },
+          {
+            pattern: "@**",
+            group: "external",
+            position: "after",
+          },
+          {
+            pattern: "@**/**",
+            group: "external",
+            position: "after",
+          },
         ],
+        "newlines-between": "never",
         pathGroupsExcludedImportTypes: ["react", "react-dom"],
         alphabetize: {
           order: "asc",
           caseInsensitive: false,
         },
-        "newlines-between": "always-and-inside-groups",
       },
     ],
     "no-else-return": 2,

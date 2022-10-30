@@ -1,13 +1,11 @@
 import express from 'express';
 import { Op } from 'sequelize';
-
 import type {
   CreateNoticeRequestBody,
   UpdateNoticeRequestBody,
   DatePickQuery,
   QueryTypedRequest,
 } from 'typings';
-
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { Notice } from '@/models';
 import dayjs from '@/utils/dayjs';

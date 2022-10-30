@@ -1,12 +1,8 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
-
-import { EditOutlined } from '@ant-design/icons';
-
-import type { EndPoint } from '@typings';
 import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
-
+import type { EndPoint } from '@typings';
+import { EditOutlined } from '@ant-design/icons';
 import EditForm from './EditForm';
-
 import type { ProcessedNotice } from './index';
 
 type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];

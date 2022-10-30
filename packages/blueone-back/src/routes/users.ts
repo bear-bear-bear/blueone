@@ -1,12 +1,9 @@
 import bcrypt from 'bcrypt';
 import express from 'express';
 import _ from 'lodash';
-
 import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
-
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
-
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
 const router = express.Router();

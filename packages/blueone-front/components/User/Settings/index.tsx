@@ -1,9 +1,8 @@
-import LogoutButton from '@components/LogoutButton';
-import type { EndPoint } from '@typings';
-import { axiosFetcher } from '@utils/swr';
 import { List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
-
+import type { EndPoint } from '@typings';
+import LogoutButton from '@components/LogoutButton';
+import { axiosFetcher } from '@utils/swr';
 import PasswordChangeButton from './PasswordChangeButton';
 import { SettingsFooter, SettingsHeader, SettingsSkeleton } from './parts';
 import * as S from './styles';

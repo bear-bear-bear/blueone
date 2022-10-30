@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import { Tabs } from 'antd';
+import styled from '@emotion/styled';
 
 export const StyledTabs = styled(Tabs)`
   display: flex;

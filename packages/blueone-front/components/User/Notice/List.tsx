@@ -1,10 +1,8 @@
-import EmptyContent from '@components/User/commonParts/Empty';
-import type { EndPoint } from '@typings';
-import { axiosFetcher } from '@utils/swr';
 import { Card, List } from 'antd';
-
 import useSWR from 'swr';
-
+import type { EndPoint } from '@typings';
+import EmptyContent from '@components/User/commonParts/Empty';
+import { axiosFetcher } from '@utils/swr';
 import * as S from './styles';
 
 type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];

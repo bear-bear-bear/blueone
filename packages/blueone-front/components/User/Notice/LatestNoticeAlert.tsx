@@ -1,11 +1,10 @@
 import type { MouseEventHandler } from 'react';
-
-import type { EndPoint } from '@typings';
-import { axiosFetcher } from '@utils/swr';
 import { Alert } from 'antd';
 import { useRouter } from 'next/router';
 import Marquee from 'react-fast-marquee';
 import useSWR from 'swr';
+import type { EndPoint } from '@typings';
+import { axiosFetcher } from '@utils/swr';
 
 type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];
 

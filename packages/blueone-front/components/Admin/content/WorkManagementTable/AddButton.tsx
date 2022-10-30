@@ -1,12 +1,9 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
-
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import { Button as AntdButton, Checkbox, Form, FormProps, Modal, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
 import { AiOutlinePlus } from 'react-icons/ai';
-
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import AddForm from './AddForm';
-
 import type { ProcessedWork } from './index';
 
 type Props = {

@@ -1,6 +1,6 @@
-import type { ErrorMessage } from '@typings';
 import { message } from 'antd';
 import axios, { AxiosError } from 'axios';
+import type { ErrorMessage } from '@typings';
 
 const MESSAGE_DURATION = 4;
 export function logAxiosError<T extends ErrorMessage, D = unknown>(err: AxiosError<T, D>, forUser = false) {

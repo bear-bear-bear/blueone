@@ -8,14 +8,14 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import passport from 'passport';
 import fileStoreFactory from 'session-file-store';
-const FileStore = fileStoreFactory(session);
-dotenv.config();
-
 import passportConfig from '@/auth';
 import { errorHandler, errorLogger } from '@/middlewares';
 import db from '@/models';
 import { userRouter, usersRouter, worksRouter, noticeRouter } from '@/routes';
 import runJobs from '@/schedule';
+
+const FileStore = fileStoreFactory(session);
+dotenv.config();
 passportConfig();
 
 db.sequelize

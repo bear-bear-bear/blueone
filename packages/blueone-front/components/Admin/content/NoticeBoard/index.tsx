@@ -1,16 +1,12 @@
 import { useMemo, useState } from 'react';
-
-import { Global } from '@emotion/react';
-
-import type { EndPoint, Unpacked } from '@typings';
-import dayjs from '@utils/dayjs';
-import { axiosFetcher } from '@utils/swr';
 import { Spin, Table } from 'antd';
-
 import CustomRangePicker from 'components/Admin/content/NoticeBoard/CustomRangePicker';
 import qs from 'qs';
 import useSWRImmutable from 'swr/immutable';
-
+import type { EndPoint, Unpacked } from '@typings';
+import { Global } from '@emotion/react';
+import dayjs from '@utils/dayjs';
+import { axiosFetcher } from '@utils/swr';
 import AddButton from './AddButton';
 import columns from './columns';
 import * as S from './styles';

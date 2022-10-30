@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
 import { Card } from 'antd';
 import Linkify from 'linkify-react';
+import styled from '@emotion/styled';
 
 export const NoticeCard = styled(Card)`
   .ant-card-head {

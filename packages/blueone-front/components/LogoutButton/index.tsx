@@ -1,13 +1,12 @@
 import { useCallback } from 'react';
-
-import type { EndPoint } from '@typings';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
 import { Button, ButtonProps, message } from 'antd';
 import type { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { CgLogOut } from 'react-icons/cg';
 import useSWRImmutable from 'swr/immutable';
+import type { EndPoint } from '@typings';
+import httpClient, { logAxiosError } from '@utils/axios';
+import { axiosFetcher } from '@utils/swr';
 
 interface Props extends ButtonProps {
   kind?: 'icon' | 'text';

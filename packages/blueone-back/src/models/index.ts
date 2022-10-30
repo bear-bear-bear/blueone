@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-
 import sequelize from './_sequelize';
 import Notice from './notice';
 import User from './user';

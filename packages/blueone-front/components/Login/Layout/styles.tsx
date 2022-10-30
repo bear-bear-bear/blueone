@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-
 import media from '@utils/media';
 
 export const CenterLayout = styled.section`

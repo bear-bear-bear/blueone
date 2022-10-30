@@ -1,10 +1,7 @@
 import { Model, DataTypes, ModelValidateOptions } from 'sequelize';
-
-import sequelize from './_sequelize';
-
-import type { Database } from './index';
-
 import dayjs from '@/utils/dayjs';
+import sequelize from './_sequelize';
+import type { Database } from './index';
 
 const regex = {
   phoneNumber: /^\d{7,32}$/,

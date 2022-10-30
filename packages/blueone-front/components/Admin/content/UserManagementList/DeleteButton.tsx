@@ -1,14 +1,11 @@
 import { ReactNode, useCallback, useState } from 'react';
-
-import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-
-import type { EndPoint } from '@typings';
-import httpClient, { logAxiosError } from '@utils/axios';
-import { axiosFetcher } from '@utils/swr';
 import { Button, message, Popconfirm, Tooltip } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
-
+import type { EndPoint } from '@typings';
+import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import httpClient, { logAxiosError } from '@utils/axios';
+import { axiosFetcher } from '@utils/swr';
 import type { FullUsers, FullUser } from './index';
 
 type Props = {

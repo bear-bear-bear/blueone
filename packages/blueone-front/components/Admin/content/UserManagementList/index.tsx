@@ -1,8 +1,7 @@
-import type { EndPoint, Unpacked } from '@typings';
-import { axiosFetcher } from '@utils/swr';
 import { List, Spin } from 'antd';
 import useSWRImmutable from 'swr/immutable';
-
+import type { EndPoint, Unpacked } from '@typings';
+import { axiosFetcher } from '@utils/swr';
 import AddButton from './AddButton';
 import UserItem from './UserItem';
 import * as S from './styles';

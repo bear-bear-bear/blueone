@@ -1,7 +1,7 @@
-import GlobalStyles from '@globalStyles/index';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SWRConfig } from 'swr';
+import GlobalStyles from '@globalStyles/index';
 
 import 'antd/dist/antd.css';
 

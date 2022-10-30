@@ -1,20 +1,16 @@
 import { useCallback, useMemo, useState } from 'react';
-
-import { SnippetsOutlined } from '@ant-design/icons';
-import { Global } from '@emotion/react';
-
-import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
-import { formatTime } from '@utils/day';
-import { axiosFetcher } from '@utils/swr';
 import { Button, Checkbox, Spin, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-
 import CustomRangePicker from 'components/Admin/content/WorkManagementTable/CustomRangePicker';
 import dayjs from 'dayjs';
 import { merge } from 'lodash';
 import qs from 'qs';
 import useSWR from 'swr';
-
+import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
+import { SnippetsOutlined } from '@ant-design/icons';
+import { Global } from '@emotion/react';
+import { formatTime } from '@utils/day';
+import { axiosFetcher } from '@utils/swr';
 import AddButton from './AddButton';
 import TotalFee from './TotalFee';
 import UserPicker from './UserPicker';

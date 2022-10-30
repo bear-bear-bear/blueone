@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import { Menu, Layout } from 'antd';
+import styled from '@emotion/styled';
 
 export const StyledHeader = styled(Layout.Header)`
   display: flex;

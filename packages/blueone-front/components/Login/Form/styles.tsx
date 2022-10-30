@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import { Form, Input } from 'antd';
+import styled from '@emotion/styled';
 
 export const InputFormItem = styled(Form.Item)`
   margin-bottom: 0.66rem;

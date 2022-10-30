@@ -1,11 +1,9 @@
 import { Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-
 import AddButton from './AddButton';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
-
 import type { ProcessedWork } from './index';
 
 const columns: ColumnsType<ProcessedWork> = [

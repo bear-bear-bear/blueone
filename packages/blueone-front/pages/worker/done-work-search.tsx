@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-
+import { message } from 'antd';
+import type { NextPage } from 'next';
 import DoneWorkSearch from '@components/User/DoneWorkSearch';
 import UserLayout from '@components/User/Layout';
 import useUser from '@hooks/useUser';
-import { message } from 'antd';
-import type { NextPage } from 'next';
 
 const DoneWorkSearchPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({

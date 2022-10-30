@@ -1,8 +1,6 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
-
-import type { EndPoint } from '@typings';
 import { Button, Form, Modal } from 'antd';
-
+import type { EndPoint } from '@typings';
 import AddForm from './AddForm';
 
 type Props = {

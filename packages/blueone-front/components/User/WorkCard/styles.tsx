@@ -1,9 +1,8 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-
-import media from '@utils/media';
 import { Card } from 'antd';
 import { AiOutlineFileDone } from 'react-icons/ai';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import media from '@utils/media';
 
 export const CARD_MARGIN_TOP = '2rem';
 

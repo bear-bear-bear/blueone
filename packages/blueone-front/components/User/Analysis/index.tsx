@@ -1,7 +1,6 @@
+import { Tabs } from 'antd';
 import AnalysisByDay from '@components/User/Analysis/AnalysisByDay';
 import AnalysisByMonth from '@components/User/Analysis/AnalysisByMonth';
-import { Tabs } from 'antd';
-
 import * as S from './styles';
 
 const { TabPane } = Tabs;

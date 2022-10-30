@@ -1,11 +1,10 @@
 import { useCallback, useMemo, memo } from 'react';
-
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
-import type { EndPoint } from '@typings';
-import processPhoneNumber from '@utils/processPhoneNumber';
-import { axiosFetcher } from '@utils/swr';
 import { Divider, FormInstance, Select, SelectProps, Skeleton } from 'antd';
 import useSWR from 'swr';
+import type { EndPoint } from '@typings';
+import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+import processPhoneNumber from '@utils/processPhoneNumber';
+import { axiosFetcher } from '@utils/swr';
 
 type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {
