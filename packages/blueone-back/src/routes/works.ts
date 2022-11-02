@@ -269,8 +269,19 @@ router.patch(
         return;
       }
 
-      const newWorkInfo = omit(bookingWork.get(), ['id', 'bookingDate']);
+      const newWorkInfo = omit(bookingWork.get(), [
+        'id',
+        'bookingDate',
+        'createdAt',
+        'updatedAt',
+      ]);
+
+      console.log(newWorkInfo);
+
       const newWork = await work.create(newWorkInfo);
+
+      console.log(newWork.get());
+
       await bookingWork.destroy();
 
       res.status(200).json(newWork);
