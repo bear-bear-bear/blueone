@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
 import type { Unpacked } from '@typings';
@@ -57,12 +57,12 @@ const WorkCard = ({ work, readOnly = false }: Props) => {
         readOnly
           ? undefined
           : [
-              <CheckButton isWorkChecked={isWorkChecked} workId={work.id} key={`c_${work.id}`} />,
+              <CheckButton key={`c_${work.id}`} isWorkChecked={isWorkChecked} workId={work.id} />,
               <DoneButton
+                key={`d_${work.id}`}
                 isWorkChecked={isWorkChecked}
                 isWorkDone={isWorkDone}
                 workId={work.id}
-                key={`d_${work.id}`}
               />,
             ]
       }
@@ -106,4 +106,4 @@ const WorkCard = ({ work, readOnly = false }: Props) => {
   );
 };
 
-export default WorkCard;
+export default memo(WorkCard);

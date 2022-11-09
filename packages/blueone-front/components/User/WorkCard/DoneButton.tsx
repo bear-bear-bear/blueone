@@ -1,4 +1,4 @@
-import { MouseEventHandler, FC, useCallback, useState } from 'react';
+import { MouseEventHandler, FC, useCallback, useState, memo } from 'react';
 import { Button, message, Modal } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
@@ -82,4 +82,4 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked, isWorkDone }) => {
   );
 };
 
-export default DoneButton;
+export default memo(DoneButton);
