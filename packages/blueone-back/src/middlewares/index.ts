@@ -12,7 +12,7 @@ export const isLoggedIn: RequestHandler = (req, res, next) => {
 };
 
 export const isNotLoggedIn: RequestHandler = (req, res, next) => {
-  if (!req.isAuthenticated()) {
+  if (req.isUnauthenticated()) {
     next();
   } else {
     res.status(403).json({
