@@ -7,3 +7,7 @@ export const RightTopLayout = styled.div`
   right: 1.66rem;
   transform: translate(50%, -50%);
 `;
+
+export const BoldTitle = styled.span`
+  font-weight: 500;
+`;

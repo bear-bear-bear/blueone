@@ -1,57 +1,63 @@
-import { useEffect, FC, ReactNode } from 'react';
-import { Button, message, Tooltip } from 'antd';
-import { InfoOutlined, WarningOutlined } from '@ant-design/icons';
+import { useEffect, FC, ReactNode, useCallback } from 'react';
+import { Button, message, notification, Tooltip } from 'antd';
+import { CloseOutlined, InfoOutlined, WarningOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
 export type Props = {
-  type: 'info' | 'warn' | 'danger';
+  type: 'info' | 'warn' | 'error';
   content: string;
-  tooltip?: string;
 };
 
-const mainColor: { [key in Props['type']]: string } = {
-  info: '#177DDC',
-  warn: '#D89614',
-  danger: '#A61D24',
+const dict: Record<
+  Props['type'],
+  {
+    title: ReactNode;
+    icon: ReactNode;
+  }
+> = {
+  info: {
+    title: <S.BoldTitle>정보 알림</S.BoldTitle>,
+    icon: <InfoOutlined style={{ color: '#177DDC', fontSize: 'inherit' }} />,
+  },
+  warn: {
+    title: <S.BoldTitle>경고 알림</S.BoldTitle>,
+    icon: <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />,
+  },
+  error: {
+    title: <S.BoldTitle>경고 알림</S.BoldTitle>,
+    icon: <WarningOutlined style={{ color: '#A61D24', fontSize: 'inherit' }} />,
+  },
 };
 
-const tooltipTitle: { [key in Props['type']]: string } = {
-  info: '정보 알림',
-  warn: '경고 알림',
-  danger: '경고 알림',
-};
+const NotificationBadge: FC<Props> = ({ type, content }) => {
+  const { title, icon } = dict[type];
 
-const messageFunc: { [key in Props['type']]: typeof message['info' | 'warn' | 'error'] } = {
-  info: message.info,
-  warn: message.warn,
-  danger: message.error,
-};
-
-const icon: { [key in Props['type']]: ReactNode } = {
-  info: <InfoOutlined style={{ color: mainColor.info, fontSize: 'inherit' }} />,
-  warn: <WarningOutlined style={{ color: mainColor.warn, fontSize: 'inherit' }} />,
-  danger: <WarningOutlined style={{ color: mainColor.danger, fontSize: 'inherit' }} />,
-};
-
-const NotificationBadge: FC<Props> = ({ type, content, tooltip }) => {
-  const handleClick = () => {
-    messageFunc[type](content);
-  };
+  const handleClick = useCallback(() => {
+    message[type](content);
+  }, [content, type]);
 
   useEffect(() => {
-    // 24시간마다 자동 알림
-    if (!document.cookie.includes(`notified_${content}`)) {
-      const ONE_DAY = 24 * 60 * 60 * 1000;
-      const cookieExpires = new Date(ONE_DAY + Date.now()).toUTCString();
-      document.cookie = `notified_${content}=true; expires=${cookieExpires};`;
-      messageFunc[type](content);
-    }
-  }, [content, type]);
+    if (document.cookie.includes(`notified_${content}`)) return;
+
+    notification.open({
+      message: title,
+      description: content,
+      icon,
+      duration: 0, // Do not auto close
+      onClose: () => {
+        // 24시간마다 자동 알림
+        const ONE_DAY = 24 * 60 * 60 * 1000;
+        const cookieExpires = new Date(ONE_DAY + Date.now()).toUTCString();
+        document.cookie = `notified_${content}=true; expires=${cookieExpires};`;
+      },
+      closeIcon: <CloseOutlined style={{ fontSize: 20 }} />,
+    });
+  }, [content, icon, title, type]);
 
   return (
     <S.RightTopLayout>
-      <Tooltip title={tooltip || tooltipTitle[type]} align={{ useCssBottom: true, useCssRight: false }}>
-        <Button type="text" icon={icon[type]} onClick={handleClick} size="large" style={{ fontSize: 30 }} />
+      <Tooltip title={title} align={{ useCssBottom: true, useCssRight: false }}>
+        <Button type="text" icon={icon} onClick={handleClick} size="large" style={{ fontSize: 30 }} />
       </Tooltip>
     </S.RightTopLayout>
   );
