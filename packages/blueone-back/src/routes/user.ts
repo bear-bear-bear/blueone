@@ -3,7 +3,7 @@ import express from 'express';
 import passport from 'passport';
 import { Op } from 'sequelize';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
-import { isLoggedIn } from '@/middlewares';
+import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import dayjs from '@/utils/dayjs';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
@@ -46,20 +46,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 /**
  * 로그인
  */
-router.post('/login', (req, res, next) => {
-  console.log('before:', req.user);
-
-  if (req.user) {
-    req.logout();
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('세션 파괴 중 에러', err);
-      }
-    });
-  }
-
-  console.log('after:', req.user);
-
+router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (serverError, user, clientError) => {
     if (serverError) {
       console.error('serverError', serverError);
