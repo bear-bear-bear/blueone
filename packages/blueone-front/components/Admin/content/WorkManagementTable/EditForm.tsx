@@ -6,7 +6,7 @@ import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Work } from '@typings';
 import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
-import UserSelecter from '@components/Admin/content/commonParts/FormUserSelecter';
+import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
 import { axiosFetcher } from '@utils/swr';
@@ -143,7 +143,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
         <InputNumber autoComplete="off" />
       </Form.Item>
       <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelecter form={form} defaultUserId={prevWork.UserId} disabled={!!prevWork.endTime} immutable />
+        <UserSelector form={form} defaultUserId={prevWork.UserId} disabled={!!prevWork.endTime} immutable />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />
