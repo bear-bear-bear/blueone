@@ -1,4 +1,4 @@
-import { List, Spin } from 'antd';
+import { List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Unpacked } from '@typings';
 import { axiosFetcher } from '@utils/swr';
@@ -14,20 +14,13 @@ const UserManagementList = () => {
     revalidateOnMount: true,
   });
 
-  if (!users) {
-    return (
-      <S.SpinnerWrapper>
-        <Spin size="default" />
-      </S.SpinnerWrapper>
-    );
-  }
   return (
     <S.ListWrapper>
       <S.StickyHeader>
         <AddButton />
       </S.StickyHeader>
       <S.StyledDivider />
-      <List itemLayout="horizontal" dataSource={users} renderItem={UserItem} />
+      <List itemLayout="horizontal" dataSource={users} renderItem={UserItem} loading={!users} />
     </S.ListWrapper>
   );
 };
