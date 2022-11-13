@@ -1,15 +1,14 @@
 import { ReactNode } from 'react';
 import { Avatar, List, Tooltip } from 'antd';
 import { UserOutlined, WarningOutlined } from '@ant-design/icons';
-import useInsuranceExpiredInfo from '@hooks/useInsuranceExpiredInfo';
+import getInsuranceExpirationInfo, { InsuranceExpirationInfo } from '@utils/getInsuranceExpirationInfo';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 import * as S from './styles';
 import type { FullUser } from './index';
 
-type NotUndefined<T> = T extends undefined ? never : T;
-type InsuranceState = NotUndefined<ReturnType<typeof useInsuranceExpiredInfo>['state']>;
+type InsuranceState = NonNullable<InsuranceExpirationInfo['state']>;
 
 const { Item } = List;
 
@@ -54,7 +53,7 @@ const UserItem = (user: FullUser) => {
     phoneNumber,
     UserInfo: { realname, insuranceExpirationDate },
   } = user;
-  const { state: insuranceState, to: insuranceTo } = useInsuranceExpiredInfo(user);
+  const { state: insuranceState, to: insuranceTo } = getInsuranceExpirationInfo(user);
 
   if (!insuranceState) return null;
   return (

@@ -7,7 +7,7 @@ import 'dayjs/locale/ko';
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
 
-type InsuranceExpiredInfo =
+export type InsuranceExpirationInfo =
   | {
       state: 'safe' | 'warn' | 'danger';
       from: string;
@@ -19,7 +19,7 @@ type InsuranceExpiredInfo =
       to: undefined;
     };
 
-export default function useInsuranceExpiredInfo(user: ReturnType<typeof useUser>['user']): InsuranceExpiredInfo {
+export default function getInsuranceExpirationInfo(user: ReturnType<typeof useUser>['user']): InsuranceExpirationInfo {
   if (!user || !user?.UserInfo) {
     return {
       state: undefined,

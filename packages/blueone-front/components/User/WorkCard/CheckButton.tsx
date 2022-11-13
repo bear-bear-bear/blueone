@@ -4,9 +4,9 @@ import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Work } from '@typings';
 import type { MyWorks } from '@components/User/WorkCarousel';
-import useInsuranceExpiredInfo from '@hooks/useInsuranceExpiredInfo';
 import useUser from '@hooks/useUser';
 import httpClient, { logAxiosError } from '@utils/axios';
+import getInsuranceExpirationInfo from '@utils/getInsuranceExpirationInfo';
 import { axiosFetcher } from '@utils/swr';
 
 type Props = {
@@ -21,7 +21,7 @@ type WorkPatchError =
 
 const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
   const { user } = useUser();
-  const insuranceDate = useInsuranceExpiredInfo(user);
+  const insuranceDate = getInsuranceExpirationInfo(user);
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
   const [loading, setLoading] = useState<boolean>(false);
   const buttonDisabled = useMemo(() => {

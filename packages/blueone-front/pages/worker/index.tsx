@@ -6,14 +6,14 @@ import UserLayout from '@components/User/Layout';
 import LatestNoticeAlert from '@components/User/Notice/LatestNoticeAlert';
 import NotificationBadge from '@components/User/NotificationBadge';
 import WorkCarousel from '@components/User/WorkCarousel';
-import useInsuranceExpiredInfo from '@hooks/useInsuranceExpiredInfo';
 import useUser from '@hooks/useUser';
+import getInsuranceExpirationInfo from '@utils/getInsuranceExpirationInfo';
 
 const WorkPage: NextPage = () => {
   const { user, isLoggedIn } = useUser({
     redirectTo: '/login',
   });
-  const insuranceDate = useInsuranceExpiredInfo(user);
+  const insuranceDate = getInsuranceExpirationInfo(user);
 
   useEffect(() => {
     if (!isLoggedIn) return;
