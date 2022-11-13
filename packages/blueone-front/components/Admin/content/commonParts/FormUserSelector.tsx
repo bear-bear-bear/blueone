@@ -1,8 +1,10 @@
 import { useCallback, useMemo, memo } from 'react';
-import { Divider, FormInstance, Select, SelectProps, Skeleton } from 'antd';
+import { Divider, FormInstance, Select, SelectProps, Skeleton, Tooltip } from 'antd';
 import useSWR from 'swr';
 import type { EndPoint } from '@typings';
+import { WarningOutlined } from '@ant-design/icons';
 import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+import getInsuranceExpirationInfo from '@utils/getInsuranceExpirationInfo';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import { axiosFetcher } from '@utils/swr';
 
@@ -30,13 +32,39 @@ const FormUserSelector = ({ form, defaultUserId, disabled = false, immutable = f
 
   const userOptions = useMemo(() => {
     if (!users) return undefined;
-    return users.map(({ id, phoneNumber, UserInfo: { realname } }) => (
-      <Option key={id} value={id} style={{ textAlign: 'center' }}>
-        {realname}
-        <Divider type="vertical" />
-        {processPhoneNumber(phoneNumber)}
-      </Option>
-    ));
+
+    return users.map((user) => {
+      const {
+        id,
+        phoneNumber,
+        UserInfo: { realname },
+      } = user;
+      const insuranceDate = getInsuranceExpirationInfo(user);
+
+      return (
+        <Option key={id} value={id} style={{ textAlign: 'center' }}>
+          {insuranceDate.state === 'warn' && (
+            <>
+              <Tooltip title={`보험 일자 만료 ${insuranceDate.from}`}>
+                <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />
+              </Tooltip>
+              <Divider type="vertical" />
+            </>
+          )}
+          {insuranceDate.state === 'danger' && (
+            <>
+              <Tooltip title={`보험 일자 만료됨`}>
+                <WarningOutlined style={{ color: '#A61D24', fontSize: 'inherit' }} />
+              </Tooltip>
+              <Divider type="vertical" />
+            </>
+          )}
+          {realname}
+          <Divider type="vertical" />
+          {processPhoneNumber(phoneNumber)}
+        </Option>
+      );
+    });
   }, [users]);
 
   const selectSearchFilter: SelectProps<WorkAddFormFields['UserId']>['filterOption'] = useCallback(
@@ -49,13 +77,16 @@ const FormUserSelector = ({ form, defaultUserId, disabled = false, immutable = f
     [],
   );
 
-  const onSelect: SelectProps<WorkAddFormFields['UserId']>['onSelect'] = (v) => {
-    form.setFieldsValue({ UserId: Number(v) });
-  };
+  const onSelect: SelectProps<WorkAddFormFields['UserId']>['onSelect'] = useCallback(
+    (v) => {
+      form.setFieldsValue({ UserId: Number(v) });
+    },
+    [form],
+  );
 
-  const onClear: SelectProps<WorkAddFormFields['UserId']>['onClear'] = () => {
+  const onClear: SelectProps<WorkAddFormFields['UserId']>['onClear'] = useCallback(() => {
     form.setFieldsValue({ UserId: undefined });
-  };
+  }, [form]);
 
   return (
     <Select
