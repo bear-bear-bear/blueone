@@ -28,13 +28,13 @@ const WorkPage: NextPage = () => {
       {insuranceDate.state === 'warn' && (
         <NotificationBadge
           type="warn"
-          content={`보험 만료 ${insuranceDate.from} 입니다. 보험이 만료되면 업무 수행이 불가하니, 갱신 후 사장님에게 새로운 보험 만료일자를 알려주세요.`}
+          content={`보험 만료 ${insuranceDate.from} 입니다. 보험이 만료되면 업무 수행이 불가하니, 갱신 후 사무실로 알려주세요.`}
         />
       )}
       {insuranceDate.state === 'danger' && (
         <NotificationBadge
           type="error"
-          content="보험이 만료되어 업무를 수행하실 수 없습니다. 보험 갱신 후 사장님에게 새로운 보험 만료일자를 알려주세요."
+          content="보험이 만료되어 업무를 수행하실 수 없습니다. 보험 갱신 후 사무실로 알려주세요."
         />
       )}
       <LatestNoticeAlert />
