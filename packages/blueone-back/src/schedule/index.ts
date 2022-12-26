@@ -19,9 +19,6 @@ const jobs = [
       try {
         const notDoneWorks = await Work.findAll({
           where: {
-            remark: {
-              [Op.or]: [{ [Op.ne]: '익일입고' }, { [Op.eq]: null }],
-            },
             createdAt: {
               [Op.gt]: YESTERDAY_START,
               [Op.lt]: YESTERDAY_END,
@@ -38,13 +35,20 @@ const jobs = [
           },
         });
 
-        await Promise.all(
-          notDoneWorks.map(async (work) => {
-            work.subsidy = (work.subsidy ?? 0) - 10;
-            work.penalty = true;
+        const REMARK_KEYWORD_EXCLUDED_FROM_PENALTY = '익일';
 
-            await work.save();
-          }),
+        await Promise.all(
+          notDoneWorks
+            .filter(
+              (work) =>
+                !work.remark?.includes(REMARK_KEYWORD_EXCLUDED_FROM_PENALTY),
+            )
+            .map(async (work) => {
+              work.subsidy = (work.subsidy ?? 0) - 10;
+              work.penalty = true;
+
+              await work.save();
+            }),
         );
       } catch (err) {
         logger.error(err);
