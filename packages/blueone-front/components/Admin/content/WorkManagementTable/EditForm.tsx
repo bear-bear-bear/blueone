@@ -51,17 +51,14 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
 
-  const cancelWorkCheck = useCallback(
-    async (workId: Work['id']) => {
-      try {
-        await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
-        message.error('업무 확인 취소 완료');
-      } catch (err) {
-        logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
-      }
-    },
-    [prevWork.endTime],
-  );
+  const cancelWorkCheck = useCallback(async (workId: Work['id']) => {
+    try {
+      await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
+      message.error('업무 확인 취소 완료');
+    } catch (err) {
+      logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
+    }
+  }, []);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = async (values) => {
     const reqBody: WorkPutRequestBody = {
