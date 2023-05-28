@@ -25,7 +25,7 @@ const columns: ColumnsType<ProcessedWork> = [
     sorter: {
       compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
     },
-    width: 70,
+    width: 90,
   },
   {
     title: '출발지',
