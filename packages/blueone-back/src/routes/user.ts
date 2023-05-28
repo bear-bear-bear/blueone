@@ -37,7 +37,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
       return;
     }
 
-    res.status(200).json(user);
+    res.status(200).json(user.get());
   } catch (err) {
     next(err);
   }
@@ -78,7 +78,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
           },
         ],
       });
-      return res.status(200).json(fullUser);
+      return res.status(200).json(fullUser?.get());
     });
   })(req, res, next);
 });
@@ -156,7 +156,7 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
         ['createdAt', 'ASC'],
       ],
     });
-    res.status(200).json(works);
+    res.status(200).json(works.map((work) => work.get()));
   } catch (err) {
     next(err);
   }
@@ -188,7 +188,7 @@ router.get(
         },
         order: [['createdAt', 'DESC']],
       });
-      res.status(200).json(works);
+      res.status(200).json(works.map((work) => work.get()));
     } catch (err) {
       console.error(err);
       next(err);

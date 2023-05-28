@@ -39,7 +39,7 @@ router.get(
         lt,
         booked === 'true',
       );
-      res.status(200).json(works);
+      res.status(200).json(works.map((work) => work.get()));
     } catch (err) {
       console.error(err);
       next(err);
@@ -67,7 +67,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
     await user.addWorks(work);
 
     res.status(201).json({
-      ...work,
+      ...work.get(),
       UserId,
     });
   } catch (err) {
@@ -130,7 +130,7 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
 
     await work.save();
 
-    res.status(200).json(work);
+    res.status(200).json(work.get());
   } catch (err) {
     next(err);
   }
@@ -196,7 +196,7 @@ router.patch(
           return;
       }
 
-      res.status(200).json(work);
+      res.status(200).json(work.get());
     } catch (err) {
       console.error(err);
       next(err);
@@ -277,7 +277,7 @@ router.patch(
 
       await bookingWork.destroy();
 
-      res.status(200).json(newWork);
+      res.status(200).json(newWork.get());
     } catch (err) {
       next(err);
     }
@@ -345,7 +345,7 @@ router.patch(
 
       await work.save();
 
-      res.status(200).json(work);
+      res.status(200).json(work.get());
     } catch (err) {
       next(err);
     }
@@ -369,7 +369,7 @@ router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     await work.destroy();
-    res.status(200).json(work);
+    res.status(200).json(work.get());
   } catch (err) {
     next(err);
   }

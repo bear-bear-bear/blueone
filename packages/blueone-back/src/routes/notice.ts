@@ -35,7 +35,7 @@ router.get(
         },
         order: [['createdAt', 'DESC']],
       });
-      res.status(200).json(noticeList);
+      res.status(200).json(noticeList.map((notice) => notice.get()));
     } catch (err) {
       console.error(err);
       next(err);
@@ -59,7 +59,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
       userId: req.user?.id,
     });
 
-    res.status(202).json(notice);
+    res.status(202).json(notice.get());
   } catch (err) {
     next(err);
   }
@@ -85,7 +85,7 @@ router.get('/activation', isLoggedIn, async (req, res, next) => {
       },
       order: [['createdAt', 'DESC']],
     });
-    res.status(200).json(activatedNoticeList);
+    res.status(200).json(activatedNoticeList.map((notice) => notice.get()));
   } catch (err) {
     console.error(err);
     next(err);
@@ -108,7 +108,7 @@ router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
       return;
     }
 
-    res.status(200).json(notice);
+    res.status(200).json(notice.get());
   } catch (err) {
     next(err);
   }
@@ -134,7 +134,7 @@ router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
     notice.title = title;
     notice.content = content;
     await notice.save();
-    res.status(200).json(notice);
+    res.status(200).json(notice.get());
   } catch (err) {
     next(err);
   }
@@ -157,7 +157,7 @@ router.delete('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     await notice.destroy();
-    res.status(200).json(notice);
+    res.status(200).json(notice.get());
   } catch (err) {
     next(err);
   }
