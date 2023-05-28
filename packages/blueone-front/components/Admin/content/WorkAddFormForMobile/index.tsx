@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, message, Checkbox } from 'antd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -75,14 +74,10 @@ const WorkAddForm = () => {
     setValidateTrigger(['onFinish', 'onChange']);
   }, [setValidateTrigger]);
 
-  const onChangeBookingCheckbox = useCallback((e: CheckboxChangeEvent) => {
-    setIsBooking(e.target.checked);
-  }, []);
-
   return (
     <S.Container>
       <S.ActionsWrapper>
-        <Checkbox onChange={onChangeBookingCheckbox} style={{ padding: '5px 0' }}>
+        <Checkbox checked={isBooking} onChange={(e) => setIsBooking(e.target.checked)} style={{ padding: '5px 0' }}>
           예약
         </Checkbox>
         <Button type="ghost" icon={<DeleteOutlined />} onClick={reset}>
