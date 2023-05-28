@@ -1,3 +1,4 @@
+import * as process from 'process';
 import bcrypt from 'bcrypt';
 import express from 'express';
 import _ from 'lodash';
@@ -67,35 +68,41 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 });
 
 /**
- * 어드민 추가 (임시)
-//  */
-// router.post('/admin', async (req, res, next) => {
-//   const { phoneNumber } = req.body;
-//   const INITIAL_PASSWORD = '1234';
-//
-//   try {
-//     const hashedPassword = await bcrypt.hash(INITIAL_PASSWORD, 10);
-//     const [admin, isCreated] = await User.findOrCreate({
-//       where: { phoneNumber },
-//       defaults: {
-//         role: 'admin',
-//         phoneNumber,
-//         password: hashedPassword,
-//       },
-//     });
-//
-//     if (!isCreated) {
-//       res.status(409).json({
-//         message: '이미 사용 중인 전화번호입니다.',
-//       });
-//       return;
-//     }
-//
-//     res.status(202).json(omitPassword(admin.get()));
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+ * 어드민 추가
+ */
+router.post('/admin', async (req, res, next) => {
+  try {
+    const { adminCreateKey, phoneNumber, password } = req.body;
+
+    if (adminCreateKey !== process.env.ADMIN_CREATE_KEY) {
+      res.status(403).json({
+        message: '생성 키가 일치하지 않습니다.',
+      });
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const [admin, isCreated] = await User.findOrCreate({
+      where: { phoneNumber },
+      defaults: {
+        role: 'admin',
+        phoneNumber,
+        password: hashedPassword,
+      },
+    });
+
+    if (!isCreated) {
+      res.status(409).json({
+        message: '이미 사용 중인 전화번호입니다.',
+      });
+      return;
+    }
+
+    res.status(202).json(omitPassword(admin.get()));
+  } catch (err) {
+    next(err);
+  }
+});
 
 /**
  * 유저 가져오기
