@@ -80,61 +80,64 @@ const EditButton = ({ record }: Props) => {
       <Tooltip title="수정">
         <Button type="text" size="small" icon={<EditOutlined />} onClick={handleEditIconClick} />
       </Tooltip>
-      <Modal
-        title={record.bookingDate ? '예약 수정' : '업무 수정'}
-        visible={isModalOpen}
-        maskClosable={false}
-        confirmLoading={submitLoading}
-        onOk={form.submit}
-        onCancel={closeModal}
-        okText="수정"
-        cancelText="취소"
-        footer={[
-          ...(record.bookingDate
-            ? [
-                <Popconfirm
-                  key="done"
-                  placement="topLeft"
-                  title="정말로 활성화 하시겠습니까?"
-                  onConfirm={activateWork}
-                  okText="활성화"
-                  cancelText="취소"
-                >
-                  <Button style={{ float: 'left' }}>활성화</Button>
-                </Popconfirm>,
-              ]
-            : [
-                <Popconfirm
-                  key="done"
-                  placement="topLeft"
-                  title="정말로 완료 처리 하시겠습니까?"
-                  onConfirm={forceFinishWork}
-                  okText="완료"
-                  cancelText="취소"
-                  okButtonProps={{ danger: true }}
-                >
-                  <Button danger style={{ float: 'left' }}>
-                    완료
-                  </Button>
-                </Popconfirm>,
-              ]),
-          <Button key="cancel" onClick={closeModal}>
-            취소
-          </Button>,
-          <Button key="submit" type="primary" onClick={form.submit}>
-            수정
-          </Button>,
-        ]}
-      >
-        <EditForm
-          form={form}
-          validateTrigger={formValidateTrigger}
-          setValidateTrigger={setFormValidateTrigger}
-          prevWork={record}
-          closeModal={closeModal}
-          setSubmitLoading={setSubmitLoading}
-        />
-      </Modal>
+
+      {isModalOpen && (
+        <Modal
+          title={record.bookingDate ? '예약 수정' : '업무 수정'}
+          visible
+          maskClosable={false}
+          confirmLoading={submitLoading}
+          onOk={form.submit}
+          onCancel={closeModal}
+          okText="수정"
+          cancelText="취소"
+          footer={[
+            ...(record.bookingDate
+              ? [
+                  <Popconfirm
+                    key="done"
+                    placement="topLeft"
+                    title="정말로 활성화 하시겠습니까?"
+                    onConfirm={activateWork}
+                    okText="활성화"
+                    cancelText="취소"
+                  >
+                    <Button style={{ float: 'left' }}>활성화</Button>
+                  </Popconfirm>,
+                ]
+              : [
+                  <Popconfirm
+                    key="done"
+                    placement="topLeft"
+                    title="정말로 완료 처리 하시겠습니까?"
+                    onConfirm={forceFinishWork}
+                    okText="완료"
+                    cancelText="취소"
+                    okButtonProps={{ danger: true }}
+                  >
+                    <Button danger style={{ float: 'left' }}>
+                      완료
+                    </Button>
+                  </Popconfirm>,
+                ]),
+            <Button key="cancel" onClick={closeModal}>
+              취소
+            </Button>,
+            <Button key="submit" type="primary" onClick={form.submit}>
+              수정
+            </Button>,
+          ]}
+        >
+          <EditForm
+            form={form}
+            validateTrigger={formValidateTrigger}
+            setValidateTrigger={setFormValidateTrigger}
+            prevWork={record}
+            closeModal={closeModal}
+            setSubmitLoading={setSubmitLoading}
+          />
+        </Modal>
+      )}
     </>
   );
 };

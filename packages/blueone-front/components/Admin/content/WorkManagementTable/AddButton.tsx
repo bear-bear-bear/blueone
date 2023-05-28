@@ -47,46 +47,49 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
           <AntdButton type="text" size="small" icon={<AiOutlinePlus />} onClick={handleAddIconClick} />
         </Tooltip>
       )}
-      <Modal
-        title={isBooking ? '업무 예약' : '업무 등록'}
-        visible={isModalOpen}
-        onOk={form.submit}
-        onCancel={closeModal}
-        okText="등록"
-        cancelText="취소"
-        confirmLoading={submitLoading}
-        maskClosable={false}
-        footer={[
-          <Checkbox
-            key="booking"
-            checked={isBooking}
-            onChange={onChangeBookingCheckbox}
-            style={{ float: 'left', padding: '5px 0' }}
-          >
-            예약
-          </Checkbox>,
 
-          <AntdButton key="clear" onClick={clearForm}>
-            초기화
-          </AntdButton>,
-          <AntdButton key="cancel" onClick={closeModal}>
-            취소
-          </AntdButton>,
-          <AntdButton key="submit" type="primary" onClick={form.submit}>
-            등록
-          </AntdButton>,
-        ]}
-      >
-        <AddForm
-          form={form}
-          validateTrigger={formValidateTrigger}
-          setValidateTrigger={setFormValidateTrigger}
-          swrKey={swrKey}
-          prevWork={record}
-          setSubmitLoading={setSubmitLoading}
-          isBooking={isBooking}
-        />
-      </Modal>
+      {isModalOpen && (
+        <Modal
+          title={isBooking ? '업무 예약' : '업무 등록'}
+          visible
+          onOk={form.submit}
+          onCancel={closeModal}
+          okText="등록"
+          cancelText="취소"
+          confirmLoading={submitLoading}
+          maskClosable={false}
+          footer={[
+            <Checkbox
+              key="booking"
+              checked={isBooking}
+              onChange={onChangeBookingCheckbox}
+              style={{ float: 'left', padding: '5px 0' }}
+            >
+              예약
+            </Checkbox>,
+
+            <AntdButton key="clear" onClick={clearForm}>
+              초기화
+            </AntdButton>,
+            <AntdButton key="cancel" onClick={closeModal}>
+              취소
+            </AntdButton>,
+            <AntdButton key="submit" type="primary" onClick={form.submit}>
+              등록
+            </AntdButton>,
+          ]}
+        >
+          <AddForm
+            form={form}
+            validateTrigger={formValidateTrigger}
+            setValidateTrigger={setFormValidateTrigger}
+            swrKey={swrKey}
+            prevWork={record}
+            setSubmitLoading={setSubmitLoading}
+            isBooking={isBooking}
+          />
+        </Modal>
+      )}
     </>
   );
 };
