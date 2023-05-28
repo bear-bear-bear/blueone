@@ -62,7 +62,9 @@ const WorkAddForm = ({
     revalidateOnMount: false,
   });
   const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
-  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
+  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(
+    prevWork?.bookingDate ? dayjs(prevWork.bookingDate) : tomorrow,
+  );
 
   const disabledBookingDate = useCallback((current: dayjs.Dayjs) => {
     return current && current < dayjs().endOf('day');

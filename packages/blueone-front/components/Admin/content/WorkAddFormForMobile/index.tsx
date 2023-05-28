@@ -44,10 +44,11 @@ const WorkAddForm = () => {
 
   const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
 
-  const clearForm = useCallback(() => {
+  const reset = useCallback(() => {
     form.resetFields();
     setBookingDate(tomorrow);
     setIsBooking(false);
+    setValidateTrigger('onFinish');
   }, [form, tomorrow]);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
@@ -84,7 +85,7 @@ const WorkAddForm = () => {
         <Checkbox onChange={onChangeBookingCheckbox} style={{ padding: '5px 0' }}>
           예약
         </Checkbox>
-        <Button type="ghost" icon={<DeleteOutlined />} onClick={clearForm}>
+        <Button type="ghost" icon={<DeleteOutlined />} onClick={reset}>
           초기화
         </Button>
       </S.ActionsWrapper>
