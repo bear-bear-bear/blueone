@@ -30,13 +30,13 @@ router.get(
     const today = dayjs();
     const { start = today, end = today, booked = 'false' } = req.query;
 
-    const gt = dayjs(start).startOf('day').toISOString();
-    const lt = dayjs(end).endOf('day').toISOString();
+    const gte = dayjs(start).startOf('day').toISOString();
+    const lte = dayjs(end).endOf('day').toISOString();
 
     try {
       const works = await getWorksByConditionallyAsBooking(
-        gt,
-        lt,
+        gte,
+        lte,
         booked === 'true',
       );
       res.status(200).json(works.map((work) => work.get()));
