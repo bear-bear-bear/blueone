@@ -15,7 +15,6 @@ const columns: ColumnsType<ProcessedWork> = [
     sorter: {
       compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
     },
-    width: 60,
   },
   {
     title: '예약 일시',
@@ -25,14 +24,12 @@ const columns: ColumnsType<ProcessedWork> = [
     sorter: {
       compare: (a, b) => +dayjs(a.bookingDate).toDate() - +dayjs(b.bookingDate).toDate(),
     },
-    width: 90,
   },
   {
     title: '출발지',
     dataIndex: 'origin',
     key: 'origin',
     align: 'center',
-    width: 100,
     ellipsis: true,
   },
   {
@@ -40,7 +37,6 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'waypoint',
     key: 'waypoint',
     align: 'center',
-    width: 100,
     ellipsis: true,
   },
   {
@@ -48,7 +44,6 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'destination',
     key: 'destination',
     align: 'center',
-    width: 100,
     ellipsis: true,
   },
   {
@@ -57,28 +52,24 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'carModel',
     align: 'center',
     ellipsis: true,
-    width: 100,
   },
   {
     title: '기사',
     dataIndex: 'realname',
     key: 'realname',
     align: 'center',
-    width: 80,
   },
   {
     title: '구간지수',
     dataIndex: 'charge',
     key: 'charge',
     align: 'right',
-    width: 80,
   },
   {
     title: '지원지수',
     dataIndex: 'subsidy',
     key: 'subsidy',
     align: 'right',
-    width: 80,
     render: (_, record) => {
       const subsidy = record.subsidy ?? 0;
 
@@ -102,14 +93,12 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'payout',
     key: 'payout',
     align: 'right',
-    width: 80,
   },
   {
     title: '확인',
     dataIndex: 'processedCheckTime',
     key: 'processedCheckTime',
     align: 'center',
-    width: 90,
   },
   {
     title: '완료',
@@ -119,7 +108,6 @@ const columns: ColumnsType<ProcessedWork> = [
     sorter: {
       compare: (a, b) => +!!a.endTime - +!!b.endTime,
     },
-    width: 90,
   },
   {
     title: '',
@@ -147,7 +135,6 @@ const columns: ColumnsType<ProcessedWork> = [
       }
       return <AddButton record={record} />;
     },
-    width: 90,
   },
 ];
 
