@@ -1,5 +1,4 @@
 import Linkify from 'linkify-react';
-import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/Picker';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -17,8 +16,6 @@ export const globalStyles = css`
       //background: #ddd !important;
     }
   }
-
-  ${rangePickerNextMonthSectionHideStyles}
 `;
 
 export const Container = styled.div`
