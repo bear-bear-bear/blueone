@@ -5,6 +5,7 @@ import {
   HasOneSetAssociationMixin,
   HasManyAddAssociationMixin,
 } from 'sequelize';
+import { HasManyRemoveAssociationMixin } from 'sequelize/types';
 import sequelize from './_sequelize';
 import type { Database, UserInfo, Work } from './index';
 
@@ -20,6 +21,7 @@ class User extends Model {
   public getUserInfo!: HasOneGetAssociationMixin<UserInfo>;
   public setUserInfo!: HasOneSetAssociationMixin<UserInfo, number>;
   public addWork!: HasManyAddAssociationMixin<Work, number>;
+  public removeWork!: HasManyRemoveAssociationMixin<Work, number>;
 
   public static associate = (db: Database): void => {
     db.User.hasMany(db.Notice);

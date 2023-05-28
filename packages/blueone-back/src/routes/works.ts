@@ -83,25 +83,10 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
  */
 router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { workId } = req.params;
-  const { userId }: UpdateWorkRequestBody = req.body;
+  const { userId, ...workInfo }: UpdateWorkRequestBody = req.body;
 
   try {
-    const work = await Work.findByPk(workId, {
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: ['password'],
-          },
-          include: [
-            {
-              model: UserInfo,
-              attributes: ['realname'],
-            },
-          ],
-        },
-      ],
-    });
+    const work = await Work.findByPk(workId);
 
     if (!work) {
       res.status(404).json({
@@ -110,30 +95,41 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
       return;
     }
 
-    if (userId) {
-      const user = await User.findByPk(userId);
+    Object.entries(workInfo).forEach(([key, value]) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      work[key] = value;
+    });
 
-      if (!user) {
-        res.status(404).json({
-          message: `id ${userId} 유저를 찾을 수 없습니다`,
-        });
-        return;
+    if (userId !== work.userId) {
+      if (userId) {
+        const nextUser = await User.findByPk(userId);
+
+        if (!nextUser) {
+          res.status(404).json({
+            message: `id ${userId} 유저를 찾을 수 없습니다`,
+          });
+          return;
+        }
+
+        await nextUser.addWork(work.id);
       }
+      if (work.userId) {
+        const prevUser = await User.findByPk(work.userId);
+
+        await prevUser?.removeWork(work.id);
+      }
+
+      work.userId = userId;
     }
 
-    if (work.subsidy !== req.body.subsidy) {
+    if (work.subsidy === req.body.subsidy) {
       work.penalty = false;
     }
 
-    Object.keys(req.body).forEach((key) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      work[key] = req.body[key];
-    });
+    const saved = await work.save();
 
-    await work.save();
-
-    res.status(200).json(work.get());
+    res.status(200).json(saved.get());
   } catch (err) {
     next(err);
   }
