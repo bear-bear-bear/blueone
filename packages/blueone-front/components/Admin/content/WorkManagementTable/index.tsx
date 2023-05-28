@@ -206,7 +206,7 @@ const WorkManagementTable = () => {
           return (
             <Table.Summary fixed>
               <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={columns.length + 1}>
+                <Table.Summary.Cell index={0} colSpan={columns.length}>
                   <S.TotalFeeSection>
                     <TotalFee workData={dataSource} />
                   </S.TotalFeeSection>
