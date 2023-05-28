@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { DatePicker } from '@components/Admin/content/commonParts/Picker';
 import dayjs from '@utils/dayjs';
 
@@ -7,18 +8,37 @@ type Props = {
 };
 
 const BookingDatePicker = ({ date, setDate }: Props) => {
+  const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(date);
+  const now = dayjs();
+
   return (
     <DatePicker
       format="YYYY-MM-DD T HH"
       showTime={{ defaultValue: dayjs('00:00:00', 'HH') }}
       value={date}
       onChange={(next) => setDate(next as dayjs.Dayjs)}
+      onSelect={setSelectedDate}
       disabledDate={(current: dayjs.Dayjs) => {
-        return current && current < dayjs().startOf('day');
+        return current && current < now.startOf('day');
+      }}
+      disabledHours={() => {
+        const selectedDateIsToday = selectedDate.format('YYYY-MM-DD') === now.format('YYYY-MM-DD');
+        if (selectedDateIsToday) {
+          return range(0, now.get('hour'));
+        }
+        return [];
       }}
       allowClear={false}
     />
   );
 };
+
+function range(start: number, end: number) {
+  const result = [];
+  for (let i = start; i <= end; i++) {
+    result.push(i);
+  }
+  return result;
+}
 
 export default BookingDatePicker;

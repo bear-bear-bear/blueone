@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, message, Checkbox } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
@@ -37,17 +37,15 @@ const validateMessages = {
 const WorkAddForm = () => {
   const [form] = Form.useForm<WorkAddFormFields>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
-  const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
   const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(dayjs());
   const [isBooking, setIsBooking] = useState<boolean>(false);
 
-
   const reset = useCallback(() => {
     form.resetFields();
-    setBookingDate(tomorrow);
+    setBookingDate(dayjs());
     setIsBooking(false);
     setValidateTrigger('onFinish');
-  }, [form, tomorrow]);
+  }, [form]);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
