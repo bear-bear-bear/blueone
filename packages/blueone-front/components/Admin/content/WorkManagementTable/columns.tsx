@@ -18,7 +18,7 @@ const columns: ColumnsType<ProcessedWork> = [
     width: 60,
   },
   {
-    title: '예약 일자',
+    title: '예약 일시',
     dataIndex: 'processedBookingDate',
     key: 'processedBookingDate',
     align: 'center',

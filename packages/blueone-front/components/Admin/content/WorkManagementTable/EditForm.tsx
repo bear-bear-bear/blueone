@@ -148,7 +148,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       </Form.Item>
 
       {prevWork.bookingDate && (
-        <Form.Item name="bookingDate" label="예약일" required>
+        <Form.Item name="bookingDate" label="예약일시" required>
           <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
         </Form.Item>
       )}

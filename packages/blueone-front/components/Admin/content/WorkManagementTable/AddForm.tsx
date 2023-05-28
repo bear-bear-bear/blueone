@@ -68,31 +68,28 @@ const WorkAddForm = ({
     return current && current < dayjs().endOf('day');
   }, []);
 
-  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
-    async (values) => {
-      const reqBody: RequestBody = {
-        ...values,
-        waypoint: values.waypoint ?? null,
-        UserId: values.UserId ?? null,
-        remark: values.remark?.trim() ?? null,
-        bookingDate: isBooking ? bookingDate.format('YYYY-MM-DD') : null,
-      };
+  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = async (values) => {
+    const reqBody: RequestBody = {
+      ...values,
+      waypoint: values.waypoint ?? null,
+      UserId: values.UserId ?? null,
+      remark: values.remark?.trim() ?? null,
+      bookingDate: isBooking ? bookingDate.format() : null,
+    };
 
-      setSubmitLoading(true);
-      try {
-        const createdWork = await httpClient.post<Response>('/works', reqBody).then((res) => res.data);
+    setSubmitLoading(true);
+    try {
+      const createdWork = await httpClient.post<Response>('/works', reqBody).then((res) => res.data);
 
-        const nextWorks = works?.map((work) => (work.id !== createdWork.id ? work : createdWork));
-        await mutateWorks(nextWorks);
-        message.success('업무 등록 완료');
-        setValidateTrigger('onFinish');
-      } catch (err) {
-        logAxiosError<RequestError>(err as AxiosError<RequestError>);
-      }
-      setSubmitLoading(false);
-    },
-    [isBooking, bookingDate, setSubmitLoading, works, mutateWorks, setValidateTrigger],
-  );
+      const nextWorks = works?.map((work) => (work.id !== createdWork.id ? work : createdWork));
+      await mutateWorks(nextWorks);
+      message.success('업무 등록 완료');
+      setValidateTrigger('onFinish');
+    } catch (err) {
+      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+    }
+    setSubmitLoading(false);
+  };
 
   const onFormFinishFailed = useCallback(() => {
     setValidateTrigger(['onFinish', 'onChange']);
@@ -145,7 +142,7 @@ const WorkAddForm = ({
       </Form.Item>
 
       {isBooking && (
-        <Form.Item name="bookingDate" label="예약일" required>
+        <Form.Item name="bookingDate" label="예약일시" required>
           <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
         </Form.Item>
       )}
