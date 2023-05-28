@@ -23,7 +23,7 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'processedBookingDate',
     align: 'center',
     sorter: {
-      compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
+      compare: (a, b) => +dayjs(a.bookingDate).toDate() - +dayjs(b.bookingDate).toDate(),
     },
     width: 90,
   },
