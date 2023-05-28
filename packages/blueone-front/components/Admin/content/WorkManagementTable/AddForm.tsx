@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
@@ -6,8 +6,8 @@ import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
 import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
 import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
+import { useBookingDate } from '@hooks/useBookingDate';
 import httpClient, { logAxiosError } from '@utils/axios';
-import dayjs from '@utils/dayjs';
 import { axiosFetcher } from '@utils/swr';
 import type { FullWorks, ProcessedWork } from './index';
 
@@ -61,9 +61,7 @@ const WorkAddForm = ({
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher, {
     revalidateOnMount: false,
   });
-  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(
-    prevWork?.bookingDate ? dayjs(prevWork.bookingDate) : dayjs(),
-  );
+  const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = async (values) => {
     const reqBody: RequestBody = {

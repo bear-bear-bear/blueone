@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
@@ -7,8 +7,8 @@ import type { EndPoint, Work } from '@typings';
 import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
 import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
 import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
+import { useBookingDate } from '@hooks/useBookingDate';
 import httpClient, { logAxiosError } from '@utils/axios';
-import dayjs from '@utils/dayjs';
 import { axiosFetcher } from '@utils/swr';
 import type { FullWorks, ProcessedWork } from './index';
 
@@ -49,9 +49,7 @@ const validateMessages = {
 
 const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
-  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(
-    prevWork.bookingDate ? dayjs(prevWork.bookingDate) : dayjs(),
-  );
+  const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
 
   const cancelWorkCheck = useCallback(
     async (workId: Work['id']) => {

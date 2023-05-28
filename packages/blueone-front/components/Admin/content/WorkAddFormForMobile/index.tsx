@@ -10,6 +10,7 @@ import type {
 } from '@components/Admin/content/WorkManagementTable/AddForm';
 import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
 import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
+import { useBookingDate } from '@hooks/useBookingDate';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
 import * as S from './styles';
@@ -37,7 +38,7 @@ const validateMessages = {
 const WorkAddForm = () => {
   const [form] = Form.useForm<WorkAddFormFields>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
-  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(dayjs());
+  const [bookingDate, setBookingDate] = useBookingDate();
   const [isBooking, setIsBooking] = useState<boolean>(false);
 
   const reset = useCallback(() => {
@@ -45,7 +46,7 @@ const WorkAddForm = () => {
     setBookingDate(dayjs());
     setIsBooking(false);
     setValidateTrigger('onFinish');
-  }, [form]);
+  }, [form, setBookingDate]);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
