@@ -5,7 +5,7 @@ import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Work } from '@typings';
 import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
-import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
 import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
@@ -52,8 +52,6 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
   const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(
     prevWork.bookingDate ? dayjs(prevWork.bookingDate) : dayjs(),
   );
-
-  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
 
   const cancelWorkCheck = useCallback(
     async (workId: Work['id']) => {
@@ -149,7 +147,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
 
       {prevWork.bookingDate && (
         <Form.Item name="bookingDate" label="예약일시" required>
-          <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
+          <BookingDatePicker date={bookingDate} setDate={setBookingDate} />
         </Form.Item>
       )}
     </Form>

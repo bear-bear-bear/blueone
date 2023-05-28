@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
-import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
 import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
@@ -61,14 +61,9 @@ const WorkAddForm = ({
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher, {
     revalidateOnMount: false,
   });
-  const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
   const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(
-    prevWork?.bookingDate ? dayjs(prevWork.bookingDate) : tomorrow,
+    prevWork?.bookingDate ? dayjs(prevWork.bookingDate) : dayjs(),
   );
-
-  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => {
-    return current && current < dayjs().endOf('day');
-  }, []);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = async (values) => {
     const reqBody: RequestBody = {
@@ -145,7 +140,7 @@ const WorkAddForm = ({
 
       {isBooking && (
         <Form.Item name="bookingDate" label="예약일시" required>
-          <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
+          <BookingDatePicker date={bookingDate} setDate={setBookingDate} />
         </Form.Item>
       )}
     </Form>

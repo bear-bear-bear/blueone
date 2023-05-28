@@ -8,7 +8,7 @@ import type {
   RequestError,
   WorkAddFormFields,
 } from '@components/Admin/content/WorkManagementTable/AddForm';
-import CustomDatePicker from '@components/Admin/content/WorkManagementTable/CustomDatePicker';
+import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
 import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
@@ -38,10 +38,9 @@ const WorkAddForm = () => {
   const [form] = Form.useForm<WorkAddFormFields>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
   const tomorrow = useMemo(() => dayjs().startOf('day').add(1, 'day'), []);
-  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(tomorrow);
+  const [bookingDate, setBookingDate] = useState<dayjs.Dayjs>(dayjs());
   const [isBooking, setIsBooking] = useState<boolean>(false);
 
-  const disabledBookingDate = useCallback((current: dayjs.Dayjs) => current && current < dayjs().endOf('day'), []);
 
   const reset = useCallback(() => {
     form.resetFields();
@@ -131,7 +130,7 @@ const WorkAddForm = () => {
 
         {isBooking && (
           <Form.Item name="bookingDate" label="예약일시" required>
-            <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
+            <BookingDatePicker date={bookingDate} setDate={setBookingDate} />
           </Form.Item>
         )}
         <Form.Item wrapperCol={submitButtonWrapperCol}>
