@@ -54,17 +54,20 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
   const { UserId, ...workInfo }: CreateWorkRequestBody = req.body;
 
   try {
-    const user = UserId && (await User.findByPk(UserId));
-
-    if (!user) {
-      res.status(400).json({
-        message: '유효하지 않은 user id 입니다',
-      });
-      return;
-    }
-
     const work = await Work.create(workInfo);
-    await user.addWorks(work);
+
+    if (UserId) {
+      const user = await User.findByPk(UserId);
+
+      if (!user) {
+        res.status(400).json({
+          message: '유효하지 않은 user id 입니다',
+        });
+        return;
+      }
+
+      await user.addWorks(work);
+    }
 
     res.status(201).json({
       ...work.get(),
