@@ -18,12 +18,12 @@ const columns: ColumnsType<ProcessedWork> = [
     width: 60,
   },
   {
-    title: '예약 일자',
+    title: '예약 일시',
     dataIndex: 'processedBookingDate',
     key: 'processedBookingDate',
     align: 'center',
     sorter: {
-      compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
+      compare: (a, b) => +dayjs(a.bookingDate).toDate() - +dayjs(b.bookingDate).toDate(),
     },
     width: 90,
   },

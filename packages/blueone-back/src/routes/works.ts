@@ -30,16 +30,16 @@ router.get(
     const today = dayjs();
     const { start = today, end = today, booked = 'false' } = req.query;
 
-    const gt = dayjs(start).startOf('day').toISOString();
-    const lt = dayjs(end).endOf('day').toISOString();
+    const gte = dayjs(start).startOf('day').toISOString();
+    const lte = dayjs(end).endOf('day').toISOString();
 
     try {
       const works = await getWorksByConditionallyAsBooking(
-        gt,
-        lt,
+        gte,
+        lte,
         booked === 'true',
       );
-      res.status(200).json(works);
+      res.status(200).json(works.map((work) => work.get()));
     } catch (err) {
       console.error(err);
       next(err);
@@ -54,28 +54,21 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
   const { UserId, ...workInfo }: CreateWorkRequestBody = req.body;
 
   try {
-    let user: User | null = null;
+    const user = UserId && (await User.findByPk(UserId));
 
-    if (UserId) {
-      user = await User.findByPk(UserId);
-
-      if (!user) {
-        res.status(400).json({
-          message: '유효하지 않은 user id 입니다',
-        });
-        return;
-      }
+    if (!user) {
+      res.status(400).json({
+        message: '유효하지 않은 user id 입니다',
+      });
+      return;
     }
 
     const work = await Work.create(workInfo);
-
-    if (user) {
-      await user.addWorks(work);
-    }
+    await user.addWorks(work);
 
     res.status(201).json({
-      ...work,
-      UserId: UserId || null,
+      ...work.get(),
+      UserId,
     });
   } catch (err) {
     next(err);
@@ -137,7 +130,7 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
 
     await work.save();
 
-    res.status(200).json(work);
+    res.status(200).json(work.get());
   } catch (err) {
     next(err);
   }
@@ -203,7 +196,7 @@ router.patch(
           return;
       }
 
-      res.status(200).json(work);
+      res.status(200).json(work.get());
     } catch (err) {
       console.error(err);
       next(err);
@@ -284,7 +277,7 @@ router.patch(
 
       await bookingWork.destroy();
 
-      res.status(200).json(newWork);
+      res.status(200).json(newWork.get());
     } catch (err) {
       next(err);
     }
@@ -352,7 +345,7 @@ router.patch(
 
       await work.save();
 
-      res.status(200).json(work);
+      res.status(200).json(work.get());
     } catch (err) {
       next(err);
     }
@@ -376,7 +369,7 @@ router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     await work.destroy();
-    res.status(200).json(work);
+    res.status(200).json(work.get());
   } catch (err) {
     next(err);
   }

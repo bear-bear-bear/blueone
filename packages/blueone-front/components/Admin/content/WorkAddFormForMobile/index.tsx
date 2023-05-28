@@ -46,7 +46,9 @@ const WorkAddForm = () => {
 
   const clearForm = useCallback(() => {
     form.resetFields();
-  }, [form]);
+    setBookingDate(tomorrow);
+    setIsBooking(false);
+  }, [form, tomorrow]);
 
   const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
     async (values) => {
@@ -55,7 +57,7 @@ const WorkAddForm = () => {
         waypoint: values.waypoint ?? null,
         UserId: values.UserId ?? null,
         remark: values.remark?.trim() ?? null,
-        bookingDate: bookingDate.format('YYYY-MM-DD'),
+        bookingDate: isBooking ? bookingDate.format() : null,
       };
 
       try {
@@ -65,7 +67,7 @@ const WorkAddForm = () => {
         logAxiosError<RequestError>(err as AxiosError<RequestError>);
       }
     },
-    [bookingDate],
+    [bookingDate, isBooking],
   );
 
   const onFormFinishFailed = useCallback(() => {
@@ -132,7 +134,7 @@ const WorkAddForm = () => {
         </Form.Item>
 
         {isBooking && (
-          <Form.Item name="bookingDate" label="예약일" required>
+          <Form.Item name="bookingDate" label="예약일시" required>
             <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
           </Form.Item>
         )}

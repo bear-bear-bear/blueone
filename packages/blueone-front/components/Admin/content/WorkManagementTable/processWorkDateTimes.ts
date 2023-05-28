@@ -12,12 +12,15 @@ export default function processWorkDateTimes(work: FullWork) {
     return time.format(timeDayStart === createdAtDayStart ? 'HH:mm' : 'MM/DD_HH:mm');
   };
 
-  const processToDate = (dateISOString: string | null) => {
+  const processToDate = (dateISOString: string | null, withT?: boolean) => {
     if (dateISOString === null) return '-';
 
     const time = dayjs(dateISOString);
     const thisYear = dayjs().year();
 
+    if (withT) {
+      return time.format(time.year() === thisYear ? 'MM/DD T HH' : 'YYYY/MM/DD T HH');
+    }
     return time.format(time.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD');
   };
 
@@ -26,6 +29,6 @@ export default function processWorkDateTimes(work: FullWork) {
     processedEndTime: processToTime(work.endTime),
     processedCreatedAt: processToDate(work.createdAt),
     processedUpdatedAt: processToDate(work.updatedAt),
-    processedBookingDate: processToDate(work.bookingDate),
+    processedBookingDate: processToDate(work.bookingDate, true),
   };
 }

@@ -1,4 +1,3 @@
-import { rangePickerNextMonthSectionHideStyles } from '@components/Admin/content/commonParts/Picker';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -27,8 +26,6 @@ export const globalCSS = css`
   .ant-modal-body .ant-form-horizontal div:last-of-type {
     margin-bottom: 0;
   }
-
-  ${rangePickerNextMonthSectionHideStyles}
 `;
 
 export const TableHeader = styled.div`

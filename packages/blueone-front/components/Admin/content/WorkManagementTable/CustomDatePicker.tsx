@@ -19,6 +19,8 @@ const CustomDatePicker = ({ defaultDate, setDate, disabledDate }: Props) => {
 
   return (
     <DatePicker
+      format="YYYY-MM-DD T HH"
+      showTime={{ defaultValue: dayjs('00:00:00', 'HH') }}
       onChange={handleChange}
       defaultValue={dayjs(defaultDate)}
       disabledDate={disabledDate}

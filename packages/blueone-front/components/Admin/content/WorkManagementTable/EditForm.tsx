@@ -69,35 +69,33 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
     [prevWork.endTime],
   );
 
-  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
-    async (values) => {
-      const reqBody: WorkPutRequestBody = {
-        ...values,
-        waypoint: values.waypoint ?? null,
-        UserId: values.UserId ?? null,
-        remark: values.remark ?? null,
-      };
+  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = async (values) => {
+    const reqBody: WorkPutRequestBody = {
+      ...values,
+      waypoint: values.waypoint ?? null,
+      UserId: values.UserId ?? null,
+      remark: values.remark ?? null,
+      bookingDate: prevWork.bookingDate ? bookingDate.format() : null,
+    };
 
-      setSubmitLoading(true);
-      try {
-        const updatedWork = await httpClient.put<EditedWork>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
+    setSubmitLoading(true);
+    try {
+      const updatedWork = await httpClient.put<EditedWork>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
 
-        if (reqBody.UserId !== prevWork.UserId) {
-          await cancelWorkCheck(prevWork.id);
-          updatedWork.checkTime = null;
-        }
-
-        const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
-        await mutateWorks(nextWorks);
-        message.success('업무 수정 완료');
-        closeModal();
-      } catch (err) {
-        logAxiosError<WorkPutError>(err as AxiosError<WorkPutError>);
+      if (reqBody.UserId !== prevWork.UserId) {
+        await cancelWorkCheck(prevWork.id);
+        updatedWork.checkTime = null;
       }
-      setSubmitLoading(false);
-    },
-    [setSubmitLoading, prevWork.id, prevWork.UserId, works, mutateWorks, closeModal, cancelWorkCheck],
-  );
+
+      const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
+      await mutateWorks(nextWorks);
+      message.success('업무 수정 완료');
+      closeModal();
+    } catch (err) {
+      logAxiosError<WorkPutError>(err as AxiosError<WorkPutError>);
+    }
+    setSubmitLoading(false);
+  };
 
   const onFormFinishFailed = useCallback(() => {
     setValidateTrigger(['onFinish', 'onChange']);
@@ -150,7 +148,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       </Form.Item>
 
       {prevWork.bookingDate && (
-        <Form.Item name="bookingDate" label="예약일" required>
+        <Form.Item name="bookingDate" label="예약일시" required>
           <CustomDatePicker defaultDate={bookingDate} setDate={setBookingDate} disabledDate={disabledBookingDate} />
         </Form.Item>
       )}

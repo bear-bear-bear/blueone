@@ -259,7 +259,7 @@ export interface EndPoint {
   'PUT /works/{workId}': {
     requestBody: Pick<
       Work,
-      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark'
+      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
     >;
     responses: {
       200: Work & {

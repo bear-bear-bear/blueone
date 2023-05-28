@@ -24,7 +24,7 @@ router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
       include: [UserInfo, Work],
       order: [[UserInfo, 'realname', 'ASC']],
     });
-    res.status(200).json(users);
+    res.status(200).json(users.map((user) => user.get()));
   } catch (err) {
     console.error(err);
     next(err);
@@ -126,7 +126,7 @@ router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
       return;
     }
 
-    res.status(200).json(user);
+    res.status(200).json(user.get());
   } catch (err) {
     next(err);
   }
@@ -160,7 +160,7 @@ router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
       include: [UserInfo, Work],
     });
 
-    res.status(200).json(updatedUser);
+    res.status(200).json(updatedUser?.get());
   } catch (err) {
     next(err);
   }
@@ -187,7 +187,7 @@ router.delete('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     await user.destroy();
-    res.status(200).json(user);
+    res.status(200).json(user.get());
   } catch (err) {
     next(err);
   }
@@ -208,7 +208,7 @@ router.get('/:userId/works', isLoggedIn, isAdmin, async (req, res, next) => {
       },
       order: [['createdAt', 'DESC']],
     });
-    res.status(200).json(activatedWorks);
+    res.status(200).json(activatedWorks.map((work) => work.get()));
   } catch (err) {
     next(err);
   }
