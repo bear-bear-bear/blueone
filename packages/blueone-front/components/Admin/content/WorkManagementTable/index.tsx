@@ -50,8 +50,7 @@ const WorkManagementTable = () => {
   const [isVisibleBookedWork, setIsVisibleBookedWork] = useState<boolean>(false);
   const [isShowTotalFee, setIsShowTotalFee] = useState<boolean>(false);
 
-  const now = useMemo(() => dayjs(), []);
-  const times = useMemo(() => formatTime(now), [now]);
+  const times = useMemo(() => formatTime(dayjs()), []);
 
   const defaultDateRange = useMemo(
     () => ({
@@ -62,8 +61,8 @@ const WorkManagementTable = () => {
   );
   const defaultBookingDateRange = useMemo(
     () => ({
-      start: times.tomorrowDate,
-      end: times.fourDaysLaterDate,
+      start: times.todayDate,
+      end: times.threeDaysLaterDate,
     }),
     [times],
   );
