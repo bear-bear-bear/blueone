@@ -29,6 +29,7 @@ const BookingDatePicker = ({ date, setDate }: Props) => {
         return [];
       }}
       allowClear={false}
+      showNow={false}
     />
   );
 };
