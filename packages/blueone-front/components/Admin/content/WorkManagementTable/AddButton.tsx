@@ -19,11 +19,16 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
   const [isBooking, setIsBooking] = useState<boolean>(!!record?.bookingDate);
 
+  const clearForm = useCallback(() => {
+    form.resetFields();
+    setIsBooking(false);
+  }, [form]);
+
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
-    form.resetFields();
+    clearForm();
     setFormValidateTrigger('onFinish');
-  }, [form]);
+  }, [clearForm]);
 
   const handleAddIconClick: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
     setIsModalOpen(true);
@@ -61,6 +66,9 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
             예약
           </Checkbox>,
 
+          <AntdButton key="clear" onClick={clearForm}>
+            초기화
+          </AntdButton>,
           <AntdButton key="cancel" onClick={closeModal}>
             취소
           </AntdButton>,
