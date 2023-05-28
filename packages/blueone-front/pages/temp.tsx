@@ -1,14 +1,10 @@
 import { useCallback } from 'react';
 import { Button, Form, FormProps, Input, message } from 'antd';
-import { ColProps } from 'antd/lib/grid/col';
-import LogoutButton from '@components/LogoutButton';
+import { AxiosError } from 'axios';
+import LoginLayout from '@components/Login/Layout';
+import styled from '@emotion/styled';
 import useAdmin from '@hooks/useAdmin';
-import httpClient from '@utils/axios';
-
-const layout: { [ColName: string]: ColProps } = {
-  labelCol: { span: 4 },
-  wrapperCol: { flex: 'auto' },
-};
+import httpClient, { logAxiosError } from '@utils/axios';
 
 const TempPage = () => {
   const { isAdminLoggedIn } = useAdmin({ redirectTo: '/login' });
@@ -18,25 +14,33 @@ const TempPage = () => {
       await httpClient.post('/users/admin', { phoneNumber });
       message.success('등록 완료');
     } catch (err) {
-      message.error('에러 발생');
-      console.error(err);
+      logAxiosError(err as AxiosError);
     }
   }, []);
 
   if (!isAdminLoggedIn) return null;
   return (
-    <div style={{ width: '1000px' }}>
-      <Form onFinish={onFormFinish} {...layout}>
-        <Form.Item name="phoneNumber" label="전번" rules={[{ required: true }]}>
+    <LoginLayout>
+      <Form layout="vertical" onFinish={onFormFinish}>
+        <Form.Item name="phoneNumber" label="전화번호" rules={[{ required: true }]}>
           <Input autoComplete="off" />
         </Form.Item>
-        <Button type="primary" htmlType="submit">
-          제출
-        </Button>
       </Form>
-      <LogoutButton />
-    </div>
+
+      <ButtonGroup>
+        <Button type="primary" htmlType="submit">
+          어드민 등록
+        </Button>
+      </ButtonGroup>
+    </LoginLayout>
   );
 };
+
+const ButtonGroup = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+`;
 
 export default TempPage;
