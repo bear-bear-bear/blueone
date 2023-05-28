@@ -39,12 +39,12 @@ const WorkAddForm = () => {
   const [form] = Form.useForm<WorkAddFormFields>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
   const [bookingDate, setBookingDate] = useBookingDate();
-  const [isBooking, setIsBooking] = useState<boolean>(false);
+  const [useBooking, setUseBooking] = useState<boolean>(false);
 
   const reset = useCallback(() => {
     form.resetFields();
     setBookingDate(dayjs());
-    setIsBooking(false);
+    setUseBooking(false);
     setValidateTrigger('onFinish');
   }, [form, setBookingDate]);
 
@@ -55,7 +55,7 @@ const WorkAddForm = () => {
         waypoint: values.waypoint ?? null,
         UserId: values.UserId ?? null,
         remark: values.remark?.trim() ?? null,
-        bookingDate: isBooking ? bookingDate.format() : null,
+        bookingDate: useBooking ? bookingDate.format() : null,
       };
 
       try {
@@ -65,7 +65,7 @@ const WorkAddForm = () => {
         logAxiosError<RequestError>(err as AxiosError<RequestError>);
       }
     },
-    [bookingDate, isBooking],
+    [bookingDate, useBooking],
   );
 
   const onFormFinishFailed = useCallback(() => {
@@ -75,7 +75,7 @@ const WorkAddForm = () => {
   return (
     <S.Container>
       <S.ActionsWrapper>
-        <Checkbox checked={isBooking} onChange={(e) => setIsBooking(e.target.checked)} style={{ padding: '5px 0' }}>
+        <Checkbox checked={useBooking} onChange={(e) => setUseBooking(e.target.checked)} style={{ padding: '5px 0' }}>
           예약
         </Checkbox>
         <Button type="ghost" icon={<DeleteOutlined />} onClick={reset}>
@@ -127,7 +127,7 @@ const WorkAddForm = () => {
           <Input.TextArea autoComplete="off" />
         </Form.Item>
 
-        {isBooking && (
+        {useBooking && (
           <Form.Item name="bookingDate" label="예약일시" required>
             <BookingDatePicker date={bookingDate} setDate={setBookingDate} />
           </Form.Item>

@@ -27,7 +27,7 @@ type Props = {
   prevWork?: ProcessedWork;
   swrKey?: string;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
-  isBooking?: boolean;
+  useBooking?: boolean;
 };
 
 const layout: { [ColName: string]: ColProps } = {
@@ -56,7 +56,7 @@ const WorkAddForm = ({
   setSubmitLoading,
   prevWork,
   swrKey = prevWork?.swrKey,
-  isBooking = false,
+  useBooking = false,
 }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher, {
     revalidateOnMount: false,
@@ -69,7 +69,7 @@ const WorkAddForm = ({
       waypoint: values.waypoint ?? null,
       UserId: values.UserId ?? null,
       remark: values.remark?.trim() ?? null,
-      bookingDate: isBooking ? bookingDate.format() : null,
+      bookingDate: useBooking ? bookingDate.format() : null,
     };
 
     setSubmitLoading(true);
@@ -136,7 +136,7 @@ const WorkAddForm = ({
         <Input.TextArea autoComplete="off" />
       </Form.Item>
 
-      {isBooking && (
+      {useBooking && (
         <Form.Item name="bookingDate" label="예약일시" required>
           <BookingDatePicker date={bookingDate} setDate={setBookingDate} />
         </Form.Item>

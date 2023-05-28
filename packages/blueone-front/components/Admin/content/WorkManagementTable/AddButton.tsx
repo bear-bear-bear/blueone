@@ -17,11 +17,11 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
-  const [isBooking, setIsBooking] = useState<boolean>(!!record?.bookingDate);
+  const [useBooking, setUseBooking] = useState<boolean>(!!record?.bookingDate);
 
   const reset = useCallback(() => {
     form.resetFields();
-    setIsBooking(!!record?.bookingDate);
+    setUseBooking(!!record?.bookingDate);
     setFormValidateTrigger('onFinish');
   }, [form, record?.bookingDate]);
 
@@ -35,7 +35,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
   }, []);
 
   const onChangeBookingCheckbox = useCallback((e: CheckboxChangeEvent) => {
-    setIsBooking(e.target.checked);
+    setUseBooking(e.target.checked);
   }, []);
 
   return (
@@ -50,7 +50,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
 
       {isModalOpen && (
         <Modal
-          title={isBooking ? '업무 예약' : '업무 등록'}
+          title={useBooking ? '업무 예약' : '업무 등록'}
           visible
           onOk={form.submit}
           onCancel={closeModal}
@@ -61,7 +61,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
           footer={[
             <Checkbox
               key="booking"
-              checked={isBooking}
+              checked={useBooking}
               onChange={onChangeBookingCheckbox}
               style={{ float: 'left', padding: '5px 0' }}
             >
@@ -86,7 +86,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
             swrKey={swrKey}
             prevWork={record}
             setSubmitLoading={setSubmitLoading}
-            isBooking={isBooking}
+            useBooking={useBooking}
           />
         </Modal>
       )}
