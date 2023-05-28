@@ -124,6 +124,7 @@ const columns: ColumnsType<ProcessedWork> = [
   {
     title: '',
     key: 'action',
+    align: 'center',
     render: (_, record) => {
       if (record.endTime === null) {
         return (
