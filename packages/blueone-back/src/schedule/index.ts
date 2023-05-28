@@ -9,7 +9,7 @@ import logger from '@/utils/logger';
 const jobs = [
   {
     name: 'Adjust subsidy penalty',
-    cron: '30 0 0 * * ?',
+    cron: '30 0 0 * * ?', // 매일 00시 30초에
     timezone: 'Asia/Seoul',
     callback: async () => {
       const yesterday = dayjs().subtract(1, 'days');
@@ -57,19 +57,19 @@ const jobs = [
   },
   {
     name: 'Adjust booking deadline',
-    cron: '30 0 0 * * ?',
+    cron: '30 0 0/1 * * ?', // 매 시간 30초에
     timezone: 'Asia/Seoul',
     callback: async () => {
-      const todayStart = dayjs().startOf('day');
-      const todayEnd = dayjs().endOf('day');
+      const hourStart = dayjs().startOf('hour');
+      const hourEnd = dayjs().endOf('hour');
 
       try {
         const recentBookingWorks = await Work.findAll({
           where: {
             bookingDate: {
               [Op.and]: {
-                [Op.gte]: todayStart.toISOString(),
-                [Op.lte]: todayEnd.toISOString(),
+                [Op.gte]: hourStart.toISOString(),
+                [Op.lte]: hourEnd.toISOString(),
               },
             },
           },
