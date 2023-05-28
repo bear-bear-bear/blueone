@@ -11,7 +11,7 @@ import { axiosFetcher } from '@utils/swr';
 type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {
   form: FormInstance<WorkAddFormFields>;
-  defaultUserId?: WorkAddFormFields['UserId'];
+  defaultUserId?: WorkAddFormFields['userId'];
   disabled?: boolean;
   immutable?: boolean;
 };
@@ -67,7 +67,7 @@ const FormUserSelector = ({ form, defaultUserId, disabled = false, immutable = f
     });
   }, [users]);
 
-  const selectSearchFilter: SelectProps<WorkAddFormFields['UserId']>['filterOption'] = useCallback(
+  const selectSearchFilter: SelectProps<WorkAddFormFields['userId']>['filterOption'] = useCallback(
     (inputValue, option) =>
       option?.children
         .filter((v: unknown) => typeof v === 'string')
@@ -77,15 +77,15 @@ const FormUserSelector = ({ form, defaultUserId, disabled = false, immutable = f
     [],
   );
 
-  const onSelect: SelectProps<WorkAddFormFields['UserId']>['onSelect'] = useCallback(
+  const onSelect: SelectProps<WorkAddFormFields['userId']>['onSelect'] = useCallback(
     (v) => {
-      form.setFieldsValue({ UserId: Number(v) });
+      form.setFieldsValue({ userId: Number(v) });
     },
     [form],
   );
 
-  const onClear: SelectProps<WorkAddFormFields['UserId']>['onClear'] = useCallback(() => {
-    form.setFieldsValue({ UserId: undefined });
+  const onClear: SelectProps<WorkAddFormFields['userId']>['onClear'] = useCallback(() => {
+    form.setFieldsValue({ userId: undefined });
   }, [form]);
 
   return (

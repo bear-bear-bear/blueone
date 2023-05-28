@@ -10,7 +10,7 @@ type ISODateString = string;
 
 export type UserInfo = {
   id: number;
-  UserId: number;
+  userId: number;
   realname: string;
   dateOfBirth: string;
   licenseNumber: string;
@@ -32,7 +32,7 @@ export type User = {
 
 export type Work = {
   id: number;
-  UserId: number | null;
+  userId: number | null;
   origin: string;
   waypoint: string | null;
   destination: string;
@@ -50,7 +50,7 @@ export type Work = {
 
 export type Notice = {
   id: number;
-  UserId: number;
+  userId: number;
   title: string;
   content: string;
   startDate: ISODateString;
@@ -243,11 +243,11 @@ export interface EndPoint {
   'POST /works': {
     requestBody: Pick<
       Work,
-      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
+      'userId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
     >;
     responses: {
       201: Work & {
-        UserId: null;
+        userId: null;
       };
       400: ErrorMessage;
       500: ErrorMessage;
@@ -259,7 +259,7 @@ export interface EndPoint {
   'PUT /works/{workId}': {
     requestBody: Pick<
       Work,
-      'UserId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
+      'userId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
     >;
     responses: {
       200: Work & {

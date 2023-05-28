@@ -1,6 +1,6 @@
 import type { Request } from 'express';
-import type { User, UserInfo, Work, Notice } from '@/models';
 import * as core from 'express-serve-static-core';
+import type { User, UserInfo, Work, Notice } from '@/models';
 
 export type QueryTypedRequest<QT = core.Query> = Request<
   core.ParamsDictionary,
@@ -34,7 +34,7 @@ export type CreateUserRequestBody = Pick<User, 'phoneNumber'> &
 export type UpdateUserRequestBody = CreateUserRequestBody;
 
 export type WorkState = 'init' | 'checked' | 'done';
-export type CreateWorkRequestBody = { UserId?: User['id'] } & Pick<
+export type CreateWorkRequestBody = { userId: User['id'] | null } & Pick<
   Work,
   | 'origin'
   | 'waypoint'

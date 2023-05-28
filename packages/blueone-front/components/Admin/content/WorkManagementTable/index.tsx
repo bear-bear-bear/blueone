@@ -97,7 +97,7 @@ const WorkManagementTable = () => {
       })
       .filter((work) => {
         if (pickedUserId === null) return true;
-        return work.UserId === pickedUserId;
+        return work.userId === pickedUserId;
       })
       .map((work) => ({
         ...work,

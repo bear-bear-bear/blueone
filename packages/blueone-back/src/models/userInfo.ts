@@ -27,7 +27,7 @@ class UserInfo extends Model {
   public readonly updatedAt!: Date;
 
   public static associate = (db: Database): void => {
-    db.UserInfo.belongsTo(db.User);
+    db.UserInfo.belongsTo(db.User, { foreignKey: 'userId' });
   };
 }
 

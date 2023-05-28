@@ -53,8 +53,6 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
 
   const cancelWorkCheck = useCallback(
     async (workId: Work['id']) => {
-      if (prevWork.endTime) return; // 완료된 업무은 상태 초기화가 불가능하므로, 완료된 업무일 경우 아래에서 selector 내에 disable 속성을 부여합니다.
-
       try {
         await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
         message.error('업무 확인 취소 완료');
@@ -69,7 +67,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
     const reqBody: WorkPutRequestBody = {
       ...values,
       waypoint: values.waypoint ?? null,
-      UserId: values.UserId ?? null,
+      userId: values.userId ?? null,
       remark: values.remark ?? null,
       bookingDate: prevWork.bookingDate ? bookingDate.format() : null,
     };
@@ -78,7 +76,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
     try {
       const updatedWork = await httpClient.put<EditedWork>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
 
-      if (reqBody.UserId !== prevWork.UserId) {
+      if (reqBody.userId !== prevWork.userId && !!prevWork.checkTime && !prevWork.endTime) {
         await cancelWorkCheck(prevWork.id);
         updatedWork.checkTime = null;
       }
@@ -136,8 +134,8 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       >
         <InputNumber autoComplete="off" />
       </Form.Item>
-      <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelector form={form} defaultUserId={prevWork.UserId} disabled={!!prevWork.endTime} immutable />
+      <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
+        <UserSelector form={form} defaultUserId={prevWork.userId} disabled={!!prevWork.endTime} immutable />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />

@@ -14,8 +14,8 @@ import type { FullWorks, ProcessedWork } from './index';
 export type RequestBody = EndPoint['POST /works']['requestBody'];
 export type Response = EndPoint['POST /works']['responses']['201'];
 export type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
-export type WorkAddFormFields = Omit<RequestBody, 'UserId' | 'waypoint' | 'remark'> & {
-  UserId?: RequestBody['UserId'];
+export type WorkAddFormFields = Omit<RequestBody, 'userId' | 'waypoint' | 'remark'> & {
+  userId?: RequestBody['userId'];
   waypoint?: RequestBody['waypoint'];
   remark?: RequestBody['remark'];
 };
@@ -67,7 +67,7 @@ const WorkAddForm = ({
     const reqBody: RequestBody = {
       ...values,
       waypoint: values.waypoint ?? null,
-      UserId: values.UserId ?? null,
+      userId: values.userId ?? null,
       remark: values.remark?.trim() ?? null,
       bookingDate: useBooking ? bookingDate.format() : null,
     };
@@ -129,8 +129,8 @@ const WorkAddForm = ({
       >
         <InputNumber autoComplete="off" />
       </Form.Item>
-      <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelector form={form} defaultUserId={prevWork?.UserId} immutable />
+      <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
+        <UserSelector form={form} defaultUserId={prevWork?.userId} immutable />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />

@@ -19,7 +19,7 @@ class User extends Model {
 
   public getUserInfo!: HasOneGetAssociationMixin<UserInfo>;
   public setUserInfo!: HasOneSetAssociationMixin<UserInfo, number>;
-  public addWorks!: HasManyAddAssociationMixin<Work, number>;
+  public addWork!: HasManyAddAssociationMixin<Work, number>;
 
   public static associate = (db: Database): void => {
     db.User.hasMany(db.Notice);

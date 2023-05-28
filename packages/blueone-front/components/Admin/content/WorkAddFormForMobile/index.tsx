@@ -53,7 +53,7 @@ const WorkAddForm = () => {
       const reqBody: RequestBody = {
         ...values,
         waypoint: values.waypoint ?? null,
-        UserId: values.UserId ?? null,
+        userId: values.userId ?? null,
         remark: values.remark?.trim() ?? null,
         bookingDate: useBooking ? bookingDate.format() : null,
       };
@@ -120,7 +120,7 @@ const WorkAddForm = () => {
         >
           <InputNumber autoComplete="off" />
         </Form.Item>
-        <Form.Item name="UserId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
+        <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
           <UserSelector form={form} />
         </Form.Item>
         <Form.Item name="remark" label="비고">

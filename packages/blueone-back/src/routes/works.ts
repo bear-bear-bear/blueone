@@ -51,13 +51,13 @@ router.get(
  * 작업 추가
  */
 router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
-  const { UserId, ...workInfo }: CreateWorkRequestBody = req.body;
+  const { userId, ...workInfo }: CreateWorkRequestBody = req.body;
 
   try {
     const work = await Work.create(workInfo);
 
-    if (UserId) {
-      const user = await User.findByPk(UserId);
+    if (userId) {
+      const user = await User.findByPk(userId);
 
       if (!user) {
         res.status(400).json({
@@ -66,12 +66,12 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
         return;
       }
 
-      await user.addWorks(work);
+      await user.addWork(work);
     }
 
     res.status(201).json({
       ...work.get(),
-      UserId,
+      userId,
     });
   } catch (err) {
     next(err);
@@ -83,7 +83,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
  */
 router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
   const { workId } = req.params;
-  const { UserId }: UpdateWorkRequestBody = req.body;
+  const { userId }: UpdateWorkRequestBody = req.body;
 
   try {
     const work = await Work.findByPk(workId, {
@@ -110,12 +110,12 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
       return;
     }
 
-    if (UserId) {
-      const user = await User.findByPk(UserId);
+    if (userId) {
+      const user = await User.findByPk(userId);
 
       if (!user) {
         res.status(404).json({
-          message: `id ${UserId} 유저를 찾을 수 없습니다`,
+          message: `id ${userId} 유저를 찾을 수 없습니다`,
         });
         return;
       }
@@ -216,7 +216,7 @@ router.patch(
   isAdmin,
   async (req, res, next) => {
     const { workId } = req.params;
-    const { UserId }: UpdateWorkRequestBody = req.body;
+    const { userId }: UpdateWorkRequestBody = req.body;
 
     try {
       const bookingWork = await Work.findByPk(workId, {
@@ -243,12 +243,12 @@ router.patch(
         return;
       }
 
-      if (UserId) {
-        const user = await User.findByPk(UserId);
+      if (userId) {
+        const user = await User.findByPk(userId);
 
         if (!user) {
           res.status(404).json({
-            message: `id ${UserId} 유저를 찾을 수 없습니다`,
+            message: `id ${userId} 유저를 찾을 수 없습니다`,
           });
           return;
         }
@@ -296,7 +296,7 @@ router.patch(
   isAdmin,
   async (req, res, next) => {
     const { workId } = req.params;
-    const { UserId }: UpdateWorkRequestBody = req.body;
+    const { userId }: UpdateWorkRequestBody = req.body;
 
     try {
       const work = await Work.findByPk(workId, {
@@ -323,12 +323,12 @@ router.patch(
         return;
       }
 
-      if (UserId) {
-        const user = await User.findByPk(UserId);
+      if (userId) {
+        const user = await User.findByPk(userId);
 
         if (!user) {
           res.status(404).json({
-            message: `id ${UserId} 유저를 찾을 수 없습니다`,
+            message: `id ${userId} 유저를 찾을 수 없습니다`,
           });
           return;
         }

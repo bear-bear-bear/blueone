@@ -128,7 +128,7 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
     const works = await Work.findAll({
       where: {
         ...getDefaultWhereParamsQueriedByWork(),
-        UserId: req.user?.id,
+        userId: req.user?.id,
         [Op.or]: [
           {
             createdAt: {
@@ -179,7 +179,7 @@ router.get(
       const works = await Work.findAll({
         where: {
           ...getDefaultWhereParamsQueriedByWork(),
-          UserId: req.user?.id,
+          userId: req.user?.id,
           endTime: {
             [Op.gt]: gt,
             [Op.lt]: lt,
@@ -216,7 +216,7 @@ router.get(
       const doneWorks = await Work.findAll({
         where: {
           ...getDefaultWhereParamsQueriedByWork(),
-          UserId: req.user?.id,
+          userId: req.user?.id,
           endTime: {
             [Op.ne]: null,
           },

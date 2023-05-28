@@ -4,7 +4,7 @@ import type { Database } from './index';
 
 class Work extends Model {
   public readonly id!: number;
-  public userId!: number;
+  public userId!: number | null;
   public origin!: string;
   public waypoint!: string | null;
   public destination!: string;
@@ -20,7 +20,7 @@ class Work extends Model {
   public readonly updatedAt!: Date;
 
   public static associate = (db: Database): void => {
-    db.Work.belongsTo(db.User);
+    db.Work.belongsTo(db.User, { foreignKey: 'userId' });
   };
 }
 

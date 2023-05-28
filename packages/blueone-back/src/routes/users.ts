@@ -150,7 +150,7 @@ router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     await user.update({ phoneNumber });
-    await UserInfo.update(restInfo, { where: { UserId: userId } });
+    await UserInfo.update(restInfo, { where: { userId } });
 
     const updatedUser = await User.findOne({
       where: { id: userId },
@@ -203,7 +203,7 @@ router.get('/:userId/works', isLoggedIn, isAdmin, async (req, res, next) => {
     const activatedWorks = await Work.findAll({
       where: {
         ...getDefaultWhereParamsQueriedByWork(),
-        UserId: userId,
+        userId,
         endTime: null,
       },
       order: [['createdAt', 'DESC']],

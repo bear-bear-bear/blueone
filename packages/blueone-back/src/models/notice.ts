@@ -13,7 +13,7 @@ class Notice extends Model {
   public readonly updatedAt!: Date;
 
   public static associate = (db: Database): void => {
-    db.Notice.belongsTo(db.User);
+    db.Notice.belongsTo(db.User, { foreignKey: 'userId' });
   };
 }
 
