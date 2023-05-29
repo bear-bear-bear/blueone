@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { message } from 'antd';
 import { DatePicker } from '@components/Admin/content/commonParts/Picker';
 import dayjs from '@utils/dayjs';
 
@@ -16,8 +17,20 @@ const BookingDatePicker = ({ date, setDate }: Props) => {
       format="YYYY-MM-DD_HH"
       showTime={{ defaultValue: dayjs('00:00:00', 'HH') }}
       value={date}
-      onChange={(next) => setDate(next as dayjs.Dayjs)}
+      onChange={(next) => {
+        if (!next) {
+          // block allow clear
+          return;
+        }
+        if (+next.toDate() < +now.toDate()) {
+          // block change by keyboard
+          message.warn('현재 시간 이후로만 선택할 수 있습니다.');
+          return;
+        }
+        setDate(next);
+      }}
       onSelect={setSelectedDate}
+      // block change by mouse
       disabledDate={(current: dayjs.Dayjs) => {
         return current && current < now.startOf('day');
       }}
