@@ -19,7 +19,7 @@ export default function processWorkDateTimes(work: FullWork) {
     const thisYear = dayjs().year();
 
     if (withT) {
-      return time.format(time.year() === thisYear ? 'MM/DD T HH' : 'YYYY/MM/DD T HH');
+      return time.format(time.year() === thisYear ? 'MM/DD_HH' : 'YYYY/MM/DD_HH');
     }
     return time.format(time.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD');
   };
