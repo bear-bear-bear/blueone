@@ -14,7 +14,7 @@ const BookingDatePicker = ({ date, setDate }: Props) => {
 
   return (
     <DatePicker
-      format="YYYY-MM-DD_HH"
+      format="YYYY-MM-DD HH:00"
       showTime={{ defaultValue: dayjs('00:00:00', 'HH') }}
       value={date}
       onChange={(next) => {
