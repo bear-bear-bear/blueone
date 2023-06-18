@@ -12,10 +12,14 @@ const BookingDatePicker = ({ date, setDate }: Props) => {
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(date);
   const now = dayjs();
 
+  const getFormat = (target: dayjs.Dayjs) => {
+    return target.year() > now.year() ? 'YYYY-MM-DD HH:00' : 'MM-DD HH:00';
+  };
+
   return (
     <DatePicker
-      format="YYYY-MM-DD HH:00"
-      showTime={{ defaultValue: dayjs('00:00:00', 'HH') }}
+      format={getFormat(date)}
+      showTime={{ defaultValue: dayjs('00:00:00', 'HH'), format: getFormat(selectedDate) }}
       value={date}
       onChange={(next) => {
         if (!next) {
