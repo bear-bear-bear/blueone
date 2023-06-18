@@ -26,6 +26,10 @@ export const globalCSS = css`
   .ant-modal-body .ant-form-horizontal div:last-of-type {
     margin-bottom: 0;
   }
+
+  .ant-picker-time-panel-cell-inner::after {
+    content: ':00'; // 트릭 - BookingDatePicker 에서 picker panel 의 hour 에 :00 붙이고 싶은데 rc-picker 에서 패널 렌더 prop 을 제공하지 않음
+  }
 `;
 
 export const TableHeader = styled.div`
