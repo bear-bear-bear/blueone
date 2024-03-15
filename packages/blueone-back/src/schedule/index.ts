@@ -35,14 +35,21 @@ const jobs = [
           },
         });
 
-        const REMARK_KEYWORD_EXCLUDED_FROM_PENALTY = '익일';
+        const PENALTY_EXCLUSION_WORDS = ['익일', '입고'];
+
+        const hasPenaltyExclusionWordInRemark = ({ remark }: Work) => {
+          if (!remark) return false;
+
+          return PENALTY_EXCLUSION_WORDS.some((keyword) =>
+            remark.includes(keyword),
+          );
+        };
 
         await Promise.all(
           notDoneWorks
-            .filter(
-              (work) =>
-                !work.remark?.includes(REMARK_KEYWORD_EXCLUDED_FROM_PENALTY),
-            )
+            .filter((work) => {
+              return !hasPenaltyExclusionWordInRemark(work);
+            })
             .map(async (work) => {
               work.subsidy = (work.subsidy ?? 0) - 10;
               work.penalty = true;
