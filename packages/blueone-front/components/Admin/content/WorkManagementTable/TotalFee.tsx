@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import addFloats from '@utils/addFloats';
 import type { ProcessedWork } from './index';
 
 type Props = {
@@ -14,15 +15,10 @@ const TotalFee: FC<Props> = ({ workData }) => {
     };
     if (!workData) return initialValue;
 
-    const plusWithoutFloatingPointIssue = (a: number, b: number) => {
-      const MAX_FLOATING_POINT = 2;
-      const tempNumber = 10 * MAX_FLOATING_POINT;
-      return (a * tempNumber + b * tempNumber) / tempNumber;
-    };
     return workData.reduce((acc, work) => {
-      acc.charge = plusWithoutFloatingPointIssue(acc.charge, work.charge);
-      acc.subsidy = plusWithoutFloatingPointIssue(acc.subsidy, work.subsidy ?? 0);
-      acc.payout = plusWithoutFloatingPointIssue(acc.payout, Number(work.payout));
+      acc.charge = addFloats(acc.charge, work.charge);
+      acc.subsidy = addFloats(acc.subsidy, work.subsidy ?? 0);
+      acc.payout = addFloats(acc.payout, Number(work.payout));
       return acc;
     }, initialValue);
   }, [workData]);

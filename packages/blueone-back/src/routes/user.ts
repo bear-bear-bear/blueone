@@ -5,6 +5,7 @@ import { Op } from 'sequelize';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
+import addFloats from '@/utils/addFloats';
 import calculatePayout, { withPayout } from '@/utils/calculatePayout';
 import dayjs from '@/utils/dayjs';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
@@ -237,12 +238,6 @@ router.get(
         return;
       }
 
-      const plusWithoutFloatingPointIssue = (a: number, b: number) => {
-        const MAX_FLOATING_POINT = 2;
-        const tempNumber = 10 * MAX_FLOATING_POINT;
-        return (a * tempNumber + b * tempNumber) / tempNumber;
-      };
-
       const getWorksAnalysisAtThisMonth = async () => {
         const lastDayOfThisMonth = today.endOf('month').date();
 
@@ -256,10 +251,7 @@ router.get(
         doneWorks.forEach((work) => {
           const payout = calculatePayout(work);
           const currDate = dayjs(work.checkTime).date();
-          dateMap[`${currDate}`] = plusWithoutFloatingPointIssue(
-            dateMap[`${currDate}`],
-            payout,
-          );
+          dateMap[`${currDate}`] = addFloats(dateMap[`${currDate}`], payout);
         });
 
         return dateMap;
@@ -276,7 +268,7 @@ router.get(
         doneWorks.forEach((work) => {
           const payout = calculatePayout(work);
           const currMonth = dayjs(work.checkTime).month() + 1; // dayjs month is 0~11
-          monthMap[`${currMonth}`] = plusWithoutFloatingPointIssue(
+          monthMap[`${currMonth}`] = addFloats(
             monthMap[`${currMonth}`],
             payout,
           );
