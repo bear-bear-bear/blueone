@@ -10,6 +10,7 @@ import type {
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import work from '@/models/work';
+import { withPayout } from '@/utils/calculatePayout';
 import dayjs from '@/utils/dayjs';
 import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
 
@@ -39,7 +40,8 @@ router.get(
         lte,
         booked === 'true',
       );
-      res.status(200).json(works.map((work) => work.get()));
+
+      res.status(200).json(works.map(withPayout));
     } catch (err) {
       console.error(err);
       next(err);

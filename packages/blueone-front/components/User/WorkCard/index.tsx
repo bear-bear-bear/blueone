@@ -47,10 +47,6 @@ const WorkCard = ({ work, readOnly = false }: Props) => {
   const isWorkChecked = !!work.checkTime;
   const isWorkDone = !!work.endTime;
 
-  // 지원지수가 음수라면 수식을 다르게 해달라는 요청사항 반영
-  const subsidy = work.subsidy ?? 0;
-  const payout = subsidy >= 0 ? ((work.charge + subsidy) * 8) / 10 : (work.charge * 8) / 10 + subsidy;
-
   return (
     <S.StyledCard
       actions={
@@ -81,15 +77,15 @@ const WorkCard = ({ work, readOnly = false }: Props) => {
         title={
           <p>
             <MoneyCollectOutlined style={{ fontSize: '24px' }} />
-            <span style={{ marginLeft: '0.33rem' }}>최종지수 {payout}</span>
+            <span style={{ marginLeft: '0.33rem' }}>최종지수 {work.payout}</span>
           </p>
         }
         description={
           <div>
             <p>* 구간지수 {work.charge}</p>
-            {subsidy !== 0 && (
+            {!!work.subsidy && (
               <p>
-                * 지원지수 <span style={subsidy < 0 ? emphasisStyle : undefined}>{subsidy}</span>
+                * 지원지수 <span style={work.subsidy < 0 ? emphasisStyle : undefined}>{work.subsidy}</span>
               </p>
             )}
           </div>

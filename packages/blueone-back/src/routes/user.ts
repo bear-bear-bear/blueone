@@ -5,6 +5,7 @@ import { Op } from 'sequelize';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
+import calculatePayout, { withPayout } from '@/utils/calculatePayout';
 import dayjs from '@/utils/dayjs';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
@@ -156,7 +157,8 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
         ['createdAt', 'ASC'],
       ],
     });
-    res.status(200).json(works.map((work) => work.get()));
+
+    res.status(200).json(works.map(withPayout));
   } catch (err) {
     next(err);
   }
@@ -235,10 +237,6 @@ router.get(
         return;
       }
 
-      const getPayout = (charge: Work['charge'], subsidy: Work['subsidy']) => {
-        return ((charge + (subsidy ?? 0)) * 8) / 10;
-      };
-
       const plusWithoutFloatingPointIssue = (a: number, b: number) => {
         const MAX_FLOATING_POINT = 2;
         const tempNumber = 10 * MAX_FLOATING_POINT;
@@ -247,6 +245,7 @@ router.get(
 
       const getWorksAnalysisAtThisMonth = async () => {
         const lastDayOfThisMonth = today.endOf('month').date();
+
         const dateMap = [...Array(lastDayOfThisMonth)].reduce<{
           [date: `${number}`]: number;
         }>((acc, _, i) => {
@@ -254,15 +253,16 @@ router.get(
           return acc;
         }, {});
 
-        return doneWorks.reduce((acc, curr) => {
-          const currWorkPayout = getPayout(curr.charge, curr.subsidy);
-          const currDate = dayjs(curr.checkTime).date();
+        doneWorks.forEach((work) => {
+          const currWorkPayout = calculatePayout(work.charge, work.subsidy);
+          const currDate = dayjs(work.checkTime).date();
           dateMap[`${currDate}`] = plusWithoutFloatingPointIssue(
             dateMap[`${currDate}`],
             currWorkPayout,
           );
-          return dateMap;
-        }, dateMap);
+        });
+
+        return dateMap;
       };
 
       const getWorksAnalysisAtThisYear = async () => {
@@ -273,15 +273,16 @@ router.get(
           return acc;
         }, {});
 
-        return doneWorks.reduce((acc, curr) => {
-          const currWorkPayout = getPayout(curr.charge, curr.subsidy);
-          const currMonth = dayjs(curr.checkTime).month() + 1; // dayjs month is 0~11
+        doneWorks.forEach((work) => {
+          const currWorkPayout = calculatePayout(work.charge, work.subsidy);
+          const currMonth = dayjs(work.checkTime).month() + 1; // dayjs month is 0~11
           monthMap[`${currMonth}`] = plusWithoutFloatingPointIssue(
             monthMap[`${currMonth}`],
             currWorkPayout,
           );
-          return monthMap;
-        }, monthMap);
+        });
+
+        return monthMap;
       };
 
       let worksAnalysis: { [dateOrMonth: `${number}`]: number };

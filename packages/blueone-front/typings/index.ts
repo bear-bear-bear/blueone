@@ -48,6 +48,10 @@ export type Work = {
   updatedAt: ISODateString;
 };
 
+export type WorkWithPayout = Work & {
+  payout: number;
+};
+
 export type Notice = {
   id: number;
   userId: number;
@@ -120,7 +124,7 @@ export interface EndPoint {
    */
   'GET /user/works': {
     responses: {
-      200: Work[];
+      200: WorkWithPayout[];
       500: ErrorMessage;
     };
   };
@@ -229,7 +233,7 @@ export interface EndPoint {
    */
   'GET /works': {
     responses: {
-      200: (Work & {
+      200: (WorkWithPayout & {
         User?: User & {
           UserInfo: Pick<UserInfo, 'realname'>;
         };
