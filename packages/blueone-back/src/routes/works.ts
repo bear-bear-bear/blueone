@@ -9,7 +9,6 @@ import type {
 } from 'typings';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
-import work from '@/models/work';
 import { withPayout } from '@/utils/calculatePayout';
 import dayjs from '@/utils/dayjs';
 import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
@@ -72,7 +71,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     res.status(201).json({
-      ...work.get(),
+      ...withPayout(work),
       userId,
     });
   } catch (err) {
@@ -127,7 +126,7 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
 
     const saved = await work.save();
 
-    res.status(200).json(saved.get());
+    res.status(200).json(withPayout(saved));
   } catch (err) {
     next(err);
   }
@@ -193,7 +192,7 @@ router.patch(
           return;
       }
 
-      res.status(200).json(work.get());
+      res.status(200).json(withPayout(work));
     } catch (err) {
       console.error(err);
       next(err);
@@ -266,15 +265,11 @@ router.patch(
         'updatedAt',
       ]);
 
-      console.log(newWorkInfo);
-
-      const newWork = await work.create(newWorkInfo);
-
-      console.log(newWork.get());
+      const newWork = await Work.create(newWorkInfo);
 
       await bookingWork.destroy();
 
-      res.status(200).json(newWork.get());
+      res.status(200).json(withPayout(newWork));
     } catch (err) {
       next(err);
     }
@@ -342,7 +337,7 @@ router.patch(
 
       await work.save();
 
-      res.status(200).json(work.get());
+      res.status(200).json(withPayout(work));
     } catch (err) {
       next(err);
     }
@@ -366,7 +361,7 @@ router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
     }
 
     await work.destroy();
-    res.status(200).json(work.get());
+    res.status(200).json(withPayout(work));
   } catch (err) {
     next(err);
   }

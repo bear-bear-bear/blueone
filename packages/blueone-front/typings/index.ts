@@ -40,16 +40,13 @@ export type Work = {
   charge: number;
   adjustment: number | null;
   subsidy: number | null;
+  payout: number;
   remark: string | null;
   checkTime: ISODateString | null;
   endTime: ISODateString | null;
   bookingDate: ISODateString | null;
   createdAt: ISODateString;
   updatedAt: ISODateString;
-};
-
-export type WorkWithPayout = Work & {
-  payout: number;
 };
 
 export type Notice = {
@@ -124,7 +121,7 @@ export interface EndPoint {
    */
   'GET /user/works': {
     responses: {
-      200: WorkWithPayout[];
+      200: Work[];
       500: ErrorMessage;
     };
   };
@@ -233,7 +230,7 @@ export interface EndPoint {
    */
   'GET /works': {
     responses: {
-      200: (WorkWithPayout & {
+      200: (Work & {
         User?: User & {
           UserInfo: Pick<UserInfo, 'realname'>;
         };

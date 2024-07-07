@@ -5,16 +5,17 @@ import _ from 'lodash';
 import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
+import { withPayout } from '@/utils/calculatePayout';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
 const router = express.Router();
 const omitPassword = (user: User) =>
-  _.omitBy<Omit<User, 'password'>>(user, (value, key) => key === 'password');
+  _.omitBy<Omit<User, 'password'>>(user, (_value, key) => key === 'password');
 
 /**
  * 유저 리스트 가져오기
  */
-router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
+router.get('/', isLoggedIn, isAdmin, async (_req, res, next) => {
   try {
     const users = await User.findAll({
       where: { role: 'user' },
@@ -208,7 +209,7 @@ router.get('/:userId/works', isLoggedIn, isAdmin, async (req, res, next) => {
       },
       order: [['createdAt', 'DESC']],
     });
-    res.status(200).json(activatedWorks.map((work) => work.get()));
+    res.status(200).json(activatedWorks.map(withPayout));
   } catch (err) {
     next(err);
   }

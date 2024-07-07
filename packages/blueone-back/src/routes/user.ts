@@ -190,7 +190,7 @@ router.get(
         },
         order: [['createdAt', 'DESC']],
       });
-      res.status(200).json(works.map((work) => work.get()));
+      res.status(200).json(works.map(withPayout));
     } catch (err) {
       console.error(err);
       next(err);
