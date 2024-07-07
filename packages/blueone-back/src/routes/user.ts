@@ -254,11 +254,11 @@ router.get(
         }, {});
 
         doneWorks.forEach((work) => {
-          const currWorkPayout = calculatePayout(work.charge, work.subsidy);
+          const payout = calculatePayout(work);
           const currDate = dayjs(work.checkTime).date();
           dateMap[`${currDate}`] = plusWithoutFloatingPointIssue(
             dateMap[`${currDate}`],
-            currWorkPayout,
+            payout,
           );
         });
 
@@ -274,11 +274,11 @@ router.get(
         }, {});
 
         doneWorks.forEach((work) => {
-          const currWorkPayout = calculatePayout(work.charge, work.subsidy);
+          const payout = calculatePayout(work);
           const currMonth = dayjs(work.checkTime).month() + 1; // dayjs month is 0~11
           monthMap[`${currMonth}`] = plusWithoutFloatingPointIssue(
             monthMap[`${currMonth}`],
-            currWorkPayout,
+            payout,
           );
         });
 
