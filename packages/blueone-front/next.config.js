@@ -2,6 +2,7 @@
 const withPlugins = require('next-compose-plugins');
 const withAntdLess = require('next-plugin-antd-less');
 const withPWA = require('next-pwa');
+const theme = require('./globalStyles/theme');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -28,7 +29,7 @@ module.exports = withPlugins(
     [
       withAntdLess,
       {
-        modifyVars: { '@primary-color': '#0076BB' },
+        modifyVars: { '@primary-color': theme.primaryColor },
       },
     ],
   ],

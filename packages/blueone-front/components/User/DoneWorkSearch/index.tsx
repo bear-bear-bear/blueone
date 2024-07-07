@@ -7,6 +7,7 @@ import { EndPoint, Unpacked } from '@typings';
 import CustomRangePicker from '@components/User/DoneWorkSearch/RangePicker';
 import WorkCard from '@components/User/WorkCard';
 import { Global } from '@emotion/react';
+import theme from '@globalStyles/theme';
 import { axiosFetcher } from '@utils/swr';
 import * as S from './styles';
 
@@ -44,7 +45,7 @@ const DoneWorkSearch = () => {
         }
         style={{
           background: 'none',
-          border: '1px solid #0076BB',
+          border: `1px solid ${theme.primaryColor}`,
           marginBottom: '0.33rem',
         }}
       />

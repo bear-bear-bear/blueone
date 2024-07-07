@@ -5,6 +5,7 @@ import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
 import { Column } from '@ant-design/plots';
 import EmptyContent from '@components/User/commonParts/Empty';
+import theme from '@globalStyles/theme';
 import { axiosFetcher } from '@utils/swr';
 import * as S from './styles';
 
@@ -39,7 +40,7 @@ const AnalysisByMonth = () => {
         {thisMonth !== 1 && <p>지난 달 지수 합계: {workAnalysis[`${thisMonth - 1}`]}</p>}
         <h1>이번 달 지수 합계: {workAnalysis[`${thisMonth}`]}</h1>
       </S.Header>
-      <Column data={chartData} xField="월" yField="지수합계" color="#0076BB" />
+      <Column data={chartData} xField="월" yField="지수합계" color={theme.primaryColor} />
     </>
   );
 };

@@ -2,6 +2,7 @@ import { Card, List } from 'antd';
 import useSWR from 'swr';
 import type { EndPoint } from '@typings';
 import EmptyContent from '@components/User/commonParts/Empty';
+import theme from '@globalStyles/theme';
 import { axiosFetcher } from '@utils/swr';
 import * as S from './styles';
 
@@ -23,7 +24,7 @@ const NoticeList = () => {
       grid={{ gutter: 16, column: 1 }}
       dataSource={noticeList}
       renderItem={(item) => (
-        <List.Item style={{ borderTop: '7px solid #0076bb' }}>
+        <List.Item style={{ borderTop: `7px solid ${theme.primaryColor}` }}>
           <S.NoticeCard title={item.title}>
             <S.LinkifyPre tagName="pre">{item.content}</S.LinkifyPre>
           </S.NoticeCard>

@@ -2,12 +2,13 @@ import { Card } from 'antd';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import theme from '@globalStyles/theme';
 import media from '@utils/media';
 
 export const CARD_MARGIN_TOP = '2rem';
 
 const readOnlyCardStyles = css`
-  border-top: 7px solid #0076bb;
+  border-top: 7px solid ${theme.primaryColor};
   margin-top: 1rem;
 
   .ant-card-body {
