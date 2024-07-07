@@ -10,6 +10,7 @@ class Work extends Model {
   public destination!: string;
   public carModel!: string;
   public charge!: number;
+  public adjustment!: number | null;
   public subsidy!: number | null;
   public remark!: string | null;
   public checkTime!: Date | null;
@@ -43,6 +44,9 @@ Work.init(
     charge: {
       type: DataTypes.MEDIUMINT,
       allowNull: false,
+    },
+    adjustment: {
+      type: DataTypes.MEDIUMINT,
     },
     subsidy: {
       type: DataTypes.MEDIUMINT,

@@ -38,6 +38,7 @@ export type Work = {
   destination: string;
   carModel: string;
   charge: number;
+  adjustment: number | null;
   subsidy: number | null;
   remark: string | null;
   checkTime: ISODateString | null;
