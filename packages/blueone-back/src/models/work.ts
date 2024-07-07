@@ -14,7 +14,6 @@ class Work extends Model {
   public remark!: string | null;
   public checkTime!: Date | null;
   public endTime!: Date | null;
-  public penalty!: boolean;
   public bookingDate!: Date | null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -60,10 +59,6 @@ Work.init(
     bookingDate: {
       type: DataTypes.DATE,
       allowNull: true,
-    },
-    penalty: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
     },
   },
   {

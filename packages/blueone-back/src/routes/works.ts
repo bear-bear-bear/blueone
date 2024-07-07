@@ -123,10 +123,6 @@ router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
       work.userId = userId;
     }
 
-    if (work.subsidy === req.body.subsidy) {
-      work.penalty = false;
-    }
-
     const saved = await work.save();
 
     res.status(200).json(saved.get());

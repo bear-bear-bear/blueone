@@ -1,4 +1,3 @@
-import { Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import AddButton from './AddButton';
@@ -81,14 +80,6 @@ const columns: ColumnsType<ProcessedWork> = [
     width: 80,
     render: (_, record) => {
       const subsidy = record.subsidy ?? 0;
-
-      if (record.penalty) {
-        return (
-          <Tooltip title="패널티">
-            <p style={{ color: 'red', fontWeight: 500 }}>{subsidy}</p>
-          </Tooltip>
-        );
-      }
 
       if (subsidy < 0) {
         return <p style={{ color: 'red', fontWeight: 500 }}>{subsidy}</p>;

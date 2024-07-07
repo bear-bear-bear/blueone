@@ -42,7 +42,6 @@ export type Work = {
   remark: string | null;
   checkTime: ISODateString | null;
   endTime: ISODateString | null;
-  penalty: boolean | null;
   bookingDate: ISODateString | null;
   createdAt: ISODateString;
   updatedAt: ISODateString;
