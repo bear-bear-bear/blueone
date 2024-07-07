@@ -17,7 +17,8 @@
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean --yes",
     "audit": "lerna-audit",
-    "dev": "lerna run dev --parallel --scope=blueone-*"
+    "dev": "lerna run dev --parallel --scope=blueone-*",
+    "typecheck": "lerna run typecheck --parallel --scope=blueone-*"
   },
   "repository": {
     "type": "git",

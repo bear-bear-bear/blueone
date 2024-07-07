@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "cross-env ANALYZE=true NODE_ENV=production next build",
-    "start": "cross-env NODE_ENV=production pm2 start npm --name \"next\" -- start && npx pm2 monit"
+    "start": "cross-env NODE_ENV=production pm2 start npm --name \"next\" -- start && npx pm2 monit",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
