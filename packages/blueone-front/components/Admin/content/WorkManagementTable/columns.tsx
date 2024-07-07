@@ -73,6 +73,13 @@ const columns: ColumnsType<ProcessedWork> = [
     width: 80,
   },
   {
+    title: '할인/할증',
+    dataIndex: 'adjustment',
+    key: 'adjustment',
+    align: 'right',
+    width: 80,
+  },
+  {
     title: '지원지수',
     dataIndex: 'subsidy',
     key: 'subsidy',

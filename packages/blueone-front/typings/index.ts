@@ -242,10 +242,7 @@ export interface EndPoint {
    * 업무 등록
    */
   'POST /works': {
-    requestBody: Pick<
-      Work,
-      'userId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
-    >;
+    requestBody: Omit<Work, 'id' | 'payout' | 'checkTime' | 'endTime' | 'createdAt' | 'updatedAt'>;
     responses: {
       201: Work & {
         userId: null;
@@ -258,10 +255,7 @@ export interface EndPoint {
    * 업무 수정
    */
   'PUT /works/{workId}': {
-    requestBody: Pick<
-      Work,
-      'userId' | 'origin' | 'waypoint' | 'destination' | 'carModel' | 'charge' | 'subsidy' | 'remark' | 'bookingDate'
-    >;
+    requestBody: Omit<Work, 'id' | 'payout' | 'checkTime' | 'endTime' | 'createdAt' | 'updatedAt'>;
     responses: {
       200: Work & {
         User?: User & {
