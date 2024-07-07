@@ -6,6 +6,7 @@ import { EndPoint } from '@typings';
 import { MoneyCollectOutlined } from '@ant-design/icons';
 import CheckButton from '@components/User/WorkCard/CheckButton';
 import DoneButton from '@components/User/WorkCard/DoneButton';
+import theme from '@globalStyles/theme';
 import * as S from './styles';
 
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
@@ -83,9 +84,19 @@ const WorkCard = ({ work, readOnly = false }: Props) => {
         description={
           <div>
             <p>* 구간지수 {work.charge}</p>
+            {!!work.adjustment &&
+              (work.adjustment > 0 ? (
+                <p>
+                  * 할증 <span style={{ color: theme.primaryColor }}>{work.adjustment}</span>
+                </p>
+              ) : (
+                <p>
+                  * 할인 <span style={{ color: theme.primaryColor }}>{Math.abs(work.adjustment as number)}</span>
+                </p>
+              ))}
             {!!work.subsidy && (
               <p>
-                * 지원지수 <span style={work.subsidy < 0 ? emphasisStyle : undefined}>{work.subsidy}</span>
+                * 지원지수 <span style={{ color: theme.primaryColor }}>{work.subsidy}</span>
               </p>
             )}
           </div>
