@@ -6,6 +6,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:react-hooks/recommended',
+    'next', // TODO: 별도 패키지로 분리하고 front 패키지에서 extends 후 next 별도 삽입
   ],
   plugins: ['unused-imports', 'import'],
   parserOptions: {

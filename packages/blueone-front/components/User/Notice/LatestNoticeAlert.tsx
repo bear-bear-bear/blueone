@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from 'react';
 import { Alert } from 'antd';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Marquee from 'react-fast-marquee';
 import useSWR from 'swr';
 import type { EndPoint } from '@typings';

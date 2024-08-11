@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Button, ButtonProps, message } from 'antd';
 import type { AxiosError } from 'axios';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { CgLogOut } from 'react-icons/cg';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
@@ -22,7 +22,7 @@ const LogoutButton = ({ kind = 'icon', ...rest }: Props) => {
     try {
       await httpClient.post('/user/logout');
       await mutateUser(undefined);
-      await router.push('/login');
+      await router.push('/');
       message.success('로그아웃 완료');
     } catch (err) {
       logAxiosError<LogoutError>(err as AxiosError<LogoutError>);

@@ -3,11 +3,12 @@ import { useEffect, useRef } from 'react';
 import { Card, Carousel, message } from 'antd';
 import useSWR from 'swr';
 import type { EndPoint } from '@typings';
-import EmptyContent from '@components/User/commonParts/Empty';
-import { Global } from '@emotion/react';
+import { css, Global } from '@emotion/react';
+import media from '@utils/media';
 import { axiosFetcher } from '@utils/swr';
 import WorkCard from '../WorkCard';
-import * as S from './styles';
+import { CARD_MARGIN_TOP } from '../WorkCard/styles';
+import EmptyContent from '../commonParts/Empty';
 
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 
@@ -40,7 +41,7 @@ export default function WorkCarousel() {
   }
   return (
     <>
-      <Global styles={S.globalCSS} />
+      <Global styles={globalCSS} />
       <Carousel
         dotPosition="top"
         infinite
@@ -54,3 +55,43 @@ export default function WorkCarousel() {
     </>
   );
 }
+
+const globalCSS = css`
+  .ant-card-actions {
+    li {
+      margin: 0 !important;
+    }
+  }
+
+  .ant-card-body {
+    padding: 24px 12px;
+
+    ${media.sm} {
+      padding: 24px;
+    }
+  }
+
+  .ant-carousel {
+    position: relative;
+    top: calc(50% - ${CARD_MARGIN_TOP});
+    transform: translateY(-50%);
+
+    .slick-slide > div {
+      padding: 0 3px;
+    }
+
+    .carousel-custom-dot {
+      li {
+        button {
+          background: #141414 !important;
+        }
+      }
+
+      li.slick-active {
+        button {
+          background: #141414 !important;
+        }
+      }
+    }
+  }
+`;
