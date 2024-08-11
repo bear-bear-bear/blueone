@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const withPlugins = require('next-compose-plugins');
 const withAntdLess = require('next-plugin-antd-less');
-const withPWA = require('next-pwa');
 const theme = require('./globalStyles/theme');
 
 /** @type {import('next').NextConfig} */
@@ -18,14 +17,6 @@ const nextConfig = {
 
 module.exports = withPlugins(
   [
-    [
-      withPWA,
-      {
-        pwa: {
-          dest: 'public',
-        },
-      },
-    ],
     [
       withAntdLess,
       {
