@@ -10,7 +10,7 @@ type Props = {
   setDateRange: Dispatch<SetStateAction<DateRange>>;
 };
 
-const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
+export default function CustomRangePicker({ dateRange, setDateRange }: Props) {
   const today = dayjs();
 
   const handleChange = useCallback(
@@ -60,6 +60,4 @@ const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
       size="large"
     />
   );
-};
-
-export default CustomRangePicker;
+}

@@ -15,11 +15,6 @@ const Analysis = () => (
         <AnalysisByMonth />
       </TabPane>
     </S.StyledTabs>
-    {/* <S.TempVerticalCenterLayout> */}
-    {/*    <section> */}
-    {/*        <AnalysisByMonth /> */}
-    {/*    </section> */}
-    {/* </S.TempVerticalCenterLayout> */}
   </>
 );
 

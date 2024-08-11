@@ -1,6 +1,7 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
-import { Button, Checkbox, Spin, Table } from 'antd';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Checkbox, DatePicker, Spin, Table } from 'antd';
+import type { RangePickerProps } from 'antd/es/date-picker';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import qs from 'qs';
@@ -12,13 +13,14 @@ import styled from '@emotion/styled';
 import { formatTime } from '@utils/day';
 import { axiosFetcher } from '@utils/swr';
 import AddButton from './AddButton';
-import CustomRangePicker from './CustomRangePicker';
 import TotalFee from './TotalFee';
 import UserPicker from './UserPicker';
 import columns from './columns';
 import processWorkDateTimes from './processWorkDateTimes';
 
-export type DateRange = {
+const { RangePicker } = DatePicker;
+
+type DateRange = {
   start: string;
   end: string;
 };
@@ -41,22 +43,18 @@ export default function WorkManagementTable() {
   const [isVisibleBookedWork, setIsVisibleBookedWork] = useState<boolean>(false);
   const [isShowTotalFee, setIsShowTotalFee] = useState<boolean>(false);
 
-  const times = useMemo(() => formatTime(dayjs()), []);
+  const today = dayjs();
+  const times = formatTime(today);
 
-  const defaultDateRange = useMemo(
-    () => ({
-      start: times.threeDaysAgoDate,
-      end: times.todayDate,
-    }),
-    [times],
-  );
-  const defaultBookingDateRange = useMemo(
-    () => ({
-      start: times.todayDate,
-      end: times.threeDaysLaterDate,
-    }),
-    [times],
-  );
+  const defaultDateRange = {
+    start: times.threeDaysAgoDate,
+    end: times.todayDate,
+  };
+  const defaultBookingDateRange = {
+    start: times.tomorrowDate,
+    end: times.fourDaysLaterDate,
+  };
+
   const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
 
   const disabledDate = useCallback(
@@ -75,6 +73,7 @@ export default function WorkManagementTable() {
     }
     return `/works?${qs.stringify(dateRange)}`;
   }, [dateRange, isVisibleBookedWork]);
+
   const { data: works } = useSWR<FullWorks>(swrKey, axiosFetcher, {
     refreshInterval: 30 * 1000,
   });
@@ -109,6 +108,7 @@ export default function WorkManagementTable() {
   const handleChangeVisiblePastDoneWorkCheckbox = () => {
     setIsVisiblePastDoneWork((prev) => !prev);
   };
+
   const handleChangeVisibleBookedWorkCheckbox = () => {
     setIsVisibleBookedWork((prev) => {
       const next = !prev;
@@ -122,9 +122,24 @@ export default function WorkManagementTable() {
       return next;
     });
   };
+
   const handleChangeShowTotalFeeCheckbox = () => {
     setIsShowTotalFee((prev) => !prev);
   };
+
+  const handleChangeRangePicker = useCallback<NonNullable<RangePickerProps['onChange']>>(
+    (_, [startDate, endDate]) => {
+      setDateRange({
+        start: startDate,
+        end: endDate,
+      });
+    },
+    [setDateRange],
+  );
+
+  useEffect(() => {
+    setDateRange(isVisibleBookedWork ? defaultBookingDateRange : defaultDateRange);
+  }, [isVisibleBookedWork]);
 
   if (!dataSource) {
     return (
@@ -138,7 +153,45 @@ export default function WorkManagementTable() {
       <Global styles={globalCSS} />
       <TableHeader>
         <section>
-          <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} disabledDate={disabledDate} />
+          {isVisibleBookedWork ? (
+            <RangePicker
+              presets={[
+                {
+                  label: 'Default',
+                  value: [dayjs(defaultBookingDateRange.start), dayjs(defaultBookingDateRange.end)],
+                },
+                {
+                  label: 'This Month',
+                  value: [times.tomorrow, today.endOf('month')],
+                },
+              ]}
+              onChange={handleChangeRangePicker}
+              value={dateRange && [dayjs(dateRange.start), dayjs(dateRange.end)]}
+              disabledDate={disabledDate}
+              allowClear={false}
+            />
+          ) : (
+            <RangePicker
+              presets={[
+                {
+                  label: 'Default',
+                  value: [dayjs(defaultDateRange.start), dayjs(defaultDateRange.end)],
+                },
+                {
+                  label: 'Today',
+                  value: [today, today],
+                },
+                {
+                  label: 'This Month',
+                  value: [today.startOf('month'), today],
+                },
+              ]}
+              onChange={handleChangeRangePicker}
+              value={dateRange && [dayjs(dateRange.start), dayjs(dateRange.end)]}
+              disabledDate={disabledDate}
+              allowClear={false}
+            />
+          )}
           <UserPicker value={pickedUserId} setValue={setPickedUserId} />
           <Checkbox
             checked={isVisiblePastDoneWork}
