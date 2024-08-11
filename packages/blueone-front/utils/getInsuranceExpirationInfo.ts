@@ -9,7 +9,7 @@ dayjs.extend(relativeTime);
 
 export type InsuranceExpirationInfo =
   | {
-      state: 'safe' | 'warn' | 'danger';
+      state: 'safe' | 'warning' | 'danger';
       from: string;
       to: string;
     }
@@ -36,7 +36,7 @@ export default function getInsuranceExpirationInfo(user: ReturnType<typeof useUs
   const isImminent = !isValid ? false : dayjs(expirationDate).diff(now, 'ms') < 7 * DAY;
 
   return {
-    state: isValid ? (!isImminent ? 'safe' : 'warn') : 'danger',
+    state: isValid ? (!isImminent ? 'safe' : 'warning') : 'danger',
     from: now.from(expirationDate),
     to: now.to(expirationDate),
   };

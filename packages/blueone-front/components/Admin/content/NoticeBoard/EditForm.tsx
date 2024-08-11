@@ -1,20 +1,23 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import { Form, Input, FormProps, message, FormInstance } from 'antd';
+import { Form, Input, FormProps, message, FormInstance, DatePicker } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
-import type { EndPoint } from '@typings';
-import { RangePicker } from '@components/Admin/content/commonParts/Picker';
+import { DatesToRange, EndPoint } from '@typings';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
 import { axiosFetcher } from '@utils/swr';
 import type { NoticeList, ProcessedNotice } from './index';
 
+const { RangePicker } = DatePicker;
+
 type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];
 type EditedNotice = EndPoint['PUT /notice/{noticeId}']['responses']['200'];
 type RequestError = EndPoint['PUT /notice/{noticeId}']['responses']['500'];
+
+type FormValues = DatesToRange<RequestBody>;
 type Props = {
-  form: FormInstance<RequestBody>;
+  form: FormInstance<FormValues>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevNotice: ProcessedNotice;
@@ -55,8 +58,8 @@ const NoticeEditForm = ({
     [prevNotice],
   );
 
-  const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
-    async (values) => {
+  const onFormFinish = useCallback(
+    async (values: FormValues) => {
       const body: RequestBody = {
         title: values.title,
         content: values.content,

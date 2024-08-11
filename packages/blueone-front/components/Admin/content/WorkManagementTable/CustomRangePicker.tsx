@@ -1,13 +1,15 @@
 import { Dispatch, memo, SetStateAction, useCallback, useMemo } from 'react';
-import { PickerProps, RangePickerProps } from 'antd/lib/date-picker/generatePicker';
-import { RangePicker } from '@components/Admin/content/commonParts/Picker';
+import { DatePicker } from 'antd';
+import type { RangePickerProps } from 'antd/es/date-picker';
 import dayjs from '@utils/dayjs';
 import type { DateRange } from './index';
+
+const { RangePicker } = DatePicker;
 
 type Props = {
   dateRange: DateRange;
   setDateRange: Dispatch<SetStateAction<DateRange>>;
-  disabledDate?: PickerProps<dayjs.Dayjs>['disabledDate'];
+  disabledDate?: RangePickerProps['disabledDate'];
 };
 
 const CustomRangePicker = ({ dateRange, setDateRange, disabledDate }: Props) => {
@@ -20,7 +22,7 @@ const CustomRangePicker = ({ dateRange, setDateRange, disabledDate }: Props) => 
     [dateRange],
   );
 
-  const handleChange: RangePickerProps<dayjs.Dayjs>['onChange'] = useCallback(
+  const handleChange = useCallback<NonNullable<RangePickerProps['onChange']>>(
     (_, [startDate, endDate]) => {
       setDateRange({
         start: startDate,
@@ -32,11 +34,20 @@ const CustomRangePicker = ({ dateRange, setDateRange, disabledDate }: Props) => 
 
   return (
     <RangePicker
-      ranges={{
-        Default: [dayjsRange.start, dayjsRange.end],
-        Today: [today, today],
-        'This Month': [today.startOf('month'), today],
-      }}
+      presets={[
+        {
+          label: 'Default',
+          value: [dayjsRange.start, dayjsRange.end],
+        },
+        {
+          label: 'Today',
+          value: [today, today],
+        },
+        {
+          label: 'This Month',
+          value: [today.startOf('month'), today],
+        },
+      ]}
       onChange={handleChange}
       value={[dayjsRange.start, dayjsRange.end]}
       disabledDate={disabledDate}

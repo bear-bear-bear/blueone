@@ -1,7 +1,8 @@
-import { useState, FC, useCallback } from 'react';
-import { Layout, Empty, Menu, MenuProps } from 'antd';
+import { useState, useCallback } from 'react';
+import { Layout, Empty, Menu } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
 import Image from 'next/image';
+import type { MenuInfo } from 'rc-menu/lib/interface';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
 import { TeamOutlined, CarOutlined, NotificationOutlined } from '@ant-design/icons';
@@ -22,7 +23,7 @@ const EmptyContent = () => (
   />
 );
 
-const AdminLayout: FC = () => {
+const AdminLayout = () => {
   // WorkManagementTable 에서 users 를 useSWRImmutable(revalidateOnMount: false)과 함께 사용하기 위한 initial fetch
   useSWRImmutable<Users>('/users', axiosFetcher, {
     revalidateOnMount: true,
@@ -36,9 +37,9 @@ const AdminLayout: FC = () => {
     setCollapsed((prev) => !prev);
   }, []);
 
-  const handleClick: MenuProps['onClick'] = useCallback((e) => {
-    setSelectedKey(e.key);
-  }, []);
+  const handleMenuClick = (e: MenuInfo) => {
+    setSelectedKey(e.key as ContentTitle);
+  };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -53,7 +54,7 @@ const AdminLayout: FC = () => {
 
         <Menu
           theme="dark"
-          onClick={handleClick}
+          onClick={handleMenuClick}
           defaultOpenKeys={['업무 관리']} // SubMenu
           selectedKeys={[selectedKey]} // MenuItem
           mode="inline"

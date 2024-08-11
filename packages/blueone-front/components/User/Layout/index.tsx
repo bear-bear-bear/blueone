@@ -1,4 +1,4 @@
-import { useMemo, FC, ReactNode } from 'react';
+import { useMemo, ReactNode } from 'react';
 import { Button } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -55,7 +55,7 @@ const navItems: NavItem[] = [
   },
 ];
 
-const ActiveLink: FC<{ active: boolean; item: NavItem }> = ({ item, active }) => (
+const ActiveLink = ({ item, active }: { active: boolean; item: NavItem }) => (
   <Link href={item.href} passHref>
     <S.ActiveAnchor active={active}>
       {active ? item.fillIcon : item.outlineIcon}
@@ -65,10 +65,11 @@ const ActiveLink: FC<{ active: boolean; item: NavItem }> = ({ item, active }) =>
 );
 
 type Props = {
+  children: ReactNode;
   bodyNoPadding?: boolean;
   useBack?: boolean;
 };
-const UserLayout: FC<Props> = ({ children, bodyNoPadding, useBack = false }) => {
+const UserLayout = ({ children, bodyNoPadding, useBack = false }: Props) => {
   const router = useRouter();
   const headerText = useMemo(() => navItems.find((item) => item.href === router.asPath)?.text, [router.asPath]);
 

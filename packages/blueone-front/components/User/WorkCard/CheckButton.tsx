@@ -1,9 +1,8 @@
-import { FC, memo, MouseEventHandler, useCallback, useMemo, useState } from 'react';
+import { memo, MouseEventHandler, useCallback, useMemo, useState } from 'react';
 import { Button, message } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Work } from '@typings';
-import type { MyWorks } from '@components/User/WorkCarousel';
 import useUser from '@hooks/useUser';
 import httpClient, { logAxiosError } from '@utils/axios';
 import getInsuranceExpirationInfo from '@utils/getInsuranceExpirationInfo';
@@ -13,13 +12,14 @@ type Props = {
   workId: Work['id'];
   isWorkChecked: boolean;
 };
+type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
 type WorkPatchError =
   | EndPoint['PATCH /works/{workId}']['responses']['403']
   | EndPoint['PATCH /works/{workId}']['responses']['404']
   | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
-const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
+const CheckButton = ({ workId, isWorkChecked }: Props) => {
   const { user } = useUser();
   const insuranceDate = getInsuranceExpirationInfo(user);
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
@@ -44,7 +44,7 @@ const CheckButton: FC<Props> = ({ workId, isWorkChecked }) => {
 
   return (
     <Button
-      type={buttonDisabled ? 'ghost' : 'primary'}
+      type={buttonDisabled ? 'text' : 'primary'}
       disabled={buttonDisabled}
       size="large"
       onClick={handleClick}

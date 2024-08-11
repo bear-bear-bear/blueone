@@ -1,57 +1,57 @@
-import { FC, MouseEventHandler, useCallback, useState } from 'react';
-import { Button as AntdButton, Checkbox, Form, FormProps, Modal, Tooltip } from 'antd';
+import { ReactElement, useState } from 'react';
+import { Button, Checkbox, Form, FormProps, Modal, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
 import { AiOutlinePlus } from 'react-icons/ai';
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+import type { WorkAddFormValues } from '@components/Admin/content/WorkManagementTable/AddForm';
 import AddForm from './AddForm';
 import type { ProcessedWork } from './index';
 
 type Props = {
   record?: ProcessedWork;
   swrKey?: string;
-  Button?: FC<{ onClick: MouseEventHandler<HTMLButtonElement> }>;
+  render?: (onClick: () => void) => ReactElement;
 };
 
-const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
-  const [form] = Form.useForm<WorkAddFormFields>();
+const AddButton = ({ record, swrKey = record?.swrKey, render }: Props) => {
+  const [form] = Form.useForm<WorkAddFormValues>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
   const [useBooking, setUseBooking] = useState<boolean>(!!record?.bookingDate);
 
-  const reset = useCallback(() => {
+  const reset = () => {
     form.resetFields();
     setUseBooking(!!record?.bookingDate);
     setFormValidateTrigger('onFinish');
-  }, [form, record?.bookingDate]);
+  };
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setIsModalOpen(false);
     reset();
-  }, [reset]);
+  };
 
-  const handleAddIconClick: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
+  const handleAddIconClick = () => {
     setIsModalOpen(true);
-  }, []);
+  };
 
-  const onChangeBookingCheckbox = useCallback((e: CheckboxChangeEvent) => {
+  const onChangeBookingCheckbox = (e: CheckboxChangeEvent) => {
     setUseBooking(e.target.checked);
-  }, []);
+  };
 
   return (
     <>
-      {Button ? (
-        <Button onClick={handleAddIconClick} />
+      {render ? (
+        render(handleAddIconClick)
       ) : (
         <Tooltip title="추가">
-          <AntdButton type="text" size="small" icon={<AiOutlinePlus />} onClick={handleAddIconClick} />
+          <Button type="text" size="small" icon={<AiOutlinePlus />} onClick={handleAddIconClick} />
         </Tooltip>
       )}
 
       {isModalOpen && (
         <Modal
           title={useBooking ? '업무 예약' : '업무 등록'}
-          visible
+          open
           onOk={form.submit}
           onCancel={closeModal}
           okText="등록"
@@ -68,15 +68,15 @@ const AddButton = ({ record, swrKey = record?.swrKey, Button }: Props) => {
               예약
             </Checkbox>,
 
-            <AntdButton key="clear" onClick={reset}>
+            <Button key="clear" onClick={reset}>
               초기화
-            </AntdButton>,
-            <AntdButton key="cancel" onClick={closeModal}>
+            </Button>,
+            <Button key="cancel" onClick={closeModal}>
               취소
-            </AntdButton>,
-            <AntdButton key="submit" type="primary" onClick={form.submit}>
+            </Button>,
+            <Button key="submit" type="primary" onClick={form.submit}>
               등록
-            </AntdButton>,
+            </Button>,
           ]}
         >
           <AddForm

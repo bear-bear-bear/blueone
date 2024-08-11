@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { message } from 'antd';
-import { DatePicker } from '@components/Admin/content/commonParts/Picker';
+import { DatePicker, message } from 'antd';
 import dayjs from '@utils/dayjs';
 
 type Props = {
@@ -9,7 +8,7 @@ type Props = {
 };
 
 const BookingDatePicker = ({ date, setDate }: Props) => {
-  const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(date);
+  const [localDate, setLocalDate] = useState<dayjs.Dayjs>(date);
   const now = dayjs();
 
   const getFormat = (target: dayjs.Dayjs) => {
@@ -19,32 +18,33 @@ const BookingDatePicker = ({ date, setDate }: Props) => {
   return (
     <DatePicker
       format={getFormat(date)}
-      showTime={{ defaultValue: dayjs('00:00:00', 'HH'), format: getFormat(selectedDate) }}
+      showTime={{ defaultValue: dayjs('00:00:00', 'HH'), format: getFormat(localDate) }}
       value={date}
-      onChange={(next) => {
+      onOk={(next) => {
         if (!next) {
           // block allow clear
           return;
         }
         if (+next.toDate() < +now.toDate()) {
           // block change by keyboard
-          message.warn('현재 시간 이후로만 선택할 수 있습니다.');
+          message.warning('현재 시간 이후로만 선택할 수 있습니다.');
           return;
         }
         setDate(next);
       }}
-      onSelect={setSelectedDate}
-      // block change by mouse
+      onChange={setLocalDate}
       disabledDate={(current: dayjs.Dayjs) => {
         return current && current < now.startOf('day');
       }}
-      disabledHours={() => {
-        const selectedDateIsToday = selectedDate.format('YYYY-MM-DD') === now.format('YYYY-MM-DD');
-        if (selectedDateIsToday) {
-          return range(0, now.get('hour'));
-        }
-        return [];
-      }}
+      disabledTime={(current) => ({
+        disabledHours: () => {
+          const selectedDateIsToday = current.format('YYYY-MM-DD') === now.format('YYYY-MM-DD');
+          if (selectedDateIsToday) {
+            return range(0, now.get('hour'));
+          }
+          return [];
+        },
+      })}
       allowClear={false}
       showNow={false}
     />

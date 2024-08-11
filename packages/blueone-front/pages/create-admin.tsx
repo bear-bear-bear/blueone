@@ -1,23 +1,25 @@
-import { useCallback } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import { AxiosError } from 'axios';
+import { EndPoint } from '@typings';
 import LoginLayout from '@components/Login/Layout';
 import styled from '@emotion/styled';
 import httpClient, { logAxiosError } from '@utils/axios';
 
-const TempPage = () => {
-  const onFormFinish = useCallback(async (values) => {
+type RequestBody = EndPoint['POST /users/admin']['requestBody'];
+
+const CreateAdminPage = () => {
+  const onFormFinish = async (values: RequestBody) => {
     try {
       await httpClient.post('/users/admin', values);
       message.success('등록 완료');
     } catch (err) {
       logAxiosError(err as AxiosError);
     }
-  }, []);
+  };
 
   return (
     <LoginLayout>
-      <Form layout="vertical" onFinish={onFormFinish}>
+      <Form<RequestBody> layout="vertical" onFinish={onFormFinish}>
         <Form.Item name="phoneNumber" label="전화번호" rules={[{ required: true }]}>
           <Input autoComplete="off" />
         </Form.Item>
@@ -45,4 +47,4 @@ const ButtonGroup = styled.div`
   flex-direction: column;
 `;
 
-export default TempPage;
+export default CreateAdminPage;

@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import { Avatar, Card, Skeleton, Space } from 'antd';
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import type { UserWithInfo } from '@components/User/Settings/index';
@@ -15,7 +14,7 @@ export const SettingsSkeleton = () => (
   </div>
 );
 
-export const SettingsHeader: FC<{ user: UserWithInfo }> = ({ user }) => (
+export const SettingsHeader = ({ user }: { user: UserWithInfo }) => (
   <S.StyledCard>
     <Card.Meta
       avatar={<Avatar icon={<UserOutlined />} size={54} style={{ backgroundColor: '#00598d' }} />}
@@ -30,4 +29,6 @@ export const SettingsHeader: FC<{ user: UserWithInfo }> = ({ user }) => (
   </S.StyledCard>
 );
 
-export const SettingsFooter: FC = () => <S.Footer>Copyright ©2014-2022 BLUEONE, Inc. All rights reserved.</S.Footer>;
+export const SettingsFooter = () => {
+  return <S.Footer>Copyright ©2014-2022 BLUEONE, Inc. All rights reserved.</S.Footer>;
+};

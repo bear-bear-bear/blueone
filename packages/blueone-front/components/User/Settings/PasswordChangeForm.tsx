@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
-import { Form, Input, FormProps, message, FormInstance } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
+import { Form, Input, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import type { EndPoint } from '@typings';
@@ -26,24 +26,21 @@ const validateMessages = {
 };
 
 const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
-  const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
-    async (values) => {
-      const reqBody: RequestBody = {
-        password: values.password,
-      };
+  const onFormFinish = async (values: RequestBody) => {
+    const reqBody: RequestBody = {
+      password: values.password,
+    };
 
-      setSubmitLoading(true);
-      try {
-        await httpClient.post<Response>('/user/password', reqBody).then((res) => res.data);
-        closeModal();
-        message.success('비밀번호가 변경되었어요.', 4);
-      } catch (err) {
-        logAxiosError<RequestError>(err as AxiosError<RequestError>);
-      }
-      setSubmitLoading(false);
-    },
-    [closeModal, setSubmitLoading],
-  );
+    setSubmitLoading(true);
+    try {
+      await httpClient.post<Response>('/user/password', reqBody).then((res) => res.data);
+      closeModal();
+      message.success('비밀번호가 변경되었어요.', 4);
+    } catch (err) {
+      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+    }
+    setSubmitLoading(false);
+  };
 
   return (
     <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
@@ -60,7 +57,7 @@ const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
         rules={[
           { required: true },
           ({ getFieldValue }) => ({
-            validator(rule, value) {
+            validator(_rule, value) {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }

@@ -1,11 +1,11 @@
-import { MouseEventHandler, FC, useCallback, useState } from 'react';
+import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
 import type { EndPoint } from '@typings';
 import PasswordChangeForm from './PasswordChangeForm';
 
 type RequestBody = EndPoint['POST /user/password']['requestBody'];
 
-const PasswordChangeButton: FC = () => {
+const PasswordChangeButton = () => {
   const [form] = Form.useForm<RequestBody>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,7 +26,7 @@ const PasswordChangeButton: FC = () => {
       </Button>
       <Modal
         title="비밀번호 변경"
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
         okText="변경"

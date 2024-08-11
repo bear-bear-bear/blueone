@@ -1,20 +1,23 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import { Form, Input, FormProps, message, FormInstance } from 'antd';
+import { Form, Input, message, FormInstance, DatePicker } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
-import type { EndPoint } from '@typings';
-import { RangePicker } from '@components/Admin/content/commonParts/Picker';
+import { DatesToRange, EndPoint } from '@typings';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
 import { axiosFetcher } from '@utils/swr';
 import type { NoticeList } from './index';
 
+const { RangePicker } = DatePicker;
+
 type RequestBody = EndPoint['POST /notice']['requestBody'];
 type Response = EndPoint['POST /notice']['responses']['202'];
 type RequestError = EndPoint['POST /notice']['responses']['500'];
+
+type FormValues = DatesToRange<RequestBody>;
 type Props = {
-  form: FormInstance<RequestBody>;
+  form: FormInstance<FormValues>;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
   closeModal: () => void;
   swrKey: string;
@@ -41,8 +44,8 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
     },
   );
 
-  const onFormFinish: FormProps<RequestBody>['onFinish'] = useCallback(
-    async (values) => {
+  const onFormFinish = useCallback(
+    async (values: FormValues) => {
       const body: RequestBody = {
         title: values.title,
         content: values.content,

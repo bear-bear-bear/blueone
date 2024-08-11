@@ -1,39 +1,26 @@
-import { useCallback, useEffect, useRef } from 'react';
+'use client';
+import { useEffect, useRef } from 'react';
 import { Card, Carousel, message } from 'antd';
 import useSWR from 'swr';
 import type { EndPoint } from '@typings';
-import type { Settings } from '@ant-design/react-slick';
 import EmptyContent from '@components/User/commonParts/Empty';
 import { Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import WorkCard from '../WorkCard';
 import * as S from './styles';
 
-export type MyWorks = EndPoint['GET /user/works']['responses']['200'];
+type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 
-const tempLocalStorage = {
-  setItem() {
-    return null;
-  },
-  getItem() {
-    return '0';
-  },
-};
-
-const WorkCarousel = () => {
+export default function WorkCarousel() {
   const { data: myWorks } = useSWR<MyWorks>('/user/works', axiosFetcher, {
     refreshInterval: 60 * 1000,
   });
   const prevWorkCount = useRef<number | undefined>(myWorks?.length);
-  const localStorage = typeof window !== 'undefined' ? window.localStorage : tempLocalStorage;
   const initialSlide = Number(localStorage.getItem('currSlide'));
 
-  const afterChange: Settings['afterChange'] = useCallback(
-    (currSlide) => {
-      localStorage.setItem('currSlide', currSlide.toString());
-    },
-    [localStorage],
-  );
+  const afterChange = (currSlide: number) => {
+    localStorage.setItem('currSlide', currSlide.toString());
+  };
 
   useEffect(() => {
     if (!prevWorkCount.current) return;
@@ -66,6 +53,4 @@ const WorkCarousel = () => {
       </Carousel>
     </>
   );
-};
-
-export default WorkCarousel;
+}

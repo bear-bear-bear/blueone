@@ -3,7 +3,7 @@ import media from '@utils/media';
 import FontFace from './_FontFace';
 import Resets from './_Resets';
 
-export const globalCSS = css`
+const globalCSS = css`
   *,
   *::before,
   *::after {

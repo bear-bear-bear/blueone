@@ -1,4 +1,4 @@
-import { MouseEventHandler, FC, useCallback, useState, memo } from 'react';
+import { MouseEventHandler, useCallback, useState, memo } from 'react';
 import { Button, message, Modal } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
@@ -18,14 +18,14 @@ type WorkPatchError =
   | EndPoint['PATCH /works/{workId}']['responses']['404']
   | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
-const DoneButton: FC<Props> = ({ workId, isWorkChecked, isWorkDone }) => {
+const DoneButton = ({ workId, isWorkChecked, isWorkDone }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const deleteWork = useCallback(async () => {
     if (!isWorkChecked) {
-      message.warn('확인 처리되지 않은 업무는 완료할 수 없어요.', 4);
+      message.warning('확인 처리되지 않은 업무는 완료할 수 없어요.', 4);
       return;
     }
     setLoading(true);
@@ -56,7 +56,7 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked, isWorkDone }) => {
   return (
     <>
       <Button
-        type={isWorkChecked ? 'primary' : 'ghost'}
+        type={isWorkChecked ? 'primary' : 'text'}
         disabled={!isWorkChecked || isWorkDone}
         size="large"
         onClick={handleButtonClick}
@@ -65,7 +65,7 @@ const DoneButton: FC<Props> = ({ workId, isWorkChecked, isWorkDone }) => {
         완료
       </Button>
       <Modal
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={deleteWork}
         onCancel={closeModal}
         okText="완료"

@@ -3,10 +3,10 @@ import { Button, Form, FormProps, Modal } from 'antd';
 import type { EndPoint } from '@typings';
 import AddForm from './AddForm';
 
-export type CreateRequestBody = EndPoint['POST /users']['requestBody'];
+type RequestBody = EndPoint['POST /users']['requestBody'];
 
 const AddButton = () => {
-  const [form] = Form.useForm<CreateRequestBody>();
+  const [form] = Form.useForm<RequestBody>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
@@ -28,7 +28,7 @@ const AddButton = () => {
       </Button>
       <Modal
         title="기사 등록"
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
         okText="등록"

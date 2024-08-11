@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { useMemo } from 'react';
 import addFloats from '@utils/addFloats';
 import type { ProcessedWork } from './index';
 
@@ -6,7 +6,7 @@ type Props = {
   workData: ProcessedWork[];
 };
 
-const TotalFee: FC<Props> = ({ workData }) => {
+const TotalFee = ({ workData }: Props) => {
   const totalFee = useMemo(() => {
     const initialValue: { [key in keyof Pick<ProcessedWork, 'charge' | 'subsidy' | 'payout'>]: number } = {
       charge: 0,

@@ -1,43 +1,52 @@
-import { Dispatch, SetStateAction } from 'react';
-import { Divider, Select, Tooltip } from 'antd';
+import { useMemo } from 'react';
+import { Divider, FormInstance, Select, Tooltip } from 'antd';
 import useSWR from 'swr';
 import type { EndPoint, User } from '@typings';
 import { WarningOutlined } from '@ant-design/icons';
+import type { WorkAddFormValues } from '@components/Admin/content/WorkManagementTable/AddForm';
 import getInsuranceExpirationInfo from '@utils/getInsuranceExpirationInfo';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import { axiosFetcher } from '@utils/swr';
 
 type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {
-  value: User['id'] | null;
-  setValue: Dispatch<SetStateAction<User['id'] | null>>;
+  form: FormInstance<WorkAddFormValues>;
+  defaultValue?: WorkAddFormValues['userId'];
+  disabled?: boolean;
+  immutable?: boolean;
 };
 
-export default function UserPicker({ value, setValue }: Props) {
+export default function UserSelector({ form, defaultValue, disabled = false, immutable = false }: Props) {
   const { data: users } = useSWR<Users>('/users', axiosFetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,
-    revalidateOnMount: true,
+    revalidateOnMount: !immutable,
   });
 
-  const handleSelect = (v: User['id']) => {
-    setValue(v);
+  const isDeletedUser = useMemo(() => {
+    if (!users) return false;
+
+    return typeof defaultValue === 'number' && users.findIndex((user) => user.id === defaultValue) < 0;
+  }, [users, defaultValue]);
+
+  const handleSelect = (v: number) => {
+    form.setFieldsValue({ userId: v });
   };
 
   const handleClear = () => {
-    setValue(null);
+    form.setFieldsValue({ userId: undefined });
   };
 
   return (
     <Select<User['id']>
-      placeholder="모든 기사의 업무 표시"
+      placeholder={isDeletedUser ? '(삭제된 기사가 배정되어 있습니다)' : '업무를 배정받을 기사 선택'}
       showSearch
       optionFilterProp="children"
       onSelect={handleSelect}
       onClear={handleClear}
       allowClear
-      value={value}
-      style={{ width: '14rem' }}
+      defaultValue={isDeletedUser ? undefined : defaultValue ?? undefined}
+      disabled={disabled}
       loading={!users}
     >
       {users?.map((user) => {

@@ -1,17 +1,18 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
-import type { EndPoint } from '@typings';
+import { DatesToRange, EndPoint } from '@typings';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './EditForm';
 import type { ProcessedNotice } from './index';
 
 type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];
+type FormValues = DatesToRange<RequestBody>;
 type Props = {
   record: ProcessedNotice;
 };
 
 const EditButton = ({ record }: Props) => {
-  const [form] = Form.useForm<RequestBody>();
+  const [form] = Form.useForm<FormValues>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
@@ -33,7 +34,7 @@ const EditButton = ({ record }: Props) => {
       </Tooltip>
       <Modal
         title="공지사항 수정"
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
         okText="수정"

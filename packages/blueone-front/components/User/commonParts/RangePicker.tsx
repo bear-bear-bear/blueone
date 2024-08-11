@@ -1,14 +1,7 @@
-import generatePicker from 'antd/lib/date-picker/generatePicker';
-import { Dayjs } from 'dayjs';
-import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import { css } from '@emotion/react';
 import 'antd/lib/date-picker/style/index';
 
-const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
-const { RangePicker } = DatePicker;
-
-export default RangePicker;
-
+// TODO: antd 5.x에서 잘 동작하는지 확인
 export const rangePickerNextMonthSectionHideStyles = css`
   .ant-picker {
     &-panels > *:first-of-type button.ant-picker-header-next-btn {

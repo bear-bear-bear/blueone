@@ -1,11 +1,10 @@
-import type { FC } from 'react';
 import { Empty } from 'antd';
 
 type Props = {
   description?: string;
 };
 
-const EmptyContent: FC<Props> = ({ description }) => (
+const EmptyContent = ({ description }: Props) => (
   <Empty
     image={Empty.PRESENTED_IMAGE_SIMPLE}
     imageStyle={{

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
@@ -7,10 +7,11 @@ import type { EndPoint } from '@typings';
 import httpClient, { logAxiosError } from '@utils/axios';
 import regex from '@utils/regex';
 import { axiosFetcher } from '@utils/swr';
-import type { CreateRequestBody } from './AddButton';
+
+type RequestBody = EndPoint['POST /users']['requestBody'];
 
 type Props = {
-  form: FormInstance<CreateRequestBody>;
+  form: FormInstance<RequestBody>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   closeModal: () => void;
@@ -25,7 +26,7 @@ const layout: { [ColName: string]: ColProps } = {
   wrapperCol: { flex: 'auto' },
 };
 
-const validateMessages: FormProps<CreateRequestBody>['validateMessages'] = {
+const validateMessages: FormProps<RequestBody>['validateMessages'] = {
   required: '필수 입력 값입니다.',
   pattern: {
     mismatch: '형식이 올바르지 않습니다.',
@@ -38,26 +39,23 @@ const validateMessages: FormProps<CreateRequestBody>['validateMessages'] = {
 const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoading, closeModal }: Props) => {
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
 
-  const onFormFinish: FormProps<CreateRequestBody>['onFinish'] = useCallback(
-    async (values) => {
-      setSubmitLoading(true);
-      try {
-        const createdUser = await httpClient.post<CreatedUser>('/users', values).then((res) => res.data);
-        const nextUsers = [createdUser, ...(users ?? [])];
-        await mutateUsers(nextUsers);
-        message.success('기사 등록 완료');
-        closeModal();
-      } catch (err) {
-        logAxiosError<UserCreationError>(err as AxiosError<UserCreationError>);
-      }
-      setSubmitLoading(false);
-    },
-    [users, closeModal, mutateUsers, setSubmitLoading],
-  );
+  const onFormFinish = async (values: RequestBody) => {
+    setSubmitLoading(true);
+    try {
+      const createdUser = await httpClient.post<CreatedUser>('/users', values).then((res) => res.data);
+      const nextUsers = [createdUser, ...(users ?? [])];
+      await mutateUsers(nextUsers);
+      message.success('기사 등록 완료');
+      closeModal();
+    } catch (err) {
+      logAxiosError<UserCreationError>(err as AxiosError<UserCreationError>);
+    }
+    setSubmitLoading(false);
+  };
 
-  const onFormFinishFailed = useCallback(() => {
+  const onFormFinishFailed = () => {
     setValidateTrigger(['onFinish', 'onChange']);
-  }, [setValidateTrigger]);
+  };
 
   return (
     <Form

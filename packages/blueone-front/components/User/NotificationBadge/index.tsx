@@ -1,10 +1,10 @@
-import { useEffect, FC, ReactNode, useCallback } from 'react';
+import { useEffect, ReactNode, useCallback } from 'react';
 import { Button, message, notification, Tooltip } from 'antd';
 import { CloseOutlined, InfoOutlined, WarningOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
 export type Props = {
-  type: 'info' | 'warn' | 'error';
+  type: 'info' | 'warning' | 'error';
   content: string;
 };
 
@@ -19,7 +19,7 @@ const dict: Record<
     title: <S.BoldTitle>정보 알림</S.BoldTitle>,
     icon: <InfoOutlined style={{ color: '#177DDC', fontSize: 'inherit' }} />,
   },
-  warn: {
+  warning: {
     title: <S.BoldTitle>경고 알림</S.BoldTitle>,
     icon: <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />,
   },
@@ -29,7 +29,7 @@ const dict: Record<
   },
 };
 
-const NotificationBadge: FC<Props> = ({ type, content }) => {
+const NotificationBadge = ({ type, content }: Props) => {
   const { title, icon } = dict[type];
 
   const handleClick = useCallback(() => {

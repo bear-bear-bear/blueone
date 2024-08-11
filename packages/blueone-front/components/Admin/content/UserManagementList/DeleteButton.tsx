@@ -52,7 +52,7 @@ const DeleteButton = ({ user }: Props) => {
     <>
       <Popconfirm
         title={popoverText}
-        visible={isPopoverOpen}
+        open={isPopoverOpen}
         onConfirm={deleteWork}
         okText="삭제"
         okButtonProps={{ danger: true }}

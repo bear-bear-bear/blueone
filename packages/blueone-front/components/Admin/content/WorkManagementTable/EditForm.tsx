@@ -4,16 +4,16 @@ import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Work } from '@typings';
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+import type { WorkAddFormValues } from '@components/Admin/content/WorkManagementTable/AddForm';
 import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
-import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
+import UserSelector from '@components/Admin/content/commonParts/UserSelector';
 import { useBookingDate } from '@hooks/useBookingDate';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import type { FullWorks, ProcessedWork } from './index';
 
 type Props = {
-  form: FormInstance<WorkAddFormFields>;
+  form: FormInstance<WorkAddFormValues>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork: ProcessedWork;
@@ -60,7 +60,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
     }
   }, []);
 
-  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = async (values) => {
+  const onFormFinish: FormProps<WorkAddFormValues>['onFinish'] = async (values) => {
     const reqBody: WorkPutRequestBody = {
       ...values,
       waypoint: values.waypoint ?? null,
@@ -140,7 +140,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
         <InputNumber autoComplete="off" />
       </Form.Item>
       <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelector form={form} defaultUserId={prevWork.userId} disabled={!!prevWork.endTime} immutable />
+        <UserSelector form={form} defaultValue={prevWork.userId} disabled={!!prevWork.endTime} immutable />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />

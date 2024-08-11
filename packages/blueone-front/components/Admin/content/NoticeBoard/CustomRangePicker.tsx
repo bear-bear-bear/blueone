@@ -1,7 +1,9 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import { RangePicker } from '@components/Admin/content/commonParts/Picker';
+import { DatePicker } from 'antd';
 import dayjs from '@utils/dayjs';
 import type { DateRange } from './index';
+
+const { RangePicker } = DatePicker;
 
 type Props = {
   dateRange: DateRange;
@@ -30,11 +32,20 @@ const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
 
   return (
     <RangePicker
-      ranges={{
-        Default: [today.subtract(7, 'days'), today],
-        Today: [today, today],
-        'This Month': [today.startOf('month'), today],
-      }}
+      presets={[
+        {
+          label: 'Default',
+          value: [today.subtract(7, 'days'), today],
+        },
+        {
+          label: 'Today',
+          value: [today, today],
+        },
+        {
+          label: 'This Month',
+          value: [today.startOf('month'), today],
+        },
+      ]}
       onChange={handleChange}
       defaultValue={[dayjs(dateRange.start), dayjs(dateRange.end)]}
       disabledDate={disabledDate}

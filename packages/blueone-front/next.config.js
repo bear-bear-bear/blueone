@@ -1,10 +1,19 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const withPlugins = require('next-compose-plugins');
-const withAntdLess = require('next-plugin-antd-less');
-const theme = require('./globalStyles/theme');
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  swcMinify: true,
+  transpilePackages: [
+    'antd',
+    '@ant-design',
+    '@ant-design/icons',
+    'rc-util',
+    'rc-picker',
+    'rc-tree',
+    'rc-pagination',
+    'rc-table',
+  ],
+  compiler: {
+    emotion: true,
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -14,15 +23,3 @@ const nextConfig = {
     return config;
   },
 };
-
-module.exports = withPlugins(
-  [
-    [
-      withAntdLess,
-      {
-        modifyVars: { '@primary-color': theme.primaryColor },
-      },
-    ],
-  ],
-  nextConfig,
-);

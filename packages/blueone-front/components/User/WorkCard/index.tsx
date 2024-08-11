@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { memo } from 'react';
 import { Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
 import type { Unpacked } from '@typings';
@@ -25,7 +25,12 @@ const WorkDoneStamp = () => (
   </Tooltip>
 );
 
-const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ label, content, copyable = false }) => (
+type InfoRowProps = {
+  label: string;
+  content: string;
+  copyable?: boolean;
+};
+const InfoRow = ({ label, content, copyable = false }: InfoRowProps) => (
   <S.Row>
     <p>{label}:</p>
 
@@ -38,11 +43,6 @@ const InfoRow: FC<{ label: string; content: string; copyable?: boolean }> = ({ l
     )}
   </S.Row>
 );
-
-const emphasisStyle = {
-  color: 'red',
-  fontWeight: 500,
-};
 
 const WorkCard = ({ work, readOnly = false }: Props) => {
   const isWorkChecked = !!work.checkTime;

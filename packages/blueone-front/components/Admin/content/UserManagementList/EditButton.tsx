@@ -33,7 +33,7 @@ const EditButton = ({ user }: Props) => {
       </Tooltip>
       <Modal
         title="기사 정보 수정"
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={form.submit}
         onCancel={closeModal}
         okText="수정"

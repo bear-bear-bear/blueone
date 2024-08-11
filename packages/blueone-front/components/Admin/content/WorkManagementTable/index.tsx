@@ -146,7 +146,7 @@ const WorkManagementTable = () => {
       <S.TableHeader>
         <section>
           <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} disabledDate={disabledDate} />
-          <UserPicker pickedUserId={pickedUserId} setPickedUserId={setPickedUserId} />
+          <UserPicker value={pickedUserId} setValue={setPickedUserId} />
           <Checkbox
             checked={isVisiblePastDoneWork}
             disabled={isVisibleBookedWork}
@@ -167,7 +167,7 @@ const WorkManagementTable = () => {
         </section>
         <AddButton
           swrKey={swrKey}
-          Button={({ onClick }) => (
+          render={(onClick) => (
             <Button type="default" onClick={onClick}>
               등록
             </Button>

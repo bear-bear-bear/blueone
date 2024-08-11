@@ -1,3 +1,5 @@
+import dayjs from '@utils/dayjs';
+
 export type Unpacked<T> = T extends (infer U)[]
   ? U
   : T extends (...args: any[]) => infer U
@@ -7,6 +9,13 @@ export type Unpacked<T> = T extends (infer U)[]
   : T;
 
 type ISODateString = string;
+
+export type DatesToRange<T extends { startDate: ISODateString; endDate: ISODateString }> = Omit<
+  T,
+  'startDate' | 'endDate'
+> & {
+  dateRange: [dayjs.Dayjs, dayjs.Dayjs];
+};
 
 export type UserInfo = {
   id: number;
@@ -221,6 +230,21 @@ export interface EndPoint {
   'GET /users/{userId}/works': {
     responses: {
       200: Work[];
+      500: ErrorMessage;
+    };
+  };
+  /**
+   * 어드민 생성
+   */
+  'POST /users/admin': {
+    requestBody: {
+      phoneNumber: string;
+      password: string;
+      adminCreateKey: string;
+    };
+    responses: {
+      202: User;
+      409: ErrorMessage;
       500: ErrorMessage;
     };
   };

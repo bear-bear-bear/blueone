@@ -14,7 +14,7 @@ const { Item } = List;
 
 const mainColor: { [key in InsuranceState]: string } = {
   safe: '#ccc',
-  warn: '#eed202',
+  warning: '#eed202',
   danger: '#ff4d4f',
 };
 
@@ -22,13 +22,13 @@ const getTitle: (state: InsuranceState, realname: string) => ReactNode = (state,
   switch (state) {
     case 'safe':
       return <span>{realname}</span>;
-    case 'warn':
+    case 'warning':
       return (
         <>
           <span>{realname}</span>
           &nbsp;
           <Tooltip title="보험 만료가 얼마 남지 않았습니다.">
-            <WarningOutlined style={{ color: mainColor.warn, verticalAlign: 'text-top' }} />
+            <WarningOutlined style={{ color: mainColor.warning, verticalAlign: 'text-top' }} />
           </Tooltip>
         </>
       );

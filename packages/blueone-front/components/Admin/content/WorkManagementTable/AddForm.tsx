@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
 import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
-import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
+import UserSelector from '@components/Admin/content/commonParts/UserSelector';
 import { useBookingDate } from '@hooks/useBookingDate';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
@@ -14,14 +14,14 @@ import type { FullWorks, ProcessedWork } from './index';
 export type RequestBody = EndPoint['POST /works']['requestBody'];
 export type Response = EndPoint['POST /works']['responses']['201'];
 export type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
-export type WorkAddFormFields = Omit<RequestBody, 'userId' | 'waypoint' | 'remark'> & {
+export type WorkAddFormValues = Omit<RequestBody, 'userId' | 'waypoint' | 'remark'> & {
   userId?: RequestBody['userId'];
   waypoint?: RequestBody['waypoint'];
   remark?: RequestBody['remark'];
 };
 
 type Props = {
-  form: FormInstance<WorkAddFormFields>;
+  form: FormInstance<WorkAddFormValues>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork?: ProcessedWork;
@@ -63,7 +63,7 @@ const WorkAddForm = ({
   });
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
 
-  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = async (values) => {
+  const onFormFinish = async (values: WorkAddFormValues) => {
     const reqBody: RequestBody = {
       ...values,
       waypoint: values.waypoint ?? null,
@@ -86,9 +86,9 @@ const WorkAddForm = ({
     setSubmitLoading(false);
   };
 
-  const onFormFinishFailed = useCallback(() => {
+  const onFormFinishFailed = () => {
     setValidateTrigger(['onFinish', 'onChange']);
-  }, [setValidateTrigger]);
+  };
 
   return (
     <Form
@@ -138,7 +138,7 @@ const WorkAddForm = ({
         <InputNumber autoComplete="off" />
       </Form.Item>
       <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <UserSelector form={form} defaultUserId={prevWork?.userId} immutable />
+        <UserSelector form={form} defaultValue={prevWork?.userId} immutable />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />

@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import { EndPoint } from '@typings';
 import { EditOutlined } from '@ant-design/icons';
-import type { WorkAddFormFields } from '@components/Admin/content/WorkManagementTable/AddForm';
+import type { WorkAddFormValues } from '@components/Admin/content/WorkManagementTable/AddForm';
 import httpClient, { logAxiosError } from '@utils/axios';
 import { axiosFetcher } from '@utils/swr';
 import EditForm from './EditForm';
@@ -28,7 +28,7 @@ type WorkForceActivateError =
 
 const EditButton = ({ record }: Props) => {
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
-  const [form] = Form.useForm<WorkAddFormFields>();
+  const [form] = Form.useForm<WorkAddFormValues>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
@@ -84,7 +84,7 @@ const EditButton = ({ record }: Props) => {
       {isModalOpen && (
         <Modal
           title={record.bookingDate ? '예약 수정' : '업무 수정'}
-          visible
+          open
           maskClosable={false}
           confirmLoading={submitLoading}
           onOk={form.submit}

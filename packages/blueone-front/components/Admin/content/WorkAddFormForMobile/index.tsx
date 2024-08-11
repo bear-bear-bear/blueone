@@ -6,10 +6,10 @@ import { DeleteOutlined } from '@ant-design/icons';
 import type {
   RequestBody,
   RequestError,
-  WorkAddFormFields,
+  WorkAddFormValues,
 } from '@components/Admin/content/WorkManagementTable/AddForm';
 import BookingDatePicker from '@components/Admin/content/WorkManagementTable/BookingDatePicker';
-import UserSelector from '@components/Admin/content/commonParts/FormUserSelector';
+import UserSelector from '@components/Admin/content/commonParts/UserSelector';
 import { useBookingDate } from '@hooks/useBookingDate';
 import httpClient, { logAxiosError } from '@utils/axios';
 import dayjs from '@utils/dayjs';
@@ -36,7 +36,7 @@ const validateMessages = {
 };
 
 const WorkAddForm = () => {
-  const [form] = Form.useForm<WorkAddFormFields>();
+  const [form] = Form.useForm<WorkAddFormValues>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
   const [bookingDate, setBookingDate] = useBookingDate();
   const [useBooking, setUseBooking] = useState<boolean>(false);
@@ -48,29 +48,26 @@ const WorkAddForm = () => {
     setValidateTrigger('onFinish');
   }, [form, setBookingDate]);
 
-  const onFormFinish: FormProps<WorkAddFormFields>['onFinish'] = useCallback(
-    async (values) => {
-      const reqBody: RequestBody = {
-        ...values,
-        waypoint: values.waypoint ?? null,
-        userId: values.userId ?? null,
-        remark: values.remark?.trim() ?? null,
-        bookingDate: useBooking ? bookingDate.format() : null,
-      };
+  const onFormFinish = async (values: WorkAddFormValues) => {
+    const reqBody: RequestBody = {
+      ...values,
+      waypoint: values.waypoint ?? null,
+      userId: values.userId ?? null,
+      remark: values.remark?.trim() ?? null,
+      bookingDate: useBooking ? bookingDate.format() : null,
+    };
 
-      try {
-        await httpClient.post<Response>('/works', reqBody);
-        message.success('업무 등록 완료');
-      } catch (err) {
-        logAxiosError<RequestError>(err as AxiosError<RequestError>);
-      }
-    },
-    [bookingDate, useBooking],
-  );
+    try {
+      await httpClient.post<Response>('/works', reqBody);
+      message.success('업무 등록 완료');
+    } catch (err) {
+      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+    }
+  };
 
-  const onFormFinishFailed = useCallback(() => {
+  const onFormFinishFailed = () => {
     setValidateTrigger(['onFinish', 'onChange']);
-  }, [setValidateTrigger]);
+  };
 
   return (
     <S.Container>
@@ -78,12 +75,12 @@ const WorkAddForm = () => {
         <Checkbox checked={useBooking} onChange={(e) => setUseBooking(e.target.checked)} style={{ padding: '5px 0' }}>
           예약
         </Checkbox>
-        <Button type="ghost" icon={<DeleteOutlined />} onClick={reset}>
+        <Button type="text" icon={<DeleteOutlined />} onClick={reset}>
           초기화
         </Button>
       </S.ActionsWrapper>
 
-      <Form
+      <Form<WorkAddFormValues>
         {...layout}
         form={form}
         onFinish={onFormFinish}

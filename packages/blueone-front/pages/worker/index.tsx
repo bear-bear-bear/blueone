@@ -25,9 +25,9 @@ const WorkPage: NextPage = () => {
   if (!isLoggedIn) return null;
   return (
     <UserLayout>
-      {insuranceDate.state === 'warn' && (
+      {insuranceDate.state === 'warning' && (
         <NotificationBadge
-          type="warn"
+          type="warning"
           content={`보험 만료 ${insuranceDate.from} 입니다. 보험이 만료되면 업무 수행이 불가하니, 갱신 후 사무실로 알려주세요.`}
         />
       )}

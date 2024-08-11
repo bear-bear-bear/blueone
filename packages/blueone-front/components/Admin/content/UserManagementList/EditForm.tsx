@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import { Form, Input, FormProps, message, FormInstance } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import { AxiosError } from 'axios';
@@ -59,26 +59,23 @@ const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, set
     [dateOfBirth, insuranceExpirationDate, insuranceNumber, licenseNumber, licenseType, phoneNumber, realname],
   );
 
-  const onFormFinish: FormProps<UpdateRequestBody>['onFinish'] = useCallback(
-    async (values) => {
-      setSubmitLoading(true);
-      try {
-        const updatedUser = await httpClient.put<UpdatedUser>(`/users/${prevUser.id}`, values).then((res) => res.data);
-        const nextUsers = users?.map((user) => (user.id !== updatedUser.id ? user : updatedUser));
-        await mutateUsers(nextUsers);
-        message.success('기사 정보 수정 완료');
-        closeModal();
-      } catch (err) {
-        logAxiosError<UserUpdateError>(err as AxiosError<UserUpdateError>);
-      }
-      setSubmitLoading(false);
-    },
-    [prevUser, users, closeModal, mutateUsers, setSubmitLoading],
-  );
+  const onFormFinish = async (values: UpdateRequestBody) => {
+    setSubmitLoading(true);
+    try {
+      const updatedUser = await httpClient.put<UpdatedUser>(`/users/${prevUser.id}`, values).then((res) => res.data);
+      const nextUsers = users?.map((user) => (user.id !== updatedUser.id ? user : updatedUser));
+      await mutateUsers(nextUsers);
+      message.success('기사 정보 수정 완료');
+      closeModal();
+    } catch (err) {
+      logAxiosError<UserUpdateError>(err as AxiosError<UserUpdateError>);
+    }
+    setSubmitLoading(false);
+  };
 
-  const onFormFinishFailed = useCallback(() => {
+  const onFormFinishFailed = () => {
     setValidateTrigger(['onFinish', 'onChange']);
-  }, [setValidateTrigger]);
+  };
 
   return (
     <Form
