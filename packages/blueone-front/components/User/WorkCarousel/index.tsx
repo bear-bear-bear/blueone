@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { Card, Carousel, message } from 'antd';
+import { App, Card, Carousel } from 'antd';
 import useSWR from 'swr';
 import type { EndPoint } from '@typings';
 import { css, Global } from '@emotion/react';
@@ -13,6 +13,7 @@ import EmptyContent from '../commonParts/Empty';
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 
 export default function WorkCarousel() {
+  const { message } = App.useApp();
   const { data: myWorks } = useSWR<MyWorks>('/user/works', axiosFetcher, {
     refreshInterval: 60 * 1000,
   });

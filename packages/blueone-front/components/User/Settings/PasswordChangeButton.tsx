@@ -34,10 +34,7 @@ const PasswordChangeButton = () => {
         okButtonProps={{ size: 'large' }}
         cancelButtonProps={{ size: 'large' }}
         confirmLoading={loading}
-        style={{
-          top: '50%',
-          transform: 'translateY(-50%)',
-        }}
+        centered
       >
         <PasswordChangeForm form={form} closeModal={closeModal} setSubmitLoading={setLoading} />
       </Modal>

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import { Form, Input, message, FormInstance, DatePicker } from 'antd';
+import { Form, Input, FormInstance, DatePicker, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
@@ -36,6 +36,7 @@ const validateMessages = {
 };
 
 const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) => {
+  const { message } = App.useApp();
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
     swrKey || '/notice',
     axiosFetcher,

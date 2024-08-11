@@ -2,37 +2,62 @@ import { List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
 import LogoutButton from '@components/LogoutButton';
+import { css, Global } from '@emotion/react';
 import { axiosFetcher } from '@utils/swr';
 import PasswordChangeButton from './PasswordChangeButton';
 import { SettingsFooter, SettingsHeader, SettingsSkeleton } from './parts';
-import * as S from './styles';
 
-export type UserWithInfo = EndPoint['GET /user']['responses']['200'];
+type User = EndPoint['GET /user']['responses']['200'];
 
-const items = [
-  <PasswordChangeButton key="passwordChangeButton" />,
-  <LogoutButton key="logoutButton" kind="text" style={{ color: 'white', padding: 0, textAlign: 'left' }} block />,
-];
-
-const Settings = () => {
-  const { data: user } = useSWRImmutable<UserWithInfo>('/user', axiosFetcher);
+export default function Settings() {
+  const { data: user } = useSWRImmutable<User>('/user', axiosFetcher);
 
   if (!user) {
     return <SettingsSkeleton />;
   }
   return (
-    <S.StyleCustomWrapper>
+    <>
+      <Global styles={globalCSS} />
+
       <List
         header={<SettingsHeader user={user} />}
         footer={<SettingsFooter />}
         dataSource={items}
         renderItem={(item) => <List.Item>{item}</List.Item>}
         style={{
-          color: '#fff',
+          padding: 'unset',
         }}
       />
-    </S.StyleCustomWrapper>
+    </>
   );
-};
+}
 
-export default Settings;
+const items = [<PasswordChangeButton key="change-password" />, <LogoutButton key="sign-out" kind="text" block />];
+
+const globalCSS = css`
+  .ant-list-header {
+    border-bottom: none !important;
+    margin-bottom: 0.33rem;
+  }
+
+  .ant-list-items {
+    background: #1c1c1c;
+    border-top: 1px solid #303030;
+    border-bottom: 1px solid #303030;
+  }
+
+  .ant-list-item {
+    padding: unset !important;
+    border-bottom: none !important;
+
+    :not(:first-of-type) {
+      border-top: 1px solid #303030;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 24px 0 !important;
+      color: #888;
+    }
+  }
+`;

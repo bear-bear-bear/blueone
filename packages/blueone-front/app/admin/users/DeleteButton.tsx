@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useState } from 'react';
-import { Button, message, Popconfirm, Tooltip } from 'antd';
+import { App, Button, Popconfirm, Tooltip } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
@@ -18,8 +18,10 @@ type UserDeleteError =
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
+const INITIAL_POPOVER_TEXT = '기사 정보 삭제';
+
 const DeleteButton = ({ user }: Props) => {
-  const INITIAL_POPOVER_TEXT = '기사 정보 삭제';
+  const { message } = App.useApp();
   const { data: users, mutate: mutateUsers } = useSWRImmutable<FullUsers>('/users', axiosFetcher);
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
   const [popoverText, setPopoverText] = useState<ReactNode>(INITIAL_POPOVER_TEXT);

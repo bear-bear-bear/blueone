@@ -3,20 +3,17 @@ import { AiOutlineFileDone } from 'react-icons/ai';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import theme from '@globalStyles/theme';
-import media from '@utils/media';
 
 export const CARD_MARGIN_TOP = '2rem';
 
 const readOnlyCardStyles = css`
-  border-top: 7px solid ${theme.primaryColor};
-  margin-top: 1rem;
+  border-top: 6px solid ${theme.primaryColor};
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+  margin-top: 1em;
 
   .ant-card-body {
-    padding: 14px 10px;
-
-    ${media.sm} {
-      padding: 14px;
-    }
+    padding: 1em;
   }
 `;
 export const StyledCard = styled(Card)<{ readOnly: boolean }>`
@@ -29,25 +26,17 @@ export const StyledCard = styled(Card)<{ readOnly: boolean }>`
 `;
 
 export const WorkInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.66rem;
-  margin-top: 1.33rem;
-`;
-
-export const Row = styled.div`
-  display: flex;
-  gap: 0.66rem;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.66rem 0.33rem;
+  margin-top: 24px;
   font-size: 16px;
 
-  p:first-of-type {
-    width: fit-content;
-    min-width: 4rem;
+  .label {
     text-align: right;
   }
-
-  p:last-of-type {
-    word-break: break-all;
+  .content {
+    font-size: inherit;
   }
 `;
 

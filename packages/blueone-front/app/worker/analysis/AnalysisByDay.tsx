@@ -1,46 +1,77 @@
 import { useMemo } from 'react';
 import { Skeleton } from 'antd';
+import {
+  Chart as ChartJS,
+  ChartOptions,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartData,
+} from 'chart.js';
 import dayjs from 'dayjs';
+import { Bar } from 'react-chartjs-2';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
-import { Column } from '@ant-design/plots';
 import EmptyContent from '@components/User/commonParts/Empty';
 import theme from '@globalStyles/theme';
 import { axiosFetcher } from '@utils/swr';
-import * as S from './styles';
+import { Header } from './styled';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 type Response = EndPoint['GET /user/works/analysis']['responses']['200'];
 
-const AnalysisByDay = () => {
+const AnalysisByDay = (): JSX.Element => {
   const { data: workAnalysis } = useSWRImmutable<Response>('/user/works/analysis?by=day', axiosFetcher, {
     revalidateOnMount: true,
   });
-  const chartData = useMemo(
-    () =>
-      Object.entries(workAnalysis ?? {}).map(([day, totalPayment]) => ({
-        날짜: `${day}일`,
-        지수합계: totalPayment,
-      })),
-    [workAnalysis],
-  );
+
+  const chartData: ChartData<'bar', number[], string> = useMemo(() => {
+    const labels = Object.keys(workAnalysis ?? {}).map((day) => `${day}일`);
+    const data = Object.values(workAnalysis ?? {}).map((totalPayment) => totalPayment as number);
+    return {
+      labels,
+      datasets: [
+        {
+          label: '지수합계',
+          data,
+          backgroundColor: theme.primaryColor,
+        },
+      ],
+    };
+  }, [workAnalysis]);
+
+  const options: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
   const thisDate = dayjs().date();
 
   if (!workAnalysis) {
     return <Skeleton />;
   }
-  if (chartData.length === 0) {
+  if (!chartData.labels?.length) {
     return <EmptyContent description="아직 완료된 업무가 없어요 :)" />;
   }
   return (
     <>
-      <S.Header>
+      <Header>
         <section className="announcement">
           <p>※ 익일입고는 확인 시점으로 정산됩니다.</p>
         </section>
         {thisDate !== 1 && <p>어제자 지수 합계: {workAnalysis[`${thisDate - 1}`]}</p>}
         <h1>오늘자 지수 합계: {workAnalysis[`${thisDate}`]}</h1>
-      </S.Header>
-      <Column data={chartData} xField="날짜" yField="지수합계" color={theme.primaryColor} />
+      </Header>
+
+      <Bar data={chartData} options={options} height={360} />
     </>
   );
 };

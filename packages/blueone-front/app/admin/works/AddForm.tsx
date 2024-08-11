@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
+import { Form, Input, InputNumber, FormProps, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
@@ -58,6 +58,7 @@ const WorkAddForm = ({
   swrKey = prevWork?.swrKey,
   useBooking = false,
 }: Props) => {
+  const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(swrKey || '/works', axiosFetcher, {
     revalidateOnMount: false,
   });

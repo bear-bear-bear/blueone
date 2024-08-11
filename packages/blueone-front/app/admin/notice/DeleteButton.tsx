@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useState } from 'react';
-import { Button, message, Popconfirm, Tooltip } from 'antd';
+import { App, Button, Popconfirm, Tooltip } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint } from '@typings';
@@ -18,8 +18,10 @@ type RequestError =
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
+const INITIAL_POPOVER_TEXT = '공지사항 삭제';
+
 const DeleteButton = ({ record }: Props) => {
-  const INITIAL_POPOVER_TEXT = '공지사항 삭제';
+  const { message } = App.useApp();
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
     record.swrKey || '/notice',
     axiosFetcher,

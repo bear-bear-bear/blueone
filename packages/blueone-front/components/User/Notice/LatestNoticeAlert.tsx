@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import Marquee from 'react-fast-marquee';
 import useSWR from 'swr';
 import type { EndPoint } from '@typings';
-import theme from '@globalStyles/theme';
 import { axiosFetcher } from '@utils/swr';
 
 type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];
@@ -24,16 +23,12 @@ const LatestNoticeAlert = () => {
       <Alert
         banner
         type="info"
+        onClick={onClickAlertBox}
         message={
           <Marquee delay={5} gradient={false} style={{ color: '#FFF' }}>
             공지사항 - {latestNotice.title}
           </Marquee>
         }
-        onClick={onClickAlertBox}
-        style={{
-          background: 'none',
-          border: `1px solid ${theme.primaryColor}`,
-        }}
       />
     </div>
   );

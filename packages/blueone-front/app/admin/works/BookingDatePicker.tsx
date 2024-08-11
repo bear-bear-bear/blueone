@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DatePicker, message } from 'antd';
+import { App, DatePicker } from 'antd';
 import dayjs from '@utils/dayjs';
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
 };
 
 const BookingDatePicker = ({ date, setDate }: Props) => {
+  const { message } = App.useApp();
   const [localDate, setLocalDate] = useState<dayjs.Dayjs>(date);
   const now = dayjs();
 

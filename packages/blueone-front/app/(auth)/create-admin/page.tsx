@@ -1,5 +1,5 @@
 'use client';
-import { Button, Form, Input, message } from 'antd';
+import { App, Button, Form, Input } from 'antd';
 import { AxiosError } from 'axios';
 import { EndPoint } from '@typings';
 import styled from '@emotion/styled';
@@ -8,6 +8,8 @@ import httpClient, { logAxiosError } from '@utils/axios';
 type RequestBody = EndPoint['POST /users/admin']['requestBody'];
 
 export default function CreateAdminPage() {
+  const { message } = App.useApp();
+
   const onFormFinish = async (values: RequestBody) => {
     try {
       await httpClient.post('/users/admin', values);

@@ -2,13 +2,15 @@
 import { ReactNode, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { LoadingOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
+import theme from '@globalStyles/theme';
 import useUser from '@hooks/useUser';
 import media from '@utils/media';
 
 export default function LoginLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { user, isLoggedIn } = useUser();
+  const { user, isLoggedIn, isNotFetched } = useUser();
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -19,6 +21,13 @@ export default function LoginLayout({ children }: { children: ReactNode }) {
     }
   }, [isLoggedIn, router, user]);
 
+  if (isNotFetched) {
+    return (
+      <CenterLayout>
+        <LoadingOutlined style={{ fontSize: 20 }} spin />
+      </CenterLayout>
+    );
+  }
   return (
     <CenterLayout>
       <Box>
@@ -45,7 +54,7 @@ const Box = styled.section`
 
   ${media.sm} {
     border: 1px solid #ddd;
-    border-radius: 2px;
+    border-radius: ${theme.borderRadius};
     width: 27rem;
   }
 `;

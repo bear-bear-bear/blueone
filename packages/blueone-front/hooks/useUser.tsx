@@ -12,7 +12,7 @@ type FailureResponse =
 
 export interface Props {
   redirectTo?: `/${string}`;
-  redirectIfFound?: boolean;
+  redirectIfFound?: boolean | ((found: SuccessResponse) => `/${string}`);
 }
 
 const SWR_KEY = '/user';
@@ -50,12 +50,12 @@ export default function useUser({ redirectTo, redirectIfFound }: Props = {}) {
   const isLoggedIn = !error && !!user;
   const isNotFetched = !error && !user;
 
-  console.group('SWR Fetched "/user"');
-  console.log('data:', user);
-  console.log('error:', error?.response?.data.message);
-  console.log('isLoggedIn:', isLoggedIn);
-  console.log('isNotFetched:', isNotFetched);
-  console.groupEnd();
+  // console.group('SWR Fetched "/user"');
+  // console.log('data:', user);
+  // console.log('error:', error?.response?.data.message);
+  // console.log('isLoggedIn:', isLoggedIn);
+  // console.log('isNotFetched:', isNotFetched);
+  // console.groupEnd();
 
   useEffect(() => {
     if (!redirectTo) return;
@@ -71,5 +71,5 @@ export default function useUser({ redirectTo, redirectIfFound }: Props = {}) {
     }
   }, [isLoggedIn, isNotFetched, redirectIfFound, redirectTo, router, user]);
 
-  return { user, mutateUser, isLoggedIn };
+  return { user, mutateUser, isLoggedIn, isNotFetched };
 }

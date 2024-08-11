@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Button, ButtonProps, message } from 'antd';
+import { App, Button, ButtonProps } from 'antd';
 import type { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { CgLogOut } from 'react-icons/cg';
@@ -15,6 +15,7 @@ type User = EndPoint['GET /user']['responses']['200'];
 type LogoutError = EndPoint['POST /user/logout']['responses']['500'];
 
 const LogoutButton = ({ kind = 'icon', ...rest }: Props) => {
+  const { message } = App.useApp();
   const router = useRouter();
   const { mutate: mutateUser } = useSWRImmutable<User>('/user', axiosFetcher);
 

@@ -1,5 +1,5 @@
 import { memo, MouseEventHandler, useCallback, useMemo, useState } from 'react';
-import { Button, message } from 'antd';
+import { App, Button } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Work } from '@typings';
@@ -20,6 +20,7 @@ type WorkPatchError =
   | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
 const CheckButton = ({ workId, isWorkChecked }: Props) => {
+  const { message } = App.useApp();
   const { user } = useUser();
   const insuranceDate = getInsuranceExpirationInfo(user);
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);

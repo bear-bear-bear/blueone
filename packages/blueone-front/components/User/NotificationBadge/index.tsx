@@ -1,40 +1,20 @@
-import { useEffect, ReactNode, useCallback } from 'react';
-import { Button, message, notification, Tooltip } from 'antd';
+import { useEffect, ReactNode } from 'react';
+import { App, Button, Tooltip } from 'antd';
 import { CloseOutlined, InfoOutlined, WarningOutlined } from '@ant-design/icons';
-import * as S from './styles';
+import styled from '@emotion/styled';
 
-export type Props = {
+type Props = {
   type: 'info' | 'warning' | 'error';
   content: string;
 };
 
-const dict: Record<
-  Props['type'],
-  {
-    title: ReactNode;
-    icon: ReactNode;
-  }
-> = {
-  info: {
-    title: <S.BoldTitle>정보 알림</S.BoldTitle>,
-    icon: <InfoOutlined style={{ color: '#177DDC', fontSize: 'inherit' }} />,
-  },
-  warning: {
-    title: <S.BoldTitle>경고 알림</S.BoldTitle>,
-    icon: <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />,
-  },
-  error: {
-    title: <S.BoldTitle>경고 알림</S.BoldTitle>,
-    icon: <WarningOutlined style={{ color: '#A61D24', fontSize: 'inherit' }} />,
-  },
-};
-
-const NotificationBadge = ({ type, content }: Props) => {
+export default function NotificationBadge({ type, content }: Props) {
   const { title, icon } = dict[type];
+  const { message, notification } = App.useApp();
 
-  const handleClick = useCallback(() => {
+  const handleClick = () => {
     message[type](content);
-  }, [content, type]);
+  };
 
   useEffect(() => {
     if (document.cookie.includes(`notified_${content}`)) return;
@@ -55,12 +35,42 @@ const NotificationBadge = ({ type, content }: Props) => {
   }, [content, icon, title, type]);
 
   return (
-    <S.RightTopLayout>
+    <RightTopLayout>
       <Tooltip title={title} align={{ useCssBottom: true, useCssRight: false }}>
         <Button type="text" icon={icon} onClick={handleClick} size="large" style={{ fontSize: 30 }} />
       </Tooltip>
-    </S.RightTopLayout>
+    </RightTopLayout>
   );
-};
+}
 
-export default NotificationBadge;
+const RightTopLayout = styled.div`
+  z-index: 500;
+  position: absolute;
+  top: -2.5rem;
+  right: 1.66rem;
+  transform: translate(50%, -50%);
+`;
+
+const BoldTitle = styled.span`
+  font-weight: 500;
+`;
+const dict: Record<
+  Props['type'],
+  {
+    title: ReactNode;
+    icon: ReactNode;
+  }
+> = {
+  info: {
+    title: <BoldTitle>정보 알림</BoldTitle>,
+    icon: <InfoOutlined style={{ color: '#177DDC', fontSize: 'inherit' }} />,
+  },
+  warning: {
+    title: <BoldTitle>경고 알림</BoldTitle>,
+    icon: <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />,
+  },
+  error: {
+    title: <BoldTitle>경고 알림</BoldTitle>,
+    icon: <WarningOutlined style={{ color: '#A61D24', fontSize: 'inherit' }} />,
+  },
+};

@@ -10,16 +10,22 @@ const EmptyContent = ({ description }: Props) => (
     imageStyle={{
       height: 60,
     }}
-    description={description}
+    description={
+      <span
+        style={{
+          color: '#fafafa',
+          fontSize: 16,
+        }}
+      >
+        {description}
+      </span>
+    }
     style={{
       width: '95%',
       position: 'absolute',
       top: '42%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      color: '#fafafa',
-      fontWeight: 400,
-      fontSize: '16px',
     }}
   />
 );

@@ -6,10 +6,8 @@ import useSWR from 'swr';
 import { EndPoint, Unpacked } from '@typings';
 import CustomRangePicker from '@components/User/DoneWorkSearch/RangePicker';
 import WorkCard from '@components/User/WorkCard';
-import { Global } from '@emotion/react';
-import theme from '@globalStyles/theme';
+import styled from '@emotion/styled';
 import { axiosFetcher } from '@utils/swr';
-import * as S from './styles';
 
 export type DateRange = {
   start: string;
@@ -32,32 +30,25 @@ const DoneWorkSearch = () => {
 
   return (
     <>
-      <Global styles={S.globalCSS} />
-      <Alert
+      <StyledAlert
         banner
         type="info"
         message={
-          <div style={{ color: '#fff' }}>
-            <p>- 업무 완료일 기준으로 검색됩니다.</p>
-            <p>- 약 3개월 이내 완료된 업무만 검색할 수 있습니다.</p>
-            <p>- 카드 상단의 날짜는 해당 업무의 완료일입니다.</p>
-          </div>
+          <ul>
+            <li>- 업무 완료일 기준으로 검색됩니다.</li>
+            <li>- 약 3개월 이내 완료된 업무만 검색할 수 있습니다.</li>
+            <li>- 카드 상단의 날짜는 해당 업무의 완료일입니다.</li>
+          </ul>
         }
-        style={{
-          background: 'none',
-          border: `1px solid ${theme.primaryColor}`,
-          marginBottom: '0.33rem',
-        }}
       />
       <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} />
-      <List
-        grid={{ gutter: 10, column: 1 }}
-        itemLayout="horizontal"
-        dataSource={works}
-        renderItem={(work) => <WorkCard work={work} readOnly />}
-      />
+      <List itemLayout="horizontal" dataSource={works} renderItem={(work) => <WorkCard work={work} readOnly />} />
     </>
   );
 };
+
+const StyledAlert = styled(Alert)`
+  margin-bottom: 0.33rem;
+`;
 
 export default DoneWorkSearch;

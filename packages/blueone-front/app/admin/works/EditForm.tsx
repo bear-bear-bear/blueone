@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import { Form, Input, InputNumber, FormProps, message, FormInstance } from 'antd';
+import { Form, Input, InputNumber, FormProps, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
@@ -48,6 +48,7 @@ const validateMessages = {
 };
 
 const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
+  const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
 

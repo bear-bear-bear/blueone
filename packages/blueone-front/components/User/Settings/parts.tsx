@@ -1,6 +1,7 @@
 import { Avatar, Card, Skeleton, Space } from 'antd';
+import type { EndPoint } from '@typings';
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import type { UserWithInfo } from '@components/User/Settings/index';
+import theme from '@globalStyles/theme';
 import processPhoneNumber from '@utils/processPhoneNumber';
 import * as S from './styles';
 
@@ -14,10 +15,11 @@ export const SettingsSkeleton = () => (
   </div>
 );
 
-export const SettingsHeader = ({ user }: { user: UserWithInfo }) => (
+type User = EndPoint['GET /user']['responses']['200'];
+export const SettingsHeader = ({ user }: { user: User }) => (
   <S.StyledCard>
     <Card.Meta
-      avatar={<Avatar icon={<UserOutlined />} size={54} style={{ backgroundColor: '#00598d' }} />}
+      avatar={<Avatar icon={<UserOutlined />} size={54} style={{ backgroundColor: theme.primaryColor }} />}
       title={<p style={{ fontSize: '18px', marginTop: '2px' }}>{user.UserInfo?.realname || 'Admin'}</p>}
       description={
         <>
@@ -30,5 +32,5 @@ export const SettingsHeader = ({ user }: { user: UserWithInfo }) => (
 );
 
 export const SettingsFooter = () => {
-  return <S.Footer>Copyright ©2014-2022 BLUEONE, Inc. All rights reserved.</S.Footer>;
+  return <S.Footer>Copyright ©2014 BLUEONE, Inc. All rights reserved.</S.Footer>;
 };

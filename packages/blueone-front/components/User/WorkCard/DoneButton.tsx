@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback, useState, memo } from 'react';
-import { Button, message, Modal } from 'antd';
+import { App, Button, Modal } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { Work, EndPoint } from '@typings';
@@ -19,6 +19,7 @@ type WorkPatchError =
   | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
 const DoneButton = ({ workId, isWorkChecked, isWorkDone }: Props) => {
+  const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -71,10 +72,7 @@ const DoneButton = ({ workId, isWorkChecked, isWorkDone }: Props) => {
         okText="완료"
         cancelText="취소"
         confirmLoading={loading}
-        style={{
-          top: '50%',
-          transform: 'translateY(-50%)',
-        }}
+        centered
       >
         업무를 완료 할까요?
       </Modal>

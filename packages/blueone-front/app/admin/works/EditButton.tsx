@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, FormProps, message, Modal, Popconfirm, Tooltip } from 'antd';
+import { App, Button, Form, FormProps, Modal, Popconfirm, Tooltip } from 'antd';
 import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import { EndPoint } from '@typings';
@@ -27,6 +27,7 @@ type WorkForceActivateError =
   | EndPoint['PATCH /works/{workId}/force-activate']['responses']['500'];
 
 const EditButton = ({ record }: Props) => {
+  const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
   const [form] = Form.useForm<WorkAddFormValues>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

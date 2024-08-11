@@ -4,15 +4,12 @@ import styled from '@emotion/styled';
 
 export const NoticeCard = styled(Card)`
   .ant-card-head {
+    padding: 12px !important;
     min-height: initial !important;
   }
 
-  .ant-card-head-title {
-    padding: 12px 0 !important;
-  }
-
   .ant-card-body {
-    padding: 12px !important;
+    padding: 12px 16px !important;
 
     pre {
       white-space: pre-wrap;

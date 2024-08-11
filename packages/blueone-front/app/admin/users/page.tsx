@@ -3,6 +3,7 @@ import { Divider, List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Unpacked } from '@typings';
 import styled from '@emotion/styled';
+import theme from '@globalStyles/theme';
 import { axiosFetcher } from '@utils/swr';
 import AddButton from './AddButton';
 import UserItem from './UserItem';
@@ -33,7 +34,7 @@ const ListWrapper = styled.div`
   overflow-y: auto;
   padding: 0 16px 16px;
   border: 1px solid #ccc;
-  border-radius: 2px;
+  border-radius: ${theme.borderRadius};
   background-color: #fff;
 
   ::-webkit-scrollbar {

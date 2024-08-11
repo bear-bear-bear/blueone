@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Form, Input, message, FormInstance } from 'antd';
+import { Form, Input, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import type { EndPoint } from '@typings';
@@ -26,6 +26,8 @@ const validateMessages = {
 };
 
 const PasswordChangeForm = ({ form, setSubmitLoading, closeModal }: Props) => {
+  const { message } = App.useApp();
+
   const onFormFinish = async (values: RequestBody) => {
     const reqBody: RequestBody = {
       password: values.password,

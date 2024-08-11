@@ -33,6 +33,23 @@ const globalCSS = css`
       font-size: 16px;
     }
   }
+
+  .ant-modal-header {
+    margin: unset !important;
+  }
+  .ant-modal-body {
+    padding: 20px 0 !important;
+  }
+  .ant-modal-footer {
+    margin: unset !important;
+  }
+
+  .ant-typography {
+    margin: unset !important;
+  }
+  .ant-typography-copy {
+    vertical-align: middle;
+  }
 `;
 
 export default globalCSS;

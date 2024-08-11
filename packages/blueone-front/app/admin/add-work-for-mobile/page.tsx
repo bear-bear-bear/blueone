@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useState } from 'react';
-import { Form, Input, InputNumber, Button, FormProps, message, Checkbox } from 'antd';
+import { Form, Input, InputNumber, Button, FormProps, Checkbox, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -14,6 +14,7 @@ import type { RequestBody, RequestError, WorkAddFormValues } from '../works/AddF
 import BookingDatePicker from '../works/BookingDatePicker';
 
 export default function AddWorkForMobilePage() {
+  const { message } = App.useApp();
   const [form] = Form.useForm<WorkAddFormValues>();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
   const [bookingDate, setBookingDate] = useBookingDate();

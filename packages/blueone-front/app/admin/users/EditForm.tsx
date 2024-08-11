@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
-import { Form, Input, FormProps, message, FormInstance } from 'antd';
+import { Form, Input, FormProps, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
@@ -40,6 +40,7 @@ const validateMessages: FormProps<UpdateRequestBody>['validateMessages'] = {
 };
 
 const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, setSubmitLoading, closeModal }: Props) => {
+  const { message } = App.useApp();
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
 
   const {

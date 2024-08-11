@@ -1,14 +1,16 @@
 'use client';
 import { ReactNode, useEffect } from 'react';
-import { Button, message } from 'antd';
+import { App, Button, ConfigProvider, theme } from 'antd';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
 import useUser from '@hooks/useUser';
-import navItems, { NavItem } from './nav-items';
+import navItems, { type NavItem } from './nav-items';
 
 export default function WorkerLayout({ children }: { children: ReactNode }) {
+  const { message } = App.useApp();
   const router = useRouter();
   const pathname = usePathname();
   const { user, isLoggedIn } = useUser({
@@ -32,51 +34,67 @@ export default function WorkerLayout({ children }: { children: ReactNode }) {
 
   if (!isLoggedIn) return null;
   return (
-    <CenterLayout>
-      <Box>
-        <BoxHeader>
-          {showBack && (
-            <Button className="go-back" type="text" size="large" icon={<ArrowLeftOutlined />} onClick={goBack} />
-          )}
-          <h1>{headerText}</h1>
-        </BoxHeader>
-        <BoxMain noPadding={bodyNoPadding}>{children}</BoxMain>
-        <BoxFooter>
-          <nav>
-            {navItems.map((item) => {
-              if (item.parentPageHref) {
-                return null;
-              }
-              // Warning: O(n^2)
-              const isParentOfCurrPage = !!navItems.find(
-                (t) =>
-                  t.parentPageHref && //
-                  t.parentPageHref === item.href && //
-                  t.href === pathname, //
-              );
-              return <ActiveLink key={item.href} item={item} active={item.href === pathname || isParentOfCurrPage} />;
-            })}
-          </nav>
-        </BoxFooter>
-      </Box>
-    </CenterLayout>
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+      }}
+    >
+      <App notification={{ maxCount: 1 }}>
+        <Global styles={globalCSS} />
+
+        <CenterLayout>
+          <Box>
+            <BoxHeader>
+              {showBack && (
+                <Button className="go-back" type="text" size="large" icon={<ArrowLeftOutlined />} onClick={goBack} />
+              )}
+              <h1>{headerText}</h1>
+            </BoxHeader>
+            <BoxMain noPadding={bodyNoPadding}>{children}</BoxMain>
+            <BoxFooter>
+              <nav>
+                {navItems.map((item) => {
+                  if (item.parentPageHref) {
+                    return null;
+                  }
+                  // Warning: O(n^2)
+                  const isParentOfCurrPage = !!navItems.find(
+                    (t) =>
+                      t.parentPageHref && //
+                      t.parentPageHref === item.href && //
+                      t.href === pathname, //
+                  );
+                  return <NavItem key={item.href} item={item} active={item.href === pathname || isParentOfCurrPage} />;
+                })}
+              </nav>
+            </BoxFooter>
+          </Box>
+        </CenterLayout>
+      </App>
+    </ConfigProvider>
   );
 }
 
-function ActiveLink({ item, active }: { active: boolean; item: NavItem }) {
+function NavItem({ item, active }: { active: boolean; item: NavItem }) {
   return (
-    <Link href={item.href} passHref>
-      <ActiveAnchor active={active}>
-        {active ? item.fillIcon : item.outlineIcon}
-        <p>{item.text}</p>
-      </ActiveAnchor>
-    </Link>
+    <StyledLink href={item.href} passHref active={active}>
+      {active ? item.fillIcon : item.outlineIcon}
+      <p>{item.text}</p>
+    </StyledLink>
   );
 }
+
+const globalCSS = css`
+  body {
+    background-color: #242424;
+  }
+`;
 
 const CenterLayout = styled.section`
   width: 100%;
+  max-width: 500px;
   height: 100vh;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,9 +135,15 @@ const BoxHeader = styled.header`
 
 const BoxMain = styled.main<{ noPadding?: boolean }>`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: ${({ noPadding }) => (noPadding ? 'initial' : BOX_ITEM_PADDING)};
   position: relative;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const BoxFooter = styled.footer`
@@ -131,7 +155,7 @@ const BoxFooter = styled.footer`
   }
 `;
 
-const ActiveAnchor = styled.a<{ active: boolean }>`
+const StyledLink = styled(Link)<{ active: boolean }>`
   flex: 1;
   display: inline-flex;
   align-items: center;
