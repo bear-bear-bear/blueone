@@ -1,5 +1,4 @@
 import express from 'express';
-import { omit } from 'lodash';
 import type {
   CreateWorkRequestBody,
   QueryTypedRequest,
@@ -11,6 +10,7 @@ import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import { withPayout } from '@/utils/calculatePayout';
 import dayjs from '@/utils/dayjs';
+import omit from '@/utils/omit';
 import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
 
 const router = express.Router();
@@ -258,12 +258,13 @@ router.patch(
         return;
       }
 
-      const newWorkInfo = omit(bookingWork.get(), [
+      const newWorkInfo = omit(
+        bookingWork.get(),
         'id',
         'bookingDate',
         'createdAt',
         'updatedAt',
-      ]);
+      );
 
       const newWork = await Work.create(newWorkInfo);
 

@@ -1,16 +1,14 @@
 import * as process from 'process';
 import bcrypt from 'bcrypt';
 import express from 'express';
-import _ from 'lodash';
 import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import { withPayout } from '@/utils/calculatePayout';
+import omit from '@/utils/omit';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 
 const router = express.Router();
-const omitPassword = (user: User) =>
-  _.omitBy<Omit<User, 'password'>>(user, (_value, key) => key === 'password');
 
 /**
  * 유저 리스트 가져오기
@@ -62,7 +60,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
       return;
     }
 
-    res.status(202).json(omitPassword(user.get()));
+    res.status(202).json(omit(user.get(), 'password'));
   } catch (err) {
     next(err);
   }
@@ -99,7 +97,7 @@ router.post('/admin', async (req, res, next) => {
       return;
     }
 
-    res.status(202).json(omitPassword(admin.get()));
+    res.status(202).json(omit(admin.get(), 'password'));
   } catch (err) {
     next(err);
   }

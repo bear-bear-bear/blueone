@@ -1,10 +1,10 @@
-import { omit } from 'lodash';
 import schedule from 'node-schedule-tz';
 import { Op } from 'sequelize';
 import { Work } from '@/models';
 import work from '@/models/work';
 import dayjs from '@/utils/dayjs';
 import logger from '@/utils/logger';
+import omit from '@/utils/omit';
 
 const jobs = [
   {
@@ -29,12 +29,13 @@ const jobs = [
 
         await Promise.all(
           recentBookingWorks.map(async (bookingWork) => {
-            const newWorkInfo = omit(bookingWork.get(), [
+            const newWorkInfo = omit(
+              bookingWork.get(),
               'id',
               'bookingDate',
               'createdAt',
               'updatedAt',
-            ]);
+            );
             await work.create(newWorkInfo);
             await bookingWork.destroy();
           }),

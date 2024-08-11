@@ -3,7 +3,6 @@ import { Button, Checkbox, Spin, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import CustomRangePicker from 'components/Admin/content/WorkManagementTable/CustomRangePicker';
 import dayjs from 'dayjs';
-import { merge } from 'lodash';
 import qs from 'qs';
 import useSWR from 'swr';
 import type { EndPoint, UserInfo, Unpacked, User } from '@typings';
@@ -79,7 +78,7 @@ const WorkManagementTable = () => {
 
   const swrKey = useMemo(() => {
     if (isVisibleBookedWork) {
-      return `/works?${qs.stringify(merge(dateRange, { booked: true }))}`;
+      return `/works?${qs.stringify({ ...dateRange, booked: true })}`;
     }
     return `/works?${qs.stringify(dateRange)}`;
   }, [dateRange, isVisibleBookedWork]);
