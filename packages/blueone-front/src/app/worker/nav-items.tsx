@@ -44,7 +44,7 @@ const navItems: NavItem[] = [
     text: '지수 분석',
   },
   {
-    href: '/worker/setting',
+    href: '/worker/settings',
     outlineIcon: <AiOutlineSetting size={20} />,
     fillIcon: <AiFillSetting size={20} />,
     text: '설정',

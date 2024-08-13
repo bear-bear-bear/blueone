@@ -12,11 +12,11 @@ import { axiosFetcher } from '@/utils/swr';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
-import AddButton from './AddButton';
-import TotalFee from './TotalFee';
-import UserPicker from './UserPicker';
+import AddButton from './add-button.component';
 import columns from './columns';
-import processWorkDateTimes from './processWorkDateTimes';
+import processWorkDateTimes from './process-work-date-times';
+import TotalFee from './total-fee.component';
+import UserPicker from './user-picker.component';
 
 const { RangePicker } = DatePicker;
 

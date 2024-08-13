@@ -5,8 +5,8 @@ import { Op } from 'sequelize';
 import type { DatePickQuery, QueryTypedRequest } from 'typings';
 import { isLoggedIn, isNotLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
-import addFloats from '@/utils/addFloats';
-import calculatePayout, { withPayout } from '@/utils/calculatePayout';
+import addFloats from '@/utils/add-floats';
+import calculatePayout, { withPayout } from '@/utils/calculate-payout';
 import dayjs from '@/utils/dayjs';
 import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 

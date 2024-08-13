@@ -3,7 +3,7 @@ import { ReactNode, useEffect } from 'react';
 import { App, Button, ConfigProvider, theme } from 'antd';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import useUser from '@/hooks/useUser';
+import useUser from '@/hooks/use-user.hook';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -18,7 +18,7 @@ export default function WorkerLayout({ children }: { children: ReactNode }) {
   });
 
   const headerText = navItems.find((item) => item.href === pathname)?.text;
-  const bodyNoPadding = ['analysis', 'setting'].some((v) => pathname.endsWith(v));
+  const bodyNoPadding = ['analysis', 'settings'].some((v) => pathname.endsWith(v));
   const showBack = ['done-works'].some((v) => pathname.endsWith(v));
 
   const goBack = () => {

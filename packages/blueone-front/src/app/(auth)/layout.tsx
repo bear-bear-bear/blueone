@@ -2,8 +2,8 @@
 import { ReactNode, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import theme from '@/globalStyles/theme';
-import useUser from '@/hooks/useUser';
+import theme from '@/global-styles/theme';
+import useUser from '@/hooks/use-user.hook';
 import media from '@/utils/media';
 import { LoadingOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';

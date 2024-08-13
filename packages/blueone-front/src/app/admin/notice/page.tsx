@@ -9,16 +9,16 @@ import dayjs from '@/utils/dayjs';
 import { axiosFetcher } from '@/utils/swr';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
-import AddButton from './AddButton';
-import CustomRangePicker from './CustomRangePicker';
+import AddButton from './add-button.component';
 import columns from './columns';
+import CustomRangePicker from './custom-range-picker.component';
 
 export type DateRange = {
   start: string;
   end: string;
 };
 export type NoticeList = EndPoint['GET /notice']['responses']['200'];
-export type Notice = Unpacked<NoticeList>;
+type Notice = Unpacked<NoticeList>;
 export type ProcessedNotice = Notice & {
   processedCreatedAt: string;
   processedStartDate: string;

@@ -5,12 +5,12 @@ import type { SiderProps } from 'antd/lib/layout';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import useSWRImmutable from 'swr/immutable';
-import pages, { getTitleByRoute } from '@/app/admin/pages';
-import LogoutButton from '@/components/LogoutButton';
-import useAdmin from '@/hooks/useAdmin';
+import LogoutButton from '@/components/logout-button.component';
+import useAdmin from '@/hooks/use-admin.hook';
 import type { EndPoint } from '@/typings';
 import { axiosFetcher } from '@/utils/swr';
 import styled from '@emotion/styled';
+import navItems, { getTitleByRoute } from './nav-items';
 
 type Users = EndPoint['GET /users']['responses']['200'];
 
@@ -59,7 +59,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         >
           <StyledMenuDevider />
 
-          {pages.map((page) => {
+          {navItems.map((page) => {
             if ('children' in page) {
               return (
                 <>

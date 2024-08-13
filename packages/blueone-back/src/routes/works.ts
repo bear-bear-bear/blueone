@@ -8,7 +8,7 @@ import type {
 } from 'typings';
 import { isAdmin, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
-import { withPayout } from '@/utils/calculatePayout';
+import { withPayout } from '@/utils/calculate-payout';
 import dayjs from '@/utils/dayjs';
 import omit from '@/utils/omit';
 import { getWorksByConditionallyAsBooking } from '@/utils/query/work';

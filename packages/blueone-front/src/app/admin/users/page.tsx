@@ -1,12 +1,12 @@
 'use client';
 import { Divider, List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
-import theme from '@/globalStyles/theme';
+import theme from '@/global-styles/theme';
 import type { EndPoint, Unpacked } from '@/typings';
 import { axiosFetcher } from '@/utils/swr';
 import styled from '@emotion/styled';
-import AddButton from './AddButton';
-import UserItem from './UserItem';
+import AddButton from './add-button.component';
+import UserItem from './user-item.component';
 
 export type FullUsers = EndPoint['GET /users']['responses']['200'];
 export type FullUser = Unpacked<FullUsers>;

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { ColumnsType } from 'antd/es/table';
-import type { ProcessedNotice } from '@/app/admin/notice/page';
-import DeleteButton from './DeleteButton';
-import EditButton from './EditButton';
+import DeleteButton from './delete-button.component';
+import EditButton from './edit-button.component';
+import type { ProcessedNotice } from './page';
 
 // row onclick expand 를 특정 td 에서 실행하지 않기 위한 escape
 // (style 은 row 의 'cursor: pointer' 를 해당 td 에서 완전히 무효화하기 위한 임시 escape)

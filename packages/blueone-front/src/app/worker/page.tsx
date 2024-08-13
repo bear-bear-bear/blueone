@@ -1,11 +1,11 @@
 'use client';
 import { Button } from 'antd';
 import Link from 'next/link';
-import LatestNoticeAlert from '@/components/User/Notice/LatestNoticeAlert';
-import NotificationBadge from '@/components/User/NotificationBadge';
-import WorkCarousel from '@/components/User/WorkCarousel';
-import useUser from '@/hooks/useUser';
-import getInsuranceExpirationInfo from '@/utils/getInsuranceExpirationInfo';
+import LatestNoticeAlert from '@/components/user/latest-notice-alert.component';
+import NotificationBadge from '@/components/user/notification-badge.component';
+import WorkCarousel from '@/components/user/work-carousel.component';
+import useUser from '@/hooks/use-user.hook';
+import getInsuranceExpirationInfo from '@/utils/get-insurance-expiration-info';
 
 export default function WorkerHomePage() {
   const { user, isLoggedIn } = useUser({

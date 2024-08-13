@@ -2,8 +2,8 @@
 import { Tabs } from 'antd';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import AnalysisByDay from './AnalysisByDay';
-import AnalysisByMonth from './AnalysisByMonth';
+import AnalyzeByDay from './analyze-by-day.component';
+import AnalyzeByMonth from './analyze-by-month.component';
 
 export default function Analysis() {
   return (
@@ -11,8 +11,8 @@ export default function Analysis() {
       defaultActiveKey="1"
       size="large"
       items={[
-        { label: '일', key: '1', children: <AnalysisByDay /> },
-        { label: '월', key: '2', children: <AnalysisByMonth /> },
+        { label: '일', key: '1', children: <AnalyzeByDay /> },
+        { label: '월', key: '2', children: <AnalyzeByMonth /> },
       ]}
     />
   );

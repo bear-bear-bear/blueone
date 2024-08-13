@@ -3,8 +3,8 @@ import { ReactNode } from 'react';
 import { App, ConfigProvider } from 'antd';
 import { ThemeConfig } from 'antd/lib';
 import { SWRConfig } from 'swr';
-import globalCSS from '@/globalStyles/global';
-import theme from '@/globalStyles/theme';
+import globalCSS from '@/global-styles/global';
+import theme from '@/global-styles/theme';
 import { Global } from '@emotion/react';
 
 export default function Providers({ children }: { children: ReactNode }) {

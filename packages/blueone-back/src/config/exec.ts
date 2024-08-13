@@ -1,4 +1,4 @@
-import sequelizeCli from '@/config/sequelizeCli';
+import sequelizeCli from '@/config/sequelize-cli';
 
 if (process.argv.includes('--create')) {
   sequelizeCli('db:create', '데이터베이스 생성 완료');

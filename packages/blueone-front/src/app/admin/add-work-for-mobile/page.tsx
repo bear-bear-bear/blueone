@@ -3,15 +3,15 @@ import { useCallback, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, Checkbox, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
-import UserSelector from '@/components/UserSelector';
-import { useBookingDate } from '@/hooks/useBookingDate';
+import UserSelector from '@/components/user/user-selector.component';
+import { useBookingDate } from '@/hooks/use-booking-date.hook';
 import httpClient, { logAxiosError } from '@/utils/axios';
 import dayjs from '@/utils/dayjs';
 import media from '@/utils/media';
 import { DeleteOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
-import type { RequestBody, RequestError, WorkAddFormValues } from '../works/AddForm';
-import BookingDatePicker from '../works/BookingDatePicker';
+import type { RequestBody, RequestError, WorkAddFormValues } from '../works/add-form.component';
+import BookingDatePicker from '../works/booking-date-picker.component';
 
 export default function AddWorkForMobilePage() {
   const { message } = App.useApp();
