@@ -1,0 +1,81 @@
+import { ReactNode, useCallback, useState } from 'react';
+import { App, Button, Popconfirm, Tooltip } from 'antd';
+import type { AxiosError } from 'axios';
+import useSWRImmutable from 'swr/immutable';
+import type { NoticeList, ProcessedNotice } from '@/app/admin/notice/page';
+import type { EndPoint } from '@/typings';
+import httpClient, { logAxiosError } from '@/utils/axios';
+import { axiosFetcher } from '@/utils/swr';
+import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+
+type Props = {
+  record: ProcessedNotice;
+};
+type Response = EndPoint['DELETE /notice/{noticeId}']['responses']['200'];
+type RequestError =
+  | EndPoint['DELETE /notice/{noticeId}']['responses']['404']
+  | EndPoint['DELETE /notice/{noticeId}']['responses']['500'];
+
+const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
+
+const INITIAL_POPOVER_TEXT = '공지사항 삭제';
+
+const DeleteButton = ({ record }: Props) => {
+  const { message } = App.useApp();
+  const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
+    record.swrKey || '/notice',
+    axiosFetcher,
+  );
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+  const [popoverText, setPopoverText] = useState<ReactNode>(INITIAL_POPOVER_TEXT);
+
+  const showPopconfirm = () => {
+    setIsPopoverOpen(true);
+  };
+
+  const deleteNotice = useCallback(async () => {
+    setPopoverText(Spinner);
+
+    try {
+      await httpClient.delete<Response>(`/notice/${record.id}`);
+      const nextNoticeList = noticeList?.filter((work) => work.id !== record.id);
+      await mutateNoticeList(nextNoticeList);
+      message.success('공지사항 삭제 완료');
+    } catch (err) {
+      setIsPopoverOpen(false);
+      setPopoverText(INITIAL_POPOVER_TEXT);
+      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+    }
+  }, [noticeList, record, mutateNoticeList]);
+
+  const handleCancel = () => {
+    setIsPopoverOpen(false);
+  };
+
+  return (
+    <>
+      <Popconfirm
+        title={popoverText}
+        open={isPopoverOpen}
+        onConfirm={deleteNotice}
+        okText="삭제"
+        okButtonProps={{ danger: true }}
+        onCancel={handleCancel}
+        cancelText="취소"
+        icon={<QuestionCircleOutlined style={{ color: '#ff4d4f' }} />}
+      >
+        <Tooltip title="삭제">
+          <Button
+            type="text"
+            size="small"
+            icon={<DeleteOutlined />}
+            style={{ color: '#ff4d4f' }}
+            onClick={showPopconfirm}
+          />
+        </Tooltip>
+      </Popconfirm>
+    </>
+  );
+};
+
+export default DeleteButton;

@@ -18,37 +18,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@public/*": [
-        "./public/*"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@hooks/*": [
-        "./hooks/*"
-      ],
-      "@app/*": [
-        "./app/*"
-      ],
-      "@utils/*": [
-        "./utils/*"
-      ],
-      "@globalStyles/*": [
-        "./globalStyles/*"
-      ],
-      "@typings": [
-        "./typings"
-      ],
-      "@typings/*": [
-        "./typings/*"
-      ]
+      "@/*": ["./*"],
     },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./typings"
-    ],
     "plugins": [
       {
         "name": "next"
