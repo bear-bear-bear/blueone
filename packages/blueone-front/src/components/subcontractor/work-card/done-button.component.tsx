@@ -3,8 +3,8 @@ import { App, Button, Modal } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { Work, EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { Work, EndPoint } from '@/typings';
 
 type Props = {
   workId: Work['id'];

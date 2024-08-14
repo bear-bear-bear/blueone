@@ -5,20 +5,22 @@ import { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
-import type { EndPoint } from '@/typings';
+import type { EndPoint } from '@/shared/api/types';
 import styled from '@emotion/styled';
 
-type RequestBody = EndPoint['POST /user/login']['requestBody'];
-type User = EndPoint['POST /user/login']['responses']['200'];
-type RequestError = EndPoint['POST /user/login']['responses']['409'] | EndPoint['POST /user/login']['responses']['500'];
+type Request = EndPoint['POST /user/sign-in']['requestBody'];
+type User = EndPoint['POST /user/sign-in']['responses']['200'];
+type RequestError =
+  | EndPoint['POST /user/sign-in']['responses']['409']
+  | EndPoint['POST /user/sign-in']['responses']['500'];
 
 export default function LoginPage() {
   const router = useRouter();
   const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
-  const onFinish = async (values: RequestBody) => {
+  const onFinish = async (values: Request) => {
     try {
-      const user = await httpClient.post<User>('/user/login', values).then((res) => res.data);
+      const user = await httpClient.post<User>('/user/sign-in', values).then((res) => res.data);
 
       switch (user.role) {
         case 'contractor':
@@ -40,7 +42,7 @@ export default function LoginPage() {
 
   return (
     <Form
-      name="login-form"
+      name="sign-in-form"
       initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}

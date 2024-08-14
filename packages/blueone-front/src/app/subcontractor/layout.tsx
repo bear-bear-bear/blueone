@@ -28,7 +28,7 @@ export default function WorkerLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isLoggedIn) return;
     if (user?.role === 'contractor') {
-      message.info('유저 전용 페이지입니다.');
+      message.info('Subcontractor 전용 페이지입니다.');
     }
   }, [isLoggedIn, user]);
 

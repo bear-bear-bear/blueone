@@ -2,25 +2,28 @@
 import { App, Button, Form, Input } from 'antd';
 import { AxiosError } from 'axios';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
-import { EndPoint } from '@/typings';
+import { EndPoint } from '@/shared/api/types';
 import styled from '@emotion/styled';
 
-type RequestBody = EndPoint['POST /users/contractor']['requestBody'];
+type Request = EndPoint['POST /users/contractor']['requestBody'];
+type RequestError =
+  | EndPoint['POST /users/contractor']['responses']['409']
+  | EndPoint['POST /users/contractor']['responses']['500'];
 
 export default function CreateContractorPage() {
   const { message } = App.useApp();
 
-  const onFormFinish = async (values: RequestBody) => {
+  const onFormFinish = async (values: Request) => {
     try {
       await httpClient.post('/users/contractor', values);
       message.success('등록 완료');
     } catch (err) {
-      logAxiosError(err as AxiosError);
+      logAxiosError(err as AxiosError<RequestError>);
     }
   };
 
   return (
-    <Form<RequestBody> layout="vertical" onFinish={onFormFinish}>
+    <Form<Request> layout="vertical" onFinish={onFormFinish}>
       <Form.Item name="phoneNumber" label="전화번호" rules={[{ required: true }]}>
         <Input autoComplete="off" />
       </Form.Item>
@@ -33,7 +36,7 @@ export default function CreateContractorPage() {
 
       <ButtonGroup>
         <Button type="primary" htmlType="submit">
-          어드민 등록
+          Contractor 등록
         </Button>
       </ButtonGroup>
     </Form>

@@ -13,7 +13,7 @@ import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 const router = express.Router();
 
 /**
- * 유저 확인
+ * 내 정보 가져오기
  */
 router.get('/', isLoggedIn, async (req, res, next) => {
   try {
@@ -48,7 +48,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 /**
  * 로그인
  */
-router.post('/login', isNotLoggedIn, (req, res, next) => {
+router.post('/sign-in', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (serverError, user, clientError) => {
     if (serverError) {
       console.error('serverError', serverError);
@@ -88,7 +88,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 /**
  * 로그아웃
  */
-router.post('/logout', isLoggedIn, (req, res) => {
+router.post('/sign-out', isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy((err) => {
     if (err) {
@@ -116,7 +116,7 @@ router.post('/password', isLoggedIn, async (req, res, next) => {
 });
 
 /**
- * 3일 이내 내 작업 리스트 가져오기 (완료 날짜가 오늘인 항목을 제외하곤 완료된 작업 미포함)
+ * 3일 이내의 내 업무 리스트 가져오기 (완료 날짜가 오늘인 항목을 제외하곤 완료된 업무 미포함)
  */
 router.get('/works', isLoggedIn, async (req, res, next) => {
   const today = dayjs();
@@ -166,17 +166,17 @@ router.get('/works', isLoggedIn, async (req, res, next) => {
 });
 
 /**
- * 지정한 기간 내 완료된 내 작업 목록 가져오기
+ * 지정한 기간 내 완료된 내 업무 목록 가져오기
  */
 router.get(
-  '/works/prev',
+  '/works/complete',
   isLoggedIn,
   async (req: QueryTypedRequest<DatePickQuery>, res, next) => {
     const today = dayjs();
-    const { start = today, end = today } = req.query;
+    const { startDate = today, endDate = today } = req.query;
 
-    const gt = dayjs(start).startOf('day').toISOString();
-    const lt = dayjs(end).endOf('day').toISOString();
+    const gt = dayjs(startDate).startOf('day').toISOString();
+    const lt = dayjs(endDate).endOf('day').toISOString();
 
     try {
       const works = await Work.findAll({

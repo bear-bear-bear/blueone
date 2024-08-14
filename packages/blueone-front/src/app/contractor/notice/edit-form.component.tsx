@@ -4,18 +4,18 @@ import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import { PackDateRange, EndPoint } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import { DatesToRange, EndPoint } from '@/typings';
 import type { NoticeList, ProcessedNotice } from './page';
 
 const { RangePicker } = DatePicker;
 
-type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];
-type EditedNotice = EndPoint['PUT /notice/{noticeId}']['responses']['200'];
-type RequestError = EndPoint['PUT /notice/{noticeId}']['responses']['500'];
+type Request = EndPoint['PUT /notices/{noticeId}']['requestBody'];
+type EditedNotice = EndPoint['PUT /notices/{noticeId}']['responses']['200'];
+type RequestError = EndPoint['PUT /notices/{noticeId}']['responses']['500'];
 
-type FormValues = DatesToRange<RequestBody>;
+type FormValues = PackDateRange<Request>;
 type Props = {
   form: FormInstance<FormValues>;
   validateTrigger: FormProps['validateTrigger'];
@@ -48,7 +48,7 @@ const NoticeEditForm = ({
   const { message } = App.useApp();
 
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
-    prevNotice.swrKey || '/notice',
+    prevNotice.swrKey || '/notices',
     axiosFetcher,
   );
 
@@ -62,7 +62,7 @@ const NoticeEditForm = ({
 
   const onFormFinish = useCallback(
     async (values: FormValues) => {
-      const body: RequestBody = {
+      const body: Request = {
         title: values.title,
         content: values.content,
         startDate: values.dateRange[0].format('YYYY-MM-DD'),
@@ -72,7 +72,7 @@ const NoticeEditForm = ({
       setSubmitLoading(true);
       try {
         const updatedNotice = await httpClient
-          .put<EditedNotice>(`/notice/${prevNotice.id}`, body)
+          .put<EditedNotice>(`/notices/${prevNotice.id}`, body)
           .then((res) => res.data);
 
         const nextNoticeList = noticeList?.map((notice) => (notice.id !== updatedNotice.id ? notice : updatedNotice));

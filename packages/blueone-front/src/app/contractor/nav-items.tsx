@@ -22,7 +22,7 @@ const navItems = [
   },
   {
     title: '공지사항',
-    route: '/contractor/notice',
+    route: '/contractor/notices',
     icon: <NotificationOutlined />,
   },
 ] as const;

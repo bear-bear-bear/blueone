@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { DatePicker } from 'antd';
+import { DateRange } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
-import type { DateRange } from './page';
 
 const { RangePicker } = DatePicker;
 
@@ -16,8 +16,8 @@ const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
   const handleChange = useCallback(
     (_: unknown, [startDate, endDate]: [string, string]) => {
       setDateRange({
-        start: startDate,
-        end: endDate,
+        startDate: startDate,
+        endDate: endDate,
       });
     },
     [setDateRange],
@@ -47,7 +47,7 @@ const CustomRangePicker = ({ dateRange, setDateRange }: Props) => {
         },
       ]}
       onChange={handleChange}
-      defaultValue={[dayjs(dateRange.start), dayjs(dateRange.end)]}
+      defaultValue={[dayjs(dateRange.startDate), dayjs(dateRange.endDate)]}
       disabledDate={disabledDate}
       allowClear={false}
     />

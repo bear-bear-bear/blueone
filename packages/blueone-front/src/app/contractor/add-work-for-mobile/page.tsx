@@ -10,7 +10,7 @@ import dayjs from '@/shared/lib/utils/dayjs';
 import media from '@/shared/ui/media';
 import { DeleteOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
-import type { RequestBody, RequestError, WorkAddFormValues } from '../works/add-form.component';
+import type { Request, RequestError, WorkAddFormValues } from '../works/add-form.component';
 import BookingDatePicker from '../works/booking-date-picker.component';
 
 export default function AddWorkForMobilePage() {
@@ -28,7 +28,7 @@ export default function AddWorkForMobilePage() {
   }, [form, setBookingDate]);
 
   const onFormFinish = async (values: WorkAddFormValues) => {
-    const reqBody: RequestBody = {
+    const reqBody: Request = {
       ...values,
       waypoint: values.waypoint ?? null,
       userId: values.userId ?? null,

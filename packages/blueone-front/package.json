@@ -12,7 +12,7 @@
     "@emotion/styled": "^11.13.0",
     "@svgr/webpack": "^6.1.2",
     "antd": "^5.20.0",
-    "axios": "^0.24.0",
+    "axios": "^1.7.4",
     "chart.js": "^4.4.3",
     "dayjs": "^1.10.7",
     "linkify-react": "^3.0.4",

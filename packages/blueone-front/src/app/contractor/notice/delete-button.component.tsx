@@ -3,18 +3,18 @@ import { App, Button, Popconfirm, Tooltip } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { NoticeList, ProcessedNotice } from './page';
 
 type Props = {
   record: ProcessedNotice;
 };
-type Response = EndPoint['DELETE /notice/{noticeId}']['responses']['200'];
+type Response = EndPoint['DELETE /notices/{noticeId}']['responses']['200'];
 type RequestError =
-  | EndPoint['DELETE /notice/{noticeId}']['responses']['404']
-  | EndPoint['DELETE /notice/{noticeId}']['responses']['500'];
+  | EndPoint['DELETE /notices/{noticeId}']['responses']['404']
+  | EndPoint['DELETE /notices/{noticeId}']['responses']['500'];
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
@@ -23,7 +23,7 @@ const INITIAL_POPOVER_TEXT = '공지사항 삭제';
 const DeleteButton = ({ record }: Props) => {
   const { message } = App.useApp();
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
-    record.swrKey || '/notice',
+    record.swrKey || '/notices',
     axiosFetcher,
   );
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
@@ -37,7 +37,7 @@ const DeleteButton = ({ record }: Props) => {
     setPopoverText(Spinner);
 
     try {
-      await httpClient.delete<Response>(`/notice/${record.id}`);
+      await httpClient.delete<Response>(`/notices/${record.id}`);
       const nextNoticeList = noticeList?.filter((work) => work.id !== record.id);
       await mutateNoticeList(nextNoticeList);
       message.success('공지사항 삭제 완료');

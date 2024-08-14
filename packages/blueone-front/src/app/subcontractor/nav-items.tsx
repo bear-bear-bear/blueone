@@ -32,7 +32,7 @@ const navItems: NavItem[] = [
     text: '완료된 업무',
   },
   {
-    href: '/subcontractor/notice',
+    href: '/subcontractor/notices',
     outlineIcon: <AiOutlineNotification size={20} />,
     fillIcon: <AiFillNotification size={20} />,
     text: '공지사항',

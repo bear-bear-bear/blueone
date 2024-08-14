@@ -6,15 +6,11 @@ import qs from 'qs';
 import useSWR from 'swr';
 import CustomRangePicker from '@/app/subcontractor/done-works/range-picker.component';
 import { WorkCard } from '@/components/subcontractor/work-card';
+import { DateRange, EndPoint, Unpacked } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import { EndPoint, Unpacked } from '@/typings';
 import styled from '@emotion/styled';
 
-export type DateRange = {
-  start: string;
-  end: string;
-};
-export type Works = EndPoint['GET /user/works/prev']['responses']['200'];
+export type Works = EndPoint['GET /user/works/complete']['responses']['200'];
 export type Work = Unpacked<Works>;
 
 export default function DoneWorksPage() {
@@ -23,10 +19,10 @@ export default function DoneWorksPage() {
   const SEVEN_DAYS_AGO_YYYY_MM_DD = today.subtract(7, 'days').format('YYYY-MM-DD');
 
   const [dateRange, setDateRange] = useState<DateRange>({
-    start: SEVEN_DAYS_AGO_YYYY_MM_DD,
-    end: TODAY_YYYY_MM_DD,
+    startDate: SEVEN_DAYS_AGO_YYYY_MM_DD,
+    endDate: TODAY_YYYY_MM_DD,
   });
-  const swrKey = `/user/works/prev?${qs.stringify(dateRange)}`;
+  const swrKey = `/user/works/complete?${qs.stringify(dateRange)}`;
   const { data: works } = useSWR<Works>(swrKey, axiosFetcher);
 
   return (

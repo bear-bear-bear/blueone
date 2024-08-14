@@ -4,18 +4,18 @@ import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import { PackDateRange, EndPoint } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import { DatesToRange, EndPoint } from '@/typings';
 
 const { RangePicker } = DatePicker;
 
-type RequestBody = EndPoint['POST /notice']['requestBody'];
-type NoticeList = EndPoint['GET /notice']['responses']['200'];
-type Response = EndPoint['POST /notice']['responses']['202'];
-type RequestError = EndPoint['POST /notice']['responses']['500'];
+type Request = EndPoint['POST /notices']['requestBody'];
+type NoticeList = EndPoint['GET /notices']['responses']['200'];
+type Response = EndPoint['POST /notices']['responses']['201'];
+type RequestError = EndPoint['POST /notices']['responses']['500'];
 
-type FormValues = DatesToRange<RequestBody>;
+type FormValues = PackDateRange<Request>;
 type Props = {
   form: FormInstance<FormValues>;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
@@ -38,7 +38,7 @@ const validateMessages = {
 const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) => {
   const { message } = App.useApp();
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
-    swrKey || '/notice',
+    swrKey || '/notices',
     axiosFetcher,
     {
       revalidateOnMount: false,
@@ -47,7 +47,7 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
 
   const onFormFinish = useCallback(
     async (values: FormValues) => {
-      const body: RequestBody = {
+      const body: Request = {
         title: values.title,
         content: values.content,
         startDate: values.dateRange[0].format('YYYY-MM-DD'),
@@ -56,7 +56,7 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
 
       setSubmitLoading(true);
       try {
-        const createdNotice = await httpClient.post<Response>('/notice', body).then((res) => res.data);
+        const createdNotice = await httpClient.post<Response>('/notices', body).then((res) => res.data);
 
         const nextNoticeList = noticeList?.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
         await mutateNoticeList(nextNoticeList);

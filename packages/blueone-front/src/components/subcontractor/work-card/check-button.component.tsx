@@ -5,8 +5,8 @@ import useSWRImmutable from 'swr/immutable';
 import { Subcontractor } from '@/entities/subcontractor';
 import useUser from '@/hooks/use-user.hook';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint, Work } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint, Work } from '@/typings';
 
 type Props = {
   workId: Work['id'];

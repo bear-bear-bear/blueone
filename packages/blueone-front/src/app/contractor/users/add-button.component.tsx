@@ -1,12 +1,12 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, FormProps, Modal } from 'antd';
-import type { EndPoint } from '@/typings';
+import type { EndPoint } from '@/shared/api/types';
 import AddForm from './add-form.component';
 
-type RequestBody = EndPoint['POST /users']['requestBody'];
+type Request = EndPoint['POST /users']['requestBody'];
 
 const AddButton = () => {
-  const [form] = Form.useForm<RequestBody>();
+  const [form] = Form.useForm<Request>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');

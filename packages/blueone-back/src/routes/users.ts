@@ -11,7 +11,7 @@ import { getDefaultWhereParamsQueriedByWork } from '@/utils/query/work';
 const router = express.Router();
 
 /**
- * 유저 리스트 가져오기
+ * Subcontractor 리스트 가져오기
  */
 router.get('/', isLoggedIn, isContractor, async (_req, res, next) => {
   try {
@@ -31,7 +31,7 @@ router.get('/', isLoggedIn, isContractor, async (_req, res, next) => {
 });
 
 /**
- * 유저 추가
+ * Subcontractor 추가
  */
 router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
   const { phoneNumber, ...restUserInfo }: CreateUserRequestBody = req.body;
@@ -60,14 +60,14 @@ router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
       return;
     }
 
-    res.status(202).json(omit(user.get(), 'password'));
+    res.status(201).json(omit(user.get(), 'password'));
   } catch (err) {
     next(err);
   }
 });
 
 /**
- * 어드민 추가
+ * Contractor 추가
  */
 router.post('/contractor', async (req, res, next) => {
   try {
@@ -97,14 +97,14 @@ router.post('/contractor', async (req, res, next) => {
       return;
     }
 
-    res.status(202).json(omit(contractor.get(), 'password'));
+    res.status(201).json(omit(contractor.get(), 'password'));
   } catch (err) {
     next(err);
   }
 });
 
 /**
- * 유저 가져오기
+ * 특정 유저 가져오기
  */
 router.get('/:userId', isLoggedIn, isContractor, async (req, res, next) => {
   const { userId } = req.params;
@@ -193,7 +193,7 @@ router.delete('/:userId', isLoggedIn, isContractor, async (req, res, next) => {
 });
 
 /**
- * 활성화된 유저 작업 가져오기
+ * 활성화된 유저 업무 가져오기
  */
 router.get(
   '/:userId/works',

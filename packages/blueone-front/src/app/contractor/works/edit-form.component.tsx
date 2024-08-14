@@ -7,8 +7,8 @@ import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
 import SubcontractorSelector from '@/components/subcontractor/subcontractor-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint, Work } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint, Work } from '@/typings';
 import type { WorkAddFormValues } from './add-form.component';
 import BookingDatePicker from './booking-date-picker.component';
 
@@ -20,7 +20,7 @@ type Props = {
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
-type WorkPutRequestBody = EndPoint['PUT /works/{workId}']['requestBody'];
+type WorkPutRequest = EndPoint['PUT /works/{workId}']['requestBody'];
 type EditedWork = EndPoint['PUT /works/{workId}']['responses']['200'];
 type WorkPutError = EndPoint['PUT /works/{workId}']['responses']['500'];
 type WorkPatchError =
@@ -62,7 +62,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
   }, []);
 
   const onFormFinish: FormProps<WorkAddFormValues>['onFinish'] = async (values) => {
-    const reqBody: WorkPutRequestBody = {
+    const reqBody: WorkPutRequest = {
       ...values,
       waypoint: values.waypoint ?? null,
       userId: values.userId ?? null,

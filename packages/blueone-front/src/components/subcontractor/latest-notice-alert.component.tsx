@@ -3,17 +3,17 @@ import { Alert } from 'antd';
 import { useRouter } from 'next/navigation';
 import Marquee from 'react-fast-marquee';
 import useSWR from 'swr';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 
-type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];
+type ActivatedNoticeList = EndPoint['GET /notices/activation']['responses']['200'];
 
 const LatestNoticeAlert = () => {
-  const { data: noticeList } = useSWR<ActivatedNoticeList>('/notice/activation', axiosFetcher);
+  const { data: noticeList } = useSWR<ActivatedNoticeList>('/notices/activation', axiosFetcher);
   const router = useRouter();
 
   const onClickAlertBox: MouseEventHandler<HTMLDivElement> = () => {
-    router.push('/subcontractor/notice');
+    router.push('/subcontractor/notices');
   };
 
   if (!noticeList || noticeList.length === 0) return <div />;

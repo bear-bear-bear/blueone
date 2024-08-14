@@ -3,14 +3,14 @@ import { Form, Input, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
-import type { EndPoint } from '@/typings';
+import type { EndPoint } from '@/shared/api/types';
 import { css, Global } from '@emotion/react';
 
-type RequestBody = EndPoint['POST /user/password']['requestBody'];
+type Request = EndPoint['POST /user/password']['requestBody'];
 type Response = EndPoint['POST /user/password']['responses']['204'];
 type RequestError = EndPoint['POST /user/password']['responses']['500'];
 type Props = {
-  form: FormInstance<RequestBody>;
+  form: FormInstance<Request>;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
@@ -18,8 +18,8 @@ type Props = {
 export default function PasswordChangeForm({ form, setSubmitLoading, closeModal }: Props) {
   const { message } = App.useApp();
 
-  const onFormFinish = async (values: RequestBody) => {
-    const reqBody: RequestBody = {
+  const onFormFinish = async (values: Request) => {
+    const reqBody: Request = {
       password: values.password,
     };
 

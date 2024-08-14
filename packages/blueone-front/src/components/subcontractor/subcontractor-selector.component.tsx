@@ -3,9 +3,9 @@ import { Divider, FormInstance, Select, Tooltip } from 'antd';
 import useSWR from 'swr';
 import type { WorkAddFormValues } from '@/app/contractor/works/add-form.component';
 import { Subcontractor } from '@/entities/subcontractor';
+import type { EndPoint, User } from '@/shared/api/types';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint, User } from '@/typings';
 import { WarningOutlined } from '@ant-design/icons';
 
 type Users = EndPoint['GET /users']['responses']['200'];

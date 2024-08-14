@@ -1,12 +1,12 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
-import type { EndPoint } from '@/typings';
+import type { EndPoint } from '@/shared/api/types';
 import PasswordChangeForm from './password-change-form.component';
 
-type RequestBody = EndPoint['POST /user/password']['requestBody'];
+type Request = EndPoint['POST /user/password']['requestBody'];
 
 const PasswordChangeButton = () => {
-  const [form] = Form.useForm<RequestBody>();
+  const [form] = Form.useForm<Request>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 

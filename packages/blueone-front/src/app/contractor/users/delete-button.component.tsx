@@ -4,8 +4,8 @@ import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullUsers, FullUser } from '@/app/contractor/users/page';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 
 type Props = {

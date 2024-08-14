@@ -5,28 +5,28 @@ import { useRouter } from 'next/navigation';
 import { CgLogOut } from 'react-icons/cg';
 import useSWRImmutable from 'swr/immutable';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 
 interface Props extends ButtonProps {
   kind?: 'icon' | 'text';
 }
 type User = EndPoint['GET /user']['responses']['200'];
-type LogoutError = EndPoint['POST /user/logout']['responses']['500'];
+type SignOutError = EndPoint['POST /user/sign-out']['responses']['500'];
 
-const LogoutButton = ({ kind = 'icon', ...rest }: Props) => {
+const SignOutButton = ({ kind = 'icon', ...rest }: Props) => {
   const { message } = App.useApp();
   const router = useRouter();
   const { mutate: mutateUser } = useSWRImmutable<User>('/user', axiosFetcher);
 
   const handleClick = useCallback(async () => {
     try {
-      await httpClient.post('/user/logout');
+      await httpClient.post('/user/sign-out');
       await mutateUser(undefined);
       await router.push('/');
       message.success('로그아웃 완료');
     } catch (err) {
-      logAxiosError<LogoutError>(err as AxiosError<LogoutError>);
+      logAxiosError<SignOutError>(err as AxiosError<SignOutError>);
     }
   }, [mutateUser, router]);
 
@@ -40,4 +40,4 @@ const LogoutButton = ({ kind = 'icon', ...rest }: Props) => {
   );
 };
 
-export default LogoutButton;
+export default SignOutButton;

@@ -4,14 +4,14 @@ import Linkify from 'linkify-react';
 import useSWR from 'swr';
 import Empty from '@/components/subcontractor/empty.component';
 import theme from '@/global-styles/theme';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 import styled from '@emotion/styled';
 
-type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];
+type ActivatedNoticeList = EndPoint['GET /notices/activation']['responses']['200'];
 
 export default function NoticePage() {
-  const { data: noticeList } = useSWR<ActivatedNoticeList>('/notice/activation', axiosFetcher, {
+  const { data: noticeList } = useSWR<ActivatedNoticeList>('/notices/activation', axiosFetcher, {
     revalidateOnFocus: false,
   });
 

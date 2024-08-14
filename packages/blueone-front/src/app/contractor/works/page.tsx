@@ -6,9 +6,9 @@ import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import qs from 'qs';
 import useSWR from 'swr';
+import type { EndPoint, UserInfo, Unpacked, User, DateRange } from '@/shared/api/types';
 import { formatTime } from '@/shared/lib/utils/day';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint, UserInfo, Unpacked, User } from '@/typings';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -20,10 +20,6 @@ import TotalFee from './total-fee.component';
 
 const { RangePicker } = DatePicker;
 
-type DateRange = {
-  start: string;
-  end: string;
-};
 export type FullWorks = EndPoint['GET /works']['responses']['200'];
 export type FullWork = Unpacked<FullWorks>;
 export type ProcessedWork = FullWork & {
@@ -47,12 +43,12 @@ export default function WorkManagementTable() {
   const times = formatTime(today);
 
   const defaultDateRange = {
-    start: times.threeDaysAgoDate,
-    end: times.todayDate,
+    startDate: times.threeDaysAgoDate,
+    endDate: times.todayDate,
   };
   const defaultBookingDateRange = {
-    start: times.tomorrowDate,
-    end: times.fourDaysLaterDate,
+    startDate: times.tomorrowDate,
+    endDate: times.fourDaysLaterDate,
   };
 
   const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
@@ -130,8 +126,8 @@ export default function WorkManagementTable() {
   const handleChangeRangePicker = useCallback<NonNullable<RangePickerProps['onChange']>>(
     (_, [startDate, endDate]) => {
       setDateRange({
-        start: startDate,
-        end: endDate,
+        startDate: startDate,
+        endDate: endDate,
       });
     },
     [setDateRange],
@@ -158,7 +154,7 @@ export default function WorkManagementTable() {
               presets={[
                 {
                   label: 'Default',
-                  value: [dayjs(defaultBookingDateRange.start), dayjs(defaultBookingDateRange.end)],
+                  value: [dayjs(defaultBookingDateRange.startDate), dayjs(defaultBookingDateRange.endDate)],
                 },
                 {
                   label: 'This Month',
@@ -166,7 +162,7 @@ export default function WorkManagementTable() {
                 },
               ]}
               onChange={handleChangeRangePicker}
-              value={dateRange && [dayjs(dateRange.start), dayjs(dateRange.end)]}
+              value={dateRange && [dayjs(dateRange.startDate), dayjs(dateRange.endDate)]}
               disabledDate={disabledDate}
               allowClear={false}
             />
@@ -175,7 +171,7 @@ export default function WorkManagementTable() {
               presets={[
                 {
                   label: 'Default',
-                  value: [dayjs(defaultDateRange.start), dayjs(defaultDateRange.end)],
+                  value: [dayjs(defaultDateRange.startDate), dayjs(defaultDateRange.endDate)],
                 },
                 {
                   label: 'Today',
@@ -187,7 +183,7 @@ export default function WorkManagementTable() {
                 },
               ]}
               onChange={handleChangeRangePicker}
-              value={dateRange && [dayjs(dateRange.start), dayjs(dateRange.end)]}
+              value={dateRange && [dayjs(dateRange.startDate), dayjs(dateRange.endDate)]}
               disabledDate={disabledDate}
               allowClear={false}
             />

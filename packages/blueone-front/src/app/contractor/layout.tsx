@@ -5,10 +5,10 @@ import type { SiderProps } from 'antd/lib/layout';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import useSWRImmutable from 'swr/immutable';
-import LogoutButton from '@/components/logout-button.component';
+import SignOutButton from '@/components/sign-out-button.component';
 import useContractor from '@/hooks/use-contractor.hook';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 import styled from '@emotion/styled';
 import navItems, { getTitleByRoute } from './nav-items';
 
@@ -90,7 +90,7 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
       <Layout>
         <StyledHeader>
           {getTitleByRoute(pathname)}
-          <LogoutButton style={{ color: 'white' }} />
+          <SignOutButton style={{ color: 'white' }} />
         </StyledHeader>
 
         <Main style={{ margin: '16px', overflow: 'auto' }}>{children}</Main>

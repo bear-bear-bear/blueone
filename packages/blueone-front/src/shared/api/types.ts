@@ -1,4 +1,4 @@
-import dayjs from '@/shared/lib/utils/dayjs';
+import type dayjs from '@/shared/lib/utils/dayjs';
 
 export type Unpacked<T> = T extends (infer U)[]
   ? U
@@ -8,12 +8,17 @@ export type Unpacked<T> = T extends (infer U)[]
   ? U
   : T;
 
-type ISODateString = string;
+export type ISODateString = string;
 
-export type DatesToRange<T extends { startDate: ISODateString; endDate: ISODateString }> = Omit<
-  T,
-  'startDate' | 'endDate'
-> & {
+export type DateRange = {
+  startDate: ISODateString;
+  endDate: ISODateString;
+};
+
+/**
+ * for form values (date picker value)
+ */
+export type PackDateRange<T extends DateRange> = Omit<T, 'startDate' | 'endDate'> & {
   dateRange: [dayjs.Dayjs, dayjs.Dayjs];
 };
 
@@ -92,7 +97,7 @@ export interface EndPoint {
   /**
    * 로그인
    */
-  'POST /user/login': {
+  'POST /user/sign-in': {
     requestBody: Pick<User, 'phoneNumber'> & {
       password: string;
     };
@@ -107,7 +112,7 @@ export interface EndPoint {
   /**
    * 로그아웃
    */
-  'POST /user/logout': {
+  'POST /user/sign-out': {
     responses: {
       204: void;
       500: ErrorMessage;
@@ -126,7 +131,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 3일 이내 내 작업 리스트 가져오기 (완료 날짜가 오늘인 항목을 제외하곤 완료된 작업 미포함)
+   * 3일 이내의 내 업무 리스트 가져오기 (완료 날짜가 오늘인 항목을 제외하곤 완료된 업무 미포함)
    */
   'GET /user/works': {
     responses: {
@@ -135,9 +140,10 @@ export interface EndPoint {
     };
   };
   /**
-   * 지정한 기간 내 완료된 내 작업 목록 가져오기
+   * 지정한 기간 내 완료된 내 업무 목록 가져오기
    */
-  'GET /user/works/prev': {
+  'GET /user/works/complete': {
+    queryParams: DateRange;
     responses: {
       200: Work[];
       500: ErrorMessage;
@@ -147,6 +153,9 @@ export interface EndPoint {
    * 올해 혹은 이번달 내 업무의 최종지수 통계 가져오기
    */
   'GET /user/works/analysis': {
+    queryParams: {
+      by: 'day' | 'month';
+    };
     responses: {
       200: { [dayOrMonth: `${number}`]: number };
       500: ErrorMessage;
@@ -154,7 +163,7 @@ export interface EndPoint {
   };
 
   /**
-   * 유저 리스트 가져오기
+   * Subcontractor 리스트 가져오기
    */
   'GET /users': {
     responses: {
@@ -166,7 +175,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 유저 등록
+   * Subcontractor 등록
    */
   'POST /users': {
     requestBody: Pick<User, 'phoneNumber'> &
@@ -175,7 +184,7 @@ export interface EndPoint {
         'realname' | 'dateOfBirth' | 'licenseType' | 'licenseNumber' | 'insuranceNumber' | 'insuranceExpirationDate'
       >;
     responses: {
-      202: User & {
+      201: User & {
         UserInfo: UserInfo;
         Work: Work;
       };
@@ -184,7 +193,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 유저 가져오기
+   * 특정 유저 가져오기
    */
   'GET /users/{userId}': {
     responses: {
@@ -234,7 +243,7 @@ export interface EndPoint {
     };
   };
   /**
-   * 어드민 생성
+   * Contractor 생성
    */
   'POST /users/contractor': {
     requestBody: {
@@ -243,7 +252,7 @@ export interface EndPoint {
       contractorCreateKey: string;
     };
     responses: {
-      202: User;
+      201: User;
       409: ErrorMessage;
       500: ErrorMessage;
     };
@@ -293,17 +302,9 @@ export interface EndPoint {
    * 업무 상태 수정
    */
   'PATCH /works/{workId}': {
-    responses: {
-      200: Work;
-      403: ErrorMessage;
-      404: ErrorMessage;
-      500: ErrorMessage;
+    queryParams: {
+      state: 'init' | 'checked' | 'done';
     };
-  };
-  /**
-   * 업무 강제 완료
-   */
-  'PATCH /works/{workId}/force-finish': {
     responses: {
       200: Work;
       403: ErrorMessage;
@@ -315,6 +316,17 @@ export interface EndPoint {
    * 예약 업무 강제 활성화
    */
   'PATCH /works/{workId}/force-activate': {
+    responses: {
+      200: Work;
+      403: ErrorMessage;
+      404: ErrorMessage;
+      500: ErrorMessage;
+    };
+  };
+  /**
+   * 업무 강제 완료
+   */
+  'PATCH /works/{workId}/force-finish': {
     responses: {
       200: Work;
       403: ErrorMessage;
@@ -336,7 +348,8 @@ export interface EndPoint {
   /**
    * 공지사항 목록 가져오기
    */
-  'GET /notice': {
+  'GET /notices': {
+    queryParams: DateRange;
     responses: {
       200: Notice[];
       500: ErrorMessage;
@@ -345,7 +358,7 @@ export interface EndPoint {
   /**
    * 공지사항 작성
    */
-  'POST /notice': {
+  'POST /notices': {
     requestBody: {
       title: Notice['title'];
       content: Notice['content'];
@@ -353,14 +366,14 @@ export interface EndPoint {
       endDate: Notice['endDate'];
     };
     responses: {
-      202: Notice;
+      201: Notice;
       500: ErrorMessage;
     };
   };
   /**
    * 공지사항 가져오기
    */
-  'GET /notice/{noticeId}': {
+  'GET /notices/{noticeId}': {
     responses: {
       200: Notice;
       404: ErrorMessage;
@@ -370,7 +383,7 @@ export interface EndPoint {
   /**
    * 공지사항 수정
    */
-  'PUT /notice/{noticeId}': {
+  'PUT /notices/{noticeId}': {
     requestBody: {
       title: Notice['title'];
       content: Notice['content'];
@@ -386,7 +399,7 @@ export interface EndPoint {
   /**
    * 공지사항 삭제
    */
-  'DELETE /notice/{noticeId}': {
+  'DELETE /notices/{noticeId}': {
     responses: {
       200: Notice;
       404: ErrorMessage;
@@ -394,9 +407,9 @@ export interface EndPoint {
     };
   };
   /**
-   * 활성화된 공지사항 가져오기
+   * 활성화된 공지사항 목록 가져오기
    */
-  'GET /notice/activation': {
+  'GET /notices/activation': {
     responses: {
       200: Notice[];
       500: ErrorMessage;

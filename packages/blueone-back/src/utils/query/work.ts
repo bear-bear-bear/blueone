@@ -4,8 +4,8 @@ import { User, UserInfo, Work } from '@/models';
 /**
  * @param gte string 형식의 날짜 데이터입니다. ( equal or greater then )
  * @param lte string 형식의 날짜 데이터입니다. ( equal or less then )
- * @param booked 예약된 작업 정보를 표시할지에 대한 bool 값입니다.
- * @description 날짜 데이터를 받아 해당하는 날짜 범위의 예약 작업 또는 작업 데이터를 조회하여 반환합니다.
+ * @param booked 예약된 업무 정보를 표시할지에 대한 bool 값입니다.
+ * @description 날짜 데이터를 받아 해당하는 날짜 범위의 예약 업무 또는 업무 데이터를 조회하여 반환합니다.
  */
 export const getWorksByConditionallyAsBooking = async (
   gte: string,

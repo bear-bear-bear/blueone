@@ -1,17 +1,17 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
 import type { FullUser } from '@/app/contractor/users/page';
-import type { EndPoint } from '@/typings';
+import type { EndPoint } from '@/shared/api/types';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './edit-form.component';
 
 type Props = {
   user: FullUser;
 };
-export type UpdateRequestBody = EndPoint['PUT /users/{userId}']['requestBody'];
+export type UpdateRequest = EndPoint['PUT /users/{userId}']['requestBody'];
 
 const EditButton = ({ user }: Props) => {
-  const [form] = Form.useForm<UpdateRequestBody>();
+  const [form] = Form.useForm<UpdateRequest>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');

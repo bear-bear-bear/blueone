@@ -20,10 +20,10 @@ router.get(
   isLoggedIn,
   async (req: QueryTypedRequest<DatePickQuery>, res, next) => {
     const today = dayjs();
-    const { start = today, end = today } = req.query;
+    const { startDate = today, endDate = today } = req.query;
 
-    const gt = dayjs(start).startOf('day').toISOString();
-    const lt = dayjs(end).endOf('day').toISOString();
+    const gt = dayjs(startDate).startOf('day').toISOString();
+    const lt = dayjs(endDate).endOf('day').toISOString();
 
     try {
       const noticeList = await Notice.findAll({
@@ -59,14 +59,14 @@ router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
       userId: req.user?.id,
     });
 
-    res.status(202).json(notice.get());
+    res.status(201).json(notice.get());
   } catch (err) {
     next(err);
   }
 });
 
 /**
- * 활성화된 공지사항 가져오기
+ * 활성화된 공지사항 목록 가져오기
  */
 router.get('/activation', isLoggedIn, async (req, res, next) => {
   const today = dayjs().format('YYYY-MM-DD');

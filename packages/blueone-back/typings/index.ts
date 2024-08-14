@@ -10,10 +10,10 @@ export type QueryTypedRequest<QT = core.Query> = Request<
   Record<string, unknown>
 >;
 
-export type ISODateString = string;
+type ISODateString = string;
 export type DatePickQuery = {
-  start: ISODateString;
-  end: ISODateString;
+  startDate: ISODateString;
+  endDate: ISODateString;
 };
 
 export type CreateUserRequestBody = Pick<User, 'phoneNumber'> &

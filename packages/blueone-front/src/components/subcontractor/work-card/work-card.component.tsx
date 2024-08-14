@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import CheckButton from '@/components/subcontractor/work-card/check-button.component';
 import DoneButton from '@/components/subcontractor/work-card/done-button.component';
 import theme from '@/global-styles/theme';
-import { EndPoint } from '@/typings';
-import type { Unpacked } from '@/typings';
+import { EndPoint } from '@/shared/api/types';
+import type { Unpacked } from '@/shared/api/types';
 import { MoneyCollectOutlined } from '@ant-design/icons';
 import * as S from './styles';
 

@@ -1,13 +1,13 @@
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
-import type { DatesToRange, EndPoint } from '@/typings';
+import type { PackDateRange, EndPoint } from '@/shared/api/types';
 import AddForm from './add-form.component';
 
 type Props = {
   swrKey: string;
 };
-type RequestBody = EndPoint['POST /notice']['requestBody'];
-type FormValues = DatesToRange<RequestBody>;
+type Request = EndPoint['POST /notices']['requestBody'];
+type FormValues = PackDateRange<Request>;
 
 const AddButton: FC<Props> = ({ swrKey }) => {
   const [form] = Form.useForm<FormValues>();

@@ -5,13 +5,13 @@ import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullUser } from '@/app/contractor/users/page';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint } from '@/shared/api/types';
 import regex from '@/shared/lib/utils/regex';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
-import type { UpdateRequestBody } from './edit-button.component';
+import type { UpdateRequest } from './edit-button.component';
 
 type Props = {
-  form: FormInstance<UpdateRequestBody>;
+  form: FormInstance<UpdateRequest>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevUser: FullUser;
@@ -29,7 +29,7 @@ const layout: { [ColName: string]: ColProps } = {
   wrapperCol: { flex: 'auto' },
 };
 
-const validateMessages: FormProps<UpdateRequestBody>['validateMessages'] = {
+const validateMessages: FormProps<UpdateRequest>['validateMessages'] = {
   required: '필수 입력 값입니다.',
   pattern: {
     mismatch: '형식이 올바르지 않습니다.',
@@ -47,7 +47,7 @@ const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, set
     phoneNumber,
     UserInfo: { realname, dateOfBirth, licenseNumber, licenseType, insuranceNumber, insuranceExpirationDate },
   } = prevUser;
-  const formInitialValues = useMemo<UpdateRequestBody>(
+  const formInitialValues = useMemo<UpdateRequest>(
     () => ({
       phoneNumber,
       realname,
@@ -60,7 +60,7 @@ const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, set
     [dateOfBirth, insuranceExpirationDate, insuranceNumber, licenseNumber, licenseType, phoneNumber, realname],
   );
 
-  const onFormFinish = async (values: UpdateRequestBody) => {
+  const onFormFinish = async (values: UpdateRequest) => {
     setSubmitLoading(true);
     try {
       const updatedUser = await httpClient.put<UpdatedUser>(`/users/${prevUser.id}`, values).then((res) => res.data);

@@ -4,20 +4,16 @@ import { Spin, Table } from 'antd';
 import Linkify from 'linkify-react';
 import qs from 'qs';
 import useSWRImmutable from 'swr/immutable';
+import { DateRange, EndPoint, Unpacked } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint, Unpacked } from '@/typings';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
 import AddButton from './add-button.component';
 import columns from './columns';
 import CustomRangePicker from './custom-range-picker.component';
 
-export type DateRange = {
-  start: string;
-  end: string;
-};
-export type NoticeList = EndPoint['GET /notice']['responses']['200'];
+export type NoticeList = EndPoint['GET /notices']['responses']['200'];
 type Notice = Unpacked<NoticeList>;
 export type ProcessedNotice = Notice & {
   processedCreatedAt: string;
@@ -32,10 +28,10 @@ export default function NoticeBoard() {
   const SEVEN_DAYS_AGO_YYYY_MM_DD = today.subtract(7, 'days').format('YYYY-MM-DD');
 
   const [dateRange, setDateRange] = useState<DateRange>({
-    start: SEVEN_DAYS_AGO_YYYY_MM_DD,
-    end: TODAY_YYYY_MM_DD,
+    startDate: SEVEN_DAYS_AGO_YYYY_MM_DD,
+    endDate: TODAY_YYYY_MM_DD,
   });
-  const swrKey = `/notice?${qs.stringify(dateRange)}`;
+  const swrKey = `/notices?${qs.stringify(dateRange)}`;
   const { data: noticeList } = useSWRImmutable<NoticeList>(swrKey, axiosFetcher, {
     revalidateOnMount: true,
   });

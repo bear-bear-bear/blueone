@@ -1,12 +1,12 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
-import { DatesToRange, EndPoint } from '@/typings';
+import { PackDateRange, EndPoint } from '@/shared/api/types';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './edit-form.component';
 import type { ProcessedNotice } from './page';
 
-type RequestBody = EndPoint['PUT /notice/{noticeId}']['requestBody'];
-type FormValues = DatesToRange<RequestBody>;
+type Request = EndPoint['PUT /notices/{noticeId}']['requestBody'];
+type FormValues = PackDateRange<Request>;
 type Props = {
   record: ProcessedNotice;
 };

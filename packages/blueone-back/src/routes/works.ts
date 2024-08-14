@@ -16,7 +16,7 @@ import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
 const router = express.Router();
 
 /**
- * 지정한 기간 내 작업 목록 가져오기
+ * 지정한 기간 내 업무 목록 가져오기
  */
 router.get(
   '/',
@@ -28,10 +28,10 @@ router.get(
     next,
   ) => {
     const today = dayjs();
-    const { start = today, end = today, booked = 'false' } = req.query;
+    const { startDate = today, endDate = today, booked = 'false' } = req.query;
 
-    const gte = dayjs(start).startOf('day').toISOString();
-    const lte = dayjs(end).endOf('day').toISOString();
+    const gte = dayjs(startDate).startOf('day').toISOString();
+    const lte = dayjs(endDate).endOf('day').toISOString();
 
     try {
       const works = await getWorksByConditionallyAsBooking(
@@ -49,7 +49,7 @@ router.get(
 );
 
 /**
- * 작업 추가
+ * 업무 추가
  */
 router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
   const { userId, ...workInfo }: CreateWorkRequestBody = req.body;
@@ -80,7 +80,7 @@ router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
 });
 
 /**
- * 작업 수정
+ * 업무 수정
  */
 router.put('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
   const { workId } = req.params;
@@ -133,7 +133,7 @@ router.put('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
 });
 
 /**
- * 작업 상태 수정
+ * 업무 상태 수정
  */
 router.patch(
   '/:workId',
@@ -156,7 +156,7 @@ router.patch(
         case 'init':
           if (work.endTime) {
             res.status(403).json({
-              message: '완료된 작업은 초기화할 수 없습니다.',
+              message: '완료된 업무는 초기화할 수 없습니다.',
             });
             return;
           }
@@ -168,7 +168,7 @@ router.patch(
         case 'checked':
           if (work.checkTime) {
             res.status(403).json({
-              message: '이미 확인된 작업입니다.',
+              message: '이미 확인된 업무입니다.',
             });
             return;
           }
@@ -178,7 +178,7 @@ router.patch(
         case 'done':
           if (work.endTime) {
             res.status(403).json({
-              message: '이미 완료된 작업입니다.',
+              message: '이미 완료된 업무입니다.',
             });
             return;
           }
@@ -201,7 +201,7 @@ router.patch(
 );
 
 /**
- * 예약 작업 강제 활성화
+ * 예약 업무 강제 활성화
  */
 router.patch(
   '/:workId/force-activate',
@@ -209,7 +209,6 @@ router.patch(
   isContractor,
   async (req, res, next) => {
     const { workId } = req.params;
-    const { userId }: UpdateWorkRequestBody = req.body;
 
     try {
       const bookingWork = await Work.findByPk(workId, {
@@ -234,17 +233,6 @@ router.patch(
           message: `id ${workId} work 를 찾을 수 없습니다`,
         });
         return;
-      }
-
-      if (userId) {
-        const user = await User.findByPk(userId);
-
-        if (!user) {
-          res.status(404).json({
-            message: `id ${userId} 유저를 찾을 수 없습니다`,
-          });
-          return;
-        }
       }
 
       if (
@@ -278,7 +266,7 @@ router.patch(
 );
 
 /**
- * 작업 강제 종료
+ * 업무 강제 종료
  */
 router.patch(
   '/:workId/force-finish',
@@ -286,7 +274,6 @@ router.patch(
   isContractor,
   async (req, res, next) => {
     const { workId } = req.params;
-    const { userId }: UpdateWorkRequestBody = req.body;
 
     try {
       const work = await Work.findByPk(workId, {
@@ -313,17 +300,6 @@ router.patch(
         return;
       }
 
-      if (userId) {
-        const user = await User.findByPk(userId);
-
-        if (!user) {
-          res.status(404).json({
-            message: `id ${userId} 유저를 찾을 수 없습니다`,
-          });
-          return;
-        }
-      }
-
       if (work.endTime) {
         res.status(403).json({
           message: `이미 완료된 업무입니다.`,
@@ -346,7 +322,7 @@ router.patch(
 );
 
 /**
- * 작업 삭제
+ * 업무 삭제
  */
 router.delete('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
   const { workId } = req.params;

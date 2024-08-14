@@ -7,17 +7,17 @@ import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
 import SubcontractorSelector from '@/components/subcontractor/subcontractor-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 import BookingDatePicker from './booking-date-picker.component';
 
-export type RequestBody = EndPoint['POST /works']['requestBody'];
+export type Request = EndPoint['POST /works']['requestBody'];
 export type Response = EndPoint['POST /works']['responses']['201'];
 export type RequestError = EndPoint['POST /works']['responses']['400'] | EndPoint['POST /works']['responses']['500'];
-export type WorkAddFormValues = Omit<RequestBody, 'userId' | 'waypoint' | 'remark'> & {
-  userId?: RequestBody['userId'];
-  waypoint?: RequestBody['waypoint'];
-  remark?: RequestBody['remark'];
+export type WorkAddFormValues = Omit<Request, 'userId' | 'waypoint' | 'remark'> & {
+  userId?: Request['userId'];
+  waypoint?: Request['waypoint'];
+  remark?: Request['remark'];
 };
 
 type Props = {
@@ -65,7 +65,7 @@ const WorkAddForm = ({
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
 
   const onFormFinish = async (values: WorkAddFormValues) => {
-    const reqBody: RequestBody = {
+    const reqBody: Request = {
       ...values,
       waypoint: values.waypoint ?? null,
       userId: values.userId ?? null,

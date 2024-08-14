@@ -3,9 +3,9 @@ import { List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import { SettingsFooter, SettingsHeader, SettingsSkeleton } from '@/app/subcontractor/settings/parts';
 import PasswordChangeButton from '@/app/subcontractor/settings/password-change-button.component';
-import LogoutButton from '@/components/logout-button.component';
+import SignOutButton from '@/components/sign-out-button.component';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 import { css, Global } from '@emotion/react';
 
 type User = EndPoint['GET /user']['responses']['200'];
@@ -33,7 +33,7 @@ export default function SettingPage() {
   );
 }
 
-const items = [<PasswordChangeButton key="change-password" />, <LogoutButton key="sign-out" kind="text" block />];
+const items = [<PasswordChangeButton key="change-password" />, <SignOutButton key="sign-out" kind="text" block />];
 
 const globalCSS = css`
   .ant-list-header {

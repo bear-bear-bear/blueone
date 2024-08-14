@@ -16,8 +16,8 @@ import { Bar } from 'react-chartjs-2';
 import useSWRImmutable from 'swr/immutable';
 import Empty from '@/components/subcontractor/empty.component';
 import theme from '@/global-styles/theme';
+import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 import { Header } from './styled';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);

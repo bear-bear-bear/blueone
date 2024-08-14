@@ -4,21 +4,21 @@ import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import httpClient, { logAxiosError } from '@/shared/api/axios';
+import type { EndPoint } from '@/shared/api/types';
 import regex from '@/shared/lib/utils/regex';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import type { EndPoint } from '@/typings';
 
-type RequestBody = EndPoint['POST /users']['requestBody'];
+type Request = EndPoint['POST /users']['requestBody'];
 
 type Props = {
-  form: FormInstance<RequestBody>;
+  form: FormInstance<Request>;
   validateTrigger: FormProps['validateTrigger'];
   setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
 type Users = EndPoint['GET /users']['responses']['200'];
-type CreatedUser = EndPoint['POST /users']['responses']['202'];
+type CreatedUser = EndPoint['POST /users']['responses']['201'];
 type UserCreationError = EndPoint['POST /users']['responses']['409'];
 
 const layout: { [ColName: string]: ColProps } = {
@@ -26,7 +26,7 @@ const layout: { [ColName: string]: ColProps } = {
   wrapperCol: { flex: 'auto' },
 };
 
-const validateMessages: FormProps<RequestBody>['validateMessages'] = {
+const validateMessages: FormProps<Request>['validateMessages'] = {
   required: '필수 입력 값입니다.',
   pattern: {
     mismatch: '형식이 올바르지 않습니다.',
@@ -40,7 +40,7 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
   const { message } = App.useApp();
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
 
-  const onFormFinish = async (values: RequestBody) => {
+  const onFormFinish = async (values: Request) => {
     setSubmitLoading(true);
     try {
       const createdUser = await httpClient.post<CreatedUser>('/users', values).then((res) => res.data);

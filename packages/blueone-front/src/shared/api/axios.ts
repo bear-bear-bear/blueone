@@ -1,9 +1,9 @@
 import { message } from 'antd';
 import axios, { AxiosError } from 'axios';
-import type { ErrorMessage } from '@/typings';
+import type { ErrorMessage } from '@/shared/api/types';
 
 const MESSAGE_DURATION = 4;
-export function logAxiosError<T extends ErrorMessage, D = unknown>(err: AxiosError<T, D>, forSubcontractor = false) {
+export function logAxiosError<T extends ErrorMessage>(err: AxiosError<T>, forSubcontractor = false) {
   console.error(err);
 
   const suffix = forSubcontractor ? '사무실에 문의해주세요.' : '개발자에게 문의해주세요.';

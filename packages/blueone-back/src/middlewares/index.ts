@@ -26,7 +26,7 @@ export const isContractor: RequestHandler = (req, res, next) => {
     next();
   } else {
     res.status(403).json({
-      message: '어드민만 접근 가능합니다.',
+      message: 'Contractor만 접근 가능합니다.',
     });
   }
 };
