@@ -3,8 +3,8 @@ import { ReactNode } from 'react';
 import { App, ConfigProvider } from 'antd';
 import { ThemeConfig } from 'antd/lib';
 import { SWRConfig } from 'swr';
-import globalCSS from '@/global-styles/global';
-import theme from '@/global-styles/theme';
+import globalStyles from '@/shared/ui/global-styles';
+import theme from '@/shared/ui/theme';
 import { Global } from '@emotion/react';
 
 export default function Providers({ children }: { children: ReactNode }) {
@@ -19,7 +19,7 @@ export default function Providers({ children }: { children: ReactNode }) {
       <ConfigProvider theme={antdTheme}>
         <App message={{ maxCount: 2 }}>{children}</App>
 
-        <Global styles={globalCSS} />
+        <Global styles={globalStyles} />
       </ConfigProvider>
     </SWRConfig>
   );

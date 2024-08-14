@@ -3,9 +3,9 @@ import { Card, List } from 'antd';
 import Linkify from 'linkify-react';
 import useSWR from 'swr';
 import Empty from '@/components/subcontractor/empty.component';
-import theme from '@/global-styles/theme';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
+import theme from '@/shared/ui/theme';
 import styled from '@emotion/styled';
 
 type ActivatedNoticeList = EndPoint['GET /notices/activation']['responses']['200'];

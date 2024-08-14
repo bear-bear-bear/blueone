@@ -18,7 +18,7 @@ export default function SettingPage() {
   }
   return (
     <>
-      <Global styles={globalCSS} />
+      <Global styles={globalStyles} />
 
       <List
         header={<SettingsHeader user={user} />}
@@ -35,7 +35,7 @@ export default function SettingPage() {
 
 const items = [<PasswordChangeButton key="change-password" />, <SignOutButton key="sign-out" kind="text" block />];
 
-const globalCSS = css`
+const globalStyles = css`
   .ant-list-header {
     border-bottom: none !important;
     margin-bottom: 0.33rem;

@@ -1,8 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Metadata, Viewport } from 'next';
-import { pretendardVariable } from '@/global-styles/fonts';
-import theme from '@/global-styles/theme';
-import '@/global-styles/reset.css';
+import { pretendardVariable } from '@/shared/ui/fonts';
+import theme from '@/shared/ui/theme';
 import Providers from './_providers';
 
 const APP_NAME = 'BLUEONE';

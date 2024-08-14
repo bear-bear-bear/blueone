@@ -146,7 +146,7 @@ export default function WorkManagementTable() {
   }
   return (
     <>
-      <Global styles={globalCSS} />
+      <Global styles={globalStyles} />
       <TableHeader>
         <section>
           {isVisibleBookedWork ? (
@@ -264,7 +264,7 @@ function Remark({ work }: { work: ProcessedWork }) {
   );
 }
 
-const globalCSS = css`
+const globalStyles = css`
   tr {
     background: #fff !important;
   }

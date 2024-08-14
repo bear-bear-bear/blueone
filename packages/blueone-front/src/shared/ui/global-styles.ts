@@ -1,7 +1,8 @@
-import media from '@/shared/ui/media';
+import './_reset.css';
 import { css } from '@emotion/react';
+import media from './media';
 
-const globalCSS = css`
+const globalStyles = css`
   *,
   *::before,
   *::after {
@@ -52,4 +53,4 @@ const globalCSS = css`
   }
 `;
 
-export default globalCSS;
+export default globalStyles;

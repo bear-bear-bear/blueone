@@ -40,7 +40,7 @@ export default function CustomRangePicker({ dateRange, setDateRange }: Props) {
 
   return (
     <>
-      <Global styles={globalCSS} />
+      <Global styles={globalStyles} />
 
       <RangePickerComponent
         presets={[
@@ -68,7 +68,7 @@ export default function CustomRangePicker({ dateRange, setDateRange }: Props) {
   );
 }
 
-const globalCSS = css`
+const globalStyles = css`
   // range picker 패널 레이아웃을 세로로 변경 - presets을 좌측이 아닌 하단에 표시하기 위함
   .ant-picker-panel-layout {
     display: flex;

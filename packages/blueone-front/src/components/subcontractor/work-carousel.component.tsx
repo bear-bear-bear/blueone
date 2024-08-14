@@ -42,7 +42,7 @@ export default function WorkCarousel() {
   }
   return (
     <>
-      <Global styles={globalCSS} />
+      <Global styles={globalStyles} />
       <Carousel
         dotPosition="top"
         infinite
@@ -57,7 +57,7 @@ export default function WorkCarousel() {
   );
 }
 
-const globalCSS = css`
+const globalStyles = css`
   .ant-card-actions {
     li {
       margin: 0 !important;

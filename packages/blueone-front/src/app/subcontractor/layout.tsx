@@ -40,7 +40,7 @@ export default function WorkerLayout({ children }: { children: ReactNode }) {
       }}
     >
       <App notification={{ maxCount: 1 }}>
-        <Global styles={globalCSS} />
+        <Global styles={globalStyles} />
 
         <CenterLayout>
           <Box>
@@ -84,7 +84,7 @@ function NavItem({ item, active }: { active: boolean; item: NavItem }) {
   );
 }
 
-const globalCSS = css`
+const globalStyles = css`
   body {
     background-color: #242424;
   }

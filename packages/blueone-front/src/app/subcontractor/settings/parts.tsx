@@ -1,7 +1,7 @@
 import { Avatar, Card, Skeleton, Space } from 'antd';
-import theme from '@/global-styles/theme';
 import type { EndPoint } from '@/shared/api/types';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
+import theme from '@/shared/ui/theme';
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 
