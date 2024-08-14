@@ -14,10 +14,10 @@ export default function LoginLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    if (user?.role === 'admin') {
-      router.push('/admin/works');
+    if (user?.role === 'contractor') {
+      router.push('/contractor/works');
     } else {
-      router.push('/worker');
+      router.push('/subcontractor');
     }
   }, [isLoggedIn, router, user]);
 

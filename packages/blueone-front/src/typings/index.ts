@@ -32,7 +32,7 @@ export type UserInfo = {
 
 export type User = {
   id: number;
-  role: 'user' | 'admin';
+  role: 'contractor' | 'subcontractor';
   phoneNumber: string;
   createdAt: ISODateString;
   updatedAt: ISODateString;
@@ -236,11 +236,11 @@ export interface EndPoint {
   /**
    * 어드민 생성
    */
-  'POST /users/admin': {
+  'POST /users/contractor': {
     requestBody: {
       phoneNumber: string;
       password: string;
-      adminCreateKey: string;
+      contractorCreateKey: string;
     };
     responses: {
       202: User;

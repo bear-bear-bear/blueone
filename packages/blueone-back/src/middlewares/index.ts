@@ -21,8 +21,8 @@ export const isNotLoggedIn: RequestHandler = (req, res, next) => {
   }
 };
 
-export const isAdmin: RequestHandler = (req, res, next) => {
-  if (req.user?.role === 'admin') {
+export const isContractor: RequestHandler = (req, res, next) => {
+  if (req.user?.role === 'contractor') {
     next();
   } else {
     res.status(403).json({

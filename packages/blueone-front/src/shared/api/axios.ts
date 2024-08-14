@@ -3,10 +3,10 @@ import axios, { AxiosError } from 'axios';
 import type { ErrorMessage } from '@/typings';
 
 const MESSAGE_DURATION = 4;
-export function logAxiosError<T extends ErrorMessage, D = unknown>(err: AxiosError<T, D>, forUser = false) {
+export function logAxiosError<T extends ErrorMessage, D = unknown>(err: AxiosError<T, D>, forSubcontractor = false) {
   console.error(err);
 
-  const suffix = forUser ? '사무실에 문의해주세요.' : '개발자에게 문의해주세요.';
+  const suffix = forSubcontractor ? '사무실에 문의해주세요.' : '개발자에게 문의해주세요.';
   if (!err.isAxiosError) {
     message.error(`작업 수행 중 에러 발생, ${suffix}`, MESSAGE_DURATION);
     return;

@@ -21,11 +21,11 @@ export default function LoginPage() {
       const user = await httpClient.post<User>('/user/login', values).then((res) => res.data);
 
       switch (user.role) {
-        case 'admin':
-          router.push('/admin/works');
+        case 'contractor':
+          router.push('/contractor/works');
           break;
-        case 'user':
-          router.push('/worker');
+        case 'subcontractor':
+          router.push('/subcontractor');
           break;
         default:
       }

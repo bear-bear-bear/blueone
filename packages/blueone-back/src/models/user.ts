@@ -11,7 +11,7 @@ import type { Database, UserInfo, Work } from './index';
 
 class User extends Model {
   public readonly id!: number;
-  public role!: 'user' | 'admin';
+  public role!: 'contractor' | 'subcontractor';
   public phoneNumber!: string;
   public password!: string;
   public readonly createdAt!: Date;
@@ -35,7 +35,7 @@ User.init(
     role: {
       type: DataTypes.STRING(20),
       validate: {
-        isIn: [['user', 'admin']],
+        isIn: [['contractor', 'subcontractor']],
       },
       allowNull: false,
     },

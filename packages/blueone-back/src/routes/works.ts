@@ -6,7 +6,7 @@ import type {
   WorkState,
   DatePickQuery,
 } from 'typings';
-import { isAdmin, isLoggedIn } from '@/middlewares';
+import { isContractor, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import { withPayout } from '@/utils/calculate-payout';
 import dayjs from '@/utils/dayjs';
@@ -21,7 +21,7 @@ const router = express.Router();
 router.get(
   '/',
   isLoggedIn,
-  isAdmin,
+  isContractor,
   async (
     req: QueryTypedRequest<DatePickQuery & { booked?: 'true' | 'false' }>,
     res,
@@ -51,7 +51,7 @@ router.get(
 /**
  * 작업 추가
  */
-router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
+router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
   const { userId, ...workInfo }: CreateWorkRequestBody = req.body;
 
   try {
@@ -82,7 +82,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 작업 수정
  */
-router.put('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
+router.put('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
   const { workId } = req.params;
   const { userId, ...workInfo }: UpdateWorkRequestBody = req.body;
 
@@ -206,7 +206,7 @@ router.patch(
 router.patch(
   '/:workId/force-activate',
   isLoggedIn,
-  isAdmin,
+  isContractor,
   async (req, res, next) => {
     const { workId } = req.params;
     const { userId }: UpdateWorkRequestBody = req.body;
@@ -283,7 +283,7 @@ router.patch(
 router.patch(
   '/:workId/force-finish',
   isLoggedIn,
-  isAdmin,
+  isContractor,
   async (req, res, next) => {
     const { workId } = req.params;
     const { userId }: UpdateWorkRequestBody = req.body;
@@ -348,7 +348,7 @@ router.patch(
 /**
  * 작업 삭제
  */
-router.delete('/:workId', isLoggedIn, isAdmin, async (req, res, next) => {
+router.delete('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
   const { workId } = req.params;
 
   try {

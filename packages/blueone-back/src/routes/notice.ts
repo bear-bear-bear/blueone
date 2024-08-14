@@ -6,7 +6,7 @@ import type {
   DatePickQuery,
   QueryTypedRequest,
 } from 'typings';
-import { isAdmin, isLoggedIn } from '@/middlewares';
+import { isContractor, isLoggedIn } from '@/middlewares';
 import { Notice } from '@/models';
 import dayjs from '@/utils/dayjs';
 
@@ -46,7 +46,7 @@ router.get(
 /**
  * 공지사항 작성
  */
-router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
+router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
   const { title, content, startDate, endDate }: CreateNoticeRequestBody =
     req.body;
 
@@ -117,7 +117,7 @@ router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
 /**
  * 공지사항 수정
  */
-router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
+router.put('/:noticeId', isLoggedIn, isContractor, async (req, res, next) => {
   const { noticeId } = req.params;
   const { title, content }: UpdateNoticeRequestBody = req.body;
 
@@ -143,24 +143,29 @@ router.put('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 공지사항 삭제
  */
-router.delete('/:noticeId', isLoggedIn, isAdmin, async (req, res, next) => {
-  const { noticeId } = req.params;
+router.delete(
+  '/:noticeId',
+  isLoggedIn,
+  isContractor,
+  async (req, res, next) => {
+    const { noticeId } = req.params;
 
-  try {
-    const notice = await Notice.findByPk(noticeId);
+    try {
+      const notice = await Notice.findByPk(noticeId);
 
-    if (!notice) {
-      res.status(404).json({
-        message: `id ${noticeId} 공지사항을 찾을 수 없습니다`,
-      });
-      return;
+      if (!notice) {
+        res.status(404).json({
+          message: `id ${noticeId} 공지사항을 찾을 수 없습니다`,
+        });
+        return;
+      }
+
+      await notice.destroy();
+      res.status(200).json(notice.get());
+    } catch (err) {
+      next(err);
     }
-
-    await notice.destroy();
-    res.status(200).json(notice.get());
-  } catch (err) {
-    next(err);
-  }
-});
+  },
+);
 
 export default router;

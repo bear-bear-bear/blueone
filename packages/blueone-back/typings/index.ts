@@ -16,11 +16,6 @@ export type DatePickQuery = {
   end: ISODateString;
 };
 
-export type PaginationQuery = {
-  per_page: string;
-  page: string;
-};
-
 export type CreateUserRequestBody = Pick<User, 'phoneNumber'> &
   Pick<
     UserInfo,

@@ -2,7 +2,7 @@ import * as process from 'process';
 import bcrypt from 'bcrypt';
 import express from 'express';
 import type { CreateUserRequestBody, UpdateUserRequestBody } from 'typings';
-import { isAdmin, isLoggedIn } from '@/middlewares';
+import { isContractor, isLoggedIn } from '@/middlewares';
 import { User, UserInfo, Work } from '@/models';
 import { withPayout } from '@/utils/calculate-payout';
 import omit from '@/utils/omit';
@@ -13,10 +13,10 @@ const router = express.Router();
 /**
  * 유저 리스트 가져오기
  */
-router.get('/', isLoggedIn, isAdmin, async (_req, res, next) => {
+router.get('/', isLoggedIn, isContractor, async (_req, res, next) => {
   try {
     const users = await User.findAll({
-      where: { role: 'user' },
+      where: { role: 'subcontractor' },
       attributes: {
         exclude: ['password'],
       },
@@ -33,7 +33,7 @@ router.get('/', isLoggedIn, isAdmin, async (_req, res, next) => {
 /**
  * 유저 추가
  */
-router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
+router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
   const { phoneNumber, ...restUserInfo }: CreateUserRequestBody = req.body;
   const INITIAL_PASSWORD = '1234';
 
@@ -42,7 +42,7 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
     const [user, isCreated] = await User.findOrCreate({
       where: { phoneNumber },
       defaults: {
-        role: 'user',
+        role: 'subcontractor',
         phoneNumber,
         password: hashedPassword,
         UserInfo: restUserInfo,
@@ -69,11 +69,11 @@ router.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 어드민 추가
  */
-router.post('/admin', async (req, res, next) => {
+router.post('/contractor', async (req, res, next) => {
   try {
-    const { adminCreateKey, phoneNumber, password } = req.body;
+    const { contractorCreateKey, phoneNumber, password } = req.body;
 
-    if (adminCreateKey !== process.env.ADMIN_CREATE_KEY) {
+    if (contractorCreateKey !== process.env.CONTRACTOR_CREATE_KEY) {
       res.status(403).json({
         message: '생성 키가 일치하지 않습니다.',
       });
@@ -81,10 +81,10 @@ router.post('/admin', async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const [admin, isCreated] = await User.findOrCreate({
+    const [contractor, isCreated] = await User.findOrCreate({
       where: { phoneNumber },
       defaults: {
-        role: 'admin',
+        role: 'contractor',
         phoneNumber,
         password: hashedPassword,
       },
@@ -97,7 +97,7 @@ router.post('/admin', async (req, res, next) => {
       return;
     }
 
-    res.status(202).json(omit(admin.get(), 'password'));
+    res.status(202).json(omit(contractor.get(), 'password'));
   } catch (err) {
     next(err);
   }
@@ -106,7 +106,7 @@ router.post('/admin', async (req, res, next) => {
 /**
  * 유저 가져오기
  */
-router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
+router.get('/:userId', isLoggedIn, isContractor, async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -134,7 +134,7 @@ router.get('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 유저 수정
  */
-router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
+router.put('/:userId', isLoggedIn, isContractor, async (req, res, next) => {
   const { userId } = req.params;
   const { phoneNumber, ...restInfo }: UpdateUserRequestBody = req.body;
 
@@ -168,7 +168,7 @@ router.put('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 유저 삭제
  */
-router.delete('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
+router.delete('/:userId', isLoggedIn, isContractor, async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -195,22 +195,27 @@ router.delete('/:userId', isLoggedIn, isAdmin, async (req, res, next) => {
 /**
  * 활성화된 유저 작업 가져오기
  */
-router.get('/:userId/works', isLoggedIn, isAdmin, async (req, res, next) => {
-  const { userId } = req.params;
+router.get(
+  '/:userId/works',
+  isLoggedIn,
+  isContractor,
+  async (req, res, next) => {
+    const { userId } = req.params;
 
-  try {
-    const activatedWorks = await Work.findAll({
-      where: {
-        ...getDefaultWhereParamsQueriedByWork(),
-        userId,
-        endTime: null,
-      },
-      order: [['createdAt', 'DESC']],
-    });
-    res.status(200).json(activatedWorks.map(withPayout));
-  } catch (err) {
-    next(err);
-  }
-});
+    try {
+      const activatedWorks = await Work.findAll({
+        where: {
+          ...getDefaultWhereParamsQueriedByWork(),
+          userId,
+          endTime: null,
+        },
+        order: [['createdAt', 'DESC']],
+      });
+      res.status(200).json(activatedWorks.map(withPayout));
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;
