@@ -7,8 +7,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import useSWRImmutable from 'swr/immutable';
 import LogoutButton from '@/components/logout-button.component';
 import useAdmin from '@/hooks/use-admin.hook';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import { axiosFetcher } from '@/utils/swr';
 import styled from '@emotion/styled';
 import navItems, { getTitleByRoute } from './nav-items';
 

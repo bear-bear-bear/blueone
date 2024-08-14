@@ -4,8 +4,8 @@ import Linkify from 'linkify-react';
 import useSWR from 'swr';
 import Empty from '@/components/user/empty.component';
 import theme from '@/global-styles/theme';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import { axiosFetcher } from '@/utils/swr';
 import styled from '@emotion/styled';
 
 type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];

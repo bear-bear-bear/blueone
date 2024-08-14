@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import dayjs from '@/utils/dayjs';
+import dayjs from '@/shared/lib/utils/dayjs';
 
 export function useBookingDate(initialDate?: dayjs.Dayjs | string | null) {
   return useState<dayjs.Dayjs>(

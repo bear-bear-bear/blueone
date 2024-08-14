@@ -4,10 +4,10 @@ import type { ColProps } from 'antd/lib/grid/col';
 import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullUser } from '@/app/admin/users/page';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
+import regex from '@/shared/lib/utils/regex';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
-import regex from '@/utils/regex';
-import { axiosFetcher } from '@/utils/swr';
 import type { UpdateRequestBody } from './edit-button.component';
 
 type Props = {

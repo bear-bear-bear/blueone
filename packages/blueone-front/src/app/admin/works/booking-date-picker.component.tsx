@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { App, DatePicker } from 'antd';
-import dayjs from '@/utils/dayjs';
+import dayjs from '@/shared/lib/utils/dayjs';
 
 type Props = {
   date: dayjs.Dayjs;

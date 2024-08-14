@@ -1,4 +1,4 @@
-import dayjs from '@/utils/dayjs';
+import dayjs from '@/shared/lib/utils/dayjs';
 
 export type Unpacked<T> = T extends (infer U)[]
   ? U

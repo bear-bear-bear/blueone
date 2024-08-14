@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
 import type { EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
 import { css, Global } from '@emotion/react';
 
 type RequestBody = EndPoint['POST /user/password']['requestBody'];

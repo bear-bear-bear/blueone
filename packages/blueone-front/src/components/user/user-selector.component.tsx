@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { Divider, FormInstance, Select, Tooltip } from 'antd';
 import useSWR from 'swr';
 import type { WorkAddFormValues } from '@/app/admin/works/add-form.component';
+import { Subcontractor } from '@/core/subcontractor';
+import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint, User } from '@/typings';
-import getInsuranceExpirationInfo from '@/utils/get-insurance-expiration-info';
-import processPhoneNumber from '@/utils/process-phone-number';
-import { axiosFetcher } from '@/utils/swr';
 import { WarningOutlined } from '@ant-design/icons';
 
 type Users = EndPoint['GET /users']['responses']['200'];
@@ -55,19 +55,19 @@ export default function UserSelector({ form, defaultValue, disabled = false, imm
           phoneNumber,
           UserInfo: { realname },
         } = user;
-        const insuranceDate = getInsuranceExpirationInfo(user);
+        const insuranceInfo = Subcontractor.insuranceInfo(user.UserInfo.insuranceExpirationDate);
 
         return (
           <Select.Option key={id} value={id} style={{ textAlign: 'center' }}>
-            {insuranceDate.state === 'warning' && (
+            {insuranceInfo.state === 'nearExpiration' && (
               <>
-                <Tooltip title={`보험 일자 만료 ${insuranceDate.from}`}>
+                <Tooltip title={`보험 일자 만료 ${insuranceInfo.from}`}>
                   <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />
                 </Tooltip>
                 <Divider type="vertical" />
               </>
             )}
-            {insuranceDate.state === 'danger' && (
+            {insuranceInfo.state === 'expired' && (
               <>
                 <Tooltip title={`보험 일자 만료됨`}>
                   <WarningOutlined style={{ color: '#A61D24', fontSize: 'inherit' }} />
@@ -75,6 +75,7 @@ export default function UserSelector({ form, defaultValue, disabled = false, imm
                 <Divider type="vertical" />
               </>
             )}
+
             {realname}
             <Divider type="vertical" />
             {processPhoneNumber(phoneNumber)}

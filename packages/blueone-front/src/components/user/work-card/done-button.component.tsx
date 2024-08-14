@@ -2,9 +2,9 @@ import { MouseEventHandler, useCallback, useState, memo } from 'react';
 import { App, Button, Modal } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { Work, EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
-import { axiosFetcher } from '@/utils/swr';
 
 type Props = {
   workId: Work['id'];

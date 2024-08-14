@@ -1,8 +1,8 @@
 'use client';
 import { App, Button, Form, Input } from 'antd';
 import { AxiosError } from 'axios';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
 import { EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
 import styled from '@emotion/styled';
 
 type RequestBody = EndPoint['POST /users/admin']['requestBody'];

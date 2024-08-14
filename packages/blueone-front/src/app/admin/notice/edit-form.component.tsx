@@ -3,10 +3,10 @@ import { Form, Input, FormProps, FormInstance, DatePicker, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
+import dayjs from '@/shared/lib/utils/dayjs';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { DatesToRange, EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
-import dayjs from '@/utils/dayjs';
-import { axiosFetcher } from '@/utils/swr';
 import type { NoticeList, ProcessedNotice } from './page';
 
 const { RangePicker } = DatePicker;

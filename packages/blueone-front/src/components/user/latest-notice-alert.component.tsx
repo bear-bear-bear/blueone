@@ -3,8 +3,8 @@ import { Alert } from 'antd';
 import { useRouter } from 'next/navigation';
 import Marquee from 'react-fast-marquee';
 import useSWR from 'swr';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import { axiosFetcher } from '@/utils/swr';
 
 type ActivatedNoticeList = EndPoint['GET /notice/activation']['responses']['200'];
 

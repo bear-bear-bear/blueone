@@ -1,4 +1,4 @@
-import dayjs from '@/utils/dayjs';
+import dayjs from './dayjs';
 
 export const formatTime = (day: dayjs.Dayjs) => {
   const tomorrow = day.startOf('day').add(1, 'day');

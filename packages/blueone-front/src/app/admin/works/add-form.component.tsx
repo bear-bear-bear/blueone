@@ -6,9 +6,9 @@ import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/admin/works/page';
 import UserSelector from '@/components/user/user-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
-import { axiosFetcher } from '@/utils/swr';
 import BookingDatePicker from './booking-date-picker.component';
 
 export type RequestBody = EndPoint['POST /works']['requestBody'];

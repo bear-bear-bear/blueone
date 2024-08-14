@@ -6,8 +6,8 @@ import qs from 'qs';
 import useSWR from 'swr';
 import CustomRangePicker from '@/app/worker/done-works/range-picker.component';
 import { WorkCard } from '@/components/user/work-card';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { EndPoint, Unpacked } from '@/typings';
-import { axiosFetcher } from '@/utils/swr';
 import styled from '@emotion/styled';
 
 export type DateRange = {

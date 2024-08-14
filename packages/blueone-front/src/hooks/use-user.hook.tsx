@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import type { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import useSWR, { SWRConfiguration } from 'swr';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import { axiosFetcher } from '@/utils/swr';
 
 type SuccessResponse = EndPoint['GET /user']['responses']['200'] | EndPoint['GET /user']['responses']['304'];
 type FailureResponse =

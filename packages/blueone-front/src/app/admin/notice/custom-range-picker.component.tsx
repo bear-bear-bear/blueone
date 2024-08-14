@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { DatePicker } from 'antd';
-import dayjs from '@/utils/dayjs';
+import dayjs from '@/shared/lib/utils/dayjs';
 import type { DateRange } from './page';
 
 const { RangePicker } = DatePicker;

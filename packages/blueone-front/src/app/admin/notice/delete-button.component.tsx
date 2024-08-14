@@ -2,9 +2,9 @@ import { ReactNode, useCallback, useState } from 'react';
 import { App, Button, Popconfirm, Tooltip } from 'antd';
 import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
-import { axiosFetcher } from '@/utils/swr';
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { NoticeList, ProcessedNotice } from './page';
 

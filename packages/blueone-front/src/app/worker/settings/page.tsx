@@ -4,8 +4,8 @@ import useSWRImmutable from 'swr/immutable';
 import { SettingsFooter, SettingsHeader, SettingsSkeleton } from '@/app/worker/settings/parts';
 import PasswordChangeButton from '@/app/worker/settings/password-change-button.component';
 import LogoutButton from '@/components/logout-button.component';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import { axiosFetcher } from '@/utils/swr';
 import { css, Global } from '@emotion/react';
 
 type User = EndPoint['GET /user']['responses']['200'];

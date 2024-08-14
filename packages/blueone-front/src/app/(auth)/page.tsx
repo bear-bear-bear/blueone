@@ -4,8 +4,8 @@ import { Input, Form, Button, FormProps } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
 import type { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
 import type { EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
 import styled from '@emotion/styled';
 
 type RequestBody = EndPoint['POST /user/login']['requestBody'];

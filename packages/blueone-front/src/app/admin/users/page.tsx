@@ -2,8 +2,8 @@
 import { Divider, List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import theme from '@/global-styles/theme';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint, Unpacked } from '@/typings';
-import { axiosFetcher } from '@/utils/swr';
 import styled from '@emotion/styled';
 import AddButton from './add-button.component';
 import UserItem from './user-item.component';

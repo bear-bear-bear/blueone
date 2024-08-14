@@ -4,9 +4,9 @@ import type { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { CgLogOut } from 'react-icons/cg';
 import useSWRImmutable from 'swr/immutable';
+import httpClient, { logAxiosError } from '@/shared/api/axios';
+import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { EndPoint } from '@/typings';
-import httpClient, { logAxiosError } from '@/utils/axios';
-import { axiosFetcher } from '@/utils/swr';
 
 interface Props extends ButtonProps {
   kind?: 'icon' | 'text';

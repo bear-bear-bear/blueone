@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { ProcessedWork } from '@/app/admin/works/page';
-import addFloats from '@/utils/add-floats';
+import addFloats from '@/shared/lib/utils/add-floats';
 
 type Props = {
   workData: ProcessedWork[];

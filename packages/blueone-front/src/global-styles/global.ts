@@ -1,4 +1,4 @@
-import media from '@/utils/media';
+import media from '@/shared/ui/media';
 import { css } from '@emotion/react';
 
 const globalCSS = css`

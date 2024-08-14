@@ -1,5 +1,5 @@
 import type { FullWork } from '@/app/admin/works/page';
-import dayjs from '@/utils/dayjs';
+import dayjs from '@/shared/lib/utils/dayjs';
 
 export default function processWorkDateTimes(work: FullWork) {
   const processToTime = (dateISOString: string | null) => {
