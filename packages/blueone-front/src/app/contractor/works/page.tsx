@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Checkbox, DatePicker, Spin, Table } from 'antd';
+import { Button, Checkbox, DatePicker, Table } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -9,6 +9,7 @@ import useSWR from 'swr';
 import type { EndPoint, UserInfo, Unpacked, User, DateRange } from '@/shared/api/types';
 import { formatTime } from '@/shared/lib/utils/day';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
+import { LoadingPanel } from '@/shared/ui/components/loading-panel';
 import { SnippetsOutlined } from '@ant-design/icons';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -138,11 +139,7 @@ export default function WorkManagementTable() {
   }, [isVisibleBookedWork]);
 
   if (!dataSource) {
-    return (
-      <SpinnerWrapper>
-        <Spin size="default" />
-      </SpinnerWrapper>
-    );
+    return <LoadingPanel />;
   }
   return (
     <>
@@ -318,13 +315,6 @@ const TableHeader = styled.div`
 const TotalFeeSection = styled.section`
   display: flex;
   justify-content: flex-end;
-`;
-
-const SpinnerWrapper = styled.div`
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
 `;
 
 const RemarkWrap = styled.p`

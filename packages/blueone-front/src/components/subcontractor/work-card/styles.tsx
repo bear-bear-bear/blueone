@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 import { AiOutlineFileDone } from 'react-icons/ai';
-import theme from '@/shared/ui/theme';
+import theme from '@/shared/ui/foundation/theme';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 

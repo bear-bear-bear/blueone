@@ -6,7 +6,7 @@ import SubcontractorSelector from '@/components/subcontractor/subcontractor-sele
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
 import httpClient from '@/shared/api/axios';
 import dayjs from '@/shared/lib/utils/dayjs';
-import media from '@/shared/ui/media';
+import media from '@/shared/ui/foundation/media';
 import { DeleteOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 import type { Request, WorkAddFormValues } from '../works/add-form.component';

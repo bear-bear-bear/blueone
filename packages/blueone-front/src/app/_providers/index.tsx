@@ -1,11 +1,10 @@
 'use client';
 import { ReactNode } from 'react';
-import { App, ConfigProvider } from 'antd';
-import { ThemeConfig } from 'antd/lib';
 import { SWRConfig } from 'swr';
-import globalStyles from '@/shared/ui/global-styles';
-import theme from '@/shared/ui/theme';
+import AntdConfigProvider from '@/app/_providers/antd-config.provider';
+import globalStyles from '@/shared/ui/foundation/global-styles';
 import { Global } from '@emotion/react';
+import ReactQueryProvider from './react-query.provider';
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
@@ -16,34 +15,10 @@ export default function Providers({ children }: { children: ReactNode }) {
         errorRetryInterval: 5000,
       }}
     >
-      <ConfigProvider theme={antdTheme}>
-        <App message={{ maxCount: 2 }}>{children}</App>
-
+      <AntdConfigProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
         <Global styles={globalStyles} />
-      </ConfigProvider>
+      </AntdConfigProvider>
     </SWRConfig>
   );
 }
-
-const antdTheme: ThemeConfig = {
-  token: {
-    colorPrimary: theme.primaryColor,
-    borderRadius: theme.borderRadius,
-  },
-  components: {
-    Alert: {
-      /**
-       * `banner: true`일 때의 스타일 또한 덮어씌우기 위해 important 사용
-       */
-      colorInfoBorder: `${theme.primaryColor} !important`,
-      colorInfoBg: 'none !important',
-      colorInfoText: '#fff !important',
-    },
-    Tabs: {
-      itemColor: '#fff',
-      itemSelectedColor: theme.primaryColor,
-      itemHoverColor: theme.primaryColor,
-      inkBarColor: theme.primaryColor,
-    },
-  },
-};

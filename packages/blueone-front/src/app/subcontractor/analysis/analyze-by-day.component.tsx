@@ -17,7 +17,7 @@ import useSWRImmutable from 'swr/immutable';
 import Empty from '@/components/subcontractor/empty.component';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import theme from '@/shared/ui/theme';
+import theme from '@/shared/ui/foundation/theme';
 import { Header } from './styled';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);

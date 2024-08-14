@@ -5,7 +5,7 @@ import CheckButton from '@/components/subcontractor/work-card/check-button.compo
 import DoneButton from '@/components/subcontractor/work-card/done-button.component';
 import { EndPoint } from '@/shared/api/types';
 import type { Unpacked } from '@/shared/api/types';
-import theme from '@/shared/ui/theme';
+import theme from '@/shared/ui/foundation/theme';
 import { MoneyCollectOutlined } from '@ant-design/icons';
 import * as S from './styles';
 

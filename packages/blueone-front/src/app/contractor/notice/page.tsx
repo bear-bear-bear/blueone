@@ -1,12 +1,13 @@
 'use client';
 import { useMemo, useState } from 'react';
-import { Spin, Table } from 'antd';
+import { Table } from 'antd';
 import Linkify from 'linkify-react';
 import qs from 'qs';
 import useSWRImmutable from 'swr/immutable';
 import { DateRange, EndPoint, Unpacked } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
+import { LoadingPanel } from '@/shared/ui/components/loading-panel';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
 import AddButton from './add-button.component';
@@ -46,11 +47,7 @@ export default function NoticeBoard() {
   }, [noticeList, swrKey]);
 
   if (!noticeList) {
-    return (
-      <SpinnerWrapper>
-        <Spin size="default" />
-      </SpinnerWrapper>
-    );
+    return <LoadingPanel />;
   }
   return (
     <Container>
@@ -117,13 +114,6 @@ const TableHeader = styled.div`
   flex-wrap: wrap;
   gap: 0.66rem;
   margin-bottom: 0.66rem;
-`;
-
-const SpinnerWrapper = styled.div`
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
 `;
 
 const LinkifyPre = styled(Linkify)`

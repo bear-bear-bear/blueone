@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { CARD_MARGIN_TOP } from '@/components/subcontractor/work-card/styles';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import media from '@/shared/ui/media';
+import media from '@/shared/ui/foundation/media';
 import { css, Global } from '@emotion/react';
 import Empty from './empty.component';
 import { WorkCard } from './work-card';

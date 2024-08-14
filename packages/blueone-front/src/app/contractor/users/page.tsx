@@ -3,7 +3,7 @@ import { Divider, List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Unpacked } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import theme from '@/shared/ui/theme';
+import theme from '@/shared/ui/foundation/theme';
 import styled from '@emotion/styled';
 import AddButton from './add-button.component';
 import ListItem from './list-item.component';
