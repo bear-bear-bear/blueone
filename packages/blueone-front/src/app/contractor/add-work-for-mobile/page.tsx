@@ -2,15 +2,14 @@
 import { useCallback, useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, Checkbox, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import type { AxiosError } from 'axios';
 import SubcontractorSelector from '@/components/subcontractor/subcontractor-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import dayjs from '@/shared/lib/utils/dayjs';
 import media from '@/shared/ui/media';
 import { DeleteOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
-import type { Request, RequestError, WorkAddFormValues } from '../works/add-form.component';
+import type { Request, WorkAddFormValues } from '../works/add-form.component';
 import BookingDatePicker from '../works/booking-date-picker.component';
 
 export default function AddWorkForMobilePage() {
@@ -40,7 +39,7 @@ export default function AddWorkForMobilePage() {
       await httpClient.post<Response>('/works', reqBody);
       message.success('업무 등록 완료');
     } catch (err) {
-      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+      throw err;
     }
   };
 

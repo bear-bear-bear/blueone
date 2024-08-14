@@ -1,12 +1,11 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, InputNumber, FormProps, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
 import SubcontractorSelector from '@/components/subcontractor/subcontractor-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import BookingDatePicker from './booking-date-picker.component';
@@ -82,7 +81,7 @@ const WorkAddForm = ({
       message.success('업무 등록 완료');
       setValidateTrigger('onFinish');
     } catch (err) {
-      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+      throw err;
     }
     setSubmitLoading(false);
   };

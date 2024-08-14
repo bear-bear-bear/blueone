@@ -1,9 +1,8 @@
 import { MouseEventHandler, useCallback, useState } from 'react';
 import { App, Button, Form, FormProps, Modal, Popconfirm, Tooltip } from 'antd';
-import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { ProcessedWork, FullWorks } from '@/app/contractor/works/page';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { EditOutlined } from '@ant-design/icons';
@@ -56,7 +55,7 @@ const EditButton = ({ record }: Props) => {
       message.info('업무 강제 종료 완료');
       closeModal();
     } catch (err) {
-      logAxiosError<WorkForceFinishError>(err as AxiosError<WorkForceFinishError>);
+      throw err;
     }
   }, [closeModal, mutateWorks, record.id, works]);
 
@@ -72,7 +71,7 @@ const EditButton = ({ record }: Props) => {
       message.info('예약된 업무 활성화 완료');
       closeModal();
     } catch (err) {
-      logAxiosError<WorkForceActivateError>(err as AxiosError<WorkForceActivateError>);
+      throw err;
     }
   }, [closeModal, mutateWorks, record.id, works]);
 

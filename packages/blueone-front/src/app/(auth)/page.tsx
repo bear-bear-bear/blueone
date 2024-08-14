@@ -2,9 +2,8 @@
 import { useState } from 'react';
 import { Input, Form, Button, FormProps } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
-import type { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import styled from '@emotion/styled';
 
@@ -32,7 +31,7 @@ export default function LoginPage() {
         default:
       }
     } catch (err) {
-      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+      throw err;
     }
   };
 

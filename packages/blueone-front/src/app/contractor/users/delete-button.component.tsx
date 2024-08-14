@@ -1,9 +1,8 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { App, Button, Popconfirm, Tooltip } from 'antd';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullUsers, FullUser } from '@/app/contractor/users/page';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -39,7 +38,7 @@ const DeleteButton = ({ user }: Props) => {
       await mutateUsers(nextUsers);
       message.success('기사 정보 삭제 완료');
     } catch (err) {
-      logAxiosError<UserDeleteError>(err as AxiosError<UserDeleteError>);
+      throw err;
     }
 
     setIsPopoverOpen(false);

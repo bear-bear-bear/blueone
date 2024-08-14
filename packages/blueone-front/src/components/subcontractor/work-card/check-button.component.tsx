@@ -1,10 +1,9 @@
 import { memo, MouseEventHandler, useCallback, useState } from 'react';
 import { App, Button } from 'antd';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import { Subcontractor } from '@/entities/subcontractor';
 import useUser from '@/hooks/use-user.hook';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint, Work } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 
@@ -37,7 +36,7 @@ const CheckButton = ({ workId, isWorkChecked }: Props) => {
       message.success('업무 확인 완료', 4);
     } catch (err) {
       setLoading(false);
-      logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
+      throw err;
     }
   }, [works, workId, mutateWorks]);
 

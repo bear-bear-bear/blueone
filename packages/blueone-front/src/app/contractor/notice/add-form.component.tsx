@@ -1,9 +1,8 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Form, Input, FormInstance, DatePicker, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import { PackDateRange, EndPoint } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
@@ -63,7 +62,7 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
         message.success('공지사항 등록 완료');
         closeModal();
       } catch (err) {
-        logAxiosError<RequestError>(err as AxiosError<RequestError>);
+        throw err;
       }
       setSubmitLoading(false);
     },

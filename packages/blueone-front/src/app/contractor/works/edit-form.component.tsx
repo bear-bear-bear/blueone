@@ -1,12 +1,11 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Form, Input, InputNumber, FormProps, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
 import SubcontractorSelector from '@/components/subcontractor/subcontractor-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint, Work } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { WorkAddFormValues } from './add-form.component';
@@ -57,7 +56,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
       message.error('업무 확인 취소 완료');
     } catch (err) {
-      logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
+      throw err;
     }
   }, []);
 
@@ -84,7 +83,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       message.success('업무 수정 완료');
       closeModal();
     } catch (err) {
-      logAxiosError<WorkPutError>(err as AxiosError<WorkPutError>);
+      throw err;
     }
     setSubmitLoading(false);
   };

@@ -1,8 +1,7 @@
 import { MouseEventHandler, useCallback, useState, memo } from 'react';
 import { App, Button, Modal } from 'antd';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { Work, EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 
@@ -42,7 +41,7 @@ const DoneButton = ({ workId, isWorkChecked, isWorkDone }: Props) => {
       }
     } catch (err) {
       setLoading(false);
-      logAxiosError<WorkPatchError>(err as AxiosError<WorkPatchError>);
+      throw err;
     }
   }, [works, workId, isWorkChecked, mutateWorks]);
 

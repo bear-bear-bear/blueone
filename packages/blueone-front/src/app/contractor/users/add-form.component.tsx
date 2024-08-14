@@ -1,9 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, FormProps, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import regex from '@/shared/lib/utils/regex';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
@@ -49,7 +48,7 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
       message.success('기사 등록 완료');
       closeModal();
     } catch (err) {
-      logAxiosError<UserCreationError>(err as AxiosError<UserCreationError>);
+      throw err;
     }
     setSubmitLoading(false);
   };

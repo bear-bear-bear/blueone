@@ -1,10 +1,9 @@
 import { useCallback } from 'react';
 import { App, Button, ButtonProps } from 'antd';
-import type { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { CgLogOut } from 'react-icons/cg';
 import useSWRImmutable from 'swr/immutable';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 
@@ -26,7 +25,7 @@ const SignOutButton = ({ kind = 'icon', ...rest }: Props) => {
       await router.push('/');
       message.success('로그아웃 완료');
     } catch (err) {
-      logAxiosError<SignOutError>(err as AxiosError<SignOutError>);
+      throw err;
     }
   }, [mutateUser, router]);
 

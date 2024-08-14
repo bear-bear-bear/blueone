@@ -1,10 +1,9 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import { Form, Input, FormProps, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullUser } from '@/app/contractor/users/page';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import regex from '@/shared/lib/utils/regex';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
@@ -69,7 +68,7 @@ const UserEditForm = ({ form, prevUser, validateTrigger, setValidateTrigger, set
       message.success('기사 정보 수정 완료');
       closeModal();
     } catch (err) {
-      logAxiosError<UserUpdateError>(err as AxiosError<UserUpdateError>);
+      throw err;
     }
     setSubmitLoading(false);
   };

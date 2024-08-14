@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import type { AxiosError } from 'axios';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { css, Global } from '@emotion/react';
 
@@ -29,7 +28,7 @@ export default function PasswordChangeForm({ form, setSubmitLoading, closeModal 
       closeModal();
       message.success('비밀번호가 변경되었어요.', 4);
     } catch (err) {
-      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+      throw err;
     }
     setSubmitLoading(false);
   };

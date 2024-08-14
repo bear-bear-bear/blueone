@@ -1,9 +1,8 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { App, Button, Popconfirm, Tooltip } from 'antd';
-import type { AxiosError } from 'axios';
 import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
-import httpClient, { logAxiosError } from '@/shared/api/axios';
+import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -41,7 +40,7 @@ const DeleteButton = ({ record }: Props) => {
     } catch (err) {
       setIsPopoverOpen(false);
       setPopoverText(INITIAL_POPOVER_TEXT);
-      logAxiosError<RequestError>(err as AxiosError<RequestError>);
+      throw err;
     }
   }, [works, record, mutateWorks]);
 
