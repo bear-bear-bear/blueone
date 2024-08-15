@@ -2,13 +2,11 @@
 import { useEffect, useRef } from 'react';
 import { App, Card, Carousel } from 'antd';
 import useSWR from 'swr';
-import { CARD_MARGIN_TOP } from '@/components/subcontractor/work-card/styles';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import media from '@/shared/ui/foundation/media';
-import { css, Global } from '@emotion/react';
 import Empty from './empty.component';
 import { WorkCard } from './work-card';
+import './work-carousel.component.css';
 
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 
@@ -41,58 +39,15 @@ export default function WorkCarousel() {
     return <Empty description="아직 배정된 업무가 없어요 :)" />;
   }
   return (
-    <>
-      <Global styles={globalStyles} />
-      <Carousel
-        dotPosition="top"
-        infinite
-        initialSlide={myWorks[initialSlide] ? initialSlide : 0}
-        afterChange={afterChange}
-      >
-        {myWorks.map((work) => (
-          <WorkCard work={work} key={work.id} />
-        ))}
-      </Carousel>
-    </>
+    <Carousel
+      dotPosition="top"
+      infinite
+      initialSlide={myWorks[initialSlide] ? initialSlide : 0}
+      afterChange={afterChange}
+    >
+      {myWorks.map((work) => (
+        <WorkCard work={work} key={work.id} />
+      ))}
+    </Carousel>
   );
 }
-
-const globalStyles = css`
-  .ant-card-actions {
-    li {
-      margin: 0 !important;
-    }
-  }
-
-  .ant-card-body {
-    padding: 24px 12px;
-
-    ${media.sm} {
-      padding: 24px;
-    }
-  }
-
-  .ant-carousel {
-    position: relative;
-    top: calc(50% - ${CARD_MARGIN_TOP});
-    transform: translateY(-50%);
-
-    .slick-slide > div {
-      padding: 0 3px;
-    }
-
-    .carousel-custom-dot {
-      li {
-        button {
-          background: #141414 !important;
-        }
-      }
-
-      li.slick-active {
-        button {
-          background: #141414 !important;
-        }
-      }
-    }
-  }
-`;

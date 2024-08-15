@@ -5,8 +5,6 @@ import useSWR from 'swr';
 import Empty from '@/components/subcontractor/empty.component';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import theme from '@/shared/ui/foundation/theme';
-import styled from '@emotion/styled';
 
 type ActivatedNoticeList = EndPoint['GET /notices/activation']['responses']['200'];
 
@@ -26,35 +24,20 @@ export default function NoticePage() {
       grid={{ gutter: 16, column: 1 }}
       dataSource={noticeList}
       renderItem={(item) => (
-        <List.Item style={{ borderTop: `4px solid ${theme.primaryColor}` }}>
-          <NoticeCard title={item.title}>
-            <LinkifyPre tagName="pre">{item.content}</LinkifyPre>
-          </NoticeCard>
+        <List.Item className="border-t-2 border-solid border-primary rounded-t-none">
+          <Card
+            title={item.title}
+            classNames={{
+              header: '!p-3 !min-h-[unset]',
+              body: '!py-3 !px-4',
+            }}
+          >
+            <Linkify tagName="pre" className="whitespace-pre-wrap break-words font-[inherit]">
+              {item.content}
+            </Linkify>
+          </Card>
         </List.Item>
       )}
     />
   );
 }
-
-const NoticeCard = styled(Card)`
-  .ant-card-head {
-    padding: 12px !important;
-    min-height: initial !important;
-  }
-
-  .ant-card-body {
-    padding: 12px 16px !important;
-
-    pre {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-family: inherit;
-    }
-  }
-`;
-
-const LinkifyPre = styled(Linkify)`
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-family: inherit;
-`;

@@ -1,5 +1,5 @@
-import { MouseEventHandler, useCallback, useState } from 'react';
-import { App, Button, Form, FormProps, Modal, Popconfirm, Tooltip } from 'antd';
+import { useState } from 'react';
+import { App, Button, Form, Modal, Popconfirm, Tooltip } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import type { ProcessedWork, FullWorks } from '@/app/contractor/works/page';
 import httpClient from '@/shared/api/axios';
@@ -9,32 +9,30 @@ import { EditOutlined } from '@ant-design/icons';
 import type { WorkAddFormValues } from './add-form.component';
 import EditForm from './edit-form.component';
 
+type WorkForceFinishResponse = EndPoint['PATCH /works/{workId}/force-finish']['responses']['200'];
+type WorkForceActivateResponse = EndPoint['PATCH /works/{workId}/force-activate']['responses']['200'];
+
 type Props = {
   record: ProcessedWork;
 };
 
-type WorkForceFinishResponse = EndPoint['PATCH /works/{workId}/force-finish']['responses']['200'];
-type WorkForceActivateResponse = EndPoint['PATCH /works/{workId}/force-activate']['responses']['200'];
-
-const EditButton = ({ record }: Props) => {
+export default function EditButton({ record }: Props) {
   const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
   const [form] = Form.useForm<WorkAddFormValues>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setIsModalOpen(false);
     form.resetFields();
-    setFormValidateTrigger('onFinish');
-  }, [form]);
+  };
 
-  const handleEditIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
+  const handleEditIconClick = () => {
     setIsModalOpen(true);
-  }, []);
+  };
 
-  const forceFinishWork = useCallback(async () => {
+  const forceFinishWork = async () => {
     try {
       const updatedWork = await httpClient
         .patch<WorkForceFinishResponse>(`/works/${record.id}/force-finish`)
@@ -48,9 +46,9 @@ const EditButton = ({ record }: Props) => {
     } catch (err) {
       throw err;
     }
-  }, [closeModal, mutateWorks, record.id, works]);
+  };
 
-  const activateWork = useCallback(async () => {
+  const activateWork = async () => {
     try {
       const updatedWork = await httpClient
         .patch<WorkForceActivateResponse>(`/works/${record.id}/force-activate`)
@@ -64,7 +62,7 @@ const EditButton = ({ record }: Props) => {
     } catch (err) {
       throw err;
     }
-  }, [closeModal, mutateWorks, record.id, works]);
+  };
 
   return (
     <>
@@ -93,7 +91,7 @@ const EditButton = ({ record }: Props) => {
                     okText="활성화"
                     cancelText="취소"
                   >
-                    <Button style={{ float: 'left' }}>활성화</Button>
+                    <Button className="float-left">활성화</Button>
                   </Popconfirm>,
                 ]
               : [
@@ -106,7 +104,7 @@ const EditButton = ({ record }: Props) => {
                     cancelText="취소"
                     okButtonProps={{ danger: true }}
                   >
-                    <Button danger style={{ float: 'left' }}>
+                    <Button danger className="float-left">
                       완료
                     </Button>
                   </Popconfirm>,
@@ -119,18 +117,9 @@ const EditButton = ({ record }: Props) => {
             </Button>,
           ]}
         >
-          <EditForm
-            form={form}
-            validateTrigger={formValidateTrigger}
-            setValidateTrigger={setFormValidateTrigger}
-            prevWork={record}
-            closeModal={closeModal}
-            setSubmitLoading={setSubmitLoading}
-          />
+          <EditForm form={form} prevWork={record} closeModal={closeModal} setSubmitLoading={setSubmitLoading} />
         </Modal>
       )}
     </>
   );
-};
-
-export default EditButton;
+}

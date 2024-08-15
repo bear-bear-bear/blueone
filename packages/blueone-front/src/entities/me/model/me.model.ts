@@ -14,7 +14,7 @@ export const serviceEntry = (model: Model): string => {
 
 export type InsuranceState = 'normal' | 'nearExpiration' | 'expired';
 export const insuranceInfo = (model: Model) => {
-  const expirationDate = model.UserInfo.insuranceExpirationDate;
+  const expirationDate = model.UserInfo?.insuranceExpirationDate; // TODO: contractor도 UserInfo 채워서 내려주기
   const now = dayjs();
 
   const state: InsuranceState = (() => {

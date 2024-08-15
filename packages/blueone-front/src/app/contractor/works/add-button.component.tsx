@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react';
-import { Button, Checkbox, Form, FormProps, Modal, Tooltip } from 'antd';
+import { Button, Checkbox, Form, Modal, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
 import { AiOutlinePlus } from 'react-icons/ai';
 import type { ProcessedWork } from '@/app/contractor/works/page';
@@ -11,17 +11,15 @@ type Props = {
   render?: (onClick: () => void) => ReactElement;
 };
 
-const AddButton = ({ record, swrKey = record?.swrKey, render }: Props) => {
+export default function AddButton({ record, swrKey = record?.swrKey, render }: Props) {
   const [form] = Form.useForm<WorkAddFormValues>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [useBooking, setUseBooking] = useState<boolean>(!!record?.bookingDate);
 
   const reset = () => {
     form.resetFields();
     setUseBooking(!!record?.bookingDate);
-    setFormValidateTrigger('onFinish');
   };
 
   const closeModal = () => {
@@ -58,12 +56,7 @@ const AddButton = ({ record, swrKey = record?.swrKey, render }: Props) => {
           confirmLoading={submitLoading}
           maskClosable={false}
           footer={[
-            <Checkbox
-              key="booking"
-              checked={useBooking}
-              onChange={onChangeBookingCheckbox}
-              style={{ float: 'left', padding: '5px 0' }}
-            >
+            <Checkbox key="booking" checked={useBooking} onChange={onChangeBookingCheckbox} className="float-left py-1">
               예약
             </Checkbox>,
 
@@ -80,8 +73,6 @@ const AddButton = ({ record, swrKey = record?.swrKey, render }: Props) => {
         >
           <AddForm
             form={form}
-            validateTrigger={formValidateTrigger}
-            setValidateTrigger={setFormValidateTrigger}
             swrKey={swrKey}
             prevWork={record}
             setSubmitLoading={setSubmitLoading}
@@ -91,6 +82,4 @@ const AddButton = ({ record, swrKey = record?.swrKey, render }: Props) => {
       )}
     </>
   );
-};
-
-export default AddButton;
+}

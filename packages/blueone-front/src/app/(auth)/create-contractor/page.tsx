@@ -2,7 +2,6 @@
 import { App, Button, Form, Input } from 'antd';
 import httpClient from '@/shared/api/axios';
 import { EndPoint } from '@/shared/api/types';
-import styled from '@emotion/styled';
 
 type Request = EndPoint['POST /users/contractor']['requestBody'];
 
@@ -30,18 +29,11 @@ export default function CreateContractorPage() {
         <Input.Password autoComplete="new-password" />
       </Form.Item>
 
-      <ButtonGroup>
+      <div className="w-full flex justify-end">
         <Button type="primary" htmlType="submit">
           Contractor 등록
         </Button>
-      </ButtonGroup>
+      </div>
     </Form>
   );
 }
-
-const ButtonGroup = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  flex-direction: column;
-`;

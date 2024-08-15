@@ -8,7 +8,7 @@ import { axiosFetcher } from '@/shared/lib/utils/swr';
 
 type ActivatedNoticeList = EndPoint['GET /notices/activation']['responses']['200'];
 
-const LatestNoticeAlert = () => {
+export default function LatestNoticeAlert() {
   const { data: noticeList } = useSWR<ActivatedNoticeList>('/notices/activation', axiosFetcher);
   const router = useRouter();
 
@@ -19,19 +19,17 @@ const LatestNoticeAlert = () => {
   if (!noticeList || noticeList.length === 0) return <div />;
   const latestNotice = noticeList[0];
   return (
-    <div style={{ position: 'absolute', left: 0, width: '100%', padding: '0 1rem', cursor: 'pointer' }}>
+    <div className="absolute left-0 w-full px-4 cursor-pointer">
       <Alert
         banner
         type="info"
         onClick={onClickAlertBox}
         message={
-          <Marquee delay={5} gradient={false} style={{ color: '#FFF' }}>
-            공지사항 - {latestNotice.title}
+          <Marquee delay={5} gradient={false} className="text-white">
+            공지사항&nbsp;-&nbsp;{latestNotice.title}
           </Marquee>
         }
       />
     </div>
   );
-};
-
-export default LatestNoticeAlert;
+}

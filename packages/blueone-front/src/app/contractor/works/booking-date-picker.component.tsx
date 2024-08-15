@@ -7,7 +7,7 @@ type Props = {
   setDate: (data: dayjs.Dayjs) => void;
 };
 
-const BookingDatePicker = ({ date, setDate }: Props) => {
+export default function BookingDatePicker({ date, setDate }: Props) {
   const { message } = App.useApp();
   const [localDate, setLocalDate] = useState<dayjs.Dayjs>(date);
   const now = dayjs();
@@ -50,7 +50,7 @@ const BookingDatePicker = ({ date, setDate }: Props) => {
       showNow={false}
     />
   );
-};
+}
 
 function range(start: number, end: number) {
   const result = [];
@@ -59,5 +59,3 @@ function range(start: number, end: number) {
   }
   return result;
 }
-
-export default BookingDatePicker;

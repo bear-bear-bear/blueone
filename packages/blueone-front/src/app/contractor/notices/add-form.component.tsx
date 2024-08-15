@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, FormInstance, DatePicker, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import useSWRImmutable from 'swr/immutable';
@@ -21,19 +21,7 @@ type Props = {
   swrKey: string;
 };
 
-const layout: { [ColName: string]: ColProps } = {
-  labelCol: { span: 5 },
-  wrapperCol: { flex: 'auto' },
-};
-
-const validateMessages = {
-  required: '필수 입력 값입니다.',
-  string: {
-    max: '최대 입력 수를 초과했습니다.',
-  },
-};
-
-const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) => {
+export default function NoticeAddForm({ form, setSubmitLoading, closeModal, swrKey }: Props) {
   const { message } = App.useApp();
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
     swrKey || '/notices',
@@ -43,30 +31,27 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
     },
   );
 
-  const onFormFinish = useCallback(
-    async (values: FormValues) => {
-      const body: Request = {
-        title: values.title,
-        content: values.content,
-        startDate: values.dateRange[0].format('YYYY-MM-DD'),
-        endDate: values.dateRange[1].format('YYYY-MM-DD'),
-      };
+  const onFormFinish = async (values: FormValues) => {
+    const body: Request = {
+      title: values.title,
+      content: values.content,
+      startDate: values.dateRange[0].format('YYYY-MM-DD'),
+      endDate: values.dateRange[1].format('YYYY-MM-DD'),
+    };
 
-      setSubmitLoading(true);
-      try {
-        const createdNotice = await httpClient.post<Response>('/notices', body).then((res) => res.data);
+    setSubmitLoading(true);
+    try {
+      const createdNotice = await httpClient.post<Response>('/notices', body).then((res) => res.data);
 
-        const nextNoticeList = noticeList?.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
-        await mutateNoticeList(nextNoticeList);
-        message.success('공지사항 등록 완료');
-        closeModal();
-      } catch (err) {
-        throw err;
-      }
-      setSubmitLoading(false);
-    },
-    [setSubmitLoading, noticeList, mutateNoticeList, closeModal],
-  );
+      const nextNoticeList = noticeList?.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
+      await mutateNoticeList(nextNoticeList);
+      message.success('공지사항 등록 완료');
+      closeModal();
+    } catch (err) {
+      throw err;
+    }
+    setSubmitLoading(false);
+  };
 
   return (
     <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
@@ -81,6 +66,16 @@ const NoticeAddForm = ({ form, setSubmitLoading, closeModal, swrKey }: Props) =>
       </Form.Item>
     </Form>
   );
+}
+
+const layout: { [ColName: string]: ColProps } = {
+  labelCol: { span: 5 },
+  wrapperCol: { flex: 'auto' },
 };
 
-export default NoticeAddForm;
+const validateMessages = {
+  required: '필수 입력 값입니다.',
+  string: {
+    max: '최대 입력 수를 초과했습니다.',
+  },
+};

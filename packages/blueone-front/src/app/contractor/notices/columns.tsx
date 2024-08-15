@@ -7,7 +7,7 @@ import type { ProcessedNotice } from './page';
 // row onclick expand 를 특정 td 에서 실행하지 않기 위한 escape
 // (style 은 row 의 'cursor: pointer' 를 해당 td 에서 완전히 무효화하기 위한 임시 escape)
 const PropagationStopper = ({ children }: { children: ReactNode }) => (
-  <div onClick={(e) => e.stopPropagation()} style={{ padding: '0.66rem 0', cursor: 'initial' }}>
+  <div onClick={(e) => e.stopPropagation()} className="py-2 cursor-default">
     {children}
   </div>
 );
@@ -47,7 +47,7 @@ const columns: ColumnsType<ProcessedNotice> = [
       </PropagationStopper>
     ),
     width: 80,
-    className: 'notice-board__non-padding-td',
+    className: '!p-0',
   },
 ];
 

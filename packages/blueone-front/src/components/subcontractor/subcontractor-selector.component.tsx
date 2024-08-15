@@ -18,8 +18,7 @@ export default function SubcontractorSelector({ form, defaultValue, disabled = f
     if (typeof defaultValue === 'undefined' || isPending) {
       return false;
     }
-
-    return !!subcontractors?.some((subcontractor) => subcontractor.id === defaultValue);
+    return !subcontractors?.some((subcontractor) => subcontractor.id === defaultValue);
   })();
 
   const handleSelect = (v: number) => {
@@ -47,11 +46,11 @@ export default function SubcontractorSelector({ form, defaultValue, disabled = f
         const insuranceInfo = Me.insuranceInfo(subcontractor);
 
         return (
-          <Select.Option key={subcontractor.id} value={subcontractor.id} style={{ textAlign: 'center' }}>
+          <Select.Option key={subcontractor.id} value={subcontractor.id} className="text-center">
             {insuranceInfo.state === 'nearExpiration' && (
               <>
                 <Tooltip title={`보험 일자 만료 ${insuranceInfo.from}`}>
-                  <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />
+                  <WarningOutlined className="text-yellow-500" />
                 </Tooltip>
                 <Divider type="vertical" />
               </>
@@ -59,7 +58,7 @@ export default function SubcontractorSelector({ form, defaultValue, disabled = f
             {insuranceInfo.state === 'expired' && (
               <>
                 <Tooltip title={`보험 일자 만료됨`}>
-                  <WarningOutlined style={{ color: '#A61D24', fontSize: 'inherit' }} />
+                  <WarningOutlined className="text-red-500" />
                 </Tooltip>
                 <Divider type="vertical" />
               </>

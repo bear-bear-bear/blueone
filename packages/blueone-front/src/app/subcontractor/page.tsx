@@ -6,7 +6,7 @@ import NotificationBadge from '@/components/subcontractor/notification-badge.com
 import WorkCarousel from '@/components/subcontractor/work-carousel.component';
 import { Me, useSuspenseFetchMe } from '@/entities/me';
 
-export default function WorkerHomePage() {
+export default function SubcontractorHomePage() {
   const { data: me } = useSuspenseFetchMe();
   const insuranceInfo = Me.insuranceInfo(me);
 
@@ -33,14 +33,8 @@ export default function WorkerHomePage() {
 
       <WorkCarousel />
 
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '1rem',
-          right: '1rem',
-        }}
-      >
-        <Button type="text" style={{ color: '#fff', borderRadius: '2px' }}>
+      <div className="absolute bottom-4 right-4">
+        <Button type="text">
           <Link href="/subcontractor/done-works">→ 완료된 업무 열람</Link>
         </Button>
       </div>

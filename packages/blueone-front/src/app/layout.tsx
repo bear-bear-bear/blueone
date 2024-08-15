@@ -4,6 +4,7 @@ import { MeHydration } from '@/entities/me';
 import { pretendardVariable } from '@/shared/ui/fonts';
 import theme from '@/shared/ui/foundation/theme';
 import Providers from './_providers';
+import '@/shared/ui/foundation/global.css';
 
 const APP_NAME = 'BLUEONE';
 
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: theme.primaryColor,
+  themeColor: theme.colors.primary,
   minimumScale: 1,
   initialScale: 1,
   width: 'device-width',

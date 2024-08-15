@@ -8,33 +8,16 @@ import regex from '@/shared/lib/utils/regex';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 
 type Request = EndPoint['POST /users']['requestBody'];
-
-type Props = {
-  form: FormInstance<Request>;
-  validateTrigger: FormProps['validateTrigger'];
-  setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
-  closeModal: () => void;
-  setSubmitLoading: Dispatch<SetStateAction<boolean>>;
-};
 type Users = EndPoint['GET /users']['responses']['200'];
 type CreatedUser = EndPoint['POST /users']['responses']['201'];
 
-const layout: { [ColName: string]: ColProps } = {
-  labelCol: { span: 6 },
-  wrapperCol: { flex: 'auto' },
+type Props = {
+  form: FormInstance<Request>;
+  closeModal: () => void;
+  setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
 
-const validateMessages: FormProps<Request>['validateMessages'] = {
-  required: '필수 입력 값입니다.',
-  pattern: {
-    mismatch: '형식이 올바르지 않습니다.',
-  },
-  string: {
-    max: '최대 입력 수를 초과했습니다.',
-  },
-};
-
-const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoading, closeModal }: Props) => {
+export default function UserAddForm({ form, closeModal, setSubmitLoading }: Props) {
   const { message } = App.useApp();
   const { data: users, mutate: mutateUsers } = useSWRImmutable<Users>('/users', axiosFetcher);
 
@@ -52,20 +35,8 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
     setSubmitLoading(false);
   };
 
-  const onFormFinishFailed = () => {
-    setValidateTrigger(['onFinish', 'onChange']);
-  };
-
   return (
-    <Form
-      form={form}
-      onFinish={onFormFinish}
-      onFinishFailed={onFormFinishFailed}
-      validateTrigger={validateTrigger}
-      validateMessages={validateMessages}
-      size="middle"
-      {...layout}
-    >
+    <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
       <Form.Item
         name="phoneNumber"
         label="전화번호"
@@ -109,6 +80,19 @@ const UserAddForm = ({ form, validateTrigger, setValidateTrigger, setSubmitLoadi
       </Form.Item>
     </Form>
   );
+}
+
+const layout: { [ColName: string]: ColProps } = {
+  labelCol: { span: 6 },
+  wrapperCol: { flex: 'auto' },
 };
 
-export default UserAddForm;
+const validateMessages: FormProps<Request>['validateMessages'] = {
+  required: '필수 입력 값입니다.',
+  pattern: {
+    mismatch: '형식이 올바르지 않습니다.',
+  },
+  string: {
+    max: '최대 입력 수를 초과했습니다.',
+  },
+};

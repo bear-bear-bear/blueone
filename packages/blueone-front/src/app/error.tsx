@@ -6,7 +6,6 @@ import { getErrorMessage } from '@/shared/api/get-error-message';
 import isAuthError from '@/shared/api/is-auth-error';
 import { errorLog } from '@/shared/lib/utils/log/logger';
 import withDebugger from '@/shared/lib/utils/log/with-debugger';
-import styled from '@emotion/styled';
 
 export default function ErrorPage({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
@@ -39,47 +38,36 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
   }, [error]);
 
   return (
-    <Container>
-      <Typography.Title level={2}>Something went wrong!</Typography.Title>
+    <div className="h-screen flexColCenter gap-6 p-5 bg-gray-950">
+      <Typography.Title className="!text-white" level={2}>
+        Something went wrong :(
+      </Typography.Title>
 
-      <Button type="primary" onClick={() => reset()}>
-        Try again
-      </Button>
+      <Typography.Text className="text-white">다시 시도하거나, 개발자를 호출해주세요.</Typography.Text>
 
-      {process.env.NODE_ENV === 'development' && <ErrorMessagePanel>{getErrorMessage(error)}</ErrorMessagePanel>}
-    </Container>
+      <div className="flex gap-2">
+        <Button type="primary" onClick={() => reset()}>
+          다시 시도
+        </Button>
+        <Button
+          type="default"
+          onClick={() => {
+            location.href = '/';
+          }}
+        >
+          홈으로
+        </Button>
+      </div>
+
+      {process.env.NODE_ENV === 'development' && (
+        <div className="relative min-w-[400px] w-max max-w-full bg-gray-600 text-gray-100 p-5 rounded-b rounded-tr break-words mt-6">
+          <div className="absolute -top-5 left-0 text-gray-100 bg-gray-600 px-2 rounded-t">Error Message</div>
+          {getErrorMessage(error)}
+        </div>
+      )}
+    </div>
   );
 }
 
 const logger = withDebugger(0);
 const errorLogger = logger(errorLog);
-
-const Container = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 20px;
-`;
-
-const ErrorMessagePanel = styled(Typography.Paragraph)`
-  position: relative;
-  min-width: 400px;
-  width: max-content;
-  max-width: 100%;
-  background-color: #4a5568;
-  color: #edf2f7;
-  padding: 20px;
-  border-radius: 0 0 10px 10px;
-  word-break: break-word;
-
-  &::before {
-    content: 'Error Message';
-    position: absolute;
-    z-index: 1;
-    top: -20px;
-    left: 0;
-  }
-`;

@@ -4,26 +4,9 @@ export default function Empty({ description }: { description: string }) {
   return (
     <AntdEmpty
       image={AntdEmpty.PRESENTED_IMAGE_SIMPLE}
-      imageStyle={{
-        height: 60,
-      }}
-      description={
-        <span
-          style={{
-            color: '#fafafa',
-            fontSize: 16,
-          }}
-        >
-          {description}
-        </span>
-      }
-      style={{
-        width: '95%',
-        position: 'absolute',
-        top: '42%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-      }}
+      imageStyle={{ height: 60 }}
+      description={<span className="text-gray-100 text-base">{description}</span>}
+      className="w-[95%] absolute top-[48%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
     />
   );
 }

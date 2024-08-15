@@ -18,27 +18,26 @@ import Empty from '@/components/subcontractor/empty.component';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import theme from '@/shared/ui/foundation/theme';
-import { Header } from './styled';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 type Response = EndPoint['GET /user/works/analysis']['responses']['200'];
 
-const AnalyzeByMonth = (): JSX.Element => {
+export default function AnalyzeByMonth() {
   const { data: workAnalysis } = useSWRImmutable<Response>('/user/works/analysis?by=month', axiosFetcher, {
     revalidateOnMount: true,
   });
 
   const chartData: ChartData<'bar', number[], string> = useMemo(() => {
     const labels = Object.keys(workAnalysis ?? {}).map((month) => `${month}월`);
-    const data = Object.values(workAnalysis ?? {}).map((totalPayment) => totalPayment as number);
+    const data = Object.values(workAnalysis ?? {});
     return {
       labels,
       datasets: [
         {
           label: '지수합계',
           data,
-          backgroundColor: theme.primaryColor,
+          backgroundColor: theme.colors.primary,
         },
       ],
     };
@@ -63,17 +62,13 @@ const AnalyzeByMonth = (): JSX.Element => {
   }
   return (
     <>
-      <Header>
-        <section className="announcement">
-          <p>※ 익일입고는 확인 시점으로 정산됩니다.</p>
-        </section>
+      <header className="mt-4 mb-6">
+        <p className="text-sm mb-2.5 text-gray-400">※ 익일입고는 확인 시점으로 정산됩니다.</p>
         {thisMonth !== 1 && <p>지난 달 지수 합계: {workAnalysis[`${thisMonth - 1}`]}</p>}
-        <h1>이번 달 지수 합계: {workAnalysis[`${thisMonth}`]}</h1>
-      </Header>
+        <h1 className="text-white text-xl">이번 달 지수 합계: {workAnalysis[`${thisMonth}`]}</h1>
+      </header>
 
       <Bar data={chartData} options={options} height={360} />
     </>
   );
-};
-
-export default AnalyzeByMonth;
+}

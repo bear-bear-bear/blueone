@@ -1,0 +1,61 @@
+@import "_reset.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  body > div:first-of-type,
+  div#__next,
+  div#__next > div {
+    min-height: 100vh;
+  }
+
+  html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 15px;
+  }
+  @media screen and (min-width: theme('screens.xl')) {
+    html {
+      font-size: 16px;
+    }
+  }
+}
+
+@layer utilities {
+  .flexRow {
+    @apply flex flex-row;
+  }
+  .flexCol {
+    @apply flex flex-col;
+  }
+  .flexRowCenter {
+    @apply flexRow justify-center items-center;
+  }
+  .flexColCenter {
+    @apply flexCol justify-center items-center;
+  }
+}
+
+.ant-modal-header {
+  margin-bottom: 20px !important;
+}
+.ant-modal-footer {
+  margin-top: 20px !important;
+}
+
+.ant-typography {
+  margin: unset !important;
+}
+.ant-typography-copy .anticon {
+  vertical-align: middle;
+}
+
+.ant-picker-time-panel-cell-inner::after {
+  content: ':00'; /* This trick is for adding :00 to hour panel in BookingDatePicker */
+}

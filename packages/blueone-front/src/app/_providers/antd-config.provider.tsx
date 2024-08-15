@@ -12,24 +12,26 @@ export default function AntdConfigProvider({ children }: { children: ReactNode }
 }
 
 const antdTheme: ThemeConfig = {
+  hashed: false,
   token: {
-    colorPrimary: theme.primaryColor,
-    borderRadius: theme.borderRadius,
+    colorPrimary: theme.colors.primary,
+    borderRadius: 4,
+    fontSize: 15,
   },
   components: {
     Alert: {
       /**
        * `banner: true`일 때의 스타일 또한 덮어씌우기 위해 important 사용
        */
-      colorInfoBorder: `${theme.primaryColor} !important`,
+      colorInfoBorder: `${theme.colors.primary} !important`,
       colorInfoBg: 'none !important',
       colorInfoText: '#fff !important',
     },
     Tabs: {
       itemColor: '#fff',
-      itemSelectedColor: theme.primaryColor,
-      itemHoverColor: theme.primaryColor,
-      inkBarColor: theme.primaryColor,
+      itemSelectedColor: theme.colors.primary,
+      itemHoverColor: theme.colors.primary,
+      inkBarColor: theme.colors.primary,
     },
   },
 };

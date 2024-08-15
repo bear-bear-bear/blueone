@@ -1,10 +1,10 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { useState } from 'react';
 import { App, Button, Popconfirm, Tooltip } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { NoticeList, ProcessedNotice } from './page';
 
 type Props = {
@@ -12,66 +12,57 @@ type Props = {
 };
 type Response = EndPoint['DELETE /notices/{noticeId}']['responses']['200'];
 
-const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
-
-const INITIAL_POPOVER_TEXT = '공지사항 삭제';
-
-const DeleteButton = ({ record }: Props) => {
+export default function DeleteButton({ record }: Props) {
   const { message } = App.useApp();
   const { data: noticeList, mutate: mutateNoticeList } = useSWRImmutable<NoticeList>(
     record.swrKey || '/notices',
     axiosFetcher,
   );
-  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
-  const [popoverText, setPopoverText] = useState<ReactNode>(INITIAL_POPOVER_TEXT);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const showPopconfirm = () => {
     setIsPopoverOpen(true);
   };
 
-  const deleteNotice = useCallback(async () => {
-    setPopoverText(Spinner);
+  const handleCancel = () => {
+    setIsPopoverOpen(false);
+  };
 
+  const deleteNotice = async () => {
     try {
       await httpClient.delete<Response>(`/notices/${record.id}`);
-      const nextNoticeList = noticeList?.filter((work) => work.id !== record.id);
+      const nextNoticeList = noticeList?.filter((notice) => notice.id !== record.id);
       await mutateNoticeList(nextNoticeList);
       message.success('공지사항 삭제 완료');
     } catch (err) {
       setIsPopoverOpen(false);
-      setPopoverText(INITIAL_POPOVER_TEXT);
       throw err;
     }
-  }, [noticeList, record, mutateNoticeList]);
-
-  const handleCancel = () => {
-    setIsPopoverOpen(false);
   };
 
   return (
     <>
       <Popconfirm
-        title={popoverText}
+        title="공지사항 삭제"
         open={isPopoverOpen}
         onConfirm={deleteNotice}
         okText="삭제"
         okButtonProps={{ danger: true }}
         onCancel={handleCancel}
         cancelText="취소"
-        icon={<QuestionCircleOutlined style={{ color: '#ff4d4f' }} />}
+        icon={<QuestionCircleOutlined className="!text-red-500" />}
+        placement="bottom"
       >
         <Tooltip title="삭제">
           <Button
             type="text"
             size="small"
             icon={<DeleteOutlined />}
-            style={{ color: '#ff4d4f' }}
+            className="text-red-500"
             onClick={showPopconfirm}
           />
         </Tooltip>
       </Popconfirm>
     </>
   );
-};
-
-export default DeleteButton;
+}

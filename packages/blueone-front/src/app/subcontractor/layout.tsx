@@ -4,12 +4,11 @@ import { App, Button, ConfigProvider, theme } from 'antd';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSuspenseFetchMe } from '@/entities/me';
+import cn from '@/shared/lib/utils/cn';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { css, Global } from '@emotion/react';
-import styled from '@emotion/styled';
 import navItems, { type NavItem } from './nav-items';
 
-export default function WorkerLayout({ children }: { children: ReactNode }) {
+export default function SubcontractorLayout({ children }: { children: ReactNode }) {
   const { message } = App.useApp();
   const router = useRouter();
   const pathname = usePathname();
@@ -30,138 +29,76 @@ export default function WorkerLayout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.darkAlgorithm,
-      }}
-    >
-      <App notification={{ maxCount: 1 }}>
-        <Global styles={globalStyles} />
+    <>
+      <style jsx global>
+        {`
+          body {
+            background: #1c1c1c;
+          }
+        `}
+      </style>
 
-        <CenterLayout>
-          <Box>
-            <BoxHeader>
-              {showBack && (
-                <Button className="go-back" type="text" size="large" icon={<ArrowLeftOutlined />} onClick={goBack} />
-              )}
-              <h1>{headerText}</h1>
-            </BoxHeader>
-            <BoxMain noPadding={bodyNoPadding}>{children}</BoxMain>
-            <BoxFooter>
-              <nav>
-                {navItems.map((item) => {
-                  if (item.parentPageHref) {
-                    return null;
-                  }
-                  // Warning: O(n^2)
-                  const isParentOfCurrPage = !!navItems.find(
-                    (t) =>
-                      t.parentPageHref && //
-                      t.parentPageHref === item.href && //
-                      t.href === pathname, //
-                  );
-                  return <NavItem key={item.href} item={item} active={item.href === pathname || isParentOfCurrPage} />;
-                })}
-              </nav>
-            </BoxFooter>
-          </Box>
-        </CenterLayout>
-      </App>
-    </ConfigProvider>
+      <ConfigProvider
+        theme={{
+          algorithm: theme.darkAlgorithm,
+        }}
+      >
+        <App notification={{ maxCount: 1 }}>
+          <div className="w-full max-w-lg h-screen mx-auto flexRowCenter bg-gray-950">
+            <div className="w-full h-full flex flex-col">
+              <header className="relative flex justify-center items-center mb-5 p-4 pt-4 gap-4">
+                {showBack && (
+                  <Button
+                    className="absolute left-4 text-white"
+                    type="text"
+                    size="large"
+                    icon={<ArrowLeftOutlined />}
+                    onClick={goBack}
+                  />
+                )}
+                <h1 className="text-2xl text-white">{headerText}</h1>
+              </header>
+
+              <main
+                className={`flex-1 flex flex-col ${
+                  bodyNoPadding ? 'p-0' : 'p-4'
+                } relative overflow-y-auto scrollbar-hide`}
+              >
+                {children}
+              </main>
+
+              <footer className="bg-black px-4">
+                <nav className="flex justify-between">
+                  {navItems.map((item) => {
+                    if (item.parentPageHref) {
+                      return null;
+                    }
+                    const isParentOfCurrPage = !!navItems.find(
+                      (t) => t.parentPageHref && t.parentPageHref === item.href && t.href === pathname,
+                    );
+                    return (
+                      <NavItem key={item.href} item={item} active={item.href === pathname || isParentOfCurrPage} />
+                    );
+                  })}
+                </nav>
+              </footer>
+            </div>
+          </div>
+        </App>
+      </ConfigProvider>
+    </>
   );
 }
 
 function NavItem({ item, active }: { active: boolean; item: NavItem }) {
   return (
-    <StyledLink href={item.href} passHref active={active}>
+    <Link
+      href={item.href}
+      passHref
+      className={cn('flex-1 flexColCenter gap-2 py-4', active ? '!text-white' : '!text-gray-500')}
+    >
       {active ? item.fillIcon : item.outlineIcon}
-      <p>{item.text}</p>
-    </StyledLink>
+      <p className="text-sm text-center">{item.text}</p>
+    </Link>
   );
 }
-
-const globalStyles = css`
-  body {
-    background-color: #242424;
-  }
-`;
-
-const CenterLayout = styled.section`
-  width: 100%;
-  max-width: 500px;
-  height: 100vh;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #141414;
-`;
-
-const BOX_ITEM_PADDING = '0.66rem 1rem';
-
-const Box = styled.section`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const BoxHeader = styled.header`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1.33rem;
-  padding: ${BOX_ITEM_PADDING};
-  padding-top: 1rem;
-  gap: 1rem;
-
-  button.go-back {
-    position: absolute;
-    left: 1rem;
-    color: #fff;
-  }
-
-  h1 {
-    font-size: 1.33rem;
-    font-weight: 400;
-    color: #fff;
-  }
-`;
-
-const BoxMain = styled.main<{ noPadding?: boolean }>`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: ${({ noPadding }) => (noPadding ? 'initial' : BOX_ITEM_PADDING)};
-  position: relative;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const BoxFooter = styled.footer`
-  nav {
-    display: flex;
-    justify-content: space-between;
-    padding: ${BOX_ITEM_PADDING};
-    background-color: #000;
-  }
-`;
-
-const StyledLink = styled(Link)<{ active: boolean }>`
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.33rem;
-  color: ${({ active }) => (active ? '#fff' : '#aaa')} !important;
-
-  p {
-    font-size: 14px;
-    font-weight: 100;
-    text-align: center;
-  }
-`;

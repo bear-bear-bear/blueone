@@ -3,8 +3,6 @@ import { Divider, List } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import type { EndPoint, Unpacked } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import theme from '@/shared/ui/foundation/theme';
-import styled from '@emotion/styled';
 import AddButton from './add-button.component';
 import ListItem from './list-item.component';
 
@@ -17,49 +15,12 @@ export default function UsersPage() {
   });
 
   return (
-    <ListWrapper>
-      <StickyHeader>
+    <div className="relative max-w-screen-lg max-h-[800px] overflow-y-auto p-4 border border-gray-300 bg-white rounded">
+      <header className="sticky top-0 z-10 flex justify-end bg-white">
         <AddButton />
-      </StickyHeader>
-      <StyledDivider />
+      </header>
+      <Divider className="my-4" />
       <List itemLayout="horizontal" dataSource={users} renderItem={ListItem} loading={!users} />
-    </ListWrapper>
+    </div>
   );
 }
-
-const ListWrapper = styled.div`
-  position: relative;
-  max-width: 800px;
-  max-height: 800px;
-  overflow-y: auto;
-  padding: 0 16px 16px;
-  border: 1px solid #ccc;
-  border-radius: ${theme.borderRadius};
-  background-color: #fff;
-
-  ::-webkit-scrollbar {
-    width: 10px;
-
-    &-track {
-      border: 1px solid #eee;
-    }
-
-    &-thumb {
-      background: #ccc;
-    }
-  }
-`;
-
-const StickyHeader = styled.header`
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px 8px 8px;
-  background-color: inherit;
-`;
-
-const StyledDivider = styled(Divider)`
-  margin: 8px 0;
-`;

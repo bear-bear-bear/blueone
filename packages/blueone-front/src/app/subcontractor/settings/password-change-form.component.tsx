@@ -3,7 +3,6 @@ import { Form, Input, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
-import { css, Global } from '@emotion/react';
 
 type Request = EndPoint['POST /user/password']['requestBody'];
 type Response = EndPoint['POST /user/password']['responses']['204'];
@@ -33,10 +32,15 @@ export default function PasswordChangeForm({ form, setSubmitLoading, closeModal 
   };
 
   return (
-    <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" {...layout}>
-      <Global styles={formCustomStyles} />
-
-      <Form.Item name="password" label="새 비밀번호" rules={[{ required: true }]} className="pw-change-form__item">
+    <Form
+      form={form}
+      onFinish={onFormFinish}
+      validateMessages={validateMessages}
+      size="middle"
+      layout="vertical"
+      {...layout}
+    >
+      <Form.Item name="password" label="새 비밀번호" rules={[{ required: true }]} className="mb-3 [&_label]:!text-base">
         <Input.Password autoComplete="off" size="large" />
       </Form.Item>
 
@@ -56,7 +60,7 @@ export default function PasswordChangeForm({ form, setSubmitLoading, closeModal 
             },
           }),
         ]}
-        className="pw-change-form__item"
+        className="mb-3 [&_label]:!text-base"
       >
         <Input.Password size="large" />
       </Form.Item>
@@ -72,15 +76,3 @@ const layout: { [ColName: string]: ColProps } = {
 const validateMessages = {
   required: '필수 입력 값입니다.',
 };
-
-const formCustomStyles = css`
-  .pw-change-form__item {
-    margin-bottom: 12px;
-
-    .ant-form-item-label {
-      label {
-        font-size: 16px !important;
-      }
-    }
-  }
-`;

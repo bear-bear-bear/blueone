@@ -1,57 +1,47 @@
 'use client';
-import { List } from 'antd';
-import { SettingsFooter, SettingsHeader } from '@/app/subcontractor/settings/parts';
-import PasswordChangeButton from '@/app/subcontractor/settings/password-change-button.component';
+import { Avatar, Card, List } from 'antd';
 import SignOutButton from '@/components/sign-out-button.component';
-import { useSuspenseFetchMe } from '@/entities/me';
-import { css, Global } from '@emotion/react';
+import { Me, useSuspenseFetchMe } from '@/entities/me';
+import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
+import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import PasswordChangeButton from './password-change-button.component';
+import './page.css';
 
 export default function SettingPage() {
   const { data: me } = useSuspenseFetchMe();
 
   return (
-    <>
-      <Global styles={globalStyles} />
-
-      <List
-        header={<SettingsHeader me={me} />}
-        footer={<SettingsFooter />}
-        dataSource={items}
-        renderItem={(item) => <List.Item>{item}</List.Item>}
-        style={{
-          padding: 'unset',
-        }}
-      />
-    </>
+    <List
+      header={<SettingsHeader me={me} />}
+      footer={<SettingsFooter />}
+      dataSource={[<PasswordChangeButton key="change-password" />, <SignOutButton key="sign-out" kind="text" block />]}
+      renderItem={(item) => <List.Item>{item}</List.Item>}
+      className="p-[unset]"
+    />
   );
 }
 
-const items = [<PasswordChangeButton key="change-password" />, <SignOutButton key="sign-out" kind="text" block />];
+function SettingsHeader({ me }: { me: Me.Model }) {
+  return (
+    <Card>
+      <Card.Meta
+        avatar={<Avatar icon={<UserOutlined />} size={54} className="bg-primary" />}
+        title={<p className="text-lg mt-0.5">{me.UserInfo?.realname || 'Contractor'}</p>}
+        description={
+          <>
+            <PhoneOutlined className="transform rotate-90 mr-1 text-lg" />
+            <span>{processPhoneNumber(me.phoneNumber)}</span>
+          </>
+        }
+      />
+    </Card>
+  );
+}
 
-const globalStyles = css`
-  .ant-list-header {
-    border-bottom: none !important;
-    margin-bottom: 0.33rem;
-  }
-
-  .ant-list-items {
-    background: #1c1c1c;
-    border-top: 1px solid #303030;
-    border-bottom: 1px solid #303030;
-  }
-
-  .ant-list-item {
-    padding: unset !important;
-    border-bottom: none !important;
-
-    :not(:first-of-type) {
-      border-top: 1px solid #303030;
-    }
-
-    button {
-      font-size: 16px;
-      padding: 24px 0 !important;
-      color: #888;
-    }
-  }
-`;
+function SettingsFooter() {
+  return (
+    <footer className="text-center py-4 text-sm text-gray-500">
+      Copyright ©2014 BLUEONE, Inc. All rights reserved.
+    </footer>
+  );
+}

@@ -1,0 +1,47 @@
+.ant-list-header {
+  border-bottom: none !important;
+  margin-bottom: 0.33rem;
+}
+
+.ant-list-items {
+  background: #1c1c1c;
+  border-top: 1px solid #303030;
+  border-bottom: 1px solid #303030;
+}
+
+.ant-list-item {
+  padding: unset !important;
+  border-bottom: none !important;
+
+  &:not(:first-of-type) {
+    border-top: 1px solid #303030 !important;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 24px 0 !important;
+    color: #888;
+  }
+}
+
+.ant-card {
+  background: #1c1c1c !important;
+  border: none;
+  border-top: 1px solid #303030;
+  border-bottom: 1px solid #303030;
+
+  .ant-card-body {
+    padding: 16px;
+  }
+
+  .ant-card-meta-title {
+    color: #fafafa;
+    font-size: 16px;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .ant-card-meta-description {
+    font-weight: 300;
+    color: #ccc;
+  }
+}

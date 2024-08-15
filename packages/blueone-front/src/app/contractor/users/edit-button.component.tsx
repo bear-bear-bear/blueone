@@ -1,30 +1,29 @@
-import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
+import { useState } from 'react';
+import { Button, Form, Modal, Tooltip } from 'antd';
 import type { FullUser } from '@/app/contractor/users/page';
 import type { EndPoint } from '@/shared/api/types';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './edit-form.component';
 
+export type UpdateRequest = EndPoint['PUT /users/{userId}']['requestBody'];
+
 type Props = {
   user: FullUser;
 };
-export type UpdateRequest = EndPoint['PUT /users/{userId}']['requestBody'];
 
-const EditButton = ({ user }: Props) => {
+export default function EditButton({ user }: Props) {
   const [form] = Form.useForm<UpdateRequest>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setIsModalOpen(false);
     form.resetFields();
-    setFormValidateTrigger('onFinish');
-  }, [form]);
+  };
 
-  const handleEditIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
+  const handleEditIconClick = () => {
     setIsModalOpen(true);
-  }, []);
+  };
 
   return (
     <>
@@ -41,17 +40,8 @@ const EditButton = ({ user }: Props) => {
         confirmLoading={submitLoading}
         maskClosable={false}
       >
-        <EditForm
-          form={form}
-          validateTrigger={formValidateTrigger}
-          setValidateTrigger={setFormValidateTrigger}
-          prevUser={user}
-          closeModal={closeModal}
-          setSubmitLoading={setSubmitLoading}
-        />
+        <EditForm form={form} prevUser={user} closeModal={closeModal} setSubmitLoading={setSubmitLoading} />
       </Modal>
     </>
   );
-};
-
-export default EditButton;
+}

@@ -1,5 +1,5 @@
-import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, FormProps, Modal, Tooltip } from 'antd';
+import { useState } from 'react';
+import { Button, Form, Modal, Tooltip } from 'antd';
 import { PackDateRange, EndPoint } from '@/shared/api/types';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './edit-form.component';
@@ -11,21 +11,19 @@ type Props = {
   record: ProcessedNotice;
 };
 
-const EditButton = ({ record }: Props) => {
+export default function EditButton({ record }: Props) {
   const [form] = Form.useForm<FormValues>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setIsModalOpen(false);
     form.resetFields();
-    setFormValidateTrigger('onFinish');
-  }, [form]);
+  };
 
-  const handleEditIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
+  const handleEditIconClick = () => {
     setIsModalOpen(true);
-  }, []);
+  };
 
   return (
     <>
@@ -42,17 +40,8 @@ const EditButton = ({ record }: Props) => {
         confirmLoading={submitLoading}
         maskClosable={false}
       >
-        <EditForm
-          form={form}
-          validateTrigger={formValidateTrigger}
-          setValidateTrigger={setFormValidateTrigger}
-          prevNotice={record}
-          closeModal={closeModal}
-          setSubmitLoading={setSubmitLoading}
-        />
+        <EditForm form={form} prevNotice={record} closeModal={closeModal} setSubmitLoading={setSubmitLoading} />
       </Modal>
     </>
   );
-};
-
-export default EditButton;
+}

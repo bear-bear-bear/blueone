@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
-import { Form, Input, InputNumber, FormProps, FormInstance, App } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
+import { Form, Input, InputNumber, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
@@ -11,51 +11,31 @@ import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { WorkAddFormValues } from './add-form.component';
 import BookingDatePicker from './booking-date-picker.component';
 
+type WorkPutRequest = EndPoint['PUT /works/{workId}']['requestBody'];
+type EditedWork = EndPoint['PUT /works/{workId}']['responses']['200'];
+
 type Props = {
   form: FormInstance<WorkAddFormValues>;
-  validateTrigger: FormProps['validateTrigger'];
-  setValidateTrigger: Dispatch<SetStateAction<FormProps['validateTrigger']>>;
   prevWork: ProcessedWork;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
 };
-type WorkPutRequest = EndPoint['PUT /works/{workId}']['requestBody'];
-type EditedWork = EndPoint['PUT /works/{workId}']['responses']['200'];
 
-const layout: { [ColName: string]: ColProps } = {
-  labelCol: { span: 5 },
-  wrapperCol: { flex: 'auto' },
-};
-
-const validateMessages = {
-  required: '필수 입력 값입니다.',
-  types: {
-    number: '숫자 형식이여야 합니다.',
-  },
-  number: {
-    min: '${min}보다 커야합니다.',
-    max: '${max}보다 작아야 합니다.',
-  },
-  string: {
-    max: '최대 입력 수를 초과했습니다.',
-  },
-};
-
-const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, setSubmitLoading, closeModal }: Props) => {
+export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeModal }: Props) {
   const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
 
-  const cancelWorkCheck = useCallback(async (workId: Work['id']) => {
+  const cancelWorkCheck = async (workId: Work['id']) => {
     try {
       await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
       message.error('업무 확인 취소 완료');
     } catch (err) {
       throw err;
     }
-  }, []);
+  };
 
-  const onFormFinish: FormProps<WorkAddFormValues>['onFinish'] = async (values) => {
+  const onFormFinish = async (values: WorkAddFormValues) => {
     const reqBody: WorkPutRequest = {
       ...values,
       waypoint: values.waypoint ?? null,
@@ -83,17 +63,11 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
     setSubmitLoading(false);
   };
 
-  const onFormFinishFailed = useCallback(() => {
-    setValidateTrigger(['onFinish', 'onChange']);
-  }, [setValidateTrigger]);
-
   return (
     <Form
       form={form}
       initialValues={prevWork}
       onFinish={onFormFinish}
-      onFinishFailed={onFormFinishFailed}
-      validateTrigger={validateTrigger}
       validateMessages={validateMessages}
       size="middle"
       {...layout}
@@ -148,6 +122,23 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
       )}
     </Form>
   );
+}
+
+const layout: { [ColName: string]: ColProps } = {
+  labelCol: { span: 5 },
+  wrapperCol: { flex: 'auto' },
 };
 
-export default WorkEditForm;
+const validateMessages = {
+  required: '필수 입력 값입니다.',
+  types: {
+    number: '숫자 형식이여야 합니다.',
+  },
+  number: {
+    min: '${min}보다 커야합니다.',
+    max: '${max}보다 작아야 합니다.',
+  },
+  string: {
+    max: '최대 입력 수를 초과했습니다.',
+  },
+};

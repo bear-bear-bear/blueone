@@ -37,7 +37,7 @@ export default function SubcontractorPicker({ value, setValue }: Props) {
       onClear={handleClear}
       allowClear
       value={value}
-      style={{ width: '14rem' }}
+      className="w-56" // Tailwind class for width
       loading={!users}
     >
       {users?.map((user) => {
@@ -49,26 +49,26 @@ export default function SubcontractorPicker({ value, setValue }: Props) {
         const insuranceInfo = Me.insuranceInfo(user);
 
         return (
-          <Select.Option key={id} value={id} style={{ textAlign: 'center' }}>
+          <Select.Option key={id} value={id} className="text-center">
             {insuranceInfo.state === 'nearExpiration' && (
               <>
                 <Tooltip title={`보험 일자 만료 ${insuranceInfo.from}`}>
-                  <WarningOutlined style={{ color: '#D89614', fontSize: 'inherit' }} />
+                  <WarningOutlined className="text-yellow-500" />
                 </Tooltip>
-                <Divider type="vertical" />
+                <Divider type="vertical" className="mx-2" />
               </>
             )}
             {insuranceInfo.state === 'expired' && (
               <>
                 <Tooltip title={`보험 일자 만료됨`}>
-                  <WarningOutlined style={{ color: '#A61D24', fontSize: 'inherit' }} />
+                  <WarningOutlined className="text-red-500" />
                 </Tooltip>
-                <Divider type="vertical" />
+                <Divider type="vertical" className="mx-2" />
               </>
             )}
-            {realname}
-            <Divider type="vertical" />
-            {processPhoneNumber(phoneNumber)}
+            <span>{realname}</span>
+            <Divider type="vertical" className="mx-2" />
+            <span>{processPhoneNumber(phoneNumber)}</span>
           </Select.Option>
         );
       })}

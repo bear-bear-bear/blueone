@@ -1,18 +1,15 @@
 'use client';
-import { useState } from 'react';
-import { Input, Form, Button, FormProps } from 'antd';
+import { Input, Form, Button } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
 import { useRouter } from 'next/navigation';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
-import styled from '@emotion/styled';
 
 type Request = EndPoint['POST /user/sign-in']['requestBody'];
 type User = EndPoint['POST /user/sign-in']['responses']['200'];
 
 export default function LoginPage() {
   const router = useRouter();
-  const [validateTrigger, setValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
 
   const onFinish = async (values: Request) => {
     try {
@@ -32,63 +29,45 @@ export default function LoginPage() {
     }
   };
 
-  const onFinishFailed = () => {
-    setValidateTrigger(['onFinish', 'onChange']);
-  };
-
   return (
-    <Form
-      name="sign-in-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      validateTrigger={validateTrigger}
-      autoComplete="off"
-      {...layout}
-    >
-      <InputFormItem
+    <Form initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off" {...layout}>
+      <Form.Item
         label="전화번호"
         name="phoneNumber"
-        rules={[{ required: true, message: '전화번호를 입력해주세요' }]}
+        rules={[
+          {
+            required: true,
+            message: '전화번호를 입력해주세요',
+          },
+          {
+            pattern: /\d+/,
+            message: '숫자만 입력해주세요',
+          },
+        ]}
       >
-        <NumericInput type="number" autoComplete="off" size="large" />
-      </InputFormItem>
+        <Input autoComplete="off" size="large" />
+      </Form.Item>
 
-      <InputFormItem label="비밀번호" name="password" rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}>
+      <Form.Item
+        label="비밀번호"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: '비밀번호를 입력해주세요',
+          },
+        ]}
+      >
         <Input.Password autoComplete="off" size="large" />
-      </InputFormItem>
+      </Form.Item>
 
-      <ButtonFormItem>
-        <Button type="primary" htmlType="submit" size="large" block>
-          로그인
-        </Button>
-      </ButtonFormItem>
+      <Button type="primary" htmlType="submit" size="large" block>
+        로그인
+      </Button>
     </Form>
   );
 }
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },
-  wrapperCol: { flex: 'auto' },
 };
-
-const InputFormItem = styled(Form.Item)`
-  margin-bottom: 0.66rem;
-
-  .ant-form-item-label {
-    padding: 0;
-  }
-`;
-
-const ButtonFormItem = styled(Form.Item)`
-  margin-top: 2rem;
-  margin-bottom: 0;
-`;
-
-const NumericInput = styled(Input)`
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-`;

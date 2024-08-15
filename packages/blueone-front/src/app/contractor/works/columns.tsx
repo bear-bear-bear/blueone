@@ -1,9 +1,9 @@
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import type { ProcessedWork } from '@/app/contractor/works/page';
 import AddButton from './add-button.component';
 import DeleteButton from './delete-button.component';
 import EditButton from './edit-button.component';
+import type { ProcessedWork } from './page';
 
 const columns: ColumnsType<ProcessedWork> = [
   {

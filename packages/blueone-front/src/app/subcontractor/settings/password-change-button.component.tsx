@@ -1,27 +1,27 @@
-import { MouseEventHandler, useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Button, Form, Modal } from 'antd';
 import type { EndPoint } from '@/shared/api/types';
 import PasswordChangeForm from './password-change-form.component';
 
 type Request = EndPoint['POST /user/password']['requestBody'];
 
-const PasswordChangeButton = () => {
+export default function PasswordChangeButton() {
   const [form] = Form.useForm<Request>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     form.resetFields();
     setIsModalOpen(false);
-  }, [form]);
+  };
 
-  const handleButtonClick: MouseEventHandler<HTMLElement> = useCallback(() => {
+  const handleButtonClick = () => {
     setIsModalOpen(true);
-  }, []);
+  };
 
   return (
     <>
-      <Button type="text" onClick={handleButtonClick} style={{ textAlign: 'start', padding: 0 }} block>
+      <Button type="text" onClick={handleButtonClick} className="text-start p-0" block>
         비밀번호 변경
       </Button>
       <Modal
@@ -40,6 +40,4 @@ const PasswordChangeButton = () => {
       </Modal>
     </>
   );
-};
-
-export default PasswordChangeButton;
+}

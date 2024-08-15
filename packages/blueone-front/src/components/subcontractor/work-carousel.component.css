@@ -1,0 +1,28 @@
+.ant-card-actions {
+  li {
+    margin: 0 !important;
+  }
+}
+
+.ant-card-body {
+  padding: 24px 12px;
+}
+
+.ant-carousel {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+
+  .slick-slide > div {
+    padding: 0 3px;
+  }
+
+  .slick-dots {
+    position: absolute;
+    top: -16px;
+
+    button {
+      background: #fff !important;
+    }
+  }
+}

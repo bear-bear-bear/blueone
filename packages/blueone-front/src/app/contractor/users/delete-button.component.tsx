@@ -1,34 +1,28 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { useState } from 'react';
 import { App, Button, Popconfirm, Tooltip } from 'antd';
 import useSWRImmutable from 'swr/immutable';
 import type { FullUsers, FullUser } from '@/app/contractor/users/page';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import { DeleteOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+
+type DeletedUser = EndPoint['DELETE /users/{userId}']['responses']['200'];
 
 type Props = {
   user: FullUser;
 };
-type DeletedUser = EndPoint['DELETE /users/{userId}']['responses']['200'];
 
-const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
-
-const INITIAL_POPOVER_TEXT = '기사 정보 삭제';
-
-const DeleteButton = ({ user }: Props) => {
+export default function DeleteButton({ user }: Props) {
   const { message } = App.useApp();
   const { data: users, mutate: mutateUsers } = useSWRImmutable<FullUsers>('/users', axiosFetcher);
-  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
-  const [popoverText, setPopoverText] = useState<ReactNode>(INITIAL_POPOVER_TEXT);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const showPopconfirm = () => {
     setIsPopoverOpen(true);
   };
 
-  const deleteWork = useCallback(async () => {
-    setPopoverText(Spinner);
-
+  const deleteWork = async () => {
     try {
       const deletedUser = await httpClient.delete<DeletedUser>(`/users/${user.id}`).then((res) => res.data);
       const nextUsers = users?.filter((prevUser) => prevUser.id !== deletedUser.id);
@@ -39,8 +33,7 @@ const DeleteButton = ({ user }: Props) => {
     }
 
     setIsPopoverOpen(false);
-    setPopoverText(INITIAL_POPOVER_TEXT);
-  }, [users, user, mutateUsers]);
+  };
 
   const handleCancel = () => {
     setIsPopoverOpen(false);
@@ -49,27 +42,26 @@ const DeleteButton = ({ user }: Props) => {
   return (
     <>
       <Popconfirm
-        title={popoverText}
+        title="기사 정보 삭제"
         open={isPopoverOpen}
         onConfirm={deleteWork}
         okText="삭제"
         okButtonProps={{ danger: true }}
         onCancel={handleCancel}
         cancelText="취소"
-        icon={<QuestionCircleOutlined style={{ color: '#ff4d4f' }} />}
+        icon={<QuestionCircleOutlined className="!text-red-500" />}
+        placement="bottom"
       >
         <Tooltip title="삭제">
           <Button
             type="text"
             size="small"
             icon={<DeleteOutlined />}
-            style={{ color: '#ff4d4f' }}
+            className="text-red-500"
             onClick={showPopconfirm}
           />
         </Tooltip>
       </Popconfirm>
     </>
   );
-};
-
-export default DeleteButton;
+}

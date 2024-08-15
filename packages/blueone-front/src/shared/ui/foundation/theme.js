@@ -1,4 +1,12 @@
 module.exports = Object.freeze({
-  primaryColor: '#0076BB',
-  borderRadius: 4,
+  colors: {
+    primary: '#0076BB',
+  },
+  screens: {
+    sm: '576px',
+    md: '768px',
+    lg: '992px',
+    xl: '1200px',
+    xxl: '1600px',
+  },
 });

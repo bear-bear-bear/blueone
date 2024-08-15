@@ -6,7 +6,7 @@ type Props = {
   workData: ProcessedWork[];
 };
 
-const TotalFee = ({ workData }: Props) => {
+export default function TotalFee({ workData }: Props) {
   const totalFee = useMemo(() => {
     const initialValue: { [key in keyof Pick<ProcessedWork, 'charge' | 'subsidy' | 'payout'>]: number } = {
       charge: 0,
@@ -24,7 +24,7 @@ const TotalFee = ({ workData }: Props) => {
   }, [workData]);
 
   return (
-    <section style={{ display: 'flex', gap: '0.33rem' }}>
+    <div className="flex gap-1.5">
       <p>
         구간합계: <b>{totalFee.charge.toLocaleString()}</b>,
       </p>
@@ -34,8 +34,6 @@ const TotalFee = ({ workData }: Props) => {
       <p>
         최종합계: <b>{totalFee.payout.toLocaleString()}</b>
       </p>
-    </section>
+    </div>
   );
-};
-
-export default TotalFee;
+}

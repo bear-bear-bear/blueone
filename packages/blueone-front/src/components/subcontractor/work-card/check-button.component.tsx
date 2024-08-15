@@ -17,7 +17,7 @@ const CheckButton = ({ workId, isWorkChecked }: Props) => {
   const { message } = App.useApp();
   const { data: me } = useSuspenseFetchMe();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const insuranceInfo = Me.insuranceInfo(me);
   const buttonDisabled = insuranceInfo.state === 'expired' || isWorkChecked;
@@ -39,6 +39,7 @@ const CheckButton = ({ workId, isWorkChecked }: Props) => {
   return (
     <Button
       type={buttonDisabled ? 'text' : 'primary'}
+      className="rounded-none"
       disabled={buttonDisabled}
       size="large"
       onClick={handleClick}

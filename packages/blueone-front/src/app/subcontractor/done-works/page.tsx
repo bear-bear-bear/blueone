@@ -4,14 +4,12 @@ import { Alert, List } from 'antd';
 import dayjs from 'dayjs';
 import qs from 'qs';
 import useSWR from 'swr';
-import CustomRangePicker from '@/app/subcontractor/done-works/range-picker.component';
 import { WorkCard } from '@/components/subcontractor/work-card';
-import { DateRange, EndPoint, Unpacked } from '@/shared/api/types';
+import { DateRange, EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import styled from '@emotion/styled';
+import CustomRangePicker from './range-picker.component';
 
-export type Works = EndPoint['GET /user/works/complete']['responses']['200'];
-export type Work = Unpacked<Works>;
+type Works = EndPoint['GET /user/works/complete']['responses']['200'];
 
 export default function DoneWorksPage() {
   const today = dayjs();
@@ -22,12 +20,11 @@ export default function DoneWorksPage() {
     startDate: SEVEN_DAYS_AGO_YYYY_MM_DD,
     endDate: TODAY_YYYY_MM_DD,
   });
-  const swrKey = `/user/works/complete?${qs.stringify(dateRange)}`;
-  const { data: works } = useSWR<Works>(swrKey, axiosFetcher);
+  const { data: works } = useSWR<Works>(`/user/works/complete?${qs.stringify(dateRange)}`, axiosFetcher);
 
   return (
     <>
-      <StyledAlert
+      <Alert
         banner
         type="info"
         message={
@@ -37,13 +34,16 @@ export default function DoneWorksPage() {
             <li>- 카드 상단의 날짜는 해당 업무의 완료일입니다.</li>
           </ul>
         }
+        className="mb-2"
       />
+
       <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} />
-      <List itemLayout="horizontal" dataSource={works} renderItem={(work) => <WorkCard work={work} readOnly />} />
+
+      <List
+        itemLayout="horizontal"
+        dataSource={works}
+        renderItem={(work) => <WorkCard work={work} readOnly className="mt-6" />}
+      />
     </>
   );
 }
-
-const StyledAlert = styled(Alert)`
-  margin-bottom: 0.33rem;
-`;

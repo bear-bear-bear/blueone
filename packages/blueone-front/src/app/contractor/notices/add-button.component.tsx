@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
 import type { PackDateRange, EndPoint } from '@/shared/api/types';
 import AddForm from './add-form.component';
@@ -11,17 +11,17 @@ type FormValues = PackDateRange<Request>;
 
 const AddButton: FC<Props> = ({ swrKey }) => {
   const [form] = Form.useForm<FormValues>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setIsModalOpen(false);
     form.resetFields();
-  }, [form]);
+  };
 
-  const handleEditIconClick: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
+  const handleEditIconClick = () => {
     setIsModalOpen(true);
-  }, []);
+  };
 
   return (
     <>

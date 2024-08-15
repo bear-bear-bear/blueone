@@ -8,8 +8,6 @@ import { DateRange, EndPoint, Unpacked } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
-import { css, Global } from '@emotion/react';
-import styled from '@emotion/styled';
 import AddButton from './add-button.component';
 import columns from './columns';
 import CustomRangePicker from './custom-range-picker.component';
@@ -49,20 +47,23 @@ export default function NoticeBoard() {
   if (!noticeList) {
     return <LoadingPanel />;
   }
+
   return (
-    <Container>
-      <Global styles={globalStyles} />
-      <TableHeader>
+    <div className="max-w-screen-lg">
+      <div className="flex justify-between items-center flex-wrap gap-2 mb-2">
         <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} />
         <AddButton swrKey={swrKey} />
-      </TableHeader>
+      </div>
       <Table
         id="noticeBoard"
         dataSource={dataSource}
         columns={columns}
         rowKey={(notice) => notice.id}
+        rowClassName="cursor-pointer"
         expandable={{
-          expandedRowRender: (notice) => <LinkifyPre tagName="pre">{notice.content}</LinkifyPre>,
+          expandedRowRender: (notice) => (
+            <Linkify className="p-2 whitespace-pre-wrap break-words font-normal">{notice.content}</Linkify>
+          ),
           expandRowByClick: true,
           showExpandColumn: false,
         }}
@@ -70,7 +71,7 @@ export default function NoticeBoard() {
         size="middle"
         bordered
       />
-    </Container>
+    </div>
   );
 }
 
@@ -86,39 +87,3 @@ function processNoticeCreatedAt(notice: Notice) {
     processedEndDate: endDate.format(endDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
   };
 }
-
-const globalStyles = css`
-  .ant-table-row {
-    cursor: pointer;
-  }
-
-  .notice-board__non-padding-td {
-    padding: 0 !important;
-  }
-
-  .notice-board__expanded-row {
-    td {
-      //background: #ddd !important;
-    }
-  }
-`;
-
-const Container = styled.div`
-  max-width: 800px;
-`;
-
-const TableHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.66rem;
-  margin-bottom: 0.66rem;
-`;
-
-const LinkifyPre = styled(Linkify)`
-  padding: 0.66rem 1.33rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-family: inherit;
-`;

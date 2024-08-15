@@ -4,11 +4,11 @@ import { CgLogOut } from 'react-icons/cg';
 import httpClient from '@/shared/api/axios';
 import { useQueryClient } from '@tanstack/react-query';
 
-interface Props extends ButtonProps {
+type Props = ButtonProps & {
   kind?: 'icon' | 'text';
-}
+};
 
-const SignOutButton = ({ kind = 'icon', ...rest }: Props) => {
+export default function SignOutButton({ kind = 'icon', ...rest }: Props) {
   const { message } = App.useApp();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -32,6 +32,4 @@ const SignOutButton = ({ kind = 'icon', ...rest }: Props) => {
       로그아웃
     </Button>
   );
-};
-
-export default SignOutButton;
+}

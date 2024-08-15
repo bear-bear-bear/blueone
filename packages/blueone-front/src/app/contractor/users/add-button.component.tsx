@@ -1,25 +1,23 @@
-import { MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Form, FormProps, Modal } from 'antd';
+import { useState } from 'react';
+import { Button, Form, Modal } from 'antd';
 import type { EndPoint } from '@/shared/api/types';
 import AddForm from './add-form.component';
 
 type Request = EndPoint['POST /users']['requestBody'];
 
-const AddButton = () => {
+export default function AddButton() {
   const [form] = Form.useForm<Request>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-  const [formValidateTrigger, setFormValidateTrigger] = useState<FormProps['validateTrigger']>('onFinish');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setIsModalOpen(false);
     form.resetFields();
-    setFormValidateTrigger('onFinish');
-  }, [form]);
+  };
 
-  const handleAddIconClick: MouseEventHandler<HTMLElement> = useCallback(() => {
+  const handleAddIconClick = () => {
     setIsModalOpen(true);
-  }, []);
+  };
 
   return (
     <>
@@ -36,16 +34,8 @@ const AddButton = () => {
         confirmLoading={submitLoading}
         maskClosable={false}
       >
-        <AddForm
-          form={form}
-          validateTrigger={formValidateTrigger}
-          setValidateTrigger={setFormValidateTrigger}
-          closeModal={closeModal}
-          setSubmitLoading={setSubmitLoading}
-        />
+        <AddForm form={form} closeModal={closeModal} setSubmitLoading={setSubmitLoading} />
       </Modal>
     </>
   );
-};
-
-export default AddButton;
+}

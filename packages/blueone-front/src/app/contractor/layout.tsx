@@ -1,11 +1,9 @@
 'use client';
-import { useState, useCallback, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { Layout, Menu, MenuProps } from 'antd';
-import type { SiderProps } from 'antd/lib/layout';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import SignOutButton from '@/components/sign-out-button.component';
-import styled from '@emotion/styled';
 import navItems, { getTitleByRoute } from './nav-items';
 
 const { Content: Main, Footer, Sider } = Layout;
@@ -14,11 +12,7 @@ const { SubMenu } = Menu;
 export default function ContractorLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-
-  const onCollapse: SiderProps['onCollapse'] = useCallback(() => {
-    setCollapsed((prev) => !prev);
-  }, []);
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleClickMenu: MenuProps['onClick'] = (e) => {
     router.push(e.key);
@@ -26,14 +20,14 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} breakpoint="lg">
-        <LogoWrapper>
+      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} breakpoint="lg">
+        <div className="min-h-12 flex justify-center p-4">
           {collapsed ? (
             <Image src="/icon_white.svg" alt="로고" width={20} height={20} />
           ) : (
             <Image src="/logo_white.svg" alt="로고" width={100} height={20} />
           )}
-        </LogoWrapper>
+        </div>
 
         <Menu
           theme="dark"
@@ -41,8 +35,9 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
           selectedKeys={[pathname]} // MenuItem
           onClick={handleClickMenu}
           mode="inline"
+          inlineIndent={16}
         >
-          <StyledMenuDevider />
+          <Divider />
 
           {navItems.map((page) => {
             if ('children' in page) {
@@ -55,7 +50,7 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
                       </Menu.Item>
                     ))}
                   </SubMenu>
-                  <StyledMenuDevider />
+                  <Divider />
                 </>
               );
             }
@@ -65,7 +60,7 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
                 <Menu.Item key={page.route} icon={page.icon} title={page.title}>
                   {page.title}
                 </Menu.Item>
-                <StyledMenuDevider />
+                <Divider />
               </>
             );
           })}
@@ -73,36 +68,19 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
       </Sider>
 
       <Layout>
-        <StyledHeader>
+        <Layout.Header className="flex justify-between items-center px-4 text-white">
           {getTitleByRoute(pathname)}
-          <SignOutButton style={{ color: 'white' }} />
-        </StyledHeader>
+          <SignOutButton className="text-white" />
+        </Layout.Header>
 
-        <Main style={{ margin: '16px', overflow: 'auto' }}>{children}</Main>
+        <Main className="p-4 overflow-auto">{children}</Main>
 
-        <Footer style={{ textAlign: 'center', padding: '16px 0' }}>BLUEONE ©2014</Footer>
+        <Footer className="p-4 text-center">BLUEONE ©2014</Footer>
       </Layout>
     </Layout>
   );
 }
 
-const StyledHeader = styled(Layout.Header)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  color: #fff;
-`;
-
-const StyledMenuDevider = styled(Menu.Divider)`
-  background-color: #000810 !important;
-  border-color: #000810 !important;
-  color: #000810 !important;
-`;
-
-const LogoWrapper = styled.section`
-  display: flex;
-  justify-content: center;
-  padding: 16px;
-  min-height: 52px;
-`;
+function Divider() {
+  return <Menu.Divider className="bg-gray-950 border-gray-950 text-gray-950" />;
+}

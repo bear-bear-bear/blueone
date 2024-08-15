@@ -16,8 +16,8 @@ type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
 const DoneButton = ({ workId, isWorkChecked, isWorkDone }: Props) => {
   const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const deleteWork = useCallback(async () => {
     if (!isWorkChecked) {
@@ -53,6 +53,7 @@ const DoneButton = ({ workId, isWorkChecked, isWorkDone }: Props) => {
     <>
       <Button
         type={isWorkChecked ? 'primary' : 'text'}
+        className="rounded-none"
         disabled={!isWorkChecked || isWorkDone}
         size="large"
         onClick={handleButtonClick}

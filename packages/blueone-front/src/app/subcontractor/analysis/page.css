@@ -1,0 +1,43 @@
+/**
+ * flexGrow를 최하단 노드까지 워터풀로 전달
+ */
+.ant-tabs {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  .ant-tabs-nav-list {
+    flex: 1;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .ant-tabs-tab {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 !important;
+    padding-top: 8px !important;
+  }
+
+  .ant-tabs-content-holder {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .ant-tabs-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      padding: 0 1rem;
+      overflow-y: auto !important;
+      position: static;
+
+      .ant-tabs-tabpane-active {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+    }
+  }
+}

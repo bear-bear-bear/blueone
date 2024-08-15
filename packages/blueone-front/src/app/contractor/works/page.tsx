@@ -1,7 +1,7 @@
 'use client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Checkbox, DatePicker, Table } from 'antd';
-import type { RangePickerProps } from 'antd/es/date-picker';
+import { RangePickerProps } from 'antd/es/date-picker';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import qs from 'qs';
@@ -11,8 +11,6 @@ import { formatTime } from '@/shared/lib/utils/day';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
 import { SnippetsOutlined } from '@ant-design/icons';
-import { css, Global } from '@emotion/react';
-import styled from '@emotion/styled';
 import AddButton from './add-button.component';
 import columns from './columns';
 import processWorkDateTimes from './process-work-date-times';
@@ -36,9 +34,9 @@ export type ProcessedWork = FullWork & {
 
 export default function WorkManagementTable() {
   const [pickedUserId, setPickedUserId] = useState<User['id'] | null>(null);
-  const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState<boolean>(false);
-  const [isVisibleBookedWork, setIsVisibleBookedWork] = useState<boolean>(false);
-  const [isShowTotalFee, setIsShowTotalFee] = useState<boolean>(false);
+  const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState(false);
+  const [isVisibleBookedWork, setIsVisibleBookedWork] = useState(false);
+  const [isShowTotalFee, setIsShowTotalFee] = useState(false);
 
   const today = dayjs();
   const times = formatTime(today);
@@ -54,22 +52,19 @@ export default function WorkManagementTable() {
 
   const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
 
-  const disabledDate = useCallback(
-    (current: dayjs.Dayjs) => {
-      if (isVisibleBookedWork) {
-        return current && current < dayjs().endOf('day');
-      }
-      return current && current > dayjs().endOf('day');
-    },
-    [isVisibleBookedWork],
-  );
+  const disabledDate = (current: dayjs.Dayjs) => {
+    if (isVisibleBookedWork) {
+      return current && current < dayjs().endOf('day');
+    }
+    return current && current > dayjs().endOf('day');
+  };
 
-  const swrKey = useMemo(() => {
+  const swrKey = (() => {
     if (isVisibleBookedWork) {
       return `/works?${qs.stringify({ ...dateRange, booked: true })}`;
     }
     return `/works?${qs.stringify(dateRange)}`;
-  }, [dateRange, isVisibleBookedWork]);
+  })();
 
   const { data: works } = useSWR<FullWorks>(swrKey, axiosFetcher, {
     refreshInterval: 30 * 1000,
@@ -124,15 +119,12 @@ export default function WorkManagementTable() {
     setIsShowTotalFee((prev) => !prev);
   };
 
-  const handleChangeRangePicker = useCallback<NonNullable<RangePickerProps['onChange']>>(
-    (_, [startDate, endDate]) => {
-      setDateRange({
-        startDate: startDate,
-        endDate: endDate,
-      });
-    },
-    [setDateRange],
-  );
+  const handleChangeRangePicker: NonNullable<RangePickerProps['onChange']> = (_, [startDate, endDate]) => {
+    setDateRange({
+      startDate: startDate,
+      endDate: endDate,
+    });
+  };
 
   useEffect(() => {
     setDateRange(isVisibleBookedWork ? defaultBookingDateRange : defaultDateRange);
@@ -143,67 +135,66 @@ export default function WorkManagementTable() {
   }
   return (
     <>
-      <Global styles={globalStyles} />
-      <TableHeader>
-        <section>
-          {isVisibleBookedWork ? (
-            <RangePicker
-              presets={[
-                {
-                  label: 'Default',
-                  value: [dayjs(defaultBookingDateRange.startDate), dayjs(defaultBookingDateRange.endDate)],
-                },
-                {
-                  label: 'This Month',
-                  value: [times.tomorrow, today.endOf('month')],
-                },
-              ]}
-              onChange={handleChangeRangePicker}
-              value={dateRange && [dayjs(dateRange.startDate), dayjs(dateRange.endDate)]}
-              disabledDate={disabledDate}
-              allowClear={false}
-            />
-          ) : (
-            <RangePicker
-              presets={[
-                {
-                  label: 'Default',
-                  value: [dayjs(defaultDateRange.startDate), dayjs(defaultDateRange.endDate)],
-                },
-                {
-                  label: 'Today',
-                  value: [today, today],
-                },
-                {
-                  label: 'This Month',
-                  value: [today.startOf('month'), today],
-                },
-              ]}
-              onChange={handleChangeRangePicker}
-              value={dateRange && [dayjs(dateRange.startDate), dayjs(dateRange.endDate)]}
-              disabledDate={disabledDate}
-              allowClear={false}
-            />
-          )}
+      <div className="flex flex-wrap justify-between mb-2 gap-2">
+        <div className="flex items-center flex-wrap gap-2">
+          <RangePicker
+            presets={
+              isVisibleBookedWork
+                ? [
+                    {
+                      label: 'Default',
+                      value: [dayjs(defaultBookingDateRange.startDate), dayjs(defaultBookingDateRange.endDate)],
+                    },
+                    {
+                      label: 'This Month',
+                      value: [times.tomorrow, today.endOf('month')],
+                    },
+                  ]
+                : [
+                    {
+                      label: 'Default',
+                      value: [dayjs(defaultDateRange.startDate), dayjs(defaultDateRange.endDate)],
+                    },
+                    {
+                      label: 'Today',
+                      value: [today, today],
+                    },
+                    {
+                      label: 'This Month',
+                      value: [today.startOf('month'), today],
+                    },
+                  ]
+            }
+            onChange={handleChangeRangePicker}
+            value={dateRange && [dayjs(dateRange.startDate), dayjs(dateRange.endDate)]}
+            disabledDate={disabledDate}
+            allowClear={false}
+            className="mr-2"
+          />
+
           <SubcontractorPicker value={pickedUserId} setValue={setPickedUserId} />
-          <Checkbox
-            checked={isVisiblePastDoneWork}
-            disabled={isVisibleBookedWork}
-            onChange={handleChangeVisiblePastDoneWorkCheckbox}
-          >
-            과거 목록
-          </Checkbox>
-          <Checkbox
-            checked={isVisibleBookedWork}
-            disabled={isVisiblePastDoneWork}
-            onChange={handleChangeVisibleBookedWorkCheckbox}
-          >
-            예약 목록
-          </Checkbox>
-          <Checkbox checked={isShowTotalFee} onChange={handleChangeShowTotalFeeCheckbox}>
-            지수 합계
-          </Checkbox>
-        </section>
+
+          <div className="flex items-center gap-2">
+            <Checkbox
+              checked={isVisiblePastDoneWork}
+              disabled={isVisibleBookedWork}
+              onChange={handleChangeVisiblePastDoneWorkCheckbox}
+            >
+              과거 목록
+            </Checkbox>
+            <Checkbox
+              checked={isVisibleBookedWork}
+              disabled={isVisiblePastDoneWork}
+              onChange={handleChangeVisibleBookedWorkCheckbox}
+            >
+              예약 목록
+            </Checkbox>
+            <Checkbox checked={isShowTotalFee} onChange={handleChangeShowTotalFeeCheckbox}>
+              지수 합계
+            </Checkbox>
+          </div>
+        </div>
+
         <AddButton
           swrKey={swrKey}
           render={(onClick) => (
@@ -212,12 +203,17 @@ export default function WorkManagementTable() {
             </Button>
           )}
         />
-      </TableHeader>
+      </div>
+
       <Table
         id="workListTable"
         dataSource={dataSource}
         columns={filteredColumns}
-        rowClassName={(record) => (record.isDone ? 'row--work-done' : '')}
+        rowClassName={(record) => {
+          if (!record.isDone) return 'bg-white';
+
+          return 'bg-gray-300 [&_.ant-table-cell-row-hover]:!bg-gray-300';
+        }}
         expandable={{
           expandedRowRender: (work) => <Remark work={work} />,
           expandIcon: ({ onExpand, record }) => {
@@ -238,9 +234,9 @@ export default function WorkManagementTable() {
             <Table.Summary fixed>
               <Table.Summary.Row>
                 <Table.Summary.Cell index={0} colSpan={columns.length}>
-                  <TotalFeeSection>
+                  <div className="flex justify-end">
                     <TotalFee workData={dataSource} />
-                  </TotalFeeSection>
+                  </div>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             </Table.Summary>
@@ -253,75 +249,10 @@ export default function WorkManagementTable() {
 
 function Remark({ work }: { work: ProcessedWork }) {
   return (
-    <RemarkWrap>
-      <span>비고:</span>
+    <div className="p-1 text-center">
+      <span className="underline">비고:</span>
       &nbsp;
       {work.remark ?? '-'}
-    </RemarkWrap>
+    </div>
   );
 }
-
-const globalStyles = css`
-  tr {
-    background: #fff !important;
-  }
-
-  .row--work-done {
-    background: #ccc !important;
-    transition: none;
-
-    td {
-      transition: background 0.1s !important;
-    }
-    &:hover td,
-    &:focus td {
-      background: #ccc !important;
-    }
-
-    .ant-table-cell-row-hover {
-      background: #ccc !important;
-    }
-  }
-
-  .ant-modal-body .ant-form-horizontal div:last-of-type {
-    margin-bottom: 0;
-  }
-
-  .ant-picker-time-panel-cell-inner::after {
-    content: ':00'; // 트릭 - BookingDatePicker 에서 picker panel 의 hour 에 :00 붙이고 싶은데 rc-picker 에서 패널 렌더 prop 을 제공하지 않음
-  }
-`;
-
-const TableHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.66rem;
-  margin-bottom: 0.66rem;
-
-  section {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.66rem;
-
-    .ant-checkbox-wrapper {
-      margin-left: 0;
-    }
-  }
-`;
-
-const TotalFeeSection = styled.section`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const RemarkWrap = styled.p`
-  padding: 0 16px;
-  text-align: center;
-
-  span {
-    text-decoration: underline;
-  }
-`;
