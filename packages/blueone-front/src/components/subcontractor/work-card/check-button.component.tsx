@@ -1,8 +1,7 @@
 import { memo, MouseEventHandler, useCallback, useState } from 'react';
 import { App, Button } from 'antd';
 import useSWRImmutable from 'swr/immutable';
-import { Subcontractor } from '@/entities/subcontractor';
-import useUser from '@/hooks/use-user.hook';
+import { Me, useSuspenseFetchMe } from '@/entities/me';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint, Work } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
@@ -20,11 +19,12 @@ type WorkPatchError =
 
 const CheckButton = ({ workId, isWorkChecked }: Props) => {
   const { message } = App.useApp();
-  const { user } = useUser();
+  const { data: me } = useSuspenseFetchMe();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<MyWorks>('/user/works', axiosFetcher);
   const [loading, setLoading] = useState<boolean>(false);
-  const insuranceInfo = user && Subcontractor.insuranceInfo(user.UserInfo.insuranceExpirationDate);
-  const buttonDisabled = insuranceInfo?.state === 'expired' || isWorkChecked;
+
+  const insuranceInfo = Me.insuranceInfo(me);
+  const buttonDisabled = insuranceInfo.state === 'expired' || isWorkChecked;
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(async () => {
     setLoading(true);

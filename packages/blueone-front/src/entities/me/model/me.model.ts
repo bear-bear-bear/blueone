@@ -1,8 +1,20 @@
+import { GetMyInfoResponse } from '@/shared/api/types/user';
 import { ONE_DAY } from '@/shared/config/time';
 import dayjs from '@/shared/lib/utils/dayjs';
 
+export type Model = GetMyInfoResponse;
+
+export const serviceEntry = (model: Model): string => {
+  if (model.role === 'contractor') {
+    return '/contractor/works';
+  }
+
+  return '/subcontractor';
+};
+
 export type InsuranceState = 'normal' | 'nearExpiration' | 'expired';
-export const insuranceInfo = (expirationDate: string) => {
+export const insuranceInfo = (model: Model) => {
+  const expirationDate = model.UserInfo.insuranceExpirationDate;
   const now = dayjs();
 
   const state: InsuranceState = (() => {

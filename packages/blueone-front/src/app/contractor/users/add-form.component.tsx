@@ -18,7 +18,6 @@ type Props = {
 };
 type Users = EndPoint['GET /users']['responses']['200'];
 type CreatedUser = EndPoint['POST /users']['responses']['201'];
-type UserCreationError = EndPoint['POST /users']['responses']['409'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 6 },

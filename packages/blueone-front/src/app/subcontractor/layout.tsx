@@ -3,7 +3,7 @@ import { ReactNode, useEffect } from 'react';
 import { App, Button, ConfigProvider, theme } from 'antd';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import useUser from '@/hooks/use-user.hook';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -13,9 +13,7 @@ export default function WorkerLayout({ children }: { children: ReactNode }) {
   const { message } = App.useApp();
   const router = useRouter();
   const pathname = usePathname();
-  const { user, isLoggedIn } = useUser({
-    redirectTo: '/',
-  });
+  const { data: me } = useSuspenseFetchMe();
 
   const headerText = navItems.find((item) => item.href === pathname)?.text;
   const bodyNoPadding = ['analysis', 'settings'].some((v) => pathname.endsWith(v));
@@ -26,13 +24,11 @@ export default function WorkerLayout({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) return;
-    if (user?.role === 'contractor') {
+    if (me.role === 'contractor') {
       message.info('Subcontractor 전용 페이지입니다.');
     }
-  }, [isLoggedIn, user]);
+  }, []);
 
-  if (!isLoggedIn) return null;
   return (
     <ConfigProvider
       theme={{

@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { Metadata, Viewport } from 'next';
+import { MeHydration } from '@/entities/me';
 import { pretendardVariable } from '@/shared/ui/fonts';
 import theme from '@/shared/ui/foundation/theme';
 import Providers from './_providers';
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="ko" dir="ltr">
       <body className={pretendardVariable.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <MeHydration>{children}</MeHydration>
+        </Providers>
       </body>
     </html>
   );

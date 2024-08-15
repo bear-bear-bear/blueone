@@ -1,33 +1,22 @@
-'use client';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
+import { RedirectType } from 'next/dist/client/components/redirect';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import useUser from '@/hooks/use-user.hook';
+import { redirect } from 'next/navigation';
+import { useGetMyServiceEntry } from '@/entities/me';
+import silent from '@/shared/lib/utils/silent';
 import media from '@/shared/ui/foundation/media';
 import theme from '@/shared/ui/foundation/theme';
-import { LoadingOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 
-export default function LoginLayout({ children }: { children: ReactNode }) {
-  const router = useRouter();
-  const { user, isLoggedIn, isNotFetched } = useUser();
+export default async function LoginLayout({ children }: { children: ReactNode }) {
+  const getMyServiceEntry = useGetMyServiceEntry();
 
-  useEffect(() => {
-    if (!isLoggedIn) return;
-    if (user?.role === 'contractor') {
-      router.push('/contractor/works');
-    } else {
-      router.push('/subcontractor');
-    }
-  }, [isLoggedIn, router, user]);
+  await silent(getMyServiceEntry(), {
+    onSuccess: (serviceEntry) => {
+      redirect(serviceEntry, RedirectType.replace);
+    },
+  });
 
-  if (isNotFetched) {
-    return (
-      <CenterLayout>
-        <LoadingOutlined style={{ fontSize: 20 }} spin />
-      </CenterLayout>
-    );
-  }
   return (
     <CenterLayout>
       <Box>

@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import useSWRImmutable from 'swr/immutable';
 import SignOutButton from '@/components/sign-out-button.component';
-import useContractor from '@/hooks/use-contractor.hook';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import styled from '@emotion/styled';
@@ -23,9 +22,6 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
     revalidateOnMount: true,
   });
 
-  const { isContractorLoggedIn } = useContractor({
-    redirectTo: '/',
-  });
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -38,7 +34,6 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
     router.push(e.key);
   };
 
-  if (!isContractorLoggedIn) return null;
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} breakpoint="lg">

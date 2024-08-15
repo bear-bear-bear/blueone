@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Divider, FormInstance, Select, Tooltip } from 'antd';
 import useSWR from 'swr';
 import type { WorkAddFormValues } from '@/app/contractor/works/add-form.component';
-import { Subcontractor } from '@/entities/subcontractor';
+import { Me } from '@/entities/me';
 import type { EndPoint, User } from '@/shared/api/types';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
@@ -55,7 +55,7 @@ export default function SubcontractorSelector({ form, defaultValue, disabled = f
           phoneNumber,
           UserInfo: { realname },
         } = user;
-        const insuranceInfo = Subcontractor.insuranceInfo(user.UserInfo.insuranceExpirationDate);
+        const insuranceInfo = Me.insuranceInfo(user);
 
         return (
           <Select.Option key={id} value={id} style={{ textAlign: 'center' }}>

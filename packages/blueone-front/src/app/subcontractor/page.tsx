@@ -4,16 +4,12 @@ import Link from 'next/link';
 import LatestNoticeAlert from '@/components/subcontractor/latest-notice-alert.component';
 import NotificationBadge from '@/components/subcontractor/notification-badge.component';
 import WorkCarousel from '@/components/subcontractor/work-carousel.component';
-import { Subcontractor } from '@/entities/subcontractor';
-import useUser from '@/hooks/use-user.hook';
+import { Me, useSuspenseFetchMe } from '@/entities/me';
 
 export default function WorkerHomePage() {
-  const { user, isLoggedIn } = useUser({
-    redirectTo: '/',
-  });
-  const insuranceInfo = user && Subcontractor.insuranceInfo(user.UserInfo.insuranceExpirationDate);
+  const { data: me } = useSuspenseFetchMe();
+  const insuranceInfo = Me.insuranceInfo(me);
 
-  if (!isLoggedIn) return null;
   return (
     <>
       {insuranceInfo && (

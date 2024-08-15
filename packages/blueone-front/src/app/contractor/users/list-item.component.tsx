@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Avatar, List, Tooltip } from 'antd';
 import type { FullUser } from '@/app/contractor/users/page';
-import { Subcontractor } from '@/entities/subcontractor';
+import { Me } from '@/entities/me';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
 import { UserOutlined, WarningOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
@@ -16,7 +16,7 @@ export default function ListItem(user: FullUser) {
     phoneNumber,
     UserInfo: { realname, insuranceExpirationDate },
   } = user;
-  const insuranceInfo = Subcontractor.insuranceInfo(user.UserInfo.insuranceExpirationDate);
+  const insuranceInfo = Me.insuranceInfo(user);
 
   return (
     <StyledItem
@@ -43,12 +43,12 @@ export default function ListItem(user: FullUser) {
   );
 }
 
-const mainColor: { [key in Subcontractor.InsuranceState]: string } = {
+const mainColor: { [key in Me.InsuranceState]: string } = {
   normal: '#ccc',
   nearExpiration: '#eed202',
   expired: '#ff4d4f',
 };
-function getTitle(state: Subcontractor.InsuranceState, realname: string): ReactNode {
+function getTitle(state: Me.InsuranceState, realname: string): ReactNode {
   switch (state) {
     case 'normal':
       return <span>{realname}</span>;

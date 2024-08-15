@@ -74,7 +74,7 @@ export type Notice = {
   updatedAt: ISODateString;
 };
 
-export interface ErrorMessage {
+export interface APIError {
   message: string;
 }
 export interface EndPoint {
@@ -89,9 +89,9 @@ export interface EndPoint {
       304: User & {
         UserInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
       };
-      401: ErrorMessage;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      401: APIError;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -105,8 +105,8 @@ export interface EndPoint {
       200: User & {
         UserInfo: Pick<UserInfo, 'realname' | 'licenseType' | 'insuranceExpirationDate'>;
       };
-      409: ErrorMessage;
-      500: ErrorMessage;
+      409: APIError;
+      500: APIError;
     };
   };
   /**
@@ -115,7 +115,7 @@ export interface EndPoint {
   'POST /user/sign-out': {
     responses: {
       204: void;
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -127,7 +127,7 @@ export interface EndPoint {
     };
     responses: {
       204: void;
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -136,7 +136,7 @@ export interface EndPoint {
   'GET /user/works': {
     responses: {
       200: Work[];
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -146,7 +146,7 @@ export interface EndPoint {
     queryParams: DateRange;
     responses: {
       200: Work[];
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -158,7 +158,7 @@ export interface EndPoint {
     };
     responses: {
       200: { [dayOrMonth: `${number}`]: number };
-      500: ErrorMessage;
+      500: APIError;
     };
   };
 
@@ -171,7 +171,7 @@ export interface EndPoint {
         UserInfo: UserInfo;
         Work: Work;
       })[];
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -188,8 +188,8 @@ export interface EndPoint {
         UserInfo: UserInfo;
         Work: Work;
       };
-      409: ErrorMessage;
-      500: ErrorMessage;
+      409: APIError;
+      500: APIError;
     };
   };
   /**
@@ -201,8 +201,8 @@ export interface EndPoint {
         UserInfo: UserInfo;
         Work: Work;
       };
-      404: ErrorMessage;
-      500: ErrorMessage;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -219,8 +219,8 @@ export interface EndPoint {
         UserInfo: UserInfo;
         Work: Work;
       };
-      404: ErrorMessage;
-      500: ErrorMessage;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -229,8 +229,8 @@ export interface EndPoint {
   'DELETE /users/{userId}': {
     responses: {
       200: User;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -239,7 +239,7 @@ export interface EndPoint {
   'GET /users/{userId}/works': {
     responses: {
       200: Work[];
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -253,8 +253,8 @@ export interface EndPoint {
     };
     responses: {
       201: User;
-      409: ErrorMessage;
-      500: ErrorMessage;
+      409: APIError;
+      500: APIError;
     };
   };
 
@@ -268,7 +268,7 @@ export interface EndPoint {
           UserInfo: Pick<UserInfo, 'realname'>;
         };
       })[];
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -280,8 +280,8 @@ export interface EndPoint {
       201: Work & {
         userId: null;
       };
-      400: ErrorMessage;
-      500: ErrorMessage;
+      400: APIError;
+      500: APIError;
     };
   };
   /**
@@ -295,7 +295,7 @@ export interface EndPoint {
           UserInfo: Pick<UserInfo, 'realname'>;
         };
       };
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -307,9 +307,9 @@ export interface EndPoint {
     };
     responses: {
       200: Work;
-      403: ErrorMessage;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      403: APIError;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -318,9 +318,9 @@ export interface EndPoint {
   'PATCH /works/{workId}/force-activate': {
     responses: {
       200: Work;
-      403: ErrorMessage;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      403: APIError;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -329,9 +329,9 @@ export interface EndPoint {
   'PATCH /works/{workId}/force-finish': {
     responses: {
       200: Work;
-      403: ErrorMessage;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      403: APIError;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -340,8 +340,8 @@ export interface EndPoint {
   'DELETE /works/{workId}': {
     responses: {
       200: Work;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      404: APIError;
+      500: APIError;
     };
   };
 
@@ -352,7 +352,7 @@ export interface EndPoint {
     queryParams: DateRange;
     responses: {
       200: Notice[];
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -367,7 +367,7 @@ export interface EndPoint {
     };
     responses: {
       201: Notice;
-      500: ErrorMessage;
+      500: APIError;
     };
   };
   /**
@@ -376,8 +376,8 @@ export interface EndPoint {
   'GET /notices/{noticeId}': {
     responses: {
       200: Notice;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -392,8 +392,8 @@ export interface EndPoint {
     };
     responses: {
       200: Notice;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -402,8 +402,8 @@ export interface EndPoint {
   'DELETE /notices/{noticeId}': {
     responses: {
       200: Notice;
-      404: ErrorMessage;
-      500: ErrorMessage;
+      404: APIError;
+      500: APIError;
     };
   };
   /**
@@ -412,7 +412,7 @@ export interface EndPoint {
   'GET /notices/activation': {
     responses: {
       200: Notice[];
-      500: ErrorMessage;
+      500: APIError;
     };
   };
 }

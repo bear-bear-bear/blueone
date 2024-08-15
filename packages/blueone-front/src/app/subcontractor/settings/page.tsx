@@ -1,27 +1,20 @@
 'use client';
 import { List } from 'antd';
-import useSWRImmutable from 'swr/immutable';
-import { SettingsFooter, SettingsHeader, SettingsSkeleton } from '@/app/subcontractor/settings/parts';
+import { SettingsFooter, SettingsHeader } from '@/app/subcontractor/settings/parts';
 import PasswordChangeButton from '@/app/subcontractor/settings/password-change-button.component';
 import SignOutButton from '@/components/sign-out-button.component';
-import type { EndPoint } from '@/shared/api/types';
-import { axiosFetcher } from '@/shared/lib/utils/swr';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { css, Global } from '@emotion/react';
 
-type User = EndPoint['GET /user']['responses']['200'];
-
 export default function SettingPage() {
-  const { data: user } = useSWRImmutable<User>('/user', axiosFetcher);
+  const { data: me } = useSuspenseFetchMe();
 
-  if (!user) {
-    return <SettingsSkeleton />;
-  }
   return (
     <>
       <Global styles={globalStyles} />
 
       <List
-        header={<SettingsHeader user={user} />}
+        header={<SettingsHeader me={me} />}
         footer={<SettingsFooter />}
         dataSource={items}
         renderItem={(item) => <List.Item>{item}</List.Item>}
