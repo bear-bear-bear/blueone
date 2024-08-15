@@ -20,7 +20,7 @@ router.get('/', isLoggedIn, isContractor, async (_req, res, next) => {
       attributes: {
         exclude: ['password'],
       },
-      include: [UserInfo, Work],
+      include: [UserInfo],
       order: [[UserInfo, 'realname', 'ASC']],
     });
     res.status(200).json(users.map((user) => user.get()));
@@ -50,7 +50,7 @@ router.post('/', isLoggedIn, isContractor, async (req, res, next) => {
       attributes: {
         exclude: ['password'],
       },
-      include: [UserInfo, Work],
+      include: [UserInfo],
     });
 
     if (!isCreated) {
@@ -115,7 +115,7 @@ router.get('/:userId', isLoggedIn, isContractor, async (req, res, next) => {
       attributes: {
         exclude: ['password'],
       },
-      include: [UserInfo, Work],
+      include: [UserInfo],
     });
 
     if (!user) {
@@ -156,7 +156,7 @@ router.put('/:userId', isLoggedIn, isContractor, async (req, res, next) => {
       attributes: {
         exclude: ['password'],
       },
-      include: [UserInfo, Work],
+      include: [UserInfo],
     });
 
     res.status(200).json(updatedUser?.get());

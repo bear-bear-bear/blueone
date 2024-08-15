@@ -169,7 +169,6 @@ export interface EndPoint {
     responses: {
       200: (User & {
         UserInfo: UserInfo;
-        Work: Work;
       })[];
       500: APIError;
     };
@@ -186,7 +185,6 @@ export interface EndPoint {
     responses: {
       201: User & {
         UserInfo: UserInfo;
-        Work: Work;
       };
       409: APIError;
       500: APIError;
@@ -199,7 +197,6 @@ export interface EndPoint {
     responses: {
       200: User & {
         UserInfo: UserInfo;
-        Work: Work;
       };
       404: APIError;
       500: APIError;
@@ -217,7 +214,6 @@ export interface EndPoint {
     responses: {
       200: User & {
         UserInfo: UserInfo;
-        Work: Work;
       };
       404: APIError;
       500: APIError;
