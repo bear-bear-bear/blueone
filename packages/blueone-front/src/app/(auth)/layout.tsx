@@ -2,20 +2,19 @@ import { ReactNode } from 'react';
 import { RedirectType } from 'next/dist/client/components/redirect';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import { useGetMyServiceEntry } from '@/entities/me';
-import silent from '@/shared/lib/utils/silent';
+import { getMyServiceEntry } from '@/entities/me/api/get-my-service-entry';
 import media from '@/shared/ui/foundation/media';
 import theme from '@/shared/ui/foundation/theme';
 import styled from '@emotion/styled';
 
 export default async function LoginLayout({ children }: { children: ReactNode }) {
-  const getMyServiceEntry = useGetMyServiceEntry();
+  try {
+    const myServiceEntry = await getMyServiceEntry();
 
-  await silent(getMyServiceEntry(), {
-    onSuccess: (serviceEntry) => {
-      redirect(serviceEntry, RedirectType.replace);
-    },
-  });
+    return redirect(myServiceEntry, RedirectType.replace);
+  } catch {
+    // do nothing, maybe not logged in
+  }
 
   return (
     <CenterLayout>

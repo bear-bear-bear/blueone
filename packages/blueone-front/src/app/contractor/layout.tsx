@@ -4,24 +4,14 @@ import { Layout, Menu, MenuProps } from 'antd';
 import type { SiderProps } from 'antd/lib/layout';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import useSWRImmutable from 'swr/immutable';
 import SignOutButton from '@/components/sign-out-button.component';
-import type { EndPoint } from '@/shared/api/types';
-import { axiosFetcher } from '@/shared/lib/utils/swr';
 import styled from '@emotion/styled';
 import navItems, { getTitleByRoute } from './nav-items';
-
-type Users = EndPoint['GET /users']['responses']['200'];
 
 const { Content: Main, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 export default function ContractorLayout({ children }: { children: ReactNode }) {
-  // WorkManagementTable 에서 users 를 useSWRImmutable(revalidateOnMount: false)과 함께 사용하기 위한 initial fetch
-  useSWRImmutable<Users>('/users', axiosFetcher, {
-    revalidateOnMount: true,
-  });
-
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState<boolean>(false);

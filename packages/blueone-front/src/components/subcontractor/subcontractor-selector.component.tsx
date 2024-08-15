@@ -1,33 +1,26 @@
-import { useMemo } from 'react';
 import { Divider, FormInstance, Select, Tooltip } from 'antd';
-import useSWR from 'swr';
 import type { WorkAddFormValues } from '@/app/contractor/works/add-form.component';
 import { Me } from '@/entities/me';
-import type { EndPoint, User } from '@/shared/api/types';
+import { useFetchSubcontractors } from '@/features/contractor/subcontractor/list';
+import type { User } from '@/shared/api/types';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
-import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { WarningOutlined } from '@ant-design/icons';
 
-type Users = EndPoint['GET /users']['responses']['200'];
 type Props = {
   form: FormInstance<WorkAddFormValues>;
   defaultValue?: WorkAddFormValues['userId'];
   disabled?: boolean;
-  immutable?: boolean;
 };
 
-export default function SubcontractorSelector({ form, defaultValue, disabled = false, immutable = false }: Props) {
-  const { data: users } = useSWR<Users>('/users', axiosFetcher, {
-    revalidateOnFocus: false,
-    revalidateIfStale: false,
-    revalidateOnMount: !immutable,
-  });
+export default function SubcontractorSelector({ form, defaultValue, disabled = false }: Props) {
+  const { data: subcontractors, isPending } = useFetchSubcontractors();
+  const isDeleted = (() => {
+    if (typeof defaultValue === 'undefined' || isPending) {
+      return false;
+    }
 
-  const isDeletedUser = useMemo(() => {
-    if (!users) return false;
-
-    return typeof defaultValue === 'number' && users.findIndex((user) => user.id === defaultValue) < 0;
-  }, [users, defaultValue]);
+    return !!subcontractors?.some((subcontractor) => subcontractor.id === defaultValue);
+  })();
 
   const handleSelect = (v: number) => {
     form.setFieldsValue({ userId: v });
@@ -39,26 +32,22 @@ export default function SubcontractorSelector({ form, defaultValue, disabled = f
 
   return (
     <Select<User['id']>
-      placeholder={isDeletedUser ? '(삭제된 기사가 배정되어 있습니다)' : '업무를 배정받을 기사 선택'}
+      placeholder={isDeleted ? '(삭제된 기사가 배정되어 있습니다)' : '업무를 배정받을 기사 선택'}
+      status={isDeleted ? 'error' : undefined}
       showSearch
       optionFilterProp="children"
       onSelect={handleSelect}
       onClear={handleClear}
       allowClear
-      defaultValue={isDeletedUser ? undefined : defaultValue ?? undefined}
+      defaultValue={defaultValue}
       disabled={disabled}
-      loading={!users}
+      loading={isPending}
     >
-      {users?.map((user) => {
-        const {
-          id,
-          phoneNumber,
-          UserInfo: { realname },
-        } = user;
-        const insuranceInfo = Me.insuranceInfo(user);
+      {subcontractors?.map((subcontractor) => {
+        const insuranceInfo = Me.insuranceInfo(subcontractor);
 
         return (
-          <Select.Option key={id} value={id} style={{ textAlign: 'center' }}>
+          <Select.Option key={subcontractor.id} value={subcontractor.id} style={{ textAlign: 'center' }}>
             {insuranceInfo.state === 'nearExpiration' && (
               <>
                 <Tooltip title={`보험 일자 만료 ${insuranceInfo.from}`}>
@@ -76,9 +65,9 @@ export default function SubcontractorSelector({ form, defaultValue, disabled = f
               </>
             )}
 
-            {realname}
+            {subcontractor.UserInfo.realname}
             <Divider type="vertical" />
-            {processPhoneNumber(phoneNumber)}
+            {processPhoneNumber(subcontractor.phoneNumber)}
           </Select.Option>
         );
       })}

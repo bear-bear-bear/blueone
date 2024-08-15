@@ -135,7 +135,7 @@ const WorkEditForm = ({ form, validateTrigger, setValidateTrigger, prevWork, set
         <InputNumber autoComplete="off" />
       </Form.Item>
       <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <SubcontractorSelector form={form} defaultValue={prevWork.userId} disabled={!!prevWork.endTime} immutable />
+        <SubcontractorSelector form={form} defaultValue={prevWork.userId} disabled={!!prevWork.endTime} />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />
