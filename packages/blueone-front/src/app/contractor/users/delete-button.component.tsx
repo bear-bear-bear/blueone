@@ -11,9 +11,6 @@ type Props = {
   user: FullUser;
 };
 type DeletedUser = EndPoint['DELETE /users/{userId}']['responses']['200'];
-type UserDeleteError =
-  | EndPoint['DELETE /users/{userId}']['responses']['404']
-  | EndPoint['DELETE /users/{userId}']['responses']['500'];
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 

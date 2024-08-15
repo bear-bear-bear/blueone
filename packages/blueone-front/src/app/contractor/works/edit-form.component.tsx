@@ -21,11 +21,6 @@ type Props = {
 };
 type WorkPutRequest = EndPoint['PUT /works/{workId}']['requestBody'];
 type EditedWork = EndPoint['PUT /works/{workId}']['responses']['200'];
-type WorkPutError = EndPoint['PUT /works/{workId}']['responses']['500'];
-type WorkPatchError =
-  | EndPoint['PATCH /works/{workId}']['responses']['403']
-  | EndPoint['PATCH /works/{workId}']['responses']['404']
-  | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 5 },

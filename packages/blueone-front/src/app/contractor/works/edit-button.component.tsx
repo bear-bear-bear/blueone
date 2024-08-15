@@ -14,16 +14,7 @@ type Props = {
 };
 
 type WorkForceFinishResponse = EndPoint['PATCH /works/{workId}/force-finish']['responses']['200'];
-type WorkForceFinishError =
-  | EndPoint['PATCH /works/{workId}/force-finish']['responses']['403']
-  | EndPoint['PATCH /works/{workId}/force-finish']['responses']['404']
-  | EndPoint['PATCH /works/{workId}/force-finish']['responses']['500'];
-
 type WorkForceActivateResponse = EndPoint['PATCH /works/{workId}/force-activate']['responses']['200'];
-type WorkForceActivateError =
-  | EndPoint['PATCH /works/{workId}/force-activate']['responses']['403']
-  | EndPoint['PATCH /works/{workId}/force-activate']['responses']['404']
-  | EndPoint['PATCH /works/{workId}/force-activate']['responses']['500'];
 
 const EditButton = ({ record }: Props) => {
   const { message } = App.useApp();

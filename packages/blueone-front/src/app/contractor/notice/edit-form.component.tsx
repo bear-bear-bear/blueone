@@ -12,7 +12,6 @@ const { RangePicker } = DatePicker;
 
 type Request = EndPoint['PUT /notices/{noticeId}']['requestBody'];
 type EditedNotice = EndPoint['PUT /notices/{noticeId}']['responses']['200'];
-type RequestError = EndPoint['PUT /notices/{noticeId}']['responses']['500'];
 
 type FormValues = PackDateRange<Request>;
 type Props = {

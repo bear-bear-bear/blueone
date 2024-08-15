@@ -12,7 +12,6 @@ const { RangePicker } = DatePicker;
 type Request = EndPoint['POST /notices']['requestBody'];
 type NoticeList = EndPoint['GET /notices']['responses']['200'];
 type Response = EndPoint['POST /notices']['responses']['201'];
-type RequestError = EndPoint['POST /notices']['responses']['500'];
 
 type FormValues = PackDateRange<Request>;
 type Props = {

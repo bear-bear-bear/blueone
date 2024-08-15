@@ -7,7 +7,6 @@ import { css, Global } from '@emotion/react';
 
 type Request = EndPoint['POST /user/password']['requestBody'];
 type Response = EndPoint['POST /user/password']['responses']['204'];
-type RequestError = EndPoint['POST /user/password']['responses']['500'];
 type Props = {
   form: FormInstance<Request>;
   closeModal: () => void;

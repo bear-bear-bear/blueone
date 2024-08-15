@@ -5,9 +5,6 @@ import { EndPoint } from '@/shared/api/types';
 import styled from '@emotion/styled';
 
 type Request = EndPoint['POST /users/contractor']['requestBody'];
-type RequestError =
-  | EndPoint['POST /users/contractor']['responses']['409']
-  | EndPoint['POST /users/contractor']['responses']['500'];
 
 export default function CreateContractorPage() {
   const { message } = App.useApp();

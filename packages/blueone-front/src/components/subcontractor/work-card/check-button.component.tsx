@@ -12,10 +12,6 @@ type Props = {
 };
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 type PatchedWork = EndPoint['PATCH /works/{workId}']['responses']['200'];
-type WorkPatchError =
-  | EndPoint['PATCH /works/{workId}']['responses']['403']
-  | EndPoint['PATCH /works/{workId}']['responses']['404']
-  | EndPoint['PATCH /works/{workId}']['responses']['500'];
 
 const CheckButton = ({ workId, isWorkChecked }: Props) => {
   const { message } = App.useApp();

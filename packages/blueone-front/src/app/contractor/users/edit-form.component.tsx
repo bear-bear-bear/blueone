@@ -19,9 +19,6 @@ type Props = {
 };
 type Users = EndPoint['GET /users']['responses']['200'];
 type UpdatedUser = EndPoint['PUT /users/{userId}']['responses']['200'];
-type UserUpdateError =
-  | EndPoint['PUT /users/{userId}']['responses']['404']
-  | EndPoint['PUT /users/{userId}']['responses']['500'];
 
 const layout: { [ColName: string]: ColProps } = {
   labelCol: { span: 6 },

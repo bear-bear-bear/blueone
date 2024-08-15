@@ -9,9 +9,6 @@ import styled from '@emotion/styled';
 
 type Request = EndPoint['POST /user/sign-in']['requestBody'];
 type User = EndPoint['POST /user/sign-in']['responses']['200'];
-type RequestError =
-  | EndPoint['POST /user/sign-in']['responses']['409']
-  | EndPoint['POST /user/sign-in']['responses']['500'];
 
 export default function LoginPage() {
   const router = useRouter();

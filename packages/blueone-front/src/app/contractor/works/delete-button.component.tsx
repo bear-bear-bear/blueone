@@ -11,9 +11,6 @@ type Props = {
   record: ProcessedWork;
 };
 type Response = EndPoint['DELETE /works/{workId}']['responses']['200'];
-type RequestError =
-  | EndPoint['DELETE /works/{workId}']['responses']['404']
-  | EndPoint['DELETE /works/{workId}']['responses']['500'];
 
 const Spinner = <LoadingOutlined style={{ fontSize: 12 }} spin />;
 
