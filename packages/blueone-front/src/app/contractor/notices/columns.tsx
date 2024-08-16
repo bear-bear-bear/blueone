@@ -1,26 +1,18 @@
-import { ReactNode } from 'react';
 import { Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { EditNotice } from '@/features/contractor/notice/edit';
+import { Notice } from '@/shared/api/types';
+import dayjs from '@/shared/lib/utils/dayjs';
 import { packDateRange } from '@/shared/lib/utils/pack-date-range';
 import pick from '@/shared/lib/utils/pick';
 import { EditOutlined } from '@ant-design/icons';
 import DeleteButton from './delete-button.component';
-import type { ProcessedNotice } from './page';
 
-// row onclick expand 를 특정 td 에서 실행하지 않기 위한 escape
-// (style 은 row 의 'cursor: pointer' 를 해당 td 에서 완전히 무효화하기 위한 임시 escape)
-const PropagationStopper = ({ children }: { children: ReactNode }) => (
-  <div onClick={(e) => e.stopPropagation()} className="py-2 cursor-default">
-    {children}
-  </div>
-);
-
-const columns: ColumnsType<ProcessedNotice> = [
+const columns: ColumnsType<Notice> = [
   {
     title: '일자',
-    dataIndex: 'processedCreatedAt',
-    key: 'processedCreatedAt',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
     align: 'center',
     sorter: {
       compare: (a, b) => +(new Date(b.createdAt) || 0) - +(new Date(a.createdAt) || 0),
@@ -38,7 +30,7 @@ const columns: ColumnsType<ProcessedNotice> = [
     dataIndex: 'dateRange',
     key: 'dateRange',
     width: 120,
-    render: (_, record) => `${record.processedStartDate} - ${record.processedEndDate}`,
+    render: (_, record) => `${record.startDate} - ${record.endDate}`,
   },
   {
     title: '',
@@ -46,7 +38,8 @@ const columns: ColumnsType<ProcessedNotice> = [
     align: 'center',
     render: (_, record) => {
       return (
-        <PropagationStopper>
+        // row onclick expand 를 특정 td 에서 실행하지 않기 위해 stopPropagation 적용
+        <div onClick={(e) => e.stopPropagation()} className="py-2 cursor-default">
           <EditNotice
             id={record.id}
             initialValues={pick(packDateRange(record), ['title', 'content', 'dateRange'])}
@@ -57,7 +50,7 @@ const columns: ColumnsType<ProcessedNotice> = [
             )}
           />
           <DeleteButton record={record} />
-        </PropagationStopper>
+        </div>
       );
     },
     width: 80,
@@ -66,3 +59,17 @@ const columns: ColumnsType<ProcessedNotice> = [
 ];
 
 export default columns;
+
+export function preFormatDates(notice: Notice) {
+  const thisYear = dayjs().year();
+  const createdAt = dayjs(notice.createdAt);
+  const startDate = dayjs(notice.startDate);
+  const endDate = dayjs(notice.endDate);
+
+  return {
+    ...notice,
+    createdAt: createdAt.format(createdAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
+    startDate: startDate.format(startDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
+    endDate: endDate.format(endDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
+  };
+}

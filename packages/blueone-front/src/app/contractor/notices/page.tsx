@@ -2,49 +2,28 @@
 import { useMemo, useState } from 'react';
 import { Button, Table } from 'antd';
 import Linkify from 'linkify-react';
-import qs from 'qs';
-import useSWRImmutable from 'swr/immutable';
 import { AddNotice } from '@/features/contractor/notice/add';
-import { DateRange, EndPoint, Unpacked } from '@/shared/api/types';
+import { useFetchNotices } from '@/features/contractor/notice/list';
+import { DateRange } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
-import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
-import columns from './columns';
+import columns, { preFormatDates } from './columns';
 import CustomRangePicker from './custom-range-picker.component';
 
-export type NoticeList = EndPoint['GET /notices']['responses']['200'];
-type Notice = Unpacked<NoticeList>;
-export type ProcessedNotice = Notice & {
-  processedCreatedAt: string;
-  processedStartDate: string;
-  processedEndDate: string;
-  swrKey: string;
-};
+export default function NoticesPage() {
+  const [dateRange, setDateRange] = useState<DateRange>(() => {
+    const today = dayjs();
 
-export default function NoticeBoard() {
-  const today = dayjs();
-  const TODAY_YYYY_MM_DD = today.format('YYYY-MM-DD');
-  const SEVEN_DAYS_AGO_YYYY_MM_DD = today.subtract(7, 'days').format('YYYY-MM-DD');
-
-  const [dateRange, setDateRange] = useState<DateRange>({
-    startDate: SEVEN_DAYS_AGO_YYYY_MM_DD,
-    endDate: TODAY_YYYY_MM_DD,
-  });
-  const swrKey = `/notices?${qs.stringify(dateRange)}`;
-  const { data: noticeList } = useSWRImmutable<NoticeList>(swrKey, axiosFetcher, {
-    revalidateOnMount: true,
+    return {
+      startDate: today.subtract(7, 'days').format('YYYY-MM-DD'),
+      endDate: today.format('YYYY-MM-DD'),
+    };
   });
 
-  const dataSource: ProcessedNotice[] | undefined = useMemo(() => {
-    if (!noticeList) return undefined;
-    return noticeList.map((notice) => ({
-      ...notice,
-      ...processNoticeCreatedAt(notice),
-      swrKey,
-    }));
-  }, [noticeList, swrKey]);
+  const { data: notices = [], isPending } = useFetchNotices(dateRange);
+  const dataSource = useMemo(() => notices.map(preFormatDates), [notices]);
 
-  if (!noticeList) {
+  if (isPending) {
     return <LoadingPanel />;
   }
   return (
@@ -80,17 +59,4 @@ export default function NoticeBoard() {
       />
     </div>
   );
-}
-
-function processNoticeCreatedAt(notice: Notice) {
-  const thisYear = dayjs().year();
-  const createdAt = dayjs(notice.createdAt);
-  const startDate = dayjs(notice.startDate);
-  const endDate = dayjs(notice.endDate);
-
-  return {
-    processedCreatedAt: createdAt.format(createdAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-    processedStartDate: startDate.format(startDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-    processedEndDate: endDate.format(endDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-  };
 }

@@ -6,7 +6,7 @@ import { GetListRequest, GetListResponse } from '@/shared/api/types/notices';
 import { FIVE_MINUTES } from '@/shared/config/time';
 import { useQuery } from '@tanstack/react-query';
 
-export function useFetchNotices(request: GetListRequest) {
+export default function useFetchNotices(request: GetListRequest) {
   return useQuery<GetListResponse, AxiosError<APIError>>({
     queryKey: [QueryKeys.Notices, request],
     queryFn: () => NoticesService.getList(request),

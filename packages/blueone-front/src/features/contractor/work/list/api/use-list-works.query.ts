@@ -6,7 +6,7 @@ import { GetListRequest, GetListResponse } from '@/shared/api/types/works';
 import { FIVE_MINUTES } from '@/shared/config/time';
 import { useQuery } from '@tanstack/react-query';
 
-export function useFetchWorks(request: GetListRequest) {
+export default function useFetchWorks(request: GetListRequest) {
   return useQuery<GetListResponse, AxiosError<APIError>>({
     queryKey: [QueryKeys.Works, request],
     queryFn: () => WorksService.getList(request),
