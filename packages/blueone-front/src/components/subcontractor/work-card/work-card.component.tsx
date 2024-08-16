@@ -1,11 +1,10 @@
 import { memo } from 'react';
-import { Card, Tooltip, Typography } from 'antd';
+import { Button, Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
-import CheckButton from '@/components/subcontractor/work-card/check-button.component';
 import DoneButton from '@/components/subcontractor/work-card/done-button.component';
+import { CheckWork } from '@/features/subcontractor/check-work';
 import { EndPoint } from '@/shared/api/types';
 import type { Unpacked } from '@/shared/api/types';
-// Optional if you use Tailwind's theme system
 import cn from '@/shared/lib/utils/cn';
 import { CheckCircleOutlined, MoneyCollectOutlined } from '@ant-design/icons';
 
@@ -32,7 +31,20 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
         readOnly
           ? undefined
           : [
-              <CheckButton key={`c_${work.id}`} isWorkChecked={isWorkChecked} workId={work.id} />,
+              <CheckWork key={`check_${work.id}`} work={work}>
+                {({ check, canCheck }) => (
+                  <Button
+                    type={canCheck ? 'primary' : 'text'}
+                    className="rounded-none"
+                    disabled={!canCheck}
+                    size="large"
+                    onClick={check}
+                    block
+                  >
+                    확인
+                  </Button>
+                )}
+              </CheckWork>,
               <DoneButton
                 key={`d_${work.id}`}
                 isWorkChecked={isWorkChecked}

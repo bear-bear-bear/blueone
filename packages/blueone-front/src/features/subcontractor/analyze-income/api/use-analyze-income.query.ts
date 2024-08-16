@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export default function useAnalyzeIncome(request: GetWorksAnalysisRequest) {
   return useQuery<GetWorksAnalysisResponse, AxiosError<APIError>>({
-    queryKey: [QueryKeys.IncomeAnalyze, request.by],
+    queryKey: [QueryKeys.MyIncomeAnalysis, request.by],
     queryFn: () => UserService.getWorksAnalysis(request),
     staleTime: 0,
     gcTime: FIVE_MINUTES,
