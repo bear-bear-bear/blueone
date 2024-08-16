@@ -4,8 +4,8 @@ import HTTPClient from '../client/client';
 import {
   ChangePasswordRequest,
   ChangePasswordResponse,
-  GetCompleteWorksRequest,
-  GetCompleteWorksResponse,
+  GetCompletedWorksRequest,
+  GetCompletedWorksResponse,
   GetMyInfoResponse,
   GetWorksAnalysisRequest,
   GetWorksAnalysisResponse,
@@ -38,8 +38,8 @@ class UserService extends HTTPClient implements UserClient {
     return this.client.get<GetWorksResponse>(`${this.ROUTE}/works`);
   };
 
-  public getCompleteWorks = (request: GetCompleteWorksRequest) => {
-    return this.client.get<GetCompleteWorksResponse>(`${this.ROUTE}/works/complete`, {
+  public getCompletedWorks = (request: GetCompletedWorksRequest) => {
+    return this.client.get<GetCompletedWorksResponse>(`${this.ROUTE}/works/complete`, {
       params: request,
     });
   };

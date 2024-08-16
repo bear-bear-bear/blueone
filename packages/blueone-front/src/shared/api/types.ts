@@ -299,7 +299,7 @@ export interface EndPoint {
    */
   'PATCH /works/{workId}': {
     queryParams: {
-      state: 'init' | 'checked' | 'done';
+      state: 'init' | 'checked' | 'completed';
     };
     responses: {
       200: Work;

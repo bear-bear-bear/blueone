@@ -175,7 +175,7 @@ router.patch(
           work.checkTime = new Date();
           await work.save();
           break;
-        case 'done':
+        case 'completed':
           if (work.endTime) {
             res.status(403).json({
               message: '이미 완료된 업무입니다.',

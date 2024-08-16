@@ -42,7 +42,7 @@ export default function SubcontractorHomePage() {
 
       <div className="absolute bottom-4 right-4">
         <Button type="text">
-          <Link href="/subcontractor/done-works">→ 완료된 업무 열람</Link>
+          <Link href="/subcontractor/completed-works">→ 완료된 업무 열람</Link>
         </Button>
       </div>
     </>

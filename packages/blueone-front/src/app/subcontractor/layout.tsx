@@ -14,7 +14,7 @@ export default function SubcontractorLayout({ children }: { children: ReactNode 
 
   const headerText = navItems.find((item) => item.href === pathname)?.text;
   const bodyNoPadding = ['analysis', 'settings'].some((v) => pathname.endsWith(v));
-  const showBack = ['done-works'].some((v) => pathname.endsWith(v));
+  const showBack = ['completed-works'].some((v) => pathname.endsWith(v));
 
   const goBack = () => {
     router.back();

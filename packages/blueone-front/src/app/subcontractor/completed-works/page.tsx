@@ -2,25 +2,21 @@
 import { useState } from 'react';
 import { Alert, List } from 'antd';
 import dayjs from 'dayjs';
-import qs from 'qs';
-import useSWR from 'swr';
 import { WorkCard } from '@/components/subcontractor/work-card';
-import { DateRange, EndPoint } from '@/shared/api/types';
-import { axiosFetcher } from '@/shared/lib/utils/swr';
+import { useFetchCompletedWorks } from '@/features/subcontractor/list-completed-works';
+import { DateRange } from '@/shared/api/types';
 import CustomRangePicker from './range-picker.component';
 
-type Works = EndPoint['GET /user/works/complete']['responses']['200'];
+export default function CompletedWorksPage() {
+  const [dateRange, setDateRange] = useState<DateRange>(() => {
+    const today = dayjs();
 
-export default function DoneWorksPage() {
-  const today = dayjs();
-  const TODAY_YYYY_MM_DD = today.format('YYYY-MM-DD');
-  const SEVEN_DAYS_AGO_YYYY_MM_DD = today.subtract(7, 'days').format('YYYY-MM-DD');
-
-  const [dateRange, setDateRange] = useState<DateRange>({
-    startDate: SEVEN_DAYS_AGO_YYYY_MM_DD,
-    endDate: TODAY_YYYY_MM_DD,
+    return {
+      startDate: today.subtract(7, 'days').format('YYYY-MM-DD'),
+      endDate: today.format('YYYY-MM-DD'),
+    };
   });
-  const { data: works } = useSWR<Works>(`/user/works/complete?${qs.stringify(dateRange)}`, axiosFetcher);
+  const { data: works, isPending } = useFetchCompletedWorks(dateRange);
 
   return (
     <>
@@ -43,6 +39,7 @@ export default function DoneWorksPage() {
         itemLayout="horizontal"
         dataSource={works}
         renderItem={(work) => <WorkCard work={work} readOnly className="mt-6" />}
+        loading={isPending}
       />
     </>
   );

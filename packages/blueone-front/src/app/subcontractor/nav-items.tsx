@@ -25,7 +25,7 @@ const navItems: NavItem[] = [
     text: '업무',
   },
   {
-    href: '/subcontractor/done-works',
+    href: '/subcontractor/completed-works',
     parentPageHref: '/subcontractor',
     outlineIcon: null,
     fillIcon: null,

@@ -9,7 +9,7 @@ export default function useCompleteWork() {
   const queryClient = useQueryClient();
 
   return useMutation<ChangeStatusResponse, AxiosError<APIError>, Omit<ChangeStatusRequest, 'state'>>({
-    mutationFn: (request) => WorksService.changeStatus({ ...request, state: 'done' }),
+    mutationFn: (request) => WorksService.changeStatus({ ...request, state: 'completed' }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.MyWorks],

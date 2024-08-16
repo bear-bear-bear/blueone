@@ -12,8 +12,8 @@ export type ChangePasswordResponse = EndPoint['POST /user/password']['responses'
 
 export type GetWorksResponse = EndPoint['GET /user/works']['responses']['200'];
 
-export type GetCompleteWorksRequest = EndPoint['GET /user/works/complete']['queryParams'];
-export type GetCompleteWorksResponse = EndPoint['GET /user/works/complete']['responses']['200'];
+export type GetCompletedWorksRequest = EndPoint['GET /user/works/complete']['queryParams'];
+export type GetCompletedWorksResponse = EndPoint['GET /user/works/complete']['responses']['200'];
 
 export type GetWorksAnalysisRequest = EndPoint['GET /user/works/analysis']['queryParams'];
 export type GetWorksAnalysisResponse = EndPoint['GET /user/works/analysis']['responses']['200'];
@@ -24,6 +24,6 @@ export interface UserClient {
   getMyInfo: () => Promise<GetMyInfoResponse>;
   changePassword: (request: ChangePasswordRequest) => Promise<ChangePasswordResponse>;
   getWorks: () => Promise<GetWorksResponse>;
-  getCompleteWorks: (params: GetCompleteWorksRequest) => Promise<GetCompleteWorksResponse>;
+  getCompletedWorks: (params: GetCompletedWorksRequest) => Promise<GetCompletedWorksResponse>;
   getWorksAnalysis: (params: GetWorksAnalysisRequest) => Promise<GetWorksAnalysisResponse>;
 }
