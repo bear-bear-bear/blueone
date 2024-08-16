@@ -27,7 +27,7 @@ export default function WorkCarousel() {
 
     const currWorkCount = myWorks?.length ?? 0;
     if (currWorkCount > prevWorkCount.current) {
-      message.info('새로운 업무가 등록됐어요!', 4);
+      message.info('새로운 업무가 등록됐어요!');
     }
     prevWorkCount.current = currWorkCount;
   }, [myWorks, prevWorkCount]);

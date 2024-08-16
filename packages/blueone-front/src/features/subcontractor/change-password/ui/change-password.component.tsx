@@ -26,7 +26,7 @@ export default function ChangePassword({ trigger }: Props) {
   const onFinish = async (values: ChangePasswordRequest) => {
     changePassword(values, {
       onSuccess: () => {
-        message.success('비밀번호가 변경되었어요.', 4);
+        message.success('비밀번호가 변경되었어요.');
       },
     });
   };

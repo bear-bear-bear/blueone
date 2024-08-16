@@ -1,39 +1,20 @@
 'use client';
 import { useEffect } from 'react';
-import { Button, message, Typography } from 'antd';
-import { isAxiosError } from 'axios';
-import { getErrorMessage } from '@/shared/api/get-error-message';
+import { App, Button, Typography } from 'antd';
+import { getErrorMessage, getErrorMessageForUser } from '@/shared/api/get-error-message';
 import isAuthError from '@/shared/api/is-auth-error';
 import { errorLog } from '@/shared/lib/utils/log/logger';
 import withDebugger from '@/shared/lib/utils/log/with-debugger';
 
 export default function ErrorPage({ error, reset }: { error: Error; reset: () => void }) {
+  const { message } = App.useApp();
+
   useEffect(() => {
     if (isAuthError(error) && location.pathname !== '/') {
       location.href = '/';
     } else {
       errorLogger(error);
-
-      const MESSAGE_DURATION = 4;
-      const SUFFIX = '사무실에 문의해주세요.';
-
-      if (!isAxiosError(error)) {
-        message.error(`작업 수행 중 에러 발생, ${SUFFIX}`, MESSAGE_DURATION);
-        return;
-      }
-      if (!error.response) {
-        message.error(`요청이 수행되었으나 서버가 응답하지 않습니다. ${SUFFIX}`, MESSAGE_DURATION);
-        return;
-      }
-      if (error.response.status >= 500) {
-        message.error(`작업 수행 중 서버 측 에러 발생, ${SUFFIX}`, MESSAGE_DURATION);
-        return;
-      }
-      if (!error.response.data.message) {
-        message.error(`작업 수행 중 정의되지 않은 에러 발생, ${SUFFIX}`, MESSAGE_DURATION);
-        return;
-      }
-      message.error(error.response.data.message, MESSAGE_DURATION);
+      message.error(getErrorMessageForUser(error));
     }
   }, [error]);
 

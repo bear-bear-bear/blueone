@@ -6,7 +6,7 @@ import theme from '@/shared/ui/foundation/theme';
 export default function AntdConfigProvider({ children }: { children: ReactNode }) {
   return (
     <ConfigProvider theme={antdTheme}>
-      <App message={{ maxCount: 2 }}>{children}</App>
+      <App message={{ maxCount: 2, duration: 4 }}>{children}</App>
     </ConfigProvider>
   );
 }
