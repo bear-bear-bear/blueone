@@ -21,8 +21,8 @@ export type RemoveResponse = EndPoint['DELETE /users/{userId}']['responses']['20
 export type GetActivatedWorksRequest = UserId;
 export type GetActivatedWorksResponse = EndPoint['GET /users/{userId}/works']['responses']['200'];
 
-export type AddContractorRequest = EndPoint['POST /users/contractor']['requestBody'];
-export type AddContractorResponse = EndPoint['POST /users/contractor']['responses']['201'];
+export type RegisterContractorRequest = EndPoint['POST /users/contractor']['requestBody'];
+export type RegisterContractorResponse = EndPoint['POST /users/contractor']['responses']['201'];
 
 export interface UsersClient {
   getList: () => Promise<GetListResponse>;
@@ -31,5 +31,5 @@ export interface UsersClient {
   edit: (request: EditRequest) => Promise<EditResponse>;
   remove: (request: RemoveRequest) => Promise<RemoveResponse>;
   getActivatedWorks: (request: GetActivatedWorksRequest) => Promise<GetActivatedWorksResponse>;
-  addContractor: (request: AddContractorRequest) => Promise<AddContractorResponse>;
+  registerContractor: (request: RegisterContractorRequest) => Promise<RegisterContractorResponse>;
 }

@@ -1,8 +1,8 @@
 import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
 import {
-  AddContractorRequest,
-  AddContractorResponse,
+  RegisterContractorRequest,
+  RegisterContractorResponse,
   AddRequest,
   AddResponse,
   EditRequest,
@@ -45,8 +45,8 @@ class UsersService extends HTTPClient implements UsersClient {
     return this.client.get<GetActivatedWorksResponse>(`${this.ROUTE}/${userId}/works`);
   };
 
-  public addContractor = (request: AddContractorRequest) => {
-    return this.client.post<AddContractorResponse>(`${this.ROUTE}/contractor`, request);
+  public registerContractor = (request: RegisterContractorRequest) => {
+    return this.client.post<RegisterContractorResponse>(`${this.ROUTE}/contractor`, request);
   };
 }
 

@@ -1,24 +1,22 @@
 'use client';
 import { App, Button, Form, Input } from 'antd';
-import httpClient from '@/shared/api/axios';
-import { EndPoint } from '@/shared/api/types';
+import { useRegisterContractor } from '@/features/contractor/register';
+import { RegisterContractorRequest } from '@/shared/api/types/users';
 
-type Request = EndPoint['POST /users/contractor']['requestBody'];
-
-export default function CreateContractorPage() {
+export default function RegisterContractPage() {
   const { message } = App.useApp();
+  const { mutate: registerContractor } = useRegisterContractor();
 
-  const onFormFinish = async (values: Request) => {
-    try {
-      await httpClient.post('/users/contractor', values);
-      message.success('등록 완료');
-    } catch (err) {
-      throw err;
-    }
+  const onFormFinish = async (values: RegisterContractorRequest) => {
+    registerContractor(values, {
+      onSuccess: () => {
+        message.success('등록 완료');
+      },
+    });
   };
 
   return (
-    <Form<Request> layout="vertical" onFinish={onFormFinish}>
+    <Form<RegisterContractorRequest> layout="vertical" onFinish={onFormFinish}>
       <Form.Item name="phoneNumber" label="전화번호" rules={[{ required: true }]}>
         <Input autoComplete="off" />
       </Form.Item>
