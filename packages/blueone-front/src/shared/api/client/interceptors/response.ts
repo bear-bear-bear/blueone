@@ -27,15 +27,10 @@ export function unwrapResponse(response: AxiosResponse) {
 }
 
 export function logError(e: AxiosError) {
-  const url = e.config?.url;
-  const method = e.config?.method;
-
-  const errorMessage = getErrorMessage(e);
-
   errorLog({
-    method,
-    endPoint: url,
-    errorMessage,
+    method: e.config?.method,
+    endPoint: e.config?.url,
+    errorMessage: getErrorMessage(e),
     error: e,
   });
 

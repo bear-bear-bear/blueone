@@ -4,9 +4,12 @@
 export default function withDebugger(debugLevel: number) {
   return <T, P = void>(fn: (...args: T[]) => P, fallback?: P) =>
     (...args: T[]) => {
-      if (process.env.NODE_ENV === 'development' || window.debugLevel > debugLevel) {
+      const isDev = process.env.NODE_ENV === 'development';
+
+      if (isDev || (typeof window !== 'undefined' && window.debugLevel > debugLevel)) {
         return fn(...args);
       }
+
       return fallback;
     };
 }

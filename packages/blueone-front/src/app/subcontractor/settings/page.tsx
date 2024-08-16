@@ -1,18 +1,16 @@
 'use client';
 import { Avatar, Card, List } from 'antd';
 import SignOutButton from '@/components/sign-out-button.component';
-import { Me, useSuspenseFetchMe } from '@/entities/me';
+import { useFetchMe } from '@/entities/me';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import PasswordChangeButton from './password-change-button.component';
 import './page.css';
 
 export default function SettingPage() {
-  const { data: me } = useSuspenseFetchMe();
-
   return (
     <List
-      header={<SettingsHeader me={me} />}
+      header={<SettingsHeader />}
       footer={<SettingsFooter />}
       dataSource={[<PasswordChangeButton key="change-password" />, <SignOutButton key="sign-out" kind="text" block />]}
       renderItem={(item) => <List.Item>{item}</List.Item>}
@@ -21,7 +19,10 @@ export default function SettingPage() {
   );
 }
 
-function SettingsHeader({ me }: { me: Me.Model }) {
+function SettingsHeader() {
+  const { data: me } = useFetchMe();
+
+  if (!me) return null;
   return (
     <Card>
       <Card.Meta

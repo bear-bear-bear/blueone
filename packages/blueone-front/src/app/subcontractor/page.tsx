@@ -1,14 +1,21 @@
 'use client';
 import { Button } from 'antd';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import LatestNoticeAlert from '@/components/subcontractor/latest-notice-alert.component';
 import NotificationBadge from '@/components/subcontractor/notification-badge.component';
-import WorkCarousel from '@/components/subcontractor/work-carousel.component';
-import { Me, useSuspenseFetchMe } from '@/entities/me';
+import { Me, useFetchMe } from '@/entities/me';
+
+/**
+ * NOTE: localStorage를 내부에서 사용하므로 dynamic import 사용
+ */
+const WorkCarousel = dynamic(() => import('@/components/subcontractor/work-carousel.component'), {
+  ssr: false,
+});
 
 export default function SubcontractorHomePage() {
-  const { data: me } = useSuspenseFetchMe();
-  const insuranceInfo = Me.insuranceInfo(me);
+  const { data: me } = useFetchMe();
+  const insuranceInfo = me && Me.insuranceInfo(me);
 
   return (
     <>
