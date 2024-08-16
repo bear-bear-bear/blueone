@@ -71,7 +71,7 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
 
       <Layout>
         <Layout.Header className="flex justify-between items-center px-4 text-white">
-          {getTitleByRoute(pathname)}
+          <h1>{getTitleByRoute(pathname)}</h1>
 
           <Tooltip title="로그아웃">
             <Button

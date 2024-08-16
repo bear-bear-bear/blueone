@@ -30,12 +30,21 @@ const navItems = [
 export default navItems;
 
 export function getTitleByRoute(route: string) {
-  const page = navItems.find((page) => {
-    if ('children' in page) {
-      return page.children.some((child) => child.route === route);
-    }
-    return page.route === route;
-  });
+  let title = '';
 
-  return page?.title;
+  for (const page of navItems) {
+    if ('children' in page) {
+      for (const child of page.children) {
+        if (child.route === route) {
+          title = child.title;
+          break;
+        }
+      }
+    } else if (page.route === route) {
+      title = page.title;
+      break;
+    }
+  }
+
+  return title;
 }
