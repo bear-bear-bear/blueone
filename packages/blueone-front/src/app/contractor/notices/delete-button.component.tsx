@@ -58,7 +58,7 @@ export default function DeleteButton({ record }: Props) {
             type="text"
             size="small"
             icon={<DeleteOutlined />}
-            className="text-red-500"
+            className="!text-red-500"
             onClick={showPopconfirm}
           />
         </Tooltip>

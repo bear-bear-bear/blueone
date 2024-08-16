@@ -53,7 +53,7 @@ export default function DeleteButton({ record }: Props) {
       placement="bottom"
     >
       <Tooltip title="삭제">
-        <Button type="text" size="small" icon={<DeleteOutlined />} onClick={showPopconfirm} />
+        <Button type="text" size="small" icon={<DeleteOutlined />} className="!text-red-500" onClick={showPopconfirm} />
       </Tooltip>
     </Popconfirm>
   );

@@ -1,6 +1,6 @@
 'use client';
 import { useState, ReactNode } from 'react';
-import { Button, Layout, Menu, MenuProps } from 'antd';
+import { Button, Layout, Menu, MenuProps, Tooltip } from 'antd';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSignOut } from '@/features/sign-out';
@@ -72,13 +72,15 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
       <Layout>
         <Layout.Header className="flex justify-between items-center px-4 text-white">
           {getTitleByRoute(pathname)}
-          <Button
-            type="text"
-            title="로그아웃"
-            icon={<LogoutOutlined className="text-[22px]" />}
-            onClick={() => signOut()}
-            className="text-white"
-          />
+
+          <Tooltip title="로그아웃">
+            <Button
+              type="text"
+              icon={<LogoutOutlined className="text-[22px]" />}
+              onClick={() => signOut()}
+              className="!text-white"
+            />
+          </Tooltip>
         </Layout.Header>
 
         <Main className="p-4 overflow-auto">{children}</Main>
