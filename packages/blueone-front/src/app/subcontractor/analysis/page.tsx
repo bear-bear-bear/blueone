@@ -1,8 +1,7 @@
 'use client';
 import { Tabs } from 'antd';
-import AnalyzeByDay from './analyze-by-day.component';
-import AnalyzeByMonth from './analyze-by-month.component';
 import './page.css';
+import { AnalyzeIncomeByDay, AnalyzeIncomeByMonth } from '@/features/subcontractor/analyze-income';
 
 export default function AnalysisPage() {
   return (
@@ -10,8 +9,8 @@ export default function AnalysisPage() {
       defaultActiveKey="1"
       size="large"
       items={[
-        { label: '일', key: '1', children: <AnalyzeByDay /> },
-        { label: '월', key: '2', children: <AnalyzeByMonth /> },
+        { label: '일', key: '1', children: <AnalyzeIncomeByDay chartHeight={360} /> },
+        { label: '월', key: '2', children: <AnalyzeIncomeByMonth chartHeight={360} /> },
       ]}
     />
   );
