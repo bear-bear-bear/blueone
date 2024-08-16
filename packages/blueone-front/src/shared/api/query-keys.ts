@@ -4,4 +4,6 @@ export enum QueryKeys {
   MyIncomeAnalysis = 'my-income-analysis',
   MyWorks = 'my-works',
   MyCompleteWorks = 'my-complete-works',
+  Notices = 'notices',
+  ActiveNotices = 'active-notices',
 }

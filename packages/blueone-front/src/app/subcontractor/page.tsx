@@ -2,8 +2,8 @@
 import { Button } from 'antd';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import LatestNoticeAlert from '@/components/subcontractor/latest-notice-alert.component';
 import NotificationBadge from '@/components/subcontractor/notification-badge.component';
+import RecentNoticeAlert from '@/components/subcontractor/recent-notice-alert.component';
 import { Me, useFetchMe } from '@/entities/me';
 
 /**
@@ -36,7 +36,7 @@ export default function SubcontractorHomePage() {
         </>
       )}
 
-      <LatestNoticeAlert />
+      <RecentNoticeAlert />
 
       <WorkCarousel />
 

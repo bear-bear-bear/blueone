@@ -1,28 +1,22 @@
 'use client';
 import { Card, List } from 'antd';
 import Linkify from 'linkify-react';
-import useSWR from 'swr';
 import Empty from '@/components/subcontractor/empty.component';
-import type { EndPoint } from '@/shared/api/types';
-import { axiosFetcher } from '@/shared/lib/utils/swr';
-
-type ActivatedNoticeList = EndPoint['GET /notices/activation']['responses']['200'];
+import { useFetchActiveNotices } from '@/features/subcontractor/list-active-notices';
 
 export default function NoticePage() {
-  const { data: noticeList } = useSWR<ActivatedNoticeList>('/notices/activation', axiosFetcher, {
-    revalidateOnFocus: false,
-  });
+  const { data: notices } = useFetchActiveNotices();
 
-  if (!noticeList) {
-    return <Card loading />;
+  if (!notices) {
+    return <List loading />;
   }
-  if (noticeList.length === 0) {
+  if (notices.length === 0) {
     return <Empty description="공지사항이 아직 등록되지 않았어요." />;
   }
   return (
     <List
       grid={{ gutter: 16, column: 1 }}
-      dataSource={noticeList}
+      dataSource={notices}
       renderItem={(item) => (
         <List.Item className="border-t-2 border-solid border-primary rounded-t-none">
           <Card
