@@ -20,8 +20,8 @@ export type NavItem = {
 const navItems: NavItem[] = [
   {
     href: '/subcontractor',
-    outlineIcon: <CarOutlined size={20} />,
-    fillIcon: <CarFilled size={20} />,
+    outlineIcon: <CarOutlined className="text-[20px]" />,
+    fillIcon: <CarFilled className="text-[20px]" />,
     text: '업무',
   },
   {
@@ -33,20 +33,20 @@ const navItems: NavItem[] = [
   },
   {
     href: '/subcontractor/notices',
-    outlineIcon: <NotificationOutlined size={20} />,
-    fillIcon: <NotificationFilled size={20} />,
+    outlineIcon: <NotificationOutlined className="text-[20px]" />,
+    fillIcon: <NotificationFilled className="text-[20px]" />,
     text: '공지사항',
   },
   {
     href: '/subcontractor/analysis',
-    outlineIcon: <BarChartOutlined size={20} />,
-    fillIcon: <BarChartOutlined size={20} />,
+    outlineIcon: <BarChartOutlined className="text-[20px]" />,
+    fillIcon: <BarChartOutlined className="text-[20px]" />,
     text: '지수 분석',
   },
   {
     href: '/subcontractor/settings',
-    outlineIcon: <SettingOutlined size={20} />,
-    fillIcon: <SettingFilled size={20} />,
+    outlineIcon: <SettingOutlined className="text-[20px]" />,
+    fillIcon: <SettingFilled className="text-[20px]" />,
     text: '설정',
   },
 ];

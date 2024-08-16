@@ -105,7 +105,7 @@ export default function WorkCard({ work, readOnly = false, className }: Props) {
 function WorkDoneStamp() {
   return (
     <Tooltip title="완료된 업무예요.">
-      <CheckCircleOutlined size={45} className="absolute top-4 right-4 text-primary" />
+      <CheckCircleOutlined className="text-[45px]" className="absolute top-4 right-4 text-primary" />
     </Tooltip>
   );
 }

@@ -75,7 +75,7 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
           <Button
             type="text"
             title="로그아웃"
-            icon={<LogoutOutlined size={22} />}
+            icon={<LogoutOutlined className="text-[22px]" />}
             onClick={() => signOut()}
             className="text-white"
           />
