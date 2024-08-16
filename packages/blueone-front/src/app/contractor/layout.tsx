@@ -1,9 +1,10 @@
 'use client';
 import { useState, ReactNode } from 'react';
-import { Layout, Menu, MenuProps } from 'antd';
+import { Button, Layout, Menu, MenuProps } from 'antd';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import SignOutButton from '@/components/sign-out-button.component';
+import { useSignOut } from '@/features/sign-out';
+import { LogoutOutlined } from '@ant-design/icons';
 import navItems, { getTitleByRoute } from './nav-items';
 
 const { Content: Main, Footer, Sider } = Layout;
@@ -12,6 +13,7 @@ const { SubMenu } = Menu;
 export default function ContractorLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { mutate: signOut } = useSignOut();
   const [collapsed, setCollapsed] = useState(false);
 
   const handleClickMenu: MenuProps['onClick'] = (e) => {
@@ -70,7 +72,13 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
       <Layout>
         <Layout.Header className="flex justify-between items-center px-4 text-white">
           {getTitleByRoute(pathname)}
-          <SignOutButton className="text-white" />
+          <Button
+            type="text"
+            title="로그아웃"
+            icon={<LogoutOutlined size={22} />}
+            onClick={() => signOut()}
+            className="text-white"
+          />
         </Layout.Header>
 
         <Main className="p-4 overflow-auto">{children}</Main>

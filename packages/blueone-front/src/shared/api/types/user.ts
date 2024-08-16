@@ -5,6 +5,8 @@ export type GetMyInfoResponse = EndPoint['GET /user']['responses']['200'];
 export type SignInRequest = EndPoint['POST /user/sign-in']['requestBody'];
 export type SignInResponse = EndPoint['POST /user/sign-in']['responses']['200'];
 
+export type SignOutResponse = EndPoint['POST /user/sign-out']['responses']['204'];
+
 export type ChangePasswordRequest = EndPoint['POST /user/password']['requestBody'];
 export type ChangePasswordResponse = EndPoint['POST /user/password']['responses']['204'];
 
@@ -17,8 +19,9 @@ export type GetWorksAnalysisRequest = EndPoint['GET /user/works/analysis']['quer
 export type GetWorksAnalysisResponse = EndPoint['GET /user/works/analysis']['responses']['200'];
 
 export interface UserClient {
-  getMyInfo: () => Promise<GetMyInfoResponse>;
   signIn: (request: SignInRequest) => Promise<SignInResponse>;
+  signOut: () => Promise<SignOutResponse>;
+  getMyInfo: () => Promise<GetMyInfoResponse>;
   changePassword: (request: ChangePasswordRequest) => Promise<ChangePasswordResponse>;
   getWorks: () => Promise<GetWorksResponse>;
   getCompleteWorks: (params: GetCompleteWorksRequest) => Promise<GetCompleteWorksResponse>;

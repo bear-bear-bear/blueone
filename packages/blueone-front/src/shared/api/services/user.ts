@@ -1,4 +1,4 @@
-import { UserClient } from '@/shared/api/types/user';
+import { SignOutResponse, UserClient } from '@/shared/api/types/user';
 import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
 import {
@@ -24,6 +24,10 @@ class UserService extends HTTPClient implements UserClient {
 
   public signIn = (request: SignInRequest) => {
     return this.client.post<SignInResponse>(`${this.ROUTE}/sign-in`, request);
+  };
+
+  public signOut = () => {
+    return this.client.post<SignOutResponse>(`${this.ROUTE}/sign-out`);
   };
 
   public changePassword = (request: ChangePasswordRequest) => {
