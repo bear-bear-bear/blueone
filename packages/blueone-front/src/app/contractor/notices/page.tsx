@@ -1,14 +1,14 @@
 'use client';
 import { useMemo, useState } from 'react';
-import { Table } from 'antd';
+import { Button, Table } from 'antd';
 import Linkify from 'linkify-react';
 import qs from 'qs';
 import useSWRImmutable from 'swr/immutable';
+import { AddNotice } from '@/features/contractor/notice/add';
 import { DateRange, EndPoint, Unpacked } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
-import AddButton from './add-button.component';
 import columns from './columns';
 import CustomRangePicker from './custom-range-picker.component';
 
@@ -47,12 +47,17 @@ export default function NoticeBoard() {
   if (!noticeList) {
     return <LoadingPanel />;
   }
-
   return (
     <div className="max-w-screen-lg">
       <div className="flex justify-between items-center flex-wrap gap-2 mb-2">
         <CustomRangePicker dateRange={dateRange} setDateRange={setDateRange} />
-        <AddButton swrKey={swrKey} />
+        <AddNotice
+          trigger={({ openModal, isPending }) => (
+            <Button type="default" onClick={openModal} loading={isPending}>
+              등록
+            </Button>
+          )}
+        />
       </div>
       <Table
         id="noticeBoard"
