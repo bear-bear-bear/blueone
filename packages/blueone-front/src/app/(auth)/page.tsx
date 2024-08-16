@@ -2,35 +2,30 @@
 import { Input, Form, Button } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
 import { useRouter } from 'next/navigation';
-import httpClient from '@/shared/api/axios';
-import type { EndPoint } from '@/shared/api/types';
+import { useSignIn } from '@/features/sign-in';
+import { SignInRequest } from '@/shared/api/types/user';
 
-type Request = EndPoint['POST /user/sign-in']['requestBody'];
-type User = EndPoint['POST /user/sign-in']['responses']['200'];
-
-export default function LoginPage() {
+export default function SignInPage() {
   const router = useRouter();
+  const { mutate: signIn } = useSignIn();
 
-  const onFinish = async (values: Request) => {
-    try {
-      const user = await httpClient.post<User>('/user/sign-in', values).then((res) => res.data);
-
-      switch (user.role) {
-        case 'contractor':
-          router.push('/contractor/works');
-          break;
-        case 'subcontractor':
-          router.push('/subcontractor');
-          break;
-        default:
-      }
-    } catch (err) {
-      throw err;
-    }
+  const onFinish = async (values: SignInRequest) => {
+    signIn(values, {
+      onSuccess: ({ role }) => {
+        switch (role) {
+          case 'contractor':
+            router.push('/contractor/works');
+            break;
+          case 'subcontractor':
+            router.push('/subcontractor');
+            break;
+        }
+      },
+    });
   };
 
   return (
-    <Form initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off" {...layout}>
+    <Form<SignInRequest> initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off" {...layout}>
       <Form.Item
         label="전화번호"
         name="phoneNumber"

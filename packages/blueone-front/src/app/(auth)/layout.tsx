@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getMyServiceEntry } from '@/entities/me/api/get-my-service-entry';
 
-export default async function LoginLayout({ children }: { children: ReactNode }) {
+export default async function SignInLayout({ children }: { children: ReactNode }) {
   try {
     const myServiceEntry = await getMyServiceEntry();
 
