@@ -11,9 +11,6 @@ module.exports = {
     'rc-pagination',
     'rc-table',
   ],
-  compiler: {
-    emotion: true,
-  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

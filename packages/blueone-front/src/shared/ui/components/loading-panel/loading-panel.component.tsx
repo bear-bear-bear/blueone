@@ -2,23 +2,13 @@
 import { Spin } from 'antd';
 import type { SpinSize } from 'antd/es/spin';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
-import styled from '@emotion/styled';
 
 export default function LoadingPanel({ size = 'default' }: { size?: SpinSize }) {
   const setRef = useVerticalStretch<HTMLDivElement>();
 
   return (
-    <Container ref={setRef}>
+    <div ref={setRef} className="w-full flexColCenter p-5">
       <Spin size={size} />
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-`;
