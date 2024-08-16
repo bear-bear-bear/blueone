@@ -3,11 +3,11 @@ import { Form, Input, InputNumber, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
-import SubcontractorSelector from '@/components/subcontractor/subcontractor-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint, Work } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
+import { SubcontractorSelector1 } from '@/widgets/subcontractor-selector';
 import type { WorkAddFormValues } from './add-form.component';
 import BookingDatePicker from './booking-date-picker.component';
 
@@ -109,7 +109,7 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
         <InputNumber autoComplete="off" />
       </Form.Item>
       <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <SubcontractorSelector form={form} defaultValue={prevWork.userId} disabled={!!prevWork.endTime} />
+        <SubcontractorSelector1 form={form} defaultValue={prevWork.userId} disabled={!!prevWork.endTime} />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />

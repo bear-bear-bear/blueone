@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { Form, Input, InputNumber, Button, FormProps, Checkbox, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import SubcontractorSelector from '@/components/subcontractor/subcontractor-selector.component';
 import { useBookingDate } from '@/hooks/use-booking-date.hook';
 import httpClient from '@/shared/api/axios';
 import dayjs from '@/shared/lib/utils/dayjs';
+import { SubcontractorSelector1 } from '@/widgets/subcontractor-selector';
 import { DeleteOutlined } from '@ant-design/icons';
 import type { Request, WorkAddFormValues } from '../works/add-form.component';
 import BookingDatePicker from '../works/booking-date-picker.component';
@@ -101,7 +101,7 @@ export default function AddWorkForMobilePage() {
           <InputNumber autoComplete="off" className="border-solid" />
         </Form.Item>
         <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-          <SubcontractorSelector form={form} />
+          <SubcontractorSelector1 form={form} />
         </Form.Item>
         <Form.Item name="remark" label="비고">
           <Input.TextArea autoComplete="off" className="border-solid" />

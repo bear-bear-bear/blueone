@@ -13,7 +13,7 @@ type Props = {
   setValue: Dispatch<SetStateAction<User['id'] | null>>;
 };
 
-export default function SubcontractorPicker({ value, setValue }: Props) {
+export default function SubcontractorSelector2({ value, setValue }: Props) {
   const { data: users } = useSWR<Users>('/users', axiosFetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

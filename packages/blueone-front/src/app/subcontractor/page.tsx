@@ -2,10 +2,11 @@
 import { Button } from 'antd';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import NotificationBadge from '@/components/subcontractor/notification-badge.component';
-import RecentNoticeAlert from '@/components/subcontractor/recent-notice-alert.component';
+import { useRouter } from 'next/navigation';
 import { Me, useFetchMe } from '@/entities/me';
 import { useFetchWorks } from '@/features/subcontractor/list-works';
+import { NotificationBadge } from '@/shared/ui/components/notification-badge';
+import { RecentNoticeAlert } from '@/widgets/recent-notice-alert';
 import { WorkCard } from 'widgets/work-card';
 
 const WorkCarousel = dynamic(() => import('@/widgets/work-carousel/ui/work-carousel.component'), {
@@ -13,9 +14,14 @@ const WorkCarousel = dynamic(() => import('@/widgets/work-carousel/ui/work-carou
 });
 
 export default function SubcontractorHomePage() {
+  const router = useRouter();
   const { data: works } = useFetchWorks();
   const { data: me } = useFetchMe();
   const insuranceInfo = me && Me.insuranceInfo(me);
+
+  const handleClickNotice = () => {
+    router.push('/subcontractor/notices');
+  };
 
   return (
     <>
@@ -36,7 +42,7 @@ export default function SubcontractorHomePage() {
         </>
       )}
 
-      <RecentNoticeAlert />
+      <RecentNoticeAlert onClick={handleClickNotice} className="absolute left-0 w-full px-4" />
 
       <WorkCarousel works={works} renderItem={(work) => <WorkCard key={work.id} work={work} />} />
 

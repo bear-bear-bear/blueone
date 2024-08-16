@@ -10,11 +10,11 @@ import type { EndPoint, UserInfo, Unpacked, User, DateRange } from '@/shared/api
 import { formatTime } from '@/shared/lib/utils/day';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
+import { SubcontractorSelector2 } from '@/widgets/subcontractor-selector';
 import { SnippetsOutlined } from '@ant-design/icons';
 import AddButton from './add-button.component';
 import columns from './columns';
 import processWorkDateTimes from './process-work-date-times';
-import SubcontractorPicker from './subcontractor-picker.component';
 import TotalFee from './total-fee.component';
 
 const { RangePicker } = DatePicker;
@@ -172,7 +172,7 @@ export default function WorkManagementTable() {
             className="mr-2"
           />
 
-          <SubcontractorPicker value={pickedUserId} setValue={setPickedUserId} />
+          <SubcontractorSelector2 value={pickedUserId} setValue={setPickedUserId} />
 
           <div className="flex items-center gap-2">
             <Checkbox
