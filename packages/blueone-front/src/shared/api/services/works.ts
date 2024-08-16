@@ -11,6 +11,7 @@ import {
   ForceActivateResponse,
   ForceFinishRequest,
   ForceFinishResponse,
+  GetListRequest,
   GetListResponse,
   RemoveRequest,
   RemoveResponse,
@@ -21,8 +22,10 @@ import {
 class WorksService extends HTTPClient implements WorksClient {
   private ROUTE = 'works';
 
-  public getList = () => {
-    return this.client.get<GetListResponse>(`${this.ROUTE}`);
+  public getList = (request: GetListRequest) => {
+    return this.client.get<GetListResponse>(`${this.ROUTE}`, {
+      params: request,
+    });
   };
 
   public add = (request: AddRequest) => {

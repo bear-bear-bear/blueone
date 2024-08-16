@@ -4,6 +4,7 @@ type WorkId = {
   workId: Work['id'];
 };
 
+export type GetListRequest = EndPoint['GET /works']['queryParams'];
 export type GetListResponse = EndPoint['GET /works']['responses']['200'];
 
 export type AddRequest = EndPoint['POST /works']['requestBody'];
@@ -25,7 +26,7 @@ export type RemoveRequest = WorkId;
 export type RemoveResponse = EndPoint['DELETE /works/{workId}']['responses']['200'];
 
 export interface WorksClient {
-  getList: () => Promise<GetListResponse>;
+  getList: (request: GetListRequest) => Promise<GetListResponse>;
   add: (request: AddRequest) => Promise<AddResponse>;
   edit: (request: EditRequest) => Promise<EditResponse>;
   changeStatus: (request: ChangeStatusRequest) => Promise<ChangeStatusResponse>;

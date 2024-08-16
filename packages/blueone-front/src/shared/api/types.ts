@@ -255,9 +255,12 @@ export interface EndPoint {
   };
 
   /**
-   * 업무 목록 가져오기
+   * 지정한 기간 내 업무 목록 가져오기
    */
   'GET /works': {
+    queryParams: DateRange & {
+      booked: boolean;
+    };
     responses: {
       200: (Work & {
         User?: User & {
