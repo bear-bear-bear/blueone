@@ -67,7 +67,9 @@ export default function NoticeBoard() {
         rowClassName="cursor-pointer"
         expandable={{
           expandedRowRender: (notice) => (
-            <Linkify className="p-2 whitespace-pre-wrap break-words font-normal">{notice.content}</Linkify>
+            <Linkify tagName="pre" className="px-2.5 whitespace-pre-wrap break-words font-[inherit]">
+              {notice.content}
+            </Linkify>
           ),
           expandRowByClick: true,
           showExpandColumn: false,

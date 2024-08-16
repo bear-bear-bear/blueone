@@ -1,7 +1,11 @@
 import { ReactNode } from 'react';
+import { Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { EditNotice } from '@/features/contractor/notice/edit';
+import { packDateRange } from '@/shared/lib/utils/pack-date-range';
+import pick from '@/shared/lib/utils/pick';
+import { EditOutlined } from '@ant-design/icons';
 import DeleteButton from './delete-button.component';
-import EditButton from './edit-button.component';
 import type { ProcessedNotice } from './page';
 
 // row onclick expand 를 특정 td 에서 실행하지 않기 위한 escape
@@ -40,12 +44,22 @@ const columns: ColumnsType<ProcessedNotice> = [
     title: '',
     key: 'action',
     align: 'center',
-    render: (_, record) => (
-      <PropagationStopper>
-        <EditButton record={record} />
-        <DeleteButton record={record} />
-      </PropagationStopper>
-    ),
+    render: (_, record) => {
+      return (
+        <PropagationStopper>
+          <EditNotice
+            id={record.id}
+            initialValues={pick(packDateRange(record), ['title', 'content', 'dateRange'])}
+            trigger={({ openModal, isPending }) => (
+              <Tooltip title="수정">
+                <Button type="text" size="small" icon={<EditOutlined />} onClick={openModal} loading={isPending} />
+              </Tooltip>
+            )}
+          />
+          <DeleteButton record={record} />
+        </PropagationStopper>
+      );
+    },
     width: 80,
     className: '!p-0',
   },
