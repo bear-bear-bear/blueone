@@ -2,9 +2,9 @@
 import { Avatar, Button, Card, List } from 'antd';
 import { useFetchMe } from '@/entities/me';
 import { useSignOut } from '@/features/sign-out';
+import { ChangePassword } from '@/features/subcontractor/change-password';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import PasswordChangeButton from './password-change-button.component';
 import './page.css';
 
 export default function SettingPage() {
@@ -15,7 +15,14 @@ export default function SettingPage() {
       header={<SettingsHeader />}
       footer={<SettingsFooter />}
       dataSource={[
-        <PasswordChangeButton key="change-password" />,
+        <ChangePassword
+          key="change-password"
+          trigger={({ openModal, isPending }) => (
+            <Button type="text" onClick={openModal} className="text-start p-0" block loading={isPending}>
+              비밀번호 변경
+            </Button>
+          )}
+        />,
         <Button key="sign-out" type="text" onClick={() => signOut()} block>
           로그아웃
         </Button>,
