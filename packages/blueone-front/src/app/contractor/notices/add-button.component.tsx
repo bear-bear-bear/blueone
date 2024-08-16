@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
-import type { PackDateRange, EndPoint } from '@/shared/api/types';
+import type { EndPoint } from '@/shared/api/types';
+import { PackDateRange } from '@/shared/lib/utils/pack-date-range';
 import AddForm from './add-form.component';
 
 type Props = {

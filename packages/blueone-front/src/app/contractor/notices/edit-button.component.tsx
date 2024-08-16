@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, Form, Modal, Tooltip } from 'antd';
-import { PackDateRange, EndPoint } from '@/shared/api/types';
+import { EndPoint } from '@/shared/api/types';
+import { PackDateRange } from '@/shared/lib/utils/pack-date-range';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './edit-form.component';
 import type { ProcessedNotice } from './page';

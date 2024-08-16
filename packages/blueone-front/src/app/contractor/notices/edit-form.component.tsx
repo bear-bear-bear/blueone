@@ -3,8 +3,9 @@ import { Form, Input, FormInstance, DatePicker, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import useSWRImmutable from 'swr/immutable';
 import httpClient from '@/shared/api/axios';
-import { PackDateRange, EndPoint } from '@/shared/api/types';
+import { EndPoint } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
+import { PackDateRange, unpackDateRange } from '@/shared/lib/utils/pack-date-range';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import type { NoticeList, ProcessedNotice } from './page';
 
@@ -30,17 +31,10 @@ export default function NoticeEditForm({ form, prevNotice, setSubmitLoading, clo
   );
 
   const onFormFinish = async (values: FormValues) => {
-    const body: Request = {
-      title: values.title,
-      content: values.content,
-      startDate: values.dateRange[0].format('YYYY-MM-DD'),
-      endDate: values.dateRange[1].format('YYYY-MM-DD'),
-    };
-
     setSubmitLoading(true);
     try {
       const updatedNotice = await httpClient
-        .put<EditedNotice>(`/notices/${prevNotice.id}`, body)
+        .put<EditedNotice>(`/notices/${prevNotice.id}`, unpackDateRange(values))
         .then((res) => res.data);
 
       const nextNoticeList = noticeList?.map((notice) => (notice.id !== updatedNotice.id ? notice : updatedNotice));

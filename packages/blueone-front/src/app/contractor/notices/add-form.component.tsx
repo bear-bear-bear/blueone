@@ -3,8 +3,9 @@ import { Form, Input, FormInstance, DatePicker, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import useSWRImmutable from 'swr/immutable';
 import httpClient from '@/shared/api/axios';
-import { PackDateRange, EndPoint } from '@/shared/api/types';
+import { EndPoint } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
+import { PackDateRange, unpackDateRange } from '@/shared/lib/utils/pack-date-range';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 
 const { RangePicker } = DatePicker;
@@ -32,16 +33,11 @@ export default function NoticeAddForm({ form, setSubmitLoading, closeModal, swrK
   );
 
   const onFormFinish = async (values: FormValues) => {
-    const body: Request = {
-      title: values.title,
-      content: values.content,
-      startDate: values.dateRange[0].format('YYYY-MM-DD'),
-      endDate: values.dateRange[1].format('YYYY-MM-DD'),
-    };
-
     setSubmitLoading(true);
     try {
-      const createdNotice = await httpClient.post<Response>('/notices', body).then((res) => res.data);
+      const createdNotice = await httpClient
+        .post<Response>('/notices', unpackDateRange(values))
+        .then((res) => res.data);
 
       const nextNoticeList = noticeList?.map((work) => (work.id !== createdNotice.id ? work : createdNotice));
       await mutateNoticeList(nextNoticeList);

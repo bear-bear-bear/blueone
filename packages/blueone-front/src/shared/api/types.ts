@@ -1,5 +1,3 @@
-import type dayjs from '@/shared/lib/utils/dayjs';
-
 export type Unpacked<T> = T extends (infer U)[]
   ? U
   : T extends (...args: any[]) => infer U
@@ -13,13 +11,6 @@ export type ISODateString = string;
 export type DateRange = {
   startDate: ISODateString;
   endDate: ISODateString;
-};
-
-/**
- * for form values (date picker value)
- */
-export type PackDateRange<T extends DateRange> = Omit<T, 'startDate' | 'endDate'> & {
-  dateRange: [dayjs.Dayjs, dayjs.Dayjs];
 };
 
 export type UserInfo = {
