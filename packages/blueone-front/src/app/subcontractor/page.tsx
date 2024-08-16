@@ -5,15 +5,15 @@ import Link from 'next/link';
 import NotificationBadge from '@/components/subcontractor/notification-badge.component';
 import RecentNoticeAlert from '@/components/subcontractor/recent-notice-alert.component';
 import { Me, useFetchMe } from '@/entities/me';
+import { useFetchWorks } from '@/features/subcontractor/list-works';
+import { WorkCard } from 'widgets/work-card';
 
-/**
- * NOTE: localStorage를 내부에서 사용하므로 dynamic import 사용
- */
-const WorkCarousel = dynamic(() => import('@/components/subcontractor/work-carousel.component'), {
+const WorkCarousel = dynamic(() => import('@/widgets/work-carousel/ui/work-carousel.component'), {
   ssr: false,
 });
 
 export default function SubcontractorHomePage() {
+  const { data: works } = useFetchWorks();
   const { data: me } = useFetchMe();
   const insuranceInfo = me && Me.insuranceInfo(me);
 
@@ -38,7 +38,7 @@ export default function SubcontractorHomePage() {
 
       <RecentNoticeAlert />
 
-      <WorkCarousel />
+      <WorkCarousel works={works} renderItem={(work) => <WorkCard key={work.id} work={work} />} />
 
       <div className="absolute bottom-4 right-4">
         <Button type="text">

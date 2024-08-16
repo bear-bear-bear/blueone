@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { Alert, List } from 'antd';
 import dayjs from 'dayjs';
-import { WorkCard } from '@/components/subcontractor/work-card';
 import { useFetchCompletedWorks } from '@/features/subcontractor/list-completed-works';
 import { DateRange } from '@/shared/api/types';
 import CustomRangePicker from './range-picker.component';
+import { WorkCard } from 'widgets/work-card';
 
 export default function CompletedWorksPage() {
   const [dateRange, setDateRange] = useState<DateRange>(() => {

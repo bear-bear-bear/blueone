@@ -1,25 +1,18 @@
-import { memo } from 'react';
 import { Button, Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { CheckWork } from '@/features/subcontractor/check-work';
 import { CompleteWork } from '@/features/subcontractor/complete-work';
-import { EndPoint } from '@/shared/api/types';
-import type { Unpacked } from '@/shared/api/types';
+import { Work } from '@/shared/api/types';
 import cn from '@/shared/lib/utils/cn';
 import { CheckCircleOutlined, MoneyCollectOutlined } from '@ant-design/icons';
 
-type MyWorks = EndPoint['GET /user/works']['responses']['200'];
-type MyWork = Unpacked<MyWorks>;
 type Props = {
-  work: MyWork;
+  work: Work;
   readOnly?: boolean;
   className?: string;
 };
 
-const { Meta } = Card;
-const { Paragraph } = Typography;
-
-const WorkCard = ({ work, readOnly = false, className }: Props) => {
+export default function WorkCard({ work, readOnly = false, className }: Props) {
   return (
     <Card
       bordered={false}
@@ -67,7 +60,7 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
         </p>
       )}
 
-      <Meta
+      <Card.Meta
         title={
           <p className="flex items-center text-lg">
             <MoneyCollectOutlined className="text-2xl" />
@@ -77,6 +70,7 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
         description={
           <div>
             <p>* 구간지수 {work.charge}</p>
+
             {!!work.adjustment &&
               (work.adjustment > 0 ? (
                 <p>
@@ -87,6 +81,7 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
                   * 할인 <span className="text-primary">{Math.abs(work.adjustment as number)}</span>
                 </p>
               ))}
+
             {!!work.subsidy && (
               <p>
                 * 지원지수 <span className="text-primary">{work.subsidy}</span>
@@ -105,7 +100,7 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
       </div>
     </Card>
   );
-};
+}
 
 function WorkDoneStamp() {
   return (
@@ -124,11 +119,9 @@ function InfoRow({ label, content, copyable = false }: InfoRowProps) {
   return (
     <>
       <p className="text-right">{label}:</p>
-      <Paragraph className="text-base" copyable={copyable}>
+      <Typography.Paragraph className="text-base" copyable={copyable}>
         {content}
-      </Paragraph>
+      </Typography.Paragraph>
     </>
   );
 }
-
-export default memo(WorkCard);

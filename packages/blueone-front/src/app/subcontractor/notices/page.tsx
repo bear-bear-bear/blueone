@@ -1,8 +1,8 @@
 'use client';
 import { Card, List } from 'antd';
 import Linkify from 'linkify-react';
-import Empty from '@/components/subcontractor/empty.component';
 import { useFetchActiveNotices } from '@/features/subcontractor/list-active-notices';
+import { Empty } from '@/shared/ui/components/empty';
 
 export default function NoticePage() {
   const { data: notices } = useFetchActiveNotices();

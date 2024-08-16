@@ -12,7 +12,7 @@ import {
 } from 'chart.js';
 import dayjs from 'dayjs';
 import { Bar } from 'react-chartjs-2';
-import Empty from '@/components/subcontractor/empty.component';
+import { Empty } from '@/shared/ui/components/empty';
 import theme from '@/shared/ui/foundation/theme';
 import useAnalyzeIncome from '../api/use-analyze-income.query';
 
