@@ -40,7 +40,7 @@ function SettingsHeader() {
   return (
     <Card>
       <Card.Meta
-        avatar={<Avatar icon={<UserOutlined />} className="text-[54px]" className="bg-primary" />}
+        avatar={<Avatar icon={<UserOutlined />} size={54} className="bg-primary" />}
         title={<p className="text-lg mt-0.5">{me.UserInfo?.realname || 'Contractor'}</p>}
         description={
           <>
