@@ -16,17 +16,15 @@ export default function ChangePassword({ trigger }: Props) {
   const [form] = Form.useForm<ChangePasswordRequest>();
   const { message } = App.useApp();
   const { mutate: changePassword, isPending } = useChangePassword();
-  const { open, onOpen, onClose } = useDisclosure();
-
-  const closeModal = () => {
-    form.resetFields();
-    onClose();
-  };
+  const { open, onOpen, onClose } = useDisclosure({
+    onClose: form.resetFields,
+  });
 
   const onFinish = async (values: ChangePasswordRequest) => {
     changePassword(values, {
       onSuccess: () => {
         message.success('비밀번호가 변경되었어요.');
+        onClose();
       },
     });
   };
@@ -42,7 +40,7 @@ export default function ChangePassword({ trigger }: Props) {
         title="비밀번호 변경"
         open={open}
         onOk={form.submit}
-        onCancel={closeModal}
+        onCancel={onClose}
         okText="변경"
         cancelText="취소"
         okButtonProps={{ size: 'large' }}

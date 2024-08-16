@@ -14,12 +14,12 @@ export const serviceEntry = (model: Model): string => {
 
 export type InsuranceState = 'normal' | 'nearExpiration' | 'expired';
 export const insuranceInfo = (model: Model) => {
-  const expirationDate = model.UserInfo?.insuranceExpirationDate; // TODO: contractor도 UserInfo 채워서 내려주기
+  const expirationDate = dayjs(model.UserInfo?.insuranceExpirationDate); // TODO: contractor도 UserInfo 채워서 내려주기
   const now = dayjs();
 
   const state: InsuranceState = (() => {
-    if (now.isAfter(expirationDate, 'day')) return 'expired';
-    if (dayjs(expirationDate).diff(now, 'ms') < 7 * ONE_DAY) return 'nearExpiration';
+    if (!now.isBefore(expirationDate, 'day')) return 'expired';
+    if (expirationDate.diff(now, 'ms') < 7 * ONE_DAY) return 'nearExpiration';
     return 'normal';
   })();
 

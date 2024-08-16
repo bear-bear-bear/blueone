@@ -21,13 +21,10 @@ export default function CompleteWork({ work, children }: Props) {
   const insuranceInfo = Me.insuranceInfo(me);
   const { open: confirmOpen, onOpen: openConfirm, onClose: closeConfirm } = useDisclosure();
 
-  const canComplete = insuranceInfo.state !== 'expired' && !work.checkTime && !work.endTime;
+  const canComplete = insuranceInfo.state !== 'expired' && !!work.checkTime && !work.endTime;
 
   const complete = () => {
-    if (!work.checkTime) {
-      message.warning('확인 처리되지 않은 업무는 완료할 수 없어요.');
-      return;
-    }
+    if (!canComplete) return;
 
     completeWork(
       { workId: work.id },

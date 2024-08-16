@@ -34,6 +34,7 @@ export default function WorkCarousel({ works, renderItem }: Props) {
   return (
     <Carousel
       dotPosition="top"
+      dots={works.length > 1}
       infinite
       initialSlide={works[initialSlide] ? initialSlide : 0}
       afterChange={afterChange}
