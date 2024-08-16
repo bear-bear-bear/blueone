@@ -31,6 +31,7 @@ export default function CompleteWork({ work, children }: Props) {
       {
         onSuccess: () => {
           message.success('업무가 완료 처리 되었어요. 고생하셨습니다 :)');
+          closeConfirm();
 
           // TODO: 자동 동작하는지 확인
           // if (nextWorks?.find((work) => work.endTime === null)) {

@@ -1,12 +1,12 @@
 import { Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { EditNotice } from '@/features/contractor/notice/edit';
+import { RemoveNotice } from '@/features/contractor/notice/remove';
 import { Notice } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { packDateRange } from '@/shared/lib/utils/pack-date-range';
 import pick from '@/shared/lib/utils/pick';
-import { EditOutlined } from '@ant-design/icons';
-import DeleteButton from './delete-button.component';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 const columns: ColumnsType<Notice> = [
   {
@@ -49,7 +49,21 @@ const columns: ColumnsType<Notice> = [
               </Tooltip>
             )}
           />
-          <DeleteButton record={record} />
+          <RemoveNotice
+            id={record.id}
+            trigger={({ openPopConfirm, isPending }) => (
+              <Tooltip title="삭제">
+                <Button
+                  type="text"
+                  size="small"
+                  icon={<DeleteOutlined />}
+                  className="!text-red-500"
+                  onClick={openPopConfirm}
+                  loading={isPending}
+                />
+              </Tooltip>
+            )}
+          />
         </div>
       );
     },
@@ -60,6 +74,9 @@ const columns: ColumnsType<Notice> = [
 
 export default columns;
 
+/**
+ * NOTE: thisYear과의 연산을 한번에 하기 위해 column.render에서 개별 처리하지 않고, 테이블에 데이터 넣어주기 전 포맷한다
+ */
 export function preFormatDates(notice: Notice) {
   const thisYear = dayjs().year();
   const createdAt = dayjs(notice.createdAt);
