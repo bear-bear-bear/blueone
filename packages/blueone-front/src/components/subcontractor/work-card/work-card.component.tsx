@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { Button, Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
-import DoneButton from '@/components/subcontractor/work-card/done-button.component';
 import { CheckWork } from '@/features/subcontractor/check-work';
+import { CompleteWork } from '@/features/subcontractor/complete-work';
 import { EndPoint } from '@/shared/api/types';
 import type { Unpacked } from '@/shared/api/types';
 import cn from '@/shared/lib/utils/cn';
@@ -20,9 +20,6 @@ const { Meta } = Card;
 const { Paragraph } = Typography;
 
 const WorkCard = ({ work, readOnly = false, className }: Props) => {
-  const isWorkChecked = !!work.checkTime;
-  const isWorkDone = !!work.endTime;
-
   return (
     <Card
       bordered={false}
@@ -45,21 +42,31 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
                   </Button>
                 )}
               </CheckWork>,
-              <DoneButton
-                key={`d_${work.id}`}
-                isWorkChecked={isWorkChecked}
-                isWorkDone={isWorkDone}
-                workId={work.id}
-              />,
+              <CompleteWork key={`complete_${work.id}`} work={work}>
+                {({ complete, canComplete }) => (
+                  <Button
+                    type={canComplete ? 'primary' : 'text'}
+                    className="rounded-none"
+                    disabled={!canComplete}
+                    size="large"
+                    onClick={complete}
+                    block
+                  >
+                    완료
+                  </Button>
+                )}
+              </CompleteWork>,
             ]
       }
     >
-      {isWorkDone && <WorkDoneStamp />}
+      {!!work.endTime && <WorkDoneStamp />}
+
       {readOnly && !!work.endTime && (
         <p className="text-lg mb-2">
           <b>{dayjs(work.endTime).format('MM-DD')}</b>
         </p>
       )}
+
       <Meta
         title={
           <p className="flex items-center text-lg">
@@ -88,6 +95,7 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
           </div>
         }
       />
+
       <div className="grid grid-cols-[max-content_1fr] gap-x-2 gap-y-1 mt-6">
         <InfoRow label="출발지" content={work.origin} copyable={!readOnly} />
         {work.waypoint && <InfoRow label="경유지" content={work.waypoint} copyable={!readOnly} />}
