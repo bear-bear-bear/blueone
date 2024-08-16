@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Form, Input, FormInstance, App } from 'antd';
-import type { ColProps } from 'antd/lib/grid/col';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 
@@ -32,14 +31,7 @@ export default function PasswordChangeForm({ form, setSubmitLoading, closeModal 
   };
 
   return (
-    <Form
-      form={form}
-      onFinish={onFormFinish}
-      validateMessages={validateMessages}
-      size="middle"
-      layout="vertical"
-      {...layout}
-    >
+    <Form form={form} onFinish={onFormFinish} validateMessages={validateMessages} size="middle" layout="vertical">
       <Form.Item name="password" label="새 비밀번호" rules={[{ required: true }]} className="mb-3 [&_label]:!text-base">
         <Input.Password autoComplete="off" size="large" />
       </Form.Item>
@@ -67,11 +59,6 @@ export default function PasswordChangeForm({ form, setSubmitLoading, closeModal 
     </Form>
   );
 }
-
-const layout: { [ColName: string]: ColProps } = {
-  labelCol: { span: 4 },
-  wrapperCol: { flex: 'auto' },
-};
 
 const validateMessages = {
   required: '필수 입력 값입니다.',
