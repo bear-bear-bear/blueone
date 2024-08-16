@@ -1,16 +1,7 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   swcMinify: true,
-  transpilePackages: [
-    'antd',
-    '@ant-design',
-    '@ant-design/icons',
-    'rc-util',
-    'rc-picker',
-    'rc-tree',
-    'rc-pagination',
-    'rc-table',
-  ],
+  transpilePackages: ['antd', '@ant-design', 'rc-util', 'rc-picker', 'rc-tree', 'rc-pagination', 'rc-table'],
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -20,3 +11,9 @@ module.exports = {
     return config;
   },
 };
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer(nextConfig);

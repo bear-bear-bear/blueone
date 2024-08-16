@@ -1,7 +1,7 @@
 import { App, Button, ButtonProps } from 'antd';
 import { useRouter } from 'next/navigation';
-import { CgLogOut } from 'react-icons/cg';
 import httpClient from '@/shared/api/axios';
+import { LogoutOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 
 type Props = ButtonProps & {
@@ -25,7 +25,7 @@ export default function SignOutButton({ kind = 'icon', ...rest }: Props) {
   };
 
   if (kind === 'icon') {
-    return <Button type="text" title="로그아웃" icon={<CgLogOut size={22} />} onClick={handleClick} {...rest} />;
+    return <Button type="text" title="로그아웃" icon={<LogoutOutlined size={22} />} onClick={handleClick} {...rest} />;
   }
   return (
     <Button type="text" onClick={handleClick} {...rest}>

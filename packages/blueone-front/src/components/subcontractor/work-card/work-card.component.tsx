@@ -1,14 +1,13 @@
 import { memo } from 'react';
 import { Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
-import { AiOutlineFileDone } from 'react-icons/ai';
 import CheckButton from '@/components/subcontractor/work-card/check-button.component';
 import DoneButton from '@/components/subcontractor/work-card/done-button.component';
 import { EndPoint } from '@/shared/api/types';
 import type { Unpacked } from '@/shared/api/types';
 // Optional if you use Tailwind's theme system
 import cn from '@/shared/lib/utils/cn';
-import { MoneyCollectOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, MoneyCollectOutlined } from '@ant-design/icons';
 
 type MyWorks = EndPoint['GET /user/works']['responses']['200'];
 type MyWork = Unpacked<MyWorks>;
@@ -91,7 +90,7 @@ const WorkCard = ({ work, readOnly = false, className }: Props) => {
 function WorkDoneStamp() {
   return (
     <Tooltip title="완료된 업무예요.">
-      <AiOutlineFileDone size={45} className="absolute top-4 right-4 text-primary" />
+      <CheckCircleOutlined size={45} className="absolute top-4 right-4 text-primary" />
     </Tooltip>
   );
 }

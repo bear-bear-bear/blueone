@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import {
-  AiFillCar,
-  AiFillNotification,
-  AiFillSetting,
-  AiOutlineBarChart,
-  AiOutlineCar,
-  AiOutlineNotification,
-  AiOutlineSetting,
-} from 'react-icons/ai';
+  BarChartOutlined,
+  CarFilled,
+  CarOutlined,
+  NotificationFilled,
+  NotificationOutlined,
+  SettingFilled,
+  SettingOutlined,
+} from '@ant-design/icons';
 
 export type NavItem = {
   href: `/${string}`;
@@ -20,8 +20,8 @@ export type NavItem = {
 const navItems: NavItem[] = [
   {
     href: '/subcontractor',
-    outlineIcon: <AiOutlineCar size={20} />,
-    fillIcon: <AiFillCar size={20} />,
+    outlineIcon: <CarOutlined size={20} />,
+    fillIcon: <CarFilled size={20} />,
     text: '업무',
   },
   {
@@ -33,20 +33,20 @@ const navItems: NavItem[] = [
   },
   {
     href: '/subcontractor/notices',
-    outlineIcon: <AiOutlineNotification size={20} />,
-    fillIcon: <AiFillNotification size={20} />,
+    outlineIcon: <NotificationOutlined size={20} />,
+    fillIcon: <NotificationFilled size={20} />,
     text: '공지사항',
   },
   {
     href: '/subcontractor/analysis',
-    outlineIcon: <AiOutlineBarChart size={20} />,
-    fillIcon: <AiOutlineBarChart size={20} />,
+    outlineIcon: <BarChartOutlined size={20} />,
+    fillIcon: <BarChartOutlined size={20} />,
     text: '지수 분석',
   },
   {
     href: '/subcontractor/settings',
-    outlineIcon: <AiOutlineSetting size={20} />,
-    fillIcon: <AiFillSetting size={20} />,
+    outlineIcon: <SettingOutlined size={20} />,
+    fillIcon: <SettingFilled size={20} />,
     text: '설정',
   },
 ];

@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { Button, Checkbox, Form, Modal, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox';
-import { AiOutlinePlus } from 'react-icons/ai';
 import type { ProcessedWork } from '@/app/contractor/works/page';
+import { PlusOutlined } from '@ant-design/icons';
 import AddForm, { type WorkAddFormValues } from './add-form.component';
 
 type Props = {
@@ -41,7 +41,7 @@ export default function AddButton({ record, swrKey = record?.swrKey, render }: P
         render(handleAddIconClick)
       ) : (
         <Tooltip title="추가">
-          <Button type="text" size="small" icon={<AiOutlinePlus />} onClick={handleAddIconClick} />
+          <Button type="text" size="small" icon={<PlusOutlined />} onClick={handleAddIconClick} />
         </Tooltip>
       )}
 
