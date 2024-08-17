@@ -8,6 +8,7 @@ type UseDisclosureProps = {
 };
 
 /**
+ * 모달 등의 open/close 상태를 선언적으로 관리하기 위한 훅
  * @see reference - https://chakra-ui.com/docs/hooks/use-disclosure
  */
 export function useDisclosure(props: UseDisclosureProps = {}) {

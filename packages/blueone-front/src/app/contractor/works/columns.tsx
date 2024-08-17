@@ -4,15 +4,19 @@ import dayjs from 'dayjs';
 import { AddWork } from '@/features/contractor/work/add';
 import { EditWork } from '@/features/contractor/work/edit';
 import { RemoveWork } from '@/features/contractor/work/remove';
+import { ItemOf } from '@/shared/api/types';
+import { GetListResponse } from '@/shared/api/types/works';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import type { ProcessedWork } from './page';
 
-const columns: ColumnsType<ProcessedWork> = [
+type Item = ItemOf<GetListResponse>;
+
+const columns: ColumnsType<Item> = [
   {
     title: '일자',
-    dataIndex: 'processedCreatedAt',
-    key: 'processedCreatedAt',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
     align: 'center',
+    render: (_, record) => processDate(record.createdAt),
     sorter: {
       compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
     },
@@ -20,9 +24,10 @@ const columns: ColumnsType<ProcessedWork> = [
   },
   {
     title: '예약 일시',
-    dataIndex: 'processedBookingDate',
-    key: 'processedBookingDate',
+    dataIndex: 'bookingDate',
+    key: 'bookingDate',
     align: 'center',
+    render: (_, record) => processDate(record.bookingDate, true),
     sorter: {
       compare: (a, b) => +dayjs(a.bookingDate).toDate() - +dayjs(b.bookingDate).toDate(),
     },
@@ -65,6 +70,7 @@ const columns: ColumnsType<ProcessedWork> = [
     dataIndex: 'realname',
     key: 'realname',
     align: 'center',
+    render: (_, record) => record.User?.UserInfo.realname,
     width: 80,
   },
   {
@@ -97,16 +103,18 @@ const columns: ColumnsType<ProcessedWork> = [
   },
   {
     title: '확인',
-    dataIndex: 'processedCheckTime',
-    key: 'processedCheckTime',
+    dataIndex: 'checkTime',
+    key: 'checkTime',
     align: 'center',
+    render: (_, record) => processTime(record.checkTime, record.createdAt),
     width: 90,
   },
   {
     title: '완료',
-    dataIndex: 'processedEndTime',
-    key: 'processedEndTime',
+    dataIndex: 'endTime',
+    key: 'endTime',
     align: 'center',
+    render: (_, record) => processTime(record.endTime, record.createdAt),
     sorter: {
       compare: (a, b) => +!!a.endTime - +!!b.endTime,
     },
@@ -144,7 +152,7 @@ const columns: ColumnsType<ProcessedWork> = [
 
 export default columns;
 
-function renderAddButton(record: ProcessedWork) {
+function renderAddButton(record: Item) {
   return (
     <AddWork
       initialValues={record}
@@ -157,7 +165,7 @@ function renderAddButton(record: ProcessedWork) {
   );
 }
 
-function renderEditButton(record: ProcessedWork) {
+function renderEditButton(record: Item) {
   return (
     <EditWork
       id={record.id}
@@ -172,13 +180,20 @@ function renderEditButton(record: ProcessedWork) {
   );
 }
 
-function renderRemoveButton(record: ProcessedWork) {
+function renderRemoveButton(record: Item) {
   return (
     <RemoveWork
       id={record.id}
       trigger={({ openPopConfirm, isPending }) => (
         <Tooltip title="삭제">
-          <Button type="text" size="small" icon={<DeleteOutlined />} onClick={openPopConfirm} loading={isPending} />
+          <Button
+            type="text"
+            size="small"
+            icon={<DeleteOutlined />}
+            className="!text-red-500"
+            onClick={openPopConfirm}
+            loading={isPending}
+          />
         </Tooltip>
       )}
     />
@@ -188,4 +203,25 @@ function renderRemoveButton(record: ProcessedWork) {
 function isCompletedAtToday(endTime: string) {
   const TODAY_START_MS = dayjs().startOf('d').valueOf();
   return +new Date(endTime) > TODAY_START_MS;
+}
+
+function processTime(targetTime: string | undefined, createdAt: Item['createdAt']): string {
+  if (!targetTime) return '-';
+
+  const day = dayjs(targetTime);
+  const isCreatedDay = day.startOf('day').isSame(dayjs(createdAt).startOf('day'));
+
+  return day.format(isCreatedDay ? 'HH:mm' : 'MM/DD_HH:mm');
+}
+
+function processDate(targetDate?: string, withTime?: boolean): string {
+  if (!targetDate) return '-';
+
+  const day = dayjs(targetDate);
+  const inThisYear = day.year() === dayjs().year();
+
+  const formatFront = inThisYear ? 'MM/DD' : 'YYYY/MM/DD';
+  const formatBack = withTime ? ' HH:00' : '';
+
+  return day.format(formatFront + formatBack);
 }

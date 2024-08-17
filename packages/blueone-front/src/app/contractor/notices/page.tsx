@@ -10,7 +10,7 @@ import { LoadingPanel } from '@/shared/ui/components/loading-panel';
 import columns, { preFormatDates } from './columns';
 import CustomRangePicker from './custom-range-picker.component';
 
-export default function NoticesPage() {
+export default function NoticesManagementPage() {
   const [dateRange, setDateRange] = useState<DateRange>(() => {
     const today = dayjs();
 
@@ -39,10 +39,9 @@ export default function NoticesPage() {
         />
       </div>
       <Table
-        id="noticeBoard"
+        rowKey={(notice) => notice.id}
         dataSource={dataSource}
         columns={columns}
-        rowKey={(notice) => notice.id}
         rowClassName="cursor-pointer"
         expandable={{
           expandedRowRender: (notice) => (

@@ -4,120 +4,66 @@ import { Button, Checkbox, DatePicker, Table } from 'antd';
 import { RangePickerProps } from 'antd/es/date-picker';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import qs from 'qs';
-import useSWR from 'swr';
 import { AddWork } from '@/features/contractor/work/add';
-import type { EndPoint, UserInfo, ItemOf, User, DateRange } from '@/shared/api/types';
-import { formatTime } from '@/shared/lib/utils/day';
-import { axiosFetcher } from '@/shared/lib/utils/swr';
+import { useFetchWorks } from '@/features/contractor/work/list';
+import type { User, DateRange, ItemOf } from '@/shared/api/types';
+import { GetListResponse } from '@/shared/api/types/works';
+import { useBool } from '@/shared/lib/hooks/use-bool.hook';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
 import { SubcontractorSelector } from '@/widgets/subcontractor-selector';
 import { SnippetsOutlined } from '@ant-design/icons';
 import columns from './columns';
-import processWorkDateTimes from './process-work-date-times';
 import TotalFee from './total-fee.component';
 
 const { RangePicker } = DatePicker;
 
-export type FullWorks = EndPoint['GET /works']['responses']['200'];
-export type FullWork = ItemOf<FullWorks>;
-export type ProcessedWork = FullWork & {
-  processedCheckTime: string;
-  processedEndTime: string;
-  processedCreatedAt?: string;
-  processedUpdatedAt?: string;
-  processedBookingDate?: string;
-  realname?: UserInfo['realname'];
-  isDone: boolean;
-  swrKey: string;
-};
-
-export default function WorkManagementTable() {
-  const [pickedUserId, setPickedUserId] = useState<User['id']>();
-  const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState(false);
-  const [isVisibleBookedWork, setIsVisibleBookedWork] = useState(false);
-  const [isShowTotalFee, setIsShowTotalFee] = useState(false);
-
-  const today = dayjs();
-  const times = formatTime(today);
-
+export default function WorksManagementPage() {
+  const times = getTimes();
   const defaultDateRange = {
-    startDate: times.threeDaysAgoDate,
-    endDate: times.todayDate,
+    startDate: times.threeDaysAgo.format('YYYY-MM-DD'),
+    endDate: times.today.format('YYYY-MM-DD'),
   };
   const defaultBookingDateRange = {
-    startDate: times.tomorrowDate,
-    endDate: times.fourDaysLaterDate,
+    startDate: times.tomorrow.format('YYYY-MM-DD'),
+    endDate: times.fourDaysLater.format('YYYY-MM-DD'),
   };
 
   const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
-
-  const disabledDate = (current: dayjs.Dayjs) => {
-    if (isVisibleBookedWork) {
-      return current && current < dayjs().endOf('day');
+  const [pickedUserId, setPickedUserId] = useState<User['id']>();
+  const [showPastCompletedWorks, togglePastCompletedWorks] = useBool(false);
+  const [showBookedWorks, toggleBookedWorks] = useBool(false, (next) => {
+    if (next) {
+      setDateRange(defaultBookingDateRange);
+    } else {
+      setDateRange(defaultDateRange);
     }
-    return current && current > dayjs().endOf('day');
-  };
+  });
+  const [showTotalFee, toggleTotalFee] = useBool(false);
 
-  const swrKey = (() => {
-    if (isVisibleBookedWork) {
-      return `/works?${qs.stringify({ ...dateRange, booked: true })}`;
-    }
-    return `/works?${qs.stringify(dateRange)}`;
-  })();
-
-  const { data: works } = useSWR<FullWorks>(swrKey, axiosFetcher, {
-    refreshInterval: 30 * 1000,
+  const { data: works } = useFetchWorks({
+    ...dateRange,
+    booked: showBookedWorks,
   });
 
-  const dataSource: ProcessedWork[] | undefined = useMemo(() => {
-    if (!works) return undefined;
+  const dataSource = useMemo<GetListResponse>(() => {
+    if (!works) return [];
     return works
       .filter((work) => {
-        const isDoneAtPast = !!work.endTime && +new Date(work.endTime) < times.todayStartMS;
-        return isVisiblePastDoneWork || !isDoneAtPast;
+        const isCompletedAtPast = !!work.endTime && +new Date(work.endTime) < times.todayStart.valueOf();
+        return showPastCompletedWorks || !isCompletedAtPast;
       })
       .filter((work) => {
         if (!pickedUserId) return true;
         return work.userId === pickedUserId;
-      })
-      .map((work) => ({
-        ...work,
-        ...processWorkDateTimes(work),
-        realname: work.User?.UserInfo?.realname,
-        isDone: !!work.endTime,
-        swrKey,
-      }));
-  }, [works, times.todayStartMS, isVisiblePastDoneWork, pickedUserId, swrKey]);
+      });
+  }, [works, times.todayStart, showPastCompletedWorks, pickedUserId]);
 
-  const filteredColumns = useMemo<ColumnsType<ProcessedWork>>(() => {
-    if (isVisibleBookedWork) {
-      return columns.filter((v) => v.key !== 'processedCreatedAt');
+  const filteredColumns = useMemo<ColumnsType<ItemOf<GetListResponse>>>(() => {
+    if (showBookedWorks) {
+      return columns.filter((v) => v.key !== 'createdAt');
     }
-    return columns.filter((v) => v.key !== 'processedBookingDate');
-  }, [isVisibleBookedWork]);
-
-  const handleChangeVisiblePastDoneWorkCheckbox = () => {
-    setIsVisiblePastDoneWork((prev) => !prev);
-  };
-
-  const handleChangeVisibleBookedWorkCheckbox = () => {
-    setIsVisibleBookedWork((prev) => {
-      const next = !prev;
-
-      if (next) {
-        setDateRange(defaultBookingDateRange);
-      } else {
-        setDateRange(defaultDateRange);
-      }
-
-      return next;
-    });
-  };
-
-  const handleChangeShowTotalFeeCheckbox = () => {
-    setIsShowTotalFee((prev) => !prev);
-  };
+    return columns.filter((v) => v.key !== 'bookingDate');
+  }, [showBookedWorks]);
 
   const handleChangeRangePicker: NonNullable<RangePickerProps['onChange']> = (_, [startDate, endDate]) => {
     setDateRange({
@@ -127,8 +73,8 @@ export default function WorkManagementTable() {
   };
 
   useEffect(() => {
-    setDateRange(isVisibleBookedWork ? defaultBookingDateRange : defaultDateRange);
-  }, [isVisibleBookedWork]);
+    setDateRange(showBookedWorks ? defaultBookingDateRange : defaultDateRange);
+  }, [showBookedWorks]);
 
   if (!dataSource) {
     return <LoadingPanel />;
@@ -139,7 +85,7 @@ export default function WorkManagementTable() {
         <div className="flex items-center flex-wrap gap-2">
           <RangePicker
             presets={
-              isVisibleBookedWork
+              showBookedWorks
                 ? [
                     {
                       label: 'Default',
@@ -147,7 +93,7 @@ export default function WorkManagementTable() {
                     },
                     {
                       label: 'This Month',
-                      value: [times.tomorrow, today.endOf('month')],
+                      value: [times.tomorrow, times.thisMonthEnd],
                     },
                   ]
                 : [
@@ -157,17 +103,22 @@ export default function WorkManagementTable() {
                     },
                     {
                       label: 'Today',
-                      value: [today, today],
+                      value: [times.today, times.today],
                     },
                     {
                       label: 'This Month',
-                      value: [today.startOf('month'), today],
+                      value: [times.thisMonthStart, times.today],
                     },
                   ]
             }
             onChange={handleChangeRangePicker}
             value={dateRange && [dayjs(dateRange.startDate), dayjs(dateRange.endDate)]}
-            disabledDate={disabledDate}
+            disabledDate={(current: dayjs.Dayjs) => {
+              if (showBookedWorks) {
+                return current && current < dayjs().endOf('day');
+              }
+              return current && current > dayjs().endOf('day');
+            }}
             allowClear={false}
             className="mr-2"
           />
@@ -175,21 +126,13 @@ export default function WorkManagementTable() {
           <SubcontractorSelector value={pickedUserId} onChange={setPickedUserId} placeholder="모든 기사의 업무 표시" />
 
           <div className="flex items-center gap-2">
-            <Checkbox
-              checked={isVisiblePastDoneWork}
-              disabled={isVisibleBookedWork}
-              onChange={handleChangeVisiblePastDoneWorkCheckbox}
-            >
+            <Checkbox checked={showPastCompletedWorks} disabled={showBookedWorks} onChange={togglePastCompletedWorks}>
               과거 목록
             </Checkbox>
-            <Checkbox
-              checked={isVisibleBookedWork}
-              disabled={isVisiblePastDoneWork}
-              onChange={handleChangeVisibleBookedWorkCheckbox}
-            >
+            <Checkbox checked={showBookedWorks} disabled={showPastCompletedWorks} onChange={toggleBookedWorks}>
               예약 목록
             </Checkbox>
-            <Checkbox checked={isShowTotalFee} onChange={handleChangeShowTotalFeeCheckbox}>
+            <Checkbox checked={showTotalFee} onChange={toggleTotalFee}>
               지수 합계
             </Checkbox>
           </div>
@@ -205,16 +148,16 @@ export default function WorkManagementTable() {
       </div>
 
       <Table
-        id="workListTable"
+        rowKey={(work) => work.id}
         dataSource={dataSource}
         columns={filteredColumns}
         rowClassName={(record) => {
-          if (!record.isDone) return 'bg-white';
+          if (!record.endTime) return 'bg-white';
 
           return 'bg-gray-300 [&_.ant-table-cell-row-hover]:!bg-gray-300';
         }}
         expandable={{
-          expandedRowRender: (work) => <Remark work={work} />,
+          expandedRowRender: renderRemark,
           expandIcon: ({ onExpand, record }) => {
             if (!record.remark) return null;
             return <SnippetsOutlined onClick={(e) => onExpand(record, e)} />;
@@ -223,18 +166,17 @@ export default function WorkManagementTable() {
           columnWidth: 30,
         }}
         showSorterTooltip={false}
-        rowKey={(work) => work.id}
         pagination={{ position: ['bottomLeft'] }}
         size="middle"
         bordered
         summary={() => {
-          if (!isShowTotalFee) return null;
+          if (!showTotalFee) return null;
           return (
             <Table.Summary fixed>
               <Table.Summary.Row>
                 <Table.Summary.Cell index={0} colSpan={columns.length}>
                   <div className="flex justify-end">
-                    <TotalFee workData={dataSource} />
+                    <TotalFee works={works ?? []} />
                   </div>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
@@ -246,7 +188,7 @@ export default function WorkManagementTable() {
   );
 }
 
-function Remark({ work }: { work: ProcessedWork }) {
+function renderRemark(work: ItemOf<GetListResponse>) {
   return (
     <div className="p-1 text-center">
       <span className="underline">비고:</span>
@@ -254,4 +196,24 @@ function Remark({ work }: { work: ProcessedWork }) {
       {work.remark ?? '-'}
     </div>
   );
+}
+
+function getTimes() {
+  const today = dayjs();
+  const todayStart = today.startOf('d');
+  const tomorrow = today.startOf('day').add(1, 'day');
+  const threeDaysAgo = today.subtract(3, 'days');
+  const fourDaysLater = today.add(3, 'days');
+  const thisMonthStart = today.startOf('month');
+  const thisMonthEnd = today.endOf('month');
+
+  return {
+    today,
+    todayStart,
+    tomorrow,
+    threeDaysAgo,
+    fourDaysLater,
+    thisMonthStart,
+    thisMonthEnd,
+  };
 }

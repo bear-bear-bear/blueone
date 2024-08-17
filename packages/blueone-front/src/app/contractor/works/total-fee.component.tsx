@@ -1,27 +1,27 @@
 import { useMemo } from 'react';
-import type { ProcessedWork } from '@/app/contractor/works/page';
+import { GetListResponse } from '@/shared/api/types/works';
 import addFloats from '@/shared/lib/utils/add-floats';
 
 type Props = {
-  workData: ProcessedWork[];
+  works: GetListResponse;
 };
 
-export default function TotalFee({ workData }: Props) {
+export default function TotalFee({ works }: Props) {
   const totalFee = useMemo(() => {
     const initialValue = {
       charge: 0,
       subsidy: 0,
       payout: 0,
     };
-    if (!workData) return initialValue;
+    if (!works) return initialValue;
 
-    return workData.reduce((acc, work) => {
+    return works.reduce((acc, work) => {
       acc.charge = addFloats(acc.charge, work.charge);
       acc.subsidy = addFloats(acc.subsidy ?? 0, work.subsidy ?? 0);
       acc.payout = addFloats(acc.payout, Number(work.payout));
       return acc;
     }, initialValue);
-  }, [workData]);
+  }, [works]);
 
   return (
     <div className="flex gap-1.5">

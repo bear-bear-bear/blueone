@@ -4,7 +4,7 @@ import { AddSubcontractor } from '@/features/contractor/subcontractor/add';
 import { useFetchSubcontractors } from '@/features/contractor/subcontractor/list';
 import ListItem from './list-item.component';
 
-export default function UsersPage() {
+export default function SubcontractorsManagementPage() {
   const { data: contractors, isPending } = useFetchSubcontractors();
 
   return (
