@@ -59,3 +59,7 @@
 .ant-picker-time-panel-cell-inner::after {
   content: ':00'; /* This trick is for adding :00 to hour panel in BookingDatePicker */
 }
+
+.ant-menu-item-divider {
+  background: theme('colors.gray.950');
+}

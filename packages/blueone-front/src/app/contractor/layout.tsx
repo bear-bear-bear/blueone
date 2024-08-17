@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useSignOut } from '@/features/sign-out';
 import { LogoutOutlined } from '@ant-design/icons';
-import navItems, { getMenuKeyByPathname, getPageHeadingByPathname, allGroupKeys } from './nav-items';
+import navItems, { getMenuKeyByPathname, getPageHeadingByPathname } from './nav-items';
 
 const { Content: Main, Footer, Sider } = Layout;
 
@@ -16,22 +16,16 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} breakpoint="lg" width={240}>
-        <div className="min-h-12 flex justify-center p-4">
+      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} breakpoint="lg" width={220}>
+        <div className="min-h-[59px] flexRowCenter transition-none">
           {collapsed ? (
             <Image src="/icon_white.svg" alt="로고" width={20} height={20} />
           ) : (
-            <Image src="/logo_white.svg" alt="로고" width={110} height={20} />
+            <Image src="/logo_white.svg" alt="로고" width={110} height={22} />
           )}
         </div>
 
-        <Menu
-          theme="dark"
-          defaultOpenKeys={allGroupKeys}
-          defaultSelectedKeys={[getMenuKeyByPathname(pathname)]}
-          mode="inline"
-          items={navItems}
-        />
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={[getMenuKeyByPathname(pathname)]} items={navItems} />
       </Sider>
 
       <Layout>
