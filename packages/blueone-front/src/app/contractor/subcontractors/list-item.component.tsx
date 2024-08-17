@@ -1,38 +1,36 @@
 import { ReactNode } from 'react';
 import { Avatar, Button, List, Tooltip } from 'antd';
-import type { FullUser } from '@/app/contractor/subcontractors/page';
 import { Me } from '@/entities/me';
 import { EditSubcontractor } from '@/features/contractor/subcontractor/edit';
 import { RemoveSubcontractor } from '@/features/contractor/subcontractor/remove';
+import { ItemOf } from '@/shared/api/types';
+import { GetListResponse } from '@/shared/api/types/users';
 import cn from '@/shared/lib/utils/cn';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
 import { DeleteOutlined, EditOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons';
 
-const { Item } = List;
+type Props = {
+  contractor: ItemOf<GetListResponse>;
+};
 
-export default function ListItem(user: FullUser) {
-  const {
-    id,
-    phoneNumber,
-    UserInfo: { realname, insuranceExpirationDate },
-  } = user;
-  const insuranceInfo = Me.insuranceInfo(user);
+export default function ListItem({ contractor }: Props) {
+  const insuranceInfo = Me.insuranceInfo(contractor);
 
   return (
-    <Item
+    <List.Item
       className="hover:bg-gray-50 focus:bg-gray-50"
       actions={[
         <EditSubcontractor
-          key={`edit_${id}`}
-          id={id}
+          key={`edit_${contractor.id}`}
+          id={contractor.id}
           initialValues={{
-            phoneNumber: user.phoneNumber,
-            realname: user.UserInfo.realname,
-            dateOfBirth: user.UserInfo.dateOfBirth,
-            licenseNumber: user.UserInfo.licenseNumber,
-            licenseType: user.UserInfo.licenseType,
-            insuranceNumber: user.UserInfo.insuranceNumber,
-            insuranceExpirationDate: user.UserInfo.insuranceExpirationDate,
+            phoneNumber: contractor.phoneNumber,
+            realname: contractor.UserInfo.realname,
+            dateOfBirth: contractor.UserInfo.dateOfBirth,
+            licenseNumber: contractor.UserInfo.licenseNumber,
+            licenseType: contractor.UserInfo.licenseType,
+            insuranceNumber: contractor.UserInfo.insuranceNumber,
+            insuranceExpirationDate: contractor.UserInfo.insuranceExpirationDate,
           }}
           trigger={({ openModal, isPending }) => (
             <Tooltip title="수정">
@@ -41,8 +39,8 @@ export default function ListItem(user: FullUser) {
           )}
         />,
         <RemoveSubcontractor
-          key={`remove_${id}`}
-          id={id}
+          key={`remove_${contractor.id}`}
+          id={contractor.id}
           trigger={({ openPopConfirm, isPending }) => (
             <Tooltip title="삭제">
               <Button
@@ -58,7 +56,7 @@ export default function ListItem(user: FullUser) {
         />,
       ]}
     >
-      <Item.Meta
+      <List.Item.Meta
         avatar={
           <Avatar
             icon={<UserOutlined />}
@@ -69,23 +67,23 @@ export default function ListItem(user: FullUser) {
             })}
           />
         }
-        title={getTitle(insuranceInfo.state, realname)}
+        title={renderTitle(insuranceInfo.state, contractor.UserInfo.realname)}
         description={
           <div className={cn({ 'line-through': insuranceInfo.state === 'expired' })}>
-            <p>{processPhoneNumber(phoneNumber)}</p>
+            <p>{processPhoneNumber(contractor.phoneNumber)}</p>
             <p>
               {insuranceInfo.state === 'expired'
                 ? '보험이 만료되었습니다'
-                : `보험 만료일: ${insuranceExpirationDate} (${insuranceInfo.to})`}
+                : `보험 만료일: ${contractor.UserInfo.insuranceExpirationDate} (${insuranceInfo.to})`}
             </p>
           </div>
         }
       />
-    </Item>
+    </List.Item>
   );
 }
 
-function getTitle(state: Me.InsuranceState, realname: string): ReactNode {
+function renderTitle(state: Me.InsuranceState, realname: string): ReactNode {
   switch (state) {
     case 'normal':
       return <span>{realname}</span>;

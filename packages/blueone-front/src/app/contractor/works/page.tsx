@@ -6,7 +6,7 @@ import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import qs from 'qs';
 import useSWR from 'swr';
-import type { EndPoint, UserInfo, Unpacked, User, DateRange } from '@/shared/api/types';
+import type { EndPoint, UserInfo, ItemOf, User, DateRange } from '@/shared/api/types';
 import { formatTime } from '@/shared/lib/utils/day';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
@@ -20,7 +20,7 @@ import TotalFee from './total-fee.component';
 const { RangePicker } = DatePicker;
 
 export type FullWorks = EndPoint['GET /works']['responses']['200'];
-export type FullWork = Unpacked<FullWorks>;
+export type FullWork = ItemOf<FullWorks>;
 export type ProcessedWork = FullWork & {
   processedCheckTime: string;
   processedEndTime: string;

@@ -1,4 +1,4 @@
-export type Unpacked<T> = T extends (infer U)[]
+export type ItemOf<T> = T extends (infer U)[]
   ? U
   : T extends (...args: any[]) => infer U
   ? U
