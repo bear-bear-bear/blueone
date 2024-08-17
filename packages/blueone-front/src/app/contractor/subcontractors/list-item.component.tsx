@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { Avatar, List, Tooltip } from 'antd';
+import { Avatar, Button, List, Tooltip } from 'antd';
 import type { FullUser } from '@/app/contractor/subcontractors/page';
 import { Me } from '@/entities/me';
+import { EditSubcontractor } from '@/features/contractor/subcontractor/edit';
 import cn from '@/shared/lib/utils/cn';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
-import { UserOutlined, WarningOutlined } from '@ant-design/icons';
+import { EditOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons';
 import DeleteButton from './delete-button.component';
-import EditButton from './edit-button.component';
 
 const { Item } = List;
 
@@ -22,7 +22,24 @@ export default function ListItem(user: FullUser) {
     <Item
       className="hover:bg-gray-50 focus:bg-gray-50"
       actions={[
-        <EditButton user={user} key={`editButton_${id}`} />,
+        <EditSubcontractor
+          key={`editButton_${id}`}
+          id={id}
+          initialValues={{
+            phoneNumber: user.phoneNumber,
+            realname: user.UserInfo.realname,
+            dateOfBirth: user.UserInfo.dateOfBirth,
+            licenseNumber: user.UserInfo.licenseNumber,
+            licenseType: user.UserInfo.licenseType,
+            insuranceNumber: user.UserInfo.insuranceNumber,
+            insuranceExpirationDate: user.UserInfo.insuranceExpirationDate,
+          }}
+          trigger={({ openModal, isPending }) => (
+            <Tooltip title="수정">
+              <Button type="text" size="small" icon={<EditOutlined />} onClick={openModal} loading={isPending} />
+            </Tooltip>
+          )}
+        />,
         <DeleteButton user={user} key={`deleteButton_${id}`} />,
       ]}
     >
