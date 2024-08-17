@@ -3,10 +3,10 @@ import { Avatar, Button, List, Tooltip } from 'antd';
 import type { FullUser } from '@/app/contractor/subcontractors/page';
 import { Me } from '@/entities/me';
 import { EditSubcontractor } from '@/features/contractor/subcontractor/edit';
+import { RemoveSubcontractor } from '@/features/contractor/subcontractor/remove';
 import cn from '@/shared/lib/utils/cn';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
-import { EditOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons';
-import DeleteButton from './delete-button.component';
+import { DeleteOutlined, EditOutlined, UserOutlined, WarningOutlined } from '@ant-design/icons';
 
 const { Item } = List;
 
@@ -23,7 +23,7 @@ export default function ListItem(user: FullUser) {
       className="hover:bg-gray-50 focus:bg-gray-50"
       actions={[
         <EditSubcontractor
-          key={`editButton_${id}`}
+          key={`edit_${id}`}
           id={id}
           initialValues={{
             phoneNumber: user.phoneNumber,
@@ -40,7 +40,22 @@ export default function ListItem(user: FullUser) {
             </Tooltip>
           )}
         />,
-        <DeleteButton user={user} key={`deleteButton_${id}`} />,
+        <RemoveSubcontractor
+          key={`remove_${id}`}
+          id={id}
+          trigger={({ openPopConfirm, isPending }) => (
+            <Tooltip title="삭제">
+              <Button
+                type="text"
+                size="small"
+                icon={<DeleteOutlined />}
+                className="!text-red-500"
+                onClick={openPopConfirm}
+                loading={isPending}
+              />
+            </Tooltip>
+          )}
+        />,
       ]}
     >
       <Item.Meta
