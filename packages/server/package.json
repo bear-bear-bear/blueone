@@ -8,6 +8,7 @@
     "build": "tsc -p .",
     "start": "cross-env NODE_ENV=production pm2 start dist/src/app.js --node-args=\"-r ts-node/register/transpile-only -r tsconfig-paths/register\" && pm2 monit",
     "check-types": "tsc --noEmit",
+    "lint": "eslint src --fix --ext .ts",
     "clean": "rm -rf node_modules",
     "restart": "npm run exit && npm run build && npm run start",
     "exit": "pm2 kill",
@@ -57,5 +58,8 @@
     "ts-node": "^10.6.0",
     "tsconfig-paths": "^3.12.0",
     "typescript": "^4.5.5"
+  },
+  "optionalDependencies": {
+    "@blueone/eslint-config-base": "file:*"
   }
 }

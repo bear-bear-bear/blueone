@@ -17,6 +17,10 @@
     },
     "clean": {
       "dependsOn": ["^clean"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "inputs": ["**/*.{ts,tsx,js,jsx}", ".eslintrc.*", ".eslintignore", "!node_modules/**"]
     }
   }
 }

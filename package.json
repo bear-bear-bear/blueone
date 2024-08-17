@@ -12,15 +12,11 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean",
-    "lint:staged": "lint-staged",
-    "lint": "npm run lint:front && npm run lint:back",
-    "lint:front": "eslint apps/@blueone/web/src --fix --ext .ts,.tsx",
-    "lint:back": "eslint packages/@blueone/server/src --fix --ext .ts",
+    "lint": "turbo run lint",
     "format": "prettier --write ."
   },
   "repository": {
@@ -29,32 +25,8 @@
   },
   "author": "BLUEONE <ghlwkdthfl@gmail.com>",
   "homepage": "https://blueone.vercel.app",
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-  },
   "devDependencies": {
-    "@types/node": "^18.19.44",
-    "@typescript-eslint/eslint-plugin": "^5.8.1",
-    "@typescript-eslint/parser": "^5.8.1",
-    "eslint": "^8.6.0",
-    "eslint-config-next": "^14.2.5",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-node": "^0.3.6",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "eslint-plugin-unused-imports": "^2.0.0",
-    "husky": "^7.0.1",
-    "lint-staged": "^12.1.4",
-    "prettier": "^2.5.1",
+    "prettier": "^3.3.3",
     "turbo": "^2.0.11"
   }
 }

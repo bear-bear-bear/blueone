@@ -1,20 +1,11 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  extends: [
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'plugin:react-hooks/recommended',
-    'next', // TODO: 별도 패키지로 분리하고 front 패키지에서 extends 후 next 별도 삽입
-  ],
+  extends: ['plugin:@typescript-eslint/recommended'],
   plugins: ['unused-imports', 'import'],
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
   },
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
@@ -22,9 +13,8 @@ module.exports = {
     '@typescript-eslint/consistent-type-assertions': 2,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/explicit-member-accessibility': 2,
-    '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/no-empty-function': 1,
-    '@typescript-eslint/no-empty-interface': 0,
+    '@typescript-eslint/no-empty-interface': 1,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-inferrable-types': 0,
     '@typescript-eslint/no-namespace': 0,
@@ -40,23 +30,12 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-use-before-define': 0,
-    '@typescript-eslint/no-var-requires': 0,
     'no-multiple-empty-lines': 2,
     'import/order': [
       2,
       {
         groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
         pathGroups: [
-          {
-            pattern: 'react',
-            group: 'builtin',
-            position: 'before',
-          },
-          {
-            pattern: 'react-dom',
-            group: 'builtin',
-            position: 'before',
-          },
           {
             pattern: '@**',
             group: 'external',
@@ -69,7 +48,6 @@ module.exports = {
           },
         ],
         'newlines-between': 'never',
-        pathGroupsExcludedImportTypes: ['react', 'react-dom'],
         alphabetize: {
           order: 'asc',
           caseInsensitive: false,
@@ -77,12 +55,8 @@ module.exports = {
       },
     ],
     'no-else-return': 2,
-    'react/prop-types': 0,
-    'react/jsx-no-target-blank': 0,
-    'react/react-in-jsx-scope': 0,
     'unused-imports/no-unused-imports-ts': 2,
     'unused-imports/no-unused-vars-ts': 0,
-    'react/display-name': 0,
     'no-restricted-syntax': [
       2,
       {
@@ -90,11 +64,5 @@ module.exports = {
         message: 'right-hand assign is not allowed',
       },
     ],
-  },
-  settings: {
-    react: {
-      pragma: 'React',
-      version: '17.0',
-    },
   },
 };

@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
 import { RedirectType } from 'next/dist/client/components/redirect';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
+import { ReactNode } from 'react';
 import { getMyServiceEntry } from '@/entities/me/api/get-my-service-entry';
 
 export default async function SignInLayout({ children }: { children: ReactNode }) {

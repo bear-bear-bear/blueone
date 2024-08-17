@@ -1,8 +1,8 @@
 'use client';
-import { ReactNode, useEffect } from 'react';
-import { App, Button, ConfigProvider, theme } from 'antd';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { ReactNode, useEffect } from 'react';
+import { App, Button, ConfigProvider, theme } from 'antd';
 import { useFetchMe } from '@/entities/me';
 import cn from '@/shared/lib/utils/cn';
 import { ArrowLeftOutlined } from '@ant-design/icons';

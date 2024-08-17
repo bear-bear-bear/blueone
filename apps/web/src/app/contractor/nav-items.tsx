@@ -1,5 +1,5 @@
-import { MenuProps } from 'antd';
 import Link from 'next/link';
+import { MenuProps } from 'antd';
 import { CarOutlined, NotificationOutlined, TeamOutlined } from '@ant-design/icons';
 
 const routeToLabelMap: Record<string, string> = {
