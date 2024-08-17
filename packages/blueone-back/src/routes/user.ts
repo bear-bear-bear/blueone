@@ -216,7 +216,7 @@ router.get(
     const firstDateOfRange = today.startOf(dayjsUnit[by]).toISOString();
 
     try {
-      const doneWorks = await Work.findAll({
+      const completedWorks = await Work.findAll({
         where: {
           ...getDefaultWhereParamsQueriedByWork(),
           userId: req.user?.id,
@@ -233,7 +233,7 @@ router.get(
         order: [['createdAt', 'DESC']],
       });
 
-      if (doneWorks.length === 0) {
+      if (completedWorks.length === 0) {
         res.status(200).json([]);
         return;
       }
@@ -248,7 +248,7 @@ router.get(
           return acc;
         }, {});
 
-        doneWorks.forEach((work) => {
+        completedWorks.forEach((work) => {
           const payout = calculatePayout(work);
           const currDate = dayjs(work.checkTime).date();
           dateMap[`${currDate}`] = addFloats(dateMap[`${currDate}`], payout);
@@ -265,7 +265,7 @@ router.get(
           return acc;
         }, {});
 
-        doneWorks.forEach((work) => {
+        completedWorks.forEach((work) => {
           const payout = calculatePayout(work);
           const currMonth = dayjs(work.checkTime).month() + 1; // dayjs month is 0~11
           monthMap[`${currMonth}`] = addFloats(

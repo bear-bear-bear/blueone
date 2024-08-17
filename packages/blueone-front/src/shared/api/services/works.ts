@@ -9,8 +9,8 @@ import {
   EditResponse,
   ForceActivateRequest,
   ForceActivateResponse,
-  ForceFinishRequest,
-  ForceFinishResponse,
+  ForceCompleteRequest,
+  ForceCompleteResponse,
   GetListRequest,
   GetListResponse,
   RemoveRequest,
@@ -46,8 +46,8 @@ class WorksService extends HTTPClient implements WorksClient {
     return this.client.patch<ForceActivateResponse>(`${this.ROUTE}/${workId}/force-activate`);
   };
 
-  public forceFinish = ({ workId }: ForceFinishRequest) => {
-    return this.client.patch<ForceFinishResponse>(`${this.ROUTE}/${workId}/force-finish`);
+  public forceComplete = ({ workId }: ForceCompleteRequest) => {
+    return this.client.patch<ForceCompleteResponse>(`${this.ROUTE}/${workId}/force-complete`);
   };
 
   public remove = ({ workId }: RemoveRequest) => {

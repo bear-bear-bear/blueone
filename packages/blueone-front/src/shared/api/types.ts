@@ -314,7 +314,7 @@ export interface EndPoint {
   /**
    * 업무 강제 완료
    */
-  'PATCH /works/{workId}/force-finish': {
+  'PATCH /works/{workId}/force-complete': {
     responses: {
       200: Work;
       403: APIError;

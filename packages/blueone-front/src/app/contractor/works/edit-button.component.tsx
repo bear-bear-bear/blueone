@@ -9,7 +9,7 @@ import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './edit-form.component';
 
-type WorkForceFinishResponse = EndPoint['PATCH /works/{workId}/force-finish']['responses']['200'];
+type WorkForceCompleteResponse = EndPoint['PATCH /works/{workId}/force-complete']['responses']['200'];
 type WorkForceActivateResponse = EndPoint['PATCH /works/{workId}/force-activate']['responses']['200'];
 
 type Props = {
@@ -32,10 +32,10 @@ export default function EditButton({ record }: Props) {
     setIsModalOpen(true);
   };
 
-  const forceFinishWork = async () => {
+  const forceCompleteWork = async () => {
     try {
       const updatedWork = await httpClient
-        .patch<WorkForceFinishResponse>(`/works/${record.id}/force-finish`)
+        .patch<WorkForceCompleteResponse>(`/works/${record.id}/force-complete`)
         .then((res) => res.data);
 
       const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
@@ -99,7 +99,7 @@ export default function EditButton({ record }: Props) {
                     key="done"
                     placement="topLeft"
                     title="정말로 완료 처리 하시겠습니까?"
-                    onConfirm={forceFinishWork}
+                    onConfirm={forceCompleteWork}
                     okText="완료"
                     cancelText="취소"
                     okButtonProps={{ danger: true }}

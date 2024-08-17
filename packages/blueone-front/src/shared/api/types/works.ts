@@ -19,8 +19,8 @@ export type ChangeStatusResponse = EndPoint['PATCH /works/{workId}']['responses'
 export type ForceActivateRequest = WorkId;
 export type ForceActivateResponse = EndPoint['PATCH /works/{workId}/force-activate']['responses']['200'];
 
-export type ForceFinishRequest = WorkId;
-export type ForceFinishResponse = EndPoint['PATCH /works/{workId}/force-finish']['responses']['200'];
+export type ForceCompleteRequest = WorkId;
+export type ForceCompleteResponse = EndPoint['PATCH /works/{workId}/force-complete']['responses']['200'];
 
 export type RemoveRequest = WorkId;
 export type RemoveResponse = EndPoint['DELETE /works/{workId}']['responses']['200'];
@@ -31,6 +31,6 @@ export interface WorksClient {
   edit: (request: EditRequest) => Promise<EditResponse>;
   changeStatus: (request: ChangeStatusRequest) => Promise<ChangeStatusResponse>;
   forceActivate: (request: ForceActivateRequest) => Promise<ForceActivateResponse>;
-  forceFinish: (request: ForceFinishRequest) => Promise<ForceFinishResponse>;
+  forceComplete: (request: ForceCompleteRequest) => Promise<ForceCompleteResponse>;
   remove: (request: RemoveRequest) => Promise<RemoveResponse>;
 }

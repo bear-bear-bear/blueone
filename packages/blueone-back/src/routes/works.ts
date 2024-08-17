@@ -267,7 +267,7 @@ router.patch(
  * 업무 강제 종료
  */
 router.patch(
-  '/:workId/force-finish',
+  '/:workId/force-complete',
   isLoggedIn,
   isContractor,
   async (req, res, next) => {
