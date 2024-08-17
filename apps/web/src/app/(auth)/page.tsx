@@ -2,27 +2,35 @@
 import { useRouter } from 'next/navigation';
 import { Input, Form, Button } from 'antd';
 import { ColProps } from 'antd/lib/grid/col';
+import { Me, useFetchMe } from '@/entities/me';
 import { useSignIn } from '@/features/sign-in';
 import { SignInRequest } from '@/shared/api/types/user';
+import { useIsomorphicLayoutEffect } from '@/shared/lib/hooks/use-isomorphic-layout-effect.hook';
 
 export default function SignInPage() {
   const router = useRouter();
   const { mutate: signIn } = useSignIn();
+  const { data: me } = useFetchMe();
+
+  const redirect = (me: Me.Model) => {
+    const serviceEntry = Me.serviceEntry(me);
+
+    router.push(serviceEntry);
+  };
 
   const onFinish = async (values: SignInRequest) => {
     signIn(values, {
-      onSuccess: ({ role }) => {
-        switch (role) {
-          case 'contractor':
-            router.push('/contractor/works');
-            break;
-          case 'subcontractor':
-            router.push('/subcontractor');
-            break;
-        }
+      onSuccess: (me) => {
+        redirect(me);
       },
     });
   };
+
+  useIsomorphicLayoutEffect(() => {
+    if (me) {
+      redirect(me);
+    }
+  }, [me]);
 
   return (
     <Form<SignInRequest> initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off" {...layout}>

@@ -1,18 +1,8 @@
-import { RedirectType } from 'next/dist/client/components/redirect';
+'use client';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
-import { getMyServiceEntry } from '@/entities/me/api/get-my-service-entry';
 
-export default async function SignInLayout({ children }: { children: ReactNode }) {
-  try {
-    const myServiceEntry = await getMyServiceEntry();
-
-    return redirect(myServiceEntry, RedirectType.replace);
-  } catch {
-    // do nothing, maybe not logged in
-  }
-
+export default function SignInLayout({ children }: { children: ReactNode }) {
   return (
     <div className="w-full h-screen flexColCenter">
       <div className="w-full p-6 sm:border sm:border-solid sm:border-gray-300 sm:rounded-lg sm:w-[27rem]">
