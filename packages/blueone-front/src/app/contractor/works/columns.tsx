@@ -3,8 +3,8 @@ import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { AddWork } from '@/features/contractor/work/add';
 import { EditWork } from '@/features/contractor/work/edit';
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import DeleteButton from './delete-button.component';
+import { RemoveWork } from '@/features/contractor/work/remove';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ProcessedWork } from './page';
 
 const columns: ColumnsType<ProcessedWork> = [
@@ -117,53 +117,75 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'action',
     align: 'center',
     render: (_, record) => {
-      const AddButton = (
-        <AddWork
-          initialValues={record}
-          trigger={({ openModal, isPending }) => (
-            <Tooltip title="추가">
-              <Button type="text" size="small" icon={<PlusOutlined />} onClick={openModal} loading={isPending} />
-            </Tooltip>
-          )}
-        />
-      );
-
-      const EditButton = (
-        <EditWork
-          id={record.id}
-          initialValues={record}
-          completed={!!record.endTime}
-          trigger={({ openModal, isPending }) => (
-            <Tooltip title="수정">
-              <Button type="text" size="small" icon={<EditOutlined />} onClick={openModal} loading={isPending} />
-            </Tooltip>
-          )}
-        />
-      );
-
       if (!record.endTime) {
         return (
           <>
-            {EditButton}
-            {AddButton}
-            <DeleteButton record={record} />
+            {renderEditButton(record)}
+            {renderAddButton(record)}
+            {renderRemoveButton(record)}
           </>
         );
       }
-      const TODAY_START_MS = dayjs().startOf('d').valueOf();
-      const isDoneAtToday = +new Date(record.endTime) > TODAY_START_MS;
-      if (isDoneAtToday) {
+
+      if (isCompletedAtToday(record.endTime)) {
         return (
           <>
-            {EditButton}
-            {AddButton}
+            {renderEditButton(record)}
+            {renderAddButton(record)}
           </>
         );
       }
-      return AddButton;
+
+      return renderAddButton(record);
     },
     width: 90,
   },
 ];
 
 export default columns;
+
+function renderAddButton(record: ProcessedWork) {
+  return (
+    <AddWork
+      initialValues={record}
+      trigger={({ openModal, isPending }) => (
+        <Tooltip title="추가">
+          <Button type="text" size="small" icon={<PlusOutlined />} onClick={openModal} loading={isPending} />
+        </Tooltip>
+      )}
+    />
+  );
+}
+
+function renderEditButton(record: ProcessedWork) {
+  return (
+    <EditWork
+      id={record.id}
+      initialValues={record}
+      completed={!!record.endTime}
+      trigger={({ openModal, isPending }) => (
+        <Tooltip title="수정">
+          <Button type="text" size="small" icon={<EditOutlined />} onClick={openModal} loading={isPending} />
+        </Tooltip>
+      )}
+    />
+  );
+}
+
+function renderRemoveButton(record: ProcessedWork) {
+  return (
+    <RemoveWork
+      id={record.id}
+      trigger={({ openPopConfirm, isPending }) => (
+        <Tooltip title="삭제">
+          <Button type="text" size="small" icon={<DeleteOutlined />} onClick={openPopConfirm} loading={isPending} />
+        </Tooltip>
+      )}
+    />
+  );
+}
+
+function isCompletedAtToday(endTime: string) {
+  const TODAY_START_MS = dayjs().startOf('d').valueOf();
+  return +new Date(endTime) > TODAY_START_MS;
+}
