@@ -17,7 +17,7 @@ const navItems = [
   },
   {
     title: '기사 관리',
-    route: '/contractor/users',
+    route: '/contractor/subcontractors',
     icon: <TeamOutlined />,
   },
   {

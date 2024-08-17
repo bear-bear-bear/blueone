@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { App, Button, Popconfirm, Tooltip } from 'antd';
 import useSWRImmutable from 'swr/immutable';
-import type { FullUsers, FullUser } from '@/app/contractor/users/page';
+import type { FullUsers, FullUser } from '@/app/contractor/subcontractors/page';
 import httpClient from '@/shared/api/axios';
 import type { EndPoint } from '@/shared/api/types';
 import { axiosFetcher } from '@/shared/lib/utils/swr';

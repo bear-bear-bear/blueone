@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Avatar, List, Tooltip } from 'antd';
-import type { FullUser } from '@/app/contractor/users/page';
+import type { FullUser } from '@/app/contractor/subcontractors/page';
 import { Me } from '@/entities/me';
 import cn from '@/shared/lib/utils/cn';
 import processPhoneNumber from '@/shared/lib/utils/process-phone-number';

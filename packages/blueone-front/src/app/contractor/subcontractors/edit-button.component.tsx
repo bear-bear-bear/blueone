@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Form, Modal, Tooltip } from 'antd';
-import type { FullUser } from '@/app/contractor/users/page';
+import type { FullUser } from '@/app/contractor/subcontractors/page';
 import type { EndPoint } from '@/shared/api/types';
 import { EditOutlined } from '@ant-design/icons';
 import EditForm from './edit-form.component';
