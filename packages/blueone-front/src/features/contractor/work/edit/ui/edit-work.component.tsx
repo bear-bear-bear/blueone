@@ -1,33 +1,40 @@
 import { ReactElement, useState } from 'react';
-import { Form, Input, App, Modal, InputNumber, Checkbox, Button } from 'antd';
+import { Form, Input, App, Modal, Popconfirm, Button, InputNumber } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import { BookingDatePicker, useBookingDate } from '@/entities/work';
-import { AddRequest } from '@/shared/api/types/works';
+import { Work } from '@/shared/api/types';
+import { EditRequest } from '@/shared/api/types/works';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import omit from '@/shared/lib/utils/omit';
 import { SubcontractorSelector } from '@/widgets/subcontractor-selector';
-import useAddWork from '../api/use-add-work.mutation';
+import useEditWork from '../api/use-edit-work.mutation';
+import useForceActivateBookedWork from '../api/use-force-activate-booked-work.mutation';
+import useForceCompleteWork from '../api/use-force-complete-work.mutaion';
+
+type FormValues = Omit<EditRequest, 'workId'>;
 
 type TriggerProps = {
   openModal: () => void;
   isPending: boolean;
 };
 type Props = {
-  initialValues?: AddRequest;
+  id: Work['id'];
+  completed: boolean;
+  initialValues: FormValues;
   trigger: (props: TriggerProps) => ReactElement;
 };
 
-export default function AddWork({ initialValues, trigger }: Props) {
-  const [form] = Form.useForm<AddRequest>();
+export default function EditWork({ id, completed, initialValues, trigger }: Props) {
+  const [form] = Form.useForm<FormValues>();
   const { message } = App.useApp();
-  const { mutate: addWork, isPending } = useAddWork();
-  const [useBooking, setUseBooking] = useState(!!initialValues?.bookingDate);
+  const { mutate: editWork, isPending: isEditPending } = useEditWork();
+  const { mutate: forceCompleteWork, isPending: isForceCompletePending } = useForceCompleteWork();
+  const { mutate: forceActivateBookedWork, isPending: isForceActivatePending } = useForceActivateBookedWork();
   const [bookingDate, setBookingDate, resetBookingDate] = useBookingDate(initialValues?.bookingDate);
   const [pickedUserId, setPickedUserId] = useState(initialValues?.userId);
 
   const reset = () => {
     form.resetFields();
-    setUseBooking(!!initialValues?.bookingDate);
     setPickedUserId(initialValues?.userId);
     resetBookingDate();
   };
@@ -35,20 +42,79 @@ export default function AddWork({ initialValues, trigger }: Props) {
     onClose: reset,
   });
 
-  const onFormFinish = (values: AddRequest) => {
-    const request: AddRequest = {
+  const isPending = isEditPending || isForceCompletePending || isForceActivatePending;
+  const isBooked = !!initialValues.bookingDate;
+
+  const forceComplete = () => {
+    if (completed) {
+      throw new Error('이미 종료된 업무입니다.');
+    }
+    forceCompleteWork(
+      { workId: id },
+      {
+        onSuccess: () => {
+          message.info('업무 강제 종료 완료');
+          onClose();
+        },
+      },
+    );
+  };
+
+  const activateBooked = () => {
+    if (!isBooked) {
+      throw new Error('예약된 업무가 아닙니다.');
+    }
+    forceActivateBookedWork(
+      { workId: id },
+      {
+        onSuccess: () => {
+          message.info('예약된 업무 활성화 완료');
+          onClose();
+        },
+      },
+    );
+  };
+
+  const onFormFinish = (values: FormValues) => {
+    const request: EditRequest = {
+      workId: id,
       ...values,
-      remark: values.remark?.trim() || undefined,
-      bookingDate: useBooking ? bookingDate.format() : undefined,
     };
 
-    addWork(request, {
+    editWork(request, {
       onSuccess: () => {
-        message.success('업무 등록 완료');
+        message.success('업무 수정 완료');
         onClose();
       },
     });
   };
+
+  const FooterFloatButton = isBooked ? (
+    <Popconfirm
+      key="force-activate-booked"
+      placement="topLeft"
+      title="정말로 활성화 하시겠습니까?"
+      onConfirm={activateBooked}
+      okText="활성화"
+      cancelText="취소"
+    >
+      <Button className="float-left">활성화</Button>
+    </Popconfirm>
+  ) : (
+    <Popconfirm
+      key="force-complete"
+      placement="topLeft"
+      title="정말로 완료 처리 하시겠습니까?"
+      onConfirm={forceComplete}
+      okText="완료"
+      cancelText="취소"
+      okButtonProps={{ danger: true }}
+    >
+      <Button danger className="float-left">
+        완료
+      </Button>
+    </Popconfirm>
+  );
 
   return (
     <>
@@ -58,39 +124,28 @@ export default function AddWork({ initialValues, trigger }: Props) {
       })}
 
       <Modal
-        title={useBooking ? '업무 예약' : '업무 등록'}
+        title={isBooked ? '예약 수정' : '업무 수정'}
         open={open}
         onOk={form.submit}
         onCancel={onClose}
-        okText="등록"
+        okText="수정"
         cancelText="취소"
         confirmLoading={isPending}
         maskClosable={false}
         footer={[
-          <Checkbox
-            key="booking"
-            checked={useBooking}
-            onChange={(e) => setUseBooking(e.target.checked)}
-            className="float-left py-1"
-          >
-            예약
-          </Checkbox>,
-
-          <Button key="clear" onClick={reset}>
-            초기화
-          </Button>,
+          FooterFloatButton,
           <Button key="cancel" onClick={onClose}>
             취소
           </Button>,
           <Button key="submit" type="primary" onClick={form.submit}>
-            등록
+            수정
           </Button>,
         ]}
       >
-        <Form<AddRequest>
+        <Form<FormValues>
           form={form}
+          initialValues={omit(initialValues, ['userId', 'bookingDate'])} // omit controlled values
           onFinish={onFormFinish}
-          initialValues={initialValues && omit(initialValues, ['bookingDate', 'userId'])} // omit controlled values
           validateMessages={validateMessages}
           size="middle"
           {...layout}
@@ -135,6 +190,7 @@ export default function AddWork({ initialValues, trigger }: Props) {
             <SubcontractorSelector
               value={pickedUserId}
               onChange={setPickedUserId}
+              disabled={completed}
               placeholder="업무를 배정받을 기사 선택"
             />
           </Form.Item>
@@ -142,7 +198,7 @@ export default function AddWork({ initialValues, trigger }: Props) {
             <Input.TextArea autoComplete="off" />
           </Form.Item>
 
-          {useBooking && (
+          {isBooked && (
             <Form.Item label="예약일시" required>
               <BookingDatePicker date={bookingDate} setDate={setBookingDate} />
             </Form.Item>

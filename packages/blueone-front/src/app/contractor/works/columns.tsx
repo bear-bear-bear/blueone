@@ -2,9 +2,9 @@ import { Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { AddWork } from '@/features/contractor/work/add';
-import { PlusOutlined } from '@ant-design/icons';
+import { EditWork } from '@/features/contractor/work/edit';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import DeleteButton from './delete-button.component';
-import EditButton from './edit-button.component';
 import type { ProcessedWork } from './page';
 
 const columns: ColumnsType<ProcessedWork> = [
@@ -128,10 +128,23 @@ const columns: ColumnsType<ProcessedWork> = [
         />
       );
 
+      const EditButton = (
+        <EditWork
+          id={record.id}
+          initialValues={record}
+          completed={!!record.endTime}
+          trigger={({ openModal, isPending }) => (
+            <Tooltip title="수정">
+              <Button type="text" size="small" icon={<EditOutlined />} onClick={openModal} loading={isPending} />
+            </Tooltip>
+          )}
+        />
+      );
+
       if (!record.endTime) {
         return (
           <>
-            <EditButton record={record} />
+            {EditButton}
             {AddButton}
             <DeleteButton record={record} />
           </>
@@ -142,7 +155,7 @@ const columns: ColumnsType<ProcessedWork> = [
       if (isDoneAtToday) {
         return (
           <>
-            <EditButton record={record} />
+            {EditButton}
             {AddButton}
           </>
         );
