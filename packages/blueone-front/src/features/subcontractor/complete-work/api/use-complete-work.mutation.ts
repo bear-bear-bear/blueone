@@ -14,6 +14,9 @@ export default function useCompleteWork() {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.MyWorks],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.MyCompletedWorks],
+      });
     },
   });
 }
