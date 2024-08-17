@@ -17,7 +17,8 @@ export default function SubcontractorSelector({ value, onChange, disabled = fals
   const { data: subcontractors, isPending } = useFetchSubcontractors();
 
   const notFound = (() => {
-    if (typeof value === 'undefined' || isPending) {
+    if (!value || isPending) {
+      // NOTE: value가 undefined로 타이핑 되어있지만, 비어있을 때 실제 값은 null이라 undefined 동등비교로 체크하면 안됩니다
       return false;
     }
     return !!subcontractors?.every((subcontractor) => subcontractor.id !== value);

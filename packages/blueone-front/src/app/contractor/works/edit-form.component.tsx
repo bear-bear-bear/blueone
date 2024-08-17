@@ -5,7 +5,7 @@ import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
 import { BookingDatePicker, useBookingDate } from '@/entities/work';
 import httpClient from '@/shared/api/axios';
-import type { EndPoint, User } from '@/shared/api/types';
+import type { EndPoint } from '@/shared/api/types';
 import omit from '@/shared/lib/utils/omit';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { SubcontractorSelector } from '@/widgets/subcontractor-selector';
@@ -24,7 +24,7 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
   const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
-  const [pickedUserId, setPickedUserId] = useState<User['id']>();
+  const [pickedUserId, setPickedUserId] = useState(prevWork?.userId);
 
   const onFormFinish = async (values: WorkPutRequest) => {
     const reqBody: WorkPutRequest = {
