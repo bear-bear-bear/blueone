@@ -5,7 +5,7 @@ import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
 import { BookingDatePicker, useBookingDate } from '@/entities/work';
 import httpClient from '@/shared/api/axios';
-import type { EndPoint, User, Work } from '@/shared/api/types';
+import type { EndPoint, User } from '@/shared/api/types';
 import omit from '@/shared/lib/utils/omit';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { SubcontractorSelector } from '@/widgets/subcontractor-selector';
@@ -26,15 +26,6 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
   const [pickedUserId, setPickedUserId] = useState<User['id']>();
 
-  const cancelWorkCheck = async (workId: Work['id']) => {
-    try {
-      await httpClient.patch(`/works/${workId}?state=init`).then((res) => res.data);
-      message.error('업무 확인 취소 완료');
-    } catch (err) {
-      throw err;
-    }
-  };
-
   const onFormFinish = async (values: WorkPutRequest) => {
     const reqBody: WorkPutRequest = {
       ...values,
@@ -45,11 +36,6 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
     setSubmitLoading(true);
     try {
       const updatedWork = await httpClient.put<EditedWork>(`/works/${prevWork.id}`, reqBody).then((res) => res.data);
-
-      if (reqBody.userId !== prevWork.userId && !!prevWork.checkTime && !prevWork.endTime) {
-        await cancelWorkCheck(prevWork.id);
-        updatedWork.checkTime = undefined;
-      }
 
       const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
       await mutateWorks(nextWorks);

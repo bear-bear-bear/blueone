@@ -95,10 +95,15 @@ router.put('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
       });
       return;
     }
+    if (!!work.endTime) {
+      res.status(403).json({
+        message: '완료된 업무는 수정할 수 없습니다.',
+      });
+      return;
+    }
 
     Object.entries(workInfo).forEach(([key, value]) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error
       work[key] = value;
     });
 
@@ -115,10 +120,15 @@ router.put('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
 
         await nextUser.addWork(work.id);
       }
+
       if (work.userId) {
         const prevUser = await User.findByPk(work.userId);
 
         await prevUser?.removeWork(work.id);
+      }
+
+      if (!!work.checkTime) {
+        work.checkTime = null;
       }
 
       work.userId = userId;
@@ -153,18 +163,6 @@ router.patch(
       }
 
       switch (state) {
-        case 'init':
-          if (work.endTime) {
-            res.status(403).json({
-              message: '완료된 업무는 초기화할 수 없습니다.',
-            });
-            return;
-          }
-          work.checkTime = null;
-          work.bookingDate = null;
-          await work.save();
-
-          break;
         case 'checked':
           if (work.checkTime) {
             res.status(403).json({
