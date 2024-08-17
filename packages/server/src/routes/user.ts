@@ -49,47 +49,54 @@ router.get('/', isLoggedIn, async (req, res, next) => {
  * 로그인
  */
 router.post('/sign-in', isNotLoggedIn, (req, res, next) => {
-  passport.authenticate('local', (serverError, user, clientError) => {
-    if (serverError) {
-      console.error('serverError', serverError);
-      next(serverError);
-      return;
-    }
-
-    if (clientError) {
-      res.status(401).json(clientError);
-      return;
-    }
-
-    return req.login(user, async (loginError) => {
-      if (loginError) {
-        console.error('loginError', loginError);
-        return next(loginError);
+  passport.authenticate(
+    'local',
+    (serverError: unknown, user: User, clientError: unknown) => {
+      if (serverError) {
+        console.error('serverError', serverError);
+        next(serverError);
+        return;
       }
-      const fullUser = await User.findOne({
-        where: { id: user.id },
-        attributes: {
-          exclude: ['password'],
-        },
-        include: [
-          {
-            model: UserInfo,
-            attributes: {
-              include: ['realname', 'licenseType', 'insuranceExpirationDate'],
-            },
+
+      if (clientError) {
+        res.status(401).json(clientError);
+        return;
+      }
+
+      return req.login(user, async (loginError) => {
+        if (loginError) {
+          console.error('loginError', loginError);
+          return next(loginError);
+        }
+        const fullUser = await User.findOne({
+          where: { id: user.id },
+          attributes: {
+            exclude: ['password'],
           },
-        ],
+          include: [
+            {
+              model: UserInfo,
+              attributes: {
+                include: ['realname', 'licenseType', 'insuranceExpirationDate'],
+              },
+            },
+          ],
+        });
+        return res.status(200).json(fullUser?.get());
       });
-      return res.status(200).json(fullUser?.get());
-    });
-  })(req, res, next);
+    },
+  )(req, res, next);
 });
 
 /**
  * 로그아웃
  */
 router.post('/sign-out', isLoggedIn, (req, res) => {
-  req.logout();
+  req.logout((err) => {
+    if (err) {
+      console.error('로그아웃 중 에러', err);
+    }
+  });
   req.session.destroy((err) => {
     if (err) {
       console.error('세션 파괴 중 에러', err);

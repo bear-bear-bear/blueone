@@ -1,10 +1,11 @@
 {
-  "name": "blueone-front",
+  "name": "@blueone/web",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "pm2 start npm --name \"next\" -- start && npx pm2 monit",
-    "typecheck": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf node_modules"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",

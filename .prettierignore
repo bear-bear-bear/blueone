@@ -1,0 +1,13 @@
+dist/
+build/
+node_modules/
+public/
+*.min.js
+.github/
+*-lock.json
+.next/
+.turbo/
+.vscode/
+.idea/
+log/
+sessions/

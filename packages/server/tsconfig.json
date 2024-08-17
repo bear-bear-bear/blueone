@@ -8,18 +8,12 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "typeRoots" : [
-      "./node_modules/@types",
-      "./typings"
-    ],
+    "typeRoots": ["./node_modules/@types", "./typings"],
     "baseUrl": ".",
     "paths": {
-      "@/*":  ["./src/*"],
+      "@/*": ["./src/*"],
       "typings": ["./typings"]
     }
   },
-  "include": [
-    "typings/**/*.d.ts",
-    "src/**/*"
-  ]
+  "include": ["typings/**/*.d.ts", "src/**/*"]
 }
