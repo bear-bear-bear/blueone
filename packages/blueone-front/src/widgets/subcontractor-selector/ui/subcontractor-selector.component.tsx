@@ -1,5 +1,4 @@
-import { Divider, FormInstance, Select, Tooltip } from 'antd';
-import type { WorkAddFormValues } from '@/app/contractor/works/add-form.component';
+import { Divider, Select, Tooltip } from 'antd';
 import { Me } from '@/entities/me';
 import { useFetchSubcontractors } from '@/features/contractor/subcontractor/list';
 import type { User } from '@/shared/api/types';
@@ -7,40 +6,40 @@ import processPhoneNumber from '@/shared/lib/utils/process-phone-number';
 import { WarningOutlined } from '@ant-design/icons';
 
 type Props = {
-  form: FormInstance<WorkAddFormValues>;
-  defaultValue?: WorkAddFormValues['userId'];
+  value: User['id'] | undefined;
+  onChange: (value: User['id'] | undefined) => void;
   disabled?: boolean;
+  className?: string;
+  placeholder?: string;
 };
 
-export default function SubcontractorSelector1({ form, defaultValue, disabled = false }: Props) {
+export default function SubcontractorSelector({ value, onChange, disabled = false, className, placeholder }: Props) {
   const { data: subcontractors, isPending } = useFetchSubcontractors();
-  const isDeleted = (() => {
-    if (typeof defaultValue === 'undefined' || isPending) {
+
+  const notFound = (() => {
+    if (typeof value === 'undefined' || isPending) {
       return false;
     }
-    return !subcontractors?.some((subcontractor) => subcontractor.id === defaultValue);
+    return !!subcontractors?.every((subcontractor) => subcontractor.id !== value);
   })();
 
-  const handleSelect = (v: number) => {
-    form.setFieldsValue({ userId: v });
-  };
-
   const handleClear = () => {
-    form.setFieldsValue({ userId: undefined });
+    onChange(undefined);
   };
 
   return (
     <Select<User['id']>
-      placeholder={isDeleted ? '(삭제된 기사가 배정되어 있습니다)' : '업무를 배정받을 기사 선택'}
-      status={isDeleted ? 'error' : undefined}
-      showSearch
-      optionFilterProp="children"
-      onSelect={handleSelect}
+      value={value}
+      onSelect={onChange}
+      placeholder={notFound ? '(삭제된 기사가 배정되어 있습니다)' : placeholder}
+      status={notFound ? 'error' : undefined}
       onClear={handleClear}
+      showSearch
       allowClear
-      defaultValue={defaultValue}
-      disabled={disabled}
+      optionFilterProp="children"
       loading={isPending}
+      disabled={disabled}
+      className={className}
     >
       {subcontractors?.map((subcontractor) => {
         const insuranceInfo = Me.insuranceInfo(subcontractor);

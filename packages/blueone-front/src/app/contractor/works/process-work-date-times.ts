@@ -2,8 +2,8 @@ import type { FullWork } from '@/app/contractor/works/page';
 import dayjs from '@/shared/lib/utils/dayjs';
 
 export default function processWorkDateTimes(work: FullWork) {
-  const processToTime = (dateISOString: string | null) => {
-    if (dateISOString === null) return '-';
+  const processToTime = (dateISOString?: string) => {
+    if (!dateISOString) return '-';
 
     const time = dayjs(dateISOString);
     const timeDayStart = time.startOf('day').valueOf();
@@ -12,8 +12,8 @@ export default function processWorkDateTimes(work: FullWork) {
     return time.format(timeDayStart === createdAtDayStart ? 'HH:mm' : 'MM/DD_HH:mm');
   };
 
-  const processToDate = (dateISOString: string | null, withT?: boolean) => {
-    if (dateISOString === null) return '-';
+  const processToDate = (dateISOString?: string, withT?: boolean) => {
+    if (!dateISOString) return '-';
 
     const time = dayjs(dateISOString);
     const thisYear = dayjs().year();

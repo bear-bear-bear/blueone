@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
 import { Form, Input, App, Modal, FormProps } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
-import type { UpdateRequest } from '@/app/contractor/subcontractors/edit-button.component';
 import { User } from '@/shared/api/types';
 import { EditRequest } from '@/shared/api/types/users';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
@@ -119,7 +118,7 @@ const layout: { [ColName: string]: ColProps } = {
   wrapperCol: { flex: 'auto' },
 };
 
-const validateMessages: FormProps<UpdateRequest>['validateMessages'] = {
+const validateMessages: FormProps['validateMessages'] = {
   required: '필수 입력 값입니다.',
   pattern: {
     mismatch: '형식이 올바르지 않습니다.',

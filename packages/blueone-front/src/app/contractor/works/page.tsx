@@ -6,13 +6,13 @@ import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import qs from 'qs';
 import useSWR from 'swr';
+import { AddWork } from '@/features/contractor/work/add';
 import type { EndPoint, UserInfo, ItemOf, User, DateRange } from '@/shared/api/types';
 import { formatTime } from '@/shared/lib/utils/day';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
-import { SubcontractorSelector2 } from '@/widgets/subcontractor-selector';
+import { SubcontractorSelector } from '@/widgets/subcontractor-selector';
 import { SnippetsOutlined } from '@ant-design/icons';
-import AddButton from './add-button.component';
 import columns from './columns';
 import processWorkDateTimes from './process-work-date-times';
 import TotalFee from './total-fee.component';
@@ -24,16 +24,16 @@ export type FullWork = ItemOf<FullWorks>;
 export type ProcessedWork = FullWork & {
   processedCheckTime: string;
   processedEndTime: string;
-  processedCreatedAt: string | null;
-  processedUpdatedAt: string | null;
-  processedBookingDate: string | null;
+  processedCreatedAt?: string;
+  processedUpdatedAt?: string;
+  processedBookingDate?: string;
   realname?: UserInfo['realname'];
   isDone: boolean;
   swrKey: string;
 };
 
 export default function WorkManagementTable() {
-  const [pickedUserId, setPickedUserId] = useState<User['id'] | null>(null);
+  const [pickedUserId, setPickedUserId] = useState<User['id']>();
   const [isVisiblePastDoneWork, setIsVisiblePastDoneWork] = useState(false);
   const [isVisibleBookedWork, setIsVisibleBookedWork] = useState(false);
   const [isShowTotalFee, setIsShowTotalFee] = useState(false);
@@ -74,18 +74,18 @@ export default function WorkManagementTable() {
     if (!works) return undefined;
     return works
       .filter((work) => {
-        const isDoneAtPast = work.endTime !== null && +new Date(work.endTime) < times.todayStartMS;
+        const isDoneAtPast = !!work.endTime && +new Date(work.endTime) < times.todayStartMS;
         return isVisiblePastDoneWork || !isDoneAtPast;
       })
       .filter((work) => {
-        if (pickedUserId === null) return true;
+        if (!pickedUserId) return true;
         return work.userId === pickedUserId;
       })
       .map((work) => ({
         ...work,
         ...processWorkDateTimes(work),
         realname: work.User?.UserInfo?.realname,
-        isDone: work.endTime !== null,
+        isDone: !!work.endTime,
         swrKey,
       }));
   }, [works, times.todayStartMS, isVisiblePastDoneWork, pickedUserId, swrKey]);
@@ -172,7 +172,7 @@ export default function WorkManagementTable() {
             className="mr-2"
           />
 
-          <SubcontractorSelector2 value={pickedUserId} setValue={setPickedUserId} />
+          <SubcontractorSelector value={pickedUserId} onChange={setPickedUserId} placeholder="모든 기사의 업무 표시" />
 
           <div className="flex items-center gap-2">
             <Checkbox
@@ -195,10 +195,9 @@ export default function WorkManagementTable() {
           </div>
         </div>
 
-        <AddButton
-          swrKey={swrKey}
-          render={(onClick) => (
-            <Button type="default" onClick={onClick}>
+        <AddWork
+          trigger={({ openModal, isPending }) => (
+            <Button type="default" onClick={openModal} loading={isPending}>
               등록
             </Button>
           )}

@@ -1,21 +1,20 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Form, Input, InputNumber, FormInstance, App } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import useSWRImmutable from 'swr/immutable';
 import type { FullWorks, ProcessedWork } from '@/app/contractor/works/page';
-import { useBookingDate } from '@/hooks/use-booking-date.hook';
+import { BookingDatePicker, useBookingDate } from '@/entities/work';
 import httpClient from '@/shared/api/axios';
-import type { EndPoint, Work } from '@/shared/api/types';
+import type { EndPoint, User, Work } from '@/shared/api/types';
+import omit from '@/shared/lib/utils/omit';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
-import { SubcontractorSelector1 } from '@/widgets/subcontractor-selector';
-import type { WorkAddFormValues } from './add-form.component';
-import BookingDatePicker from './booking-date-picker.component';
+import { SubcontractorSelector } from '@/widgets/subcontractor-selector';
 
 type WorkPutRequest = EndPoint['PUT /works/{workId}']['requestBody'];
 type EditedWork = EndPoint['PUT /works/{workId}']['responses']['200'];
 
 type Props = {
-  form: FormInstance<WorkAddFormValues>;
+  form: FormInstance<WorkPutRequest>;
   prevWork: ProcessedWork;
   closeModal: () => void;
   setSubmitLoading: Dispatch<SetStateAction<boolean>>;
@@ -25,6 +24,7 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
   const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(prevWork.swrKey, axiosFetcher);
   const [bookingDate, setBookingDate] = useBookingDate(prevWork?.bookingDate);
+  const [pickedUserId, setPickedUserId] = useState<User['id']>();
 
   const cancelWorkCheck = async (workId: Work['id']) => {
     try {
@@ -35,13 +35,11 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
     }
   };
 
-  const onFormFinish = async (values: WorkAddFormValues) => {
+  const onFormFinish = async (values: WorkPutRequest) => {
     const reqBody: WorkPutRequest = {
       ...values,
-      waypoint: values.waypoint ?? null,
-      userId: values.userId ?? null,
-      remark: values.remark ?? null,
-      bookingDate: prevWork.bookingDate ? bookingDate.format() : null,
+      userId: pickedUserId,
+      bookingDate: prevWork.bookingDate ? bookingDate.format() : undefined,
     };
 
     setSubmitLoading(true);
@@ -50,7 +48,7 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
 
       if (reqBody.userId !== prevWork.userId && !!prevWork.checkTime && !prevWork.endTime) {
         await cancelWorkCheck(prevWork.id);
-        updatedWork.checkTime = null;
+        updatedWork.checkTime = undefined;
       }
 
       const nextWorks = works?.map((work) => (work.id !== updatedWork.id ? work : updatedWork));
@@ -66,7 +64,7 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
   return (
     <Form
       form={form}
-      initialValues={prevWork}
+      initialValues={omit(prevWork, ['userId', 'bookingDate'])} // omit controlled values
       onFinish={onFormFinish}
       validateMessages={validateMessages}
       size="middle"
@@ -108,15 +106,20 @@ export default function WorkEditForm({ form, prevWork, setSubmitLoading, closeMo
       >
         <InputNumber autoComplete="off" />
       </Form.Item>
-      <Form.Item name="userId" label="기사" tooltip="나중에 등록할 수도 있습니다.">
-        <SubcontractorSelector1 form={form} defaultValue={prevWork.userId} disabled={!!prevWork.endTime} />
+      <Form.Item label="기사" tooltip="나중에 등록할 수도 있습니다.">
+        <SubcontractorSelector
+          value={pickedUserId}
+          onChange={setPickedUserId}
+          disabled={!!prevWork.endTime}
+          placeholder="업무를 배정받을 기사 선택"
+        />
       </Form.Item>
       <Form.Item name="remark" label="비고">
         <Input.TextArea autoComplete="off" />
       </Form.Item>
 
       {prevWork.bookingDate && (
-        <Form.Item name="bookingDate" label="예약일시" required>
+        <Form.Item label="예약일시" required>
           <BookingDatePicker date={bookingDate} setDate={setBookingDate} />
         </Form.Item>
       )}

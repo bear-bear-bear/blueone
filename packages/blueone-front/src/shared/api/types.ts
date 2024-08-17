@@ -32,24 +32,24 @@ export type User = {
   phoneNumber: string;
   createdAt: ISODateString;
   updatedAt: ISODateString;
-  deletedAt: ISODateString | null;
+  deletedAt?: ISODateString;
 };
 
 export type Work = {
   id: number;
-  userId: number | null;
+  userId?: number;
   origin: string;
-  waypoint: string | null;
+  waypoint?: string;
   destination: string;
   carModel: string;
   charge: number;
-  adjustment: number | null;
-  subsidy: number | null;
+  adjustment?: number;
+  subsidy?: number;
   payout: number;
-  remark: string | null;
-  checkTime: ISODateString | null;
-  endTime: ISODateString | null;
-  bookingDate: ISODateString | null;
+  remark?: string;
+  checkTime?: ISODateString;
+  endTime?: ISODateString;
+  bookingDate?: ISODateString;
   createdAt: ISODateString;
   updatedAt: ISODateString;
 };
@@ -267,9 +267,7 @@ export interface EndPoint {
   'POST /works': {
     requestBody: Omit<Work, 'id' | 'payout' | 'checkTime' | 'endTime' | 'createdAt' | 'updatedAt'>;
     responses: {
-      201: Work & {
-        userId: null;
-      };
+      201: Work;
       400: APIError;
       500: APIError;
     };

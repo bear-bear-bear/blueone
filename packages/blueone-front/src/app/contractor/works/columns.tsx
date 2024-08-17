@@ -1,6 +1,8 @@
+import { Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import AddButton from './add-button.component';
+import { AddWork } from '@/features/contractor/work/add';
+import { PlusOutlined } from '@ant-design/icons';
 import DeleteButton from './delete-button.component';
 import EditButton from './edit-button.component';
 import type { ProcessedWork } from './page';
@@ -115,11 +117,22 @@ const columns: ColumnsType<ProcessedWork> = [
     key: 'action',
     align: 'center',
     render: (_, record) => {
-      if (record.endTime === null) {
+      const AddButton = (
+        <AddWork
+          initialValues={record}
+          trigger={({ openModal, isPending }) => (
+            <Tooltip title="추가">
+              <Button type="text" size="small" icon={<PlusOutlined />} onClick={openModal} loading={isPending} />
+            </Tooltip>
+          )}
+        />
+      );
+
+      if (!record.endTime) {
         return (
           <>
             <EditButton record={record} />
-            <AddButton record={record} />
+            {AddButton}
             <DeleteButton record={record} />
           </>
         );
@@ -130,11 +143,11 @@ const columns: ColumnsType<ProcessedWork> = [
         return (
           <>
             <EditButton record={record} />
-            <AddButton record={record} />
+            {AddButton}
           </>
         );
       }
-      return <AddButton record={record} />;
+      return AddButton;
     },
     width: 90,
   },

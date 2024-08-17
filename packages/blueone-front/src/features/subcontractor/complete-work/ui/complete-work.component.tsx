@@ -34,7 +34,7 @@ export default function CompleteWork({ work, children }: Props) {
           closeConfirm();
 
           // TODO: 자동 동작하는지 확인
-          // if (nextWorks?.find((work) => work.endTime === null)) {
+          // if (nextWorks?.find((work) => !work.endTime)) {
           //   message.success('완료된 업무는 완료되지 않은 업무 뒤쪽으로 배치되었어요.');
           // }
         },

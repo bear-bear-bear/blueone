@@ -8,7 +8,7 @@ type Props = {
 
 export default function TotalFee({ workData }: Props) {
   const totalFee = useMemo(() => {
-    const initialValue: { [key in keyof Pick<ProcessedWork, 'charge' | 'subsidy' | 'payout'>]: number } = {
+    const initialValue = {
       charge: 0,
       subsidy: 0,
       payout: 0,
@@ -17,7 +17,7 @@ export default function TotalFee({ workData }: Props) {
 
     return workData.reduce((acc, work) => {
       acc.charge = addFloats(acc.charge, work.charge);
-      acc.subsidy = addFloats(acc.subsidy, work.subsidy ?? 0);
+      acc.subsidy = addFloats(acc.subsidy ?? 0, work.subsidy ?? 0);
       acc.payout = addFloats(acc.payout, Number(work.payout));
       return acc;
     }, initialValue);

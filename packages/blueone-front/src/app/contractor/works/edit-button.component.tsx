@@ -4,9 +4,9 @@ import useSWRImmutable from 'swr/immutable';
 import type { ProcessedWork, FullWorks } from '@/app/contractor/works/page';
 import httpClient from '@/shared/api/axios';
 import { EndPoint } from '@/shared/api/types';
+import { EditRequest } from '@/shared/api/types/works';
 import { axiosFetcher } from '@/shared/lib/utils/swr';
 import { EditOutlined } from '@ant-design/icons';
-import type { WorkAddFormValues } from './add-form.component';
 import EditForm from './edit-form.component';
 
 type WorkForceFinishResponse = EndPoint['PATCH /works/{workId}/force-finish']['responses']['200'];
@@ -19,7 +19,7 @@ type Props = {
 export default function EditButton({ record }: Props) {
   const { message } = App.useApp();
   const { data: works, mutate: mutateWorks } = useSWRImmutable<FullWorks>(record.swrKey, axiosFetcher);
-  const [form] = Form.useForm<WorkAddFormValues>();
+  const [form] = Form.useForm<EditRequest>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
 
