@@ -13,6 +13,11 @@ export type DateRange = {
   endDate: ISODateString;
 };
 
+export enum PaymentType {
+  DIRECT = 'DIRECT',
+  CASH = 'CASH',
+}
+
 export type UserInfo = {
   id: number;
   userId: number;
@@ -45,6 +50,7 @@ export type Work = {
   charge: number;
   adjustment?: number;
   subsidy?: number;
+  paymentType: PaymentType;
   payout: number;
   remark?: string;
   checkTime?: ISODateString;

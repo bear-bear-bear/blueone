@@ -48,3 +48,8 @@ export type CreateNoticeRequestBody = Pick<
   'title' | 'content' | 'startDate' | 'endDate'
 >;
 export type UpdateNoticeRequestBody = CreateNoticeRequestBody;
+
+export enum PaymentType {
+  DIRECT = 'DIRECT',
+  CASH = 'CASH',
+}

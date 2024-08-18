@@ -1,4 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
+import { PaymentType } from 'typings';
 import sequelize from './_sequelize';
 import type { Database } from './index';
 
@@ -12,6 +13,7 @@ class Work extends Model {
   public charge!: number;
   public adjustment!: number | null;
   public subsidy!: number | null;
+  public paymentType!: PaymentType;
   public remark!: string | null;
   public checkTime!: Date | null;
   public endTime!: Date | null;
@@ -50,6 +52,13 @@ Work.init(
     },
     subsidy: {
       type: DataTypes.MEDIUMINT,
+    },
+    paymentType: {
+      type: DataTypes.STRING(20),
+      validate: {
+        isIn: [Object.values(PaymentType)],
+      },
+      allowNull: false,
     },
     remark: {
       type: DataTypes.TEXT,
