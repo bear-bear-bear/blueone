@@ -12,5 +12,6 @@ export default function useFetchWorks() {
     queryFn: UserService.getWorks,
     staleTime: 0,
     gcTime: FIVE_MINUTES,
+    refetchOnWindowFocus: true,
   });
 }

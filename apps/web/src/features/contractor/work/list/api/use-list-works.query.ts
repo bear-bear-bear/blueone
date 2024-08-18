@@ -12,5 +12,6 @@ export default function useFetchWorks(request: GetListRequest) {
     queryFn: () => WorksService.getList(request),
     staleTime: 0,
     gcTime: FIVE_MINUTES,
+    refetchOnWindowFocus: true,
   });
 }
