@@ -27,8 +27,10 @@ function useNotifyCompletedWorkOrderChange(data: GetWorksResponse | undefined, i
   const { message } = App.useApp();
 
   useEffect(() => {
-    if (isPending) return;
-    if (!prevDataRef.current || !data?.length) {
+    if (isPending) {
+      return;
+    }
+    if (!prevDataRef.current || !data?.length || data.every((work) => !!work.endTime)) {
       prevDataRef.current = data;
       return;
     }
@@ -40,6 +42,7 @@ function useNotifyCompletedWorkOrderChange(data: GetWorksResponse | undefined, i
     if (maybeOccurredComplete) {
       message.success('완료된 업무는 완료되지 않은 업무 뒤쪽으로 배치되었어요.');
     }
+
     prevDataRef.current = data;
   }, [data]);
 }
