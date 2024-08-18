@@ -125,7 +125,7 @@ export default function AddWork({ initialValues, trigger }: Props) {
           </Form.Item>
           <Form.Item
             name="subsidy"
-            label="지원지수"
+            label="지원"
             tooltip="단위: 1000"
             rules={[{ type: 'number', min: 0, max: 16777216 }]}
           >
