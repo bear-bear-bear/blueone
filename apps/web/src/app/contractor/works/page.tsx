@@ -162,13 +162,14 @@ export default function WorksManagementPage() {
           return 'bg-gray-300 [&_.ant-table-cell-row-hover]:!bg-gray-300';
         }}
         expandable={{
+          columnTitle: <span className="whitespace-nowrap">비고</span>,
+          columnWidth: 40,
           expandedRowRender: renderRemark,
           expandIcon: ({ onExpand, record }) => {
             if (!record.remark) return null;
             return <SnippetsOutlined onClick={(e) => onExpand(record, e)} />;
           },
           rowExpandable: (record) => !!record.remark,
-          columnWidth: 30,
         }}
         showSorterTooltip={false}
         pagination={{ position: ['bottomLeft'] }}

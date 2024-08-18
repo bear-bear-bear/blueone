@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
-import { Button, Tooltip } from 'antd';
+import { Button, Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { AddWork } from '@/features/contractor/work/add';
 import { EditWork } from '@/features/contractor/work/edit';
 import { RemoveWork } from '@/features/contractor/work/remove';
-import { ItemOf } from '@/shared/api/types';
+import { ItemOf, PaymentType } from '@/shared/api/types';
 import { GetListResponse } from '@/shared/api/types/works';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 
@@ -15,7 +15,7 @@ const columns: ColumnsType<Item> = [
   {
     title: '일자',
     dataIndex: 'createdAt',
-    key: 'createdAt',
+    key: 'createdAt', // 컬럼 필터링 때 필요합니다
     align: 'center',
     render: (_, record) => renderDate(record.createdAt),
     sorter: {
@@ -26,18 +26,17 @@ const columns: ColumnsType<Item> = [
   {
     title: '예약 일시',
     dataIndex: 'bookingDate',
-    key: 'bookingDate',
+    key: 'bookingDate', // 컬럼 필터링 때 필요합니다
     align: 'center',
     render: (_, record) => renderDate(record.bookingDate, true),
     sorter: {
       compare: (a, b) => +dayjs(a.bookingDate).toDate() - +dayjs(b.bookingDate).toDate(),
     },
-    width: 90,
+    width: 95,
   },
   {
     title: '출발지',
     dataIndex: 'origin',
-    key: 'origin',
     align: 'center',
     width: 100,
     ellipsis: true,
@@ -45,7 +44,6 @@ const columns: ColumnsType<Item> = [
   {
     title: '경유지',
     dataIndex: 'waypoint',
-    key: 'waypoint',
     align: 'center',
     width: 100,
     ellipsis: true,
@@ -53,7 +51,6 @@ const columns: ColumnsType<Item> = [
   {
     title: '도착지',
     dataIndex: 'destination',
-    key: 'destination',
     align: 'center',
     width: 100,
     ellipsis: true,
@@ -61,7 +58,6 @@ const columns: ColumnsType<Item> = [
   {
     title: '차종',
     dataIndex: 'carModel',
-    key: 'carModel',
     align: 'center',
     ellipsis: true,
     width: 100,
@@ -69,7 +65,6 @@ const columns: ColumnsType<Item> = [
   {
     title: '기사',
     dataIndex: 'realname',
-    key: 'realname',
     align: 'center',
     render: (_, record) => record.User?.UserInfo.realname,
     width: 80,
@@ -77,14 +72,12 @@ const columns: ColumnsType<Item> = [
   {
     title: '구간지수',
     dataIndex: 'charge',
-    key: 'charge',
     align: 'right',
     width: 80,
   },
   {
     title: '할인/할증',
     dataIndex: 'adjustment',
-    key: 'adjustment',
     align: 'right',
     width: 80,
   },
@@ -96,10 +89,32 @@ const columns: ColumnsType<Item> = [
     width: 80,
   },
   {
-    title: '최종지수',
-    dataIndex: 'payout',
-    key: 'payout',
+    title: '직불',
+    dataIndex: `payout`,
+    key: `payout-${PaymentType.DIRECT}`,
     align: 'right',
+    render: (_, record) => {
+      if (record.paymentType !== PaymentType.DIRECT) return;
+      return record.payout;
+    },
+    width: 80,
+  },
+  {
+    title: '현불',
+    dataIndex: 'payout',
+    key: `payout-${PaymentType.CASH}`,
+    align: 'right',
+    render: (_, record) => {
+      if (record.paymentType !== PaymentType.CASH) return;
+      return record.payout;
+    },
+    width: 80,
+  },
+  {
+    title: '정산',
+    dataIndex: 'fee',
+    align: 'right',
+    render: (_, record) => record.fee || null,
     width: 80,
   },
   {
@@ -122,7 +137,7 @@ const columns: ColumnsType<Item> = [
     width: 95,
   },
   {
-    title: '',
+    title: 'Actions',
     key: 'action',
     align: 'center',
     render: (_, record) => {
@@ -149,6 +164,7 @@ const columns: ColumnsType<Item> = [
     },
     width: 90,
   },
+  Table.EXPAND_COLUMN, // remark(비고) 컬럼
 ];
 
 export default columns;
@@ -207,7 +223,7 @@ function isCompletedAtToday(endTime: string) {
 }
 
 function renderTime(targetTime: string | undefined, createdAt: Item['createdAt']): ReactNode {
-  if (!targetTime) return '-';
+  if (!targetTime) return null;
 
   const day = dayjs(targetTime);
   const isCreatedDay = day.startOf('day').isSame(dayjs(createdAt).startOf('day'));
@@ -216,7 +232,7 @@ function renderTime(targetTime: string | undefined, createdAt: Item['createdAt']
 }
 
 function renderDate(targetDate?: string, withTime?: boolean): ReactNode {
-  if (!targetDate) return '-';
+  if (!targetDate) return null;
 
   const day = dayjs(targetDate);
   const inThisYear = day.year() === dayjs().year();
