@@ -24,7 +24,12 @@ export default function SubcontractorLayout({ children }: { children: ReactNode 
 
   return (
     <>
-      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+      <ConfigProvider
+        theme={{
+          algorithm: theme.darkAlgorithm,
+          token: { fontSize: 16 },
+        }}
+      >
         <App notification={{ maxCount: 1 }}>
           <div className="w-full max-w-lg h-screen mx-auto flexRowCenter bg-gray-950">
             <div className="w-full h-full flex flex-col">
