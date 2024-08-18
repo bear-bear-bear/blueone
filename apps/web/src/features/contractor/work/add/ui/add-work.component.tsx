@@ -1,7 +1,8 @@
 import { ReactElement, useState } from 'react';
-import { Form, Input, App, Modal, InputNumber, Checkbox, Button } from 'antd';
+import { Form, Input, App, Modal, InputNumber, Checkbox, Button, Select } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import { BookingDatePicker, useBookingDate } from '@/entities/work';
+import { PaymentType } from '@/shared/api/types';
 import { AddRequest } from '@/shared/api/types/works';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import omit from '@/shared/lib/utils/omit';
@@ -13,11 +14,11 @@ type TriggerProps = {
   isPending: boolean;
 };
 type Props = {
-  initialValues?: AddRequest;
+  initialValues?: Partial<AddRequest>;
   trigger: (props: TriggerProps) => ReactElement;
 };
 
-export default function AddWork({ initialValues, trigger }: Props) {
+export default function AddWork({ initialValues = { paymentType: PaymentType.DIRECT }, trigger }: Props) {
   const [form] = Form.useForm<AddRequest>();
   const { message } = App.useApp();
   const { mutate: addWork, isPending } = useAddWork();
@@ -106,6 +107,12 @@ export default function AddWork({ initialValues, trigger }: Props) {
           </Form.Item>
           <Form.Item name="carModel" label="차종" rules={[{ required: true }, { type: 'string', max: 255 }]}>
             <Input autoComplete="off" />
+          </Form.Item>
+          <Form.Item name="paymentType" label="지급유형" rules={[{ required: true }]}>
+            <Select<PaymentType> allowClear={false} style={{ width: 90 }}>
+              <Select.Option value={PaymentType.DIRECT}>직불</Select.Option>
+              <Select.Option value={PaymentType.CASH}>현불</Select.Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name="charge"

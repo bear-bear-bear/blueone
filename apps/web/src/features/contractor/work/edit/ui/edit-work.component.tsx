@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react';
-import { Form, Input, App, Modal, Popconfirm, Button, InputNumber } from 'antd';
+import { Form, Input, App, Modal, Popconfirm, Button, InputNumber, Select } from 'antd';
 import type { ColProps } from 'antd/lib/grid/col';
 import { BookingDatePicker, useBookingDate } from '@/entities/work';
-import { Work } from '@/shared/api/types';
+import { PaymentType, Work } from '@/shared/api/types';
 import { EditRequest } from '@/shared/api/types/works';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import omit from '@/shared/lib/utils/omit';
@@ -161,6 +161,12 @@ export default function EditWork({ id, completed, initialValues, trigger }: Prop
           </Form.Item>
           <Form.Item name="carModel" label="차종" rules={[{ required: true }, { type: 'string', max: 255 }]}>
             <Input autoComplete="off" />
+          </Form.Item>
+          <Form.Item name="paymentType" label="지급유형" rules={[{ required: true }]}>
+            <Select<PaymentType> allowClear={false} style={{ width: 90 }}>
+              <Select.Option value={PaymentType.DIRECT}>직불</Select.Option>
+              <Select.Option value={PaymentType.CASH}>현불</Select.Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name="charge"
