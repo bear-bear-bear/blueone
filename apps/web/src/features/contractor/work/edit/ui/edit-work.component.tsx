@@ -103,7 +103,7 @@ export default function EditWork({ id, completed, initialValues, trigger }: Prop
     >
       <Button className="float-left">활성화</Button>
     </Popconfirm>
-  ) : (
+  ) : !completed ? (
     <Popconfirm
       key="force-complete"
       placement="topLeft"
@@ -117,7 +117,7 @@ export default function EditWork({ id, completed, initialValues, trigger }: Prop
         완료
       </Button>
     </Popconfirm>
-  );
+  ) : null;
 
   return (
     <>

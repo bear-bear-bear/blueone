@@ -7,6 +7,7 @@ import { EditWork } from '@/features/contractor/work/edit';
 import { RemoveWork } from '@/features/contractor/work/remove';
 import { ItemOf, PaymentType } from '@/shared/api/types';
 import { GetListResponse } from '@/shared/api/types/works';
+import { ONE_DAY } from '@/shared/config/time';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 type Item = ItemOf<GetListResponse>;
@@ -151,7 +152,7 @@ const columns: ColumnsType<Item> = [
         );
       }
 
-      if (isCompletedAtToday(record.endTime)) {
+      if (isCompletedIn24Hours(record.endTime)) {
         return (
           <>
             {renderEditButton(record)}
@@ -217,9 +218,8 @@ function renderRemoveButton(record: Item) {
   );
 }
 
-function isCompletedAtToday(endTime: string) {
-  const TODAY_START_MS = dayjs().startOf('d').valueOf();
-  return +new Date(endTime) > TODAY_START_MS;
+function isCompletedIn24Hours(endTime: string) {
+  return dayjs().diff(endTime).valueOf() < ONE_DAY;
 }
 
 function renderTime(targetTime: string | undefined, createdAt: Item['createdAt']): ReactNode {

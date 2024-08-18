@@ -12,6 +12,7 @@ import { withPayout } from '@/utils/calculate-payout';
 import dayjs from '@/utils/dayjs';
 import omit from '@/utils/omit';
 import { getWorksByConditionallyAsBooking } from '@/utils/query/work';
+import { ONE_DAY } from '@/utils/time';
 
 const router = express.Router();
 
@@ -95,9 +96,9 @@ router.put('/:workId', isLoggedIn, isContractor, async (req, res, next) => {
       });
       return;
     }
-    if (!!work.endTime) {
+    if (!!work.endTime && dayjs().diff(work.endTime).valueOf() > ONE_DAY) {
       res.status(403).json({
-        message: '완료된 업무는 수정할 수 없습니다.',
+        message: '완료된지 24시간이 지난 업무는 수정할 수 없습니다.',
       });
       return;
     }
