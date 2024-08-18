@@ -47,7 +47,7 @@ export default function AddWork({ initialValues = { paymentType: PaymentType.DIR
     addWork(request, {
       onSuccess: () => {
         message.success('업무 등록 완료');
-        onClose();
+        // onClose(); - NOTE: 사용자 편의상 등록 완료 후 닫지 않음 (추가 등록 등을 위해)
       },
     });
   };
