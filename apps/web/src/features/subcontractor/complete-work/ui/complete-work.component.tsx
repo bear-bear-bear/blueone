@@ -32,11 +32,6 @@ export default function CompleteWork({ work, children }: Props) {
         onSuccess: () => {
           message.success('업무가 완료 처리 되었어요. 고생하셨습니다 :)');
           closeConfirm();
-
-          // TODO: 자동 동작하는지 확인
-          // if (nextWorks?.find((work) => !work.endTime)) {
-          //   message.success('완료된 업무는 완료되지 않은 업무 뒤쪽으로 배치되었어요.');
-          // }
         },
       },
     );
