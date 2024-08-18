@@ -13,7 +13,6 @@ import { LoadingPanel } from '@/shared/ui/components/loading-panel';
 import { SubcontractorSelector } from '@/widgets/subcontractor-selector';
 import { SnippetsOutlined } from '@ant-design/icons';
 import columns from './columns';
-import TotalFee from './total-fee.component';
 
 const { RangePicker } = DatePicker;
 
@@ -38,7 +37,6 @@ export default function WorksManagementPage() {
       setDateRange(defaultDateRange);
     }
   });
-  const [showTotalFee, toggleTotalFee] = useBool(false);
 
   const { data: works } = useFetchWorks({
     ...dateRange,
@@ -137,9 +135,6 @@ export default function WorksManagementPage() {
             <Checkbox checked={showBookedWorks} disabled={showPastCompletedWorks} onChange={toggleBookedWorks}>
               예약 목록
             </Checkbox>
-            <Checkbox checked={showTotalFee} onChange={toggleTotalFee}>
-              지수 합계
-            </Checkbox>
           </div>
         </div>
 
@@ -175,20 +170,6 @@ export default function WorksManagementPage() {
         pagination={{ position: ['bottomLeft'] }}
         size="middle"
         bordered
-        summary={() => {
-          if (!showTotalFee) return null;
-          return (
-            <Table.Summary fixed>
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={columns.length}>
-                  <div className="flex justify-end">
-                    <TotalFee works={works ?? []} />
-                  </div>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </Table.Summary>
-          );
-        }}
       />
     </>
   );
