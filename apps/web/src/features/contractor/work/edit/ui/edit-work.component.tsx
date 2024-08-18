@@ -77,8 +77,11 @@ export default function EditWork({ id, completed, initialValues, trigger }: Prop
 
   const onFormFinish = (values: FormValues) => {
     const request: EditRequest = {
-      workId: id,
       ...values,
+      workId: id,
+      userId: pickedUserId,
+      remark: values.remark?.trim() || undefined,
+      bookingDate: !!initialValues.bookingDate ? bookingDate.format() : undefined,
     };
 
     editWork(request, {
