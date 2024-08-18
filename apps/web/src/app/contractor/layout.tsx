@@ -15,7 +15,7 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout className="h-screen-mobile-friendly">
       <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} breakpoint="lg" width={220}>
         <div className="min-h-[59px] flexRowCenter transition-none">
           {collapsed ? (
