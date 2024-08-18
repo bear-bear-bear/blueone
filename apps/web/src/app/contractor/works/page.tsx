@@ -123,7 +123,12 @@ export default function WorksManagementPage() {
             className="mr-2"
           />
 
-          <SubcontractorSelector value={pickedUserId} onChange={setPickedUserId} placeholder="모든 기사의 업무 표시" />
+          <SubcontractorSelector
+            value={pickedUserId}
+            onChange={setPickedUserId}
+            placeholder="모든 기사의 업무 표시"
+            className="w-64"
+          />
 
           <div className="flex items-center gap-2">
             <Checkbox checked={showPastCompletedWorks} disabled={showBookedWorks} onChange={togglePastCompletedWorks}>

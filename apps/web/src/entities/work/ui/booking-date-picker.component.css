@@ -1,0 +1,11 @@
+.ant-picker-time-panel {
+  .ant-picker-header-view {
+    display: none;
+  }
+  .ant-picker-content {
+    width: 80px !important;
+  }
+  .ant-picker-time-panel-cell-inner {
+    width: 100% !important;
+  }
+}
