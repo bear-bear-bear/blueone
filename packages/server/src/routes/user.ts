@@ -59,7 +59,7 @@ router.post('/sign-in', isNotLoggedIn, (req, res, next) => {
       }
 
       if (clientError) {
-        res.status(401).json(clientError);
+        res.status(403).json(clientError);
         return;
       }
 

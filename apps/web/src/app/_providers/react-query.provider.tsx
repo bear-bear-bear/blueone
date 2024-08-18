@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { getErrorMessage } from '@/shared/api/get-error-message';
 import isAuthError from '@/shared/api/is-auth-error';
 import { FIVE_MINUTES } from '@/shared/config/time';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 
@@ -22,6 +22,18 @@ export default function ReactQueryProvider({ children }: { children: ReactNode }
       </ReactQueryStreamedHydration>
     </QueryClientProvider>
   );
+}
+
+let clientQueryClient: QueryClient | undefined = undefined;
+
+function getQueryClient() {
+  if (typeof window === 'undefined') {
+    // Server: always make a new query client
+    return makeQueryClient();
+  }
+  // Browser: make a new query client if we don't already have one
+  if (!clientQueryClient) clientQueryClient = makeQueryClient();
+  return clientQueryClient;
 }
 
 function makeQueryClient() {
@@ -47,23 +59,14 @@ function makeQueryClient() {
     queryCache: new QueryCache({
       onError: handleBubbledError,
     }),
+    mutationCache: new MutationCache({
+      onError: handleBubbledError,
+    }),
   });
 }
 
-let clientQueryClient: QueryClient | undefined = undefined;
-
-function getQueryClient() {
-  if (typeof window === 'undefined') {
-    // Server: always make a new query client
-    return makeQueryClient();
-  }
-  // Browser: make a new query client if we don't already have one
-  if (!clientQueryClient) clientQueryClient = makeQueryClient();
-  return clientQueryClient;
-}
-
 function handleBubbledError(error: unknown) {
-  const errorMessage = `[ERROR]\n${getErrorMessage(error)}`;
+  const errorMessage = `[ERROR] ${getErrorMessage(error)}`;
 
   if (typeof window === 'undefined') {
     console.error(errorMessage);
