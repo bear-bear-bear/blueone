@@ -2,9 +2,9 @@ import { Button, Card, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { CheckWork } from '@/features/subcontractor/check-work';
 import { CompleteWork } from '@/features/subcontractor/complete-work';
-import { Work } from '@/shared/api/types';
+import { PaymentType, Work } from '@/shared/api/types';
 import cn from '@/shared/lib/utils/cn';
-import { CheckCircleOutlined, MoneyCollectOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined } from '@ant-design/icons';
 
 type Props = {
   work: Work;
@@ -60,43 +60,29 @@ export default function WorkCard({ work, readOnly = false, className }: Props) {
         </p>
       )}
 
-      <Card.Meta
-        title={
-          <p className="flex items-center text-lg">
-            <MoneyCollectOutlined className="text-2xl" />
-            <span className="ml-2">최종지수 {work.payout}</span>
-          </p>
+      <div className="grid grid-cols-[max-content_1fr] gap-x-2 gap-y-1">
+        <GridRow label="출발지" content={work.origin} copyable={!readOnly} />
+        {!!work.waypoint && <GridRow label="경유지" content={work.waypoint} copyable={!readOnly} />}
+        <GridRow label="도착지" content={work.destination} copyable={!readOnly} />
+        <GridRow label="차종" content={work.carModel} />
+        {!!work.remark && <GridRow label="비고" content={work.remark} />}
+        <GridRow label="구간지수" content={work.charge} asterisk />
+        {
+          !!work.adjustment && (
+            <GridRow label="할인/할증" content={work.adjustment} />
+          ) /* TODO: 할인 할증 분리하고 할인만 빨간색 표시 */
         }
-        description={
-          <div>
-            <p>* 구간지수 {work.charge}</p>
+        {!!work.subsidy && <GridRow label="지원" content={work.subsidy} />}
 
-            {!!work.adjustment &&
-              (work.adjustment > 0 ? (
-                <p>
-                  * 할증 <span className="text-primary">{work.adjustment}</span>
-                </p>
-              ) : (
-                <p>
-                  * 할인 <span className="text-primary">{Math.abs(work.adjustment as number)}</span>
-                </p>
-              ))}
-
-            {!!work.subsidy && (
-              <p>
-                * 지원지수 <span className="text-primary">{work.subsidy}</span>
-              </p>
-            )}
-          </div>
-        }
-      />
-
-      <div className="grid grid-cols-[max-content_1fr] gap-x-2 gap-y-1 mt-6">
-        <InfoRow label="출발지" content={work.origin} copyable={!readOnly} />
-        {work.waypoint && <InfoRow label="경유지" content={work.waypoint} copyable={!readOnly} />}
-        <InfoRow label="도착지" content={work.destination} copyable={!readOnly} />
-        <InfoRow label="차종" content={work.carModel} />
-        {work.remark && <InfoRow label="비고" content={work.remark} />}
+        {work.paymentType === PaymentType.DIRECT && (
+          <GridRow label="직불" content={work.payout} className="font-bold text-primary" />
+        )}
+        {work.paymentType === PaymentType.CASH && (
+          <>
+            <GridRow label="현불" content={work.payout} className="font-bold text-red-500" />
+            <GridRow label="정산" content={work.fee} className="font-bold text-primary" />
+          </>
+        )}
       </div>
     </Card>
   );
@@ -105,21 +91,34 @@ export default function WorkCard({ work, readOnly = false, className }: Props) {
 function WorkDoneStamp() {
   return (
     <Tooltip title="완료된 업무예요.">
-      <CheckCircleOutlined className="absolute top-4 right-4 text-primary text-[45px]" />
+      <CheckCircleOutlined className="absolute top-6 right-6 text-primary text-[40px]" />
     </Tooltip>
   );
 }
 
-type InfoRowProps = {
+type GridRow = {
   label: string;
-  content: string;
+  content: string | number;
+  asterisk?: boolean;
   copyable?: boolean;
+  className?: string;
 };
-function InfoRow({ label, content, copyable = false }: InfoRowProps) {
+function GridRow({ label, content, asterisk, copyable, className }: GridRow) {
   return (
     <>
-      <p className="text-right">{label}:</p>
-      <Typography.Paragraph className="text-base" copyable={copyable}>
+      <p
+        className={cn(
+          'text-right',
+          {
+            'relative before:content-["*"] before:absolute before:-left-[0.2em] before:top-[0.65em] before:transform before:-translate-x-1/2 before:-translate-y-1/2':
+              asterisk,
+          },
+          className,
+        )}
+      >
+        {label}:
+      </p>
+      <Typography.Paragraph className={cn('text-base', className)} copyable={copyable}>
         {content}
       </Typography.Paragraph>
     </>
