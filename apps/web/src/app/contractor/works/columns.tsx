@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -16,7 +17,7 @@ const columns: ColumnsType<Item> = [
     dataIndex: 'createdAt',
     key: 'createdAt',
     align: 'center',
-    render: (_, record) => processDate(record.createdAt),
+    render: (_, record) => renderDate(record.createdAt),
     sorter: {
       compare: (a, b) => +dayjs(a.createdAt).toDate() - +dayjs(b.createdAt).toDate(),
     },
@@ -27,7 +28,7 @@ const columns: ColumnsType<Item> = [
     dataIndex: 'bookingDate',
     key: 'bookingDate',
     align: 'center',
-    render: (_, record) => processDate(record.bookingDate, true),
+    render: (_, record) => renderDate(record.bookingDate, true),
     sorter: {
       compare: (a, b) => +dayjs(a.bookingDate).toDate() - +dayjs(b.bookingDate).toDate(),
     },
@@ -88,7 +89,7 @@ const columns: ColumnsType<Item> = [
     width: 80,
   },
   {
-    title: '지원지수',
+    title: '지원',
     dataIndex: 'subsidy',
     key: 'subsidy',
     align: 'right',
@@ -106,19 +107,19 @@ const columns: ColumnsType<Item> = [
     dataIndex: 'checkTime',
     key: 'checkTime',
     align: 'center',
-    render: (_, record) => processTime(record.checkTime, record.createdAt),
-    width: 90,
+    render: (_, record) => renderTime(record.checkTime, record.createdAt),
+    width: 95,
   },
   {
     title: '완료',
     dataIndex: 'endTime',
     key: 'endTime',
     align: 'center',
-    render: (_, record) => processTime(record.endTime, record.createdAt),
+    render: (_, record) => renderTime(record.endTime, record.createdAt),
     sorter: {
       compare: (a, b) => +!!a.endTime - +!!b.endTime,
     },
-    width: 90,
+    width: 95,
   },
   {
     title: '',
@@ -205,16 +206,16 @@ function isCompletedAtToday(endTime: string) {
   return +new Date(endTime) > TODAY_START_MS;
 }
 
-function processTime(targetTime: string | undefined, createdAt: Item['createdAt']): string {
+function renderTime(targetTime: string | undefined, createdAt: Item['createdAt']): ReactNode {
   if (!targetTime) return '-';
 
   const day = dayjs(targetTime);
   const isCreatedDay = day.startOf('day').isSame(dayjs(createdAt).startOf('day'));
 
-  return day.format(isCreatedDay ? 'HH:mm' : 'MM/DD_HH:mm');
+  return <span className="whitespace-nowrap">{day.format(isCreatedDay ? 'HH:mm' : 'MM/DD_HH:mm')}</span>;
 }
 
-function processDate(targetDate?: string, withTime?: boolean): string {
+function renderDate(targetDate?: string, withTime?: boolean): ReactNode {
   if (!targetDate) return '-';
 
   const day = dayjs(targetDate);
@@ -223,5 +224,5 @@ function processDate(targetDate?: string, withTime?: boolean): string {
   const formatFront = inThisYear ? 'MM/DD' : 'YYYY/MM/DD';
   const formatBack = withTime ? ' HH:00' : '';
 
-  return day.format(formatFront + formatBack);
+  return <span className="whitespace-nowrap">{day.format(formatFront + formatBack)}</span>;
 }
