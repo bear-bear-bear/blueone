@@ -8,8 +8,8 @@ export default function SubcontractorsManagementPage() {
   const { data: contractors, isPending } = useFetchSubcontractors();
 
   return (
-    <div className="relative max-w-screen-lg max-h-[800px] overflow-y-auto p-4 border border-gray-300 bg-white rounded">
-      <header className="sticky top-0 z-10 flex justify-end bg-white">
+    <div className="relative max-w-screen-lg max-h-[800px] overflow-y-auto px-4 pb-4 border border-gray-300 bg-white rounded">
+      <header className="sticky top-0 z-10 flex justify-end bg-white py-4">
         <AddSubcontractor
           trigger={({ openModal, isPending }) => (
             <Button type="primary" onClick={openModal} loading={isPending}>
@@ -19,7 +19,7 @@ export default function SubcontractorsManagementPage() {
         />
       </header>
 
-      <Divider className="my-4" />
+      <Divider className="mt-0 mb-4" />
 
       <List
         itemLayout="horizontal"

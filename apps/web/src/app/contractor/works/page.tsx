@@ -147,30 +147,32 @@ export default function WorksManagementPage() {
         />
       </div>
 
-      <Table
-        rowKey={(work) => work.id}
-        dataSource={dataSource}
-        columns={filteredColumns}
-        rowClassName={(record) => {
-          if (!record.endTime) return 'bg-white';
+      <div className="flex-1 w-full overflow-x-auto">
+        <Table
+          rowKey={(work) => work.id}
+          dataSource={dataSource}
+          columns={filteredColumns}
+          rowClassName={(record) => {
+            if (!record.endTime) return 'bg-white';
 
-          return 'bg-gray-300 [&_.ant-table-cell-row-hover]:!bg-gray-300';
-        }}
-        expandable={{
-          columnTitle: <span className="whitespace-nowrap">비고</span>,
-          columnWidth: 40,
-          expandedRowRender: renderRemark,
-          expandIcon: ({ onExpand, record }) => {
-            if (!record.remark) return null;
-            return <SnippetsOutlined onClick={(e) => onExpand(record, e)} />;
-          },
-          rowExpandable: (record) => !!record.remark,
-        }}
-        showSorterTooltip={false}
-        pagination={{ position: ['bottomLeft'] }}
-        size="middle"
-        bordered
-      />
+            return 'bg-gray-300 [&_.ant-table-cell-row-hover]:!bg-gray-300';
+          }}
+          expandable={{
+            columnTitle: <span className="whitespace-nowrap">비고</span>,
+            columnWidth: 40,
+            expandedRowRender: renderRemark,
+            expandIcon: ({ onExpand, record }) => {
+              if (!record.remark) return null;
+              return <SnippetsOutlined onClick={(e) => onExpand(record, e)} />;
+            },
+            rowExpandable: (record) => !!record.remark,
+          }}
+          showSorterTooltip={false}
+          pagination={{ position: ['bottomLeft'] }}
+          size="middle"
+          bordered
+        />
+      </div>
     </>
   );
 }

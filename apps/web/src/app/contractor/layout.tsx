@@ -42,7 +42,7 @@ export default function ContractorLayout({ children }: { children: ReactNode }) 
           </Tooltip>
         </Layout.Header>
 
-        <Main className="p-4 overflow-auto">{children}</Main>
+        <Main className="p-4 overflow-auto flex flex-col">{children}</Main>
 
         <Footer className="p-4 text-center">BLUEONE ©2014</Footer>
       </Layout>
