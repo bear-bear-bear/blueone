@@ -52,6 +52,7 @@ export type Work = {
   subsidy?: number;
   paymentType: PaymentType;
   payout: number;
+  fee: number;
   remark?: string;
   checkTime?: ISODateString;
   endTime?: ISODateString;
@@ -271,7 +272,7 @@ export interface EndPoint {
    * 업무 등록
    */
   'POST /works': {
-    requestBody: Omit<Work, 'id' | 'payout' | 'checkTime' | 'endTime' | 'createdAt' | 'updatedAt'>;
+    requestBody: Omit<Work, 'id' | 'payout' | 'fee' | 'checkTime' | 'endTime' | 'createdAt' | 'updatedAt'>;
     responses: {
       201: Work;
       400: APIError;
@@ -282,7 +283,7 @@ export interface EndPoint {
    * 업무 수정
    */
   'PUT /works/{workId}': {
-    requestBody: Omit<Work, 'id' | 'payout' | 'checkTime' | 'endTime' | 'createdAt' | 'updatedAt'>;
+    requestBody: Omit<Work, 'id' | 'payout' | 'fee' | 'checkTime' | 'endTime' | 'createdAt' | 'updatedAt'>;
     responses: {
       200: Work & {
         User?: User & {

@@ -256,9 +256,12 @@ router.get(
         }, {});
 
         completedWorks.forEach((work) => {
-          const payout = calculatePayout(work);
+          const { payout, fee } = calculatePayout(work);
           const currDate = dayjs(work.checkTime).date();
-          dateMap[`${currDate}`] = addFloats(dateMap[`${currDate}`], payout);
+          dateMap[`${currDate}`] = addFloats(
+            dateMap[`${currDate}`],
+            payout - fee,
+          );
         });
 
         return dateMap;
@@ -273,11 +276,11 @@ router.get(
         }, {});
 
         completedWorks.forEach((work) => {
-          const payout = calculatePayout(work);
+          const { payout, fee } = calculatePayout(work);
           const currMonth = dayjs(work.checkTime).month() + 1; // dayjs month is 0~11
           monthMap[`${currMonth}`] = addFloats(
             monthMap[`${currMonth}`],
-            payout,
+            payout - fee,
           );
         });
 
