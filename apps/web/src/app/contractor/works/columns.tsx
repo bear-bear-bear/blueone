@@ -138,7 +138,7 @@ const columns: ColumnsType<Item> = [
     width: 95,
   },
   {
-    title: 'Actions',
+    title: 'Addition',
     key: 'action',
     align: 'center',
     render: (_, record) => {
