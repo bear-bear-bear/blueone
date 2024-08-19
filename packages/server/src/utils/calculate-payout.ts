@@ -40,11 +40,11 @@ function calculateDirectPayout(work: Work): Payout {
 
 /**
  * 현금지불 = 구간지수 + 할인/할증
- * 정산_수수료 = (현금지불 - 지원) * 0.2
+ * 정산_수수료 = 현금지불 * 0.2 - 지원 * 0.8
  */
 function calculateCashPayout(work: Work): Payout {
   const cashPayout = addFloats(work.charge, work.adjustment ?? 0);
-  const fee = (cashPayout - (work.subsidy ?? 0)) * 0.2;
+  const fee = cashPayout * 0.2 - (work.subsidy ?? 0) * 0.8;
 
   return {
     payout: parseFloat(cashPayout.toFixed(2)),
