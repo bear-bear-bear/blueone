@@ -23,8 +23,8 @@ export default function WorksManagementPage() {
     endDate: times.today.format('YYYY-MM-DD'),
   };
   const defaultBookingDateRange = {
-    startDate: times.tomorrow.format('YYYY-MM-DD'),
-    endDate: times.fourDaysLater.format('YYYY-MM-DD'),
+    startDate: times.today.format('YYYY-MM-DD'),
+    endDate: times.threeDaysLater.format('YYYY-MM-DD'),
   };
 
   const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
@@ -192,7 +192,7 @@ function getTimes() {
   const todayStart = today.startOf('d');
   const tomorrow = today.startOf('day').add(1, 'day');
   const threeDaysAgo = today.subtract(3, 'days');
-  const fourDaysLater = today.add(3, 'days');
+  const threeDaysLater = today.add(3, 'days');
   const thisMonthStart = today.startOf('month');
   const thisMonthEnd = today.endOf('month');
 
@@ -201,7 +201,7 @@ function getTimes() {
     todayStart,
     tomorrow,
     threeDaysAgo,
-    fourDaysLater,
+    threeDaysLater,
     thisMonthStart,
     thisMonthEnd,
   };
