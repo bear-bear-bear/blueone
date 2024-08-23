@@ -90,8 +90,12 @@ export default function WorksManagementPage() {
                       value: [dayjs(defaultBookingDateRange.startDate), dayjs(defaultBookingDateRange.endDate)],
                     },
                     {
+                      label: 'Today',
+                      value: [times.today, times.today],
+                    },
+                    {
                       label: 'This Month',
-                      value: [times.tomorrow, times.thisMonthEnd],
+                      value: [times.today, times.thisMonthEnd],
                     },
                   ]
                 : [
