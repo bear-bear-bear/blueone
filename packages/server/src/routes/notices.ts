@@ -119,7 +119,8 @@ router.get('/:noticeId', isLoggedIn, async (req, res, next) => {
  */
 router.put('/:noticeId', isLoggedIn, isContractor, async (req, res, next) => {
   const { noticeId } = req.params;
-  const { title, content }: UpdateNoticeRequestBody = req.body;
+  const { title, content, startDate, endDate }: UpdateNoticeRequestBody =
+    req.body;
 
   try {
     const notice = await Notice.findByPk(noticeId);
@@ -133,6 +134,9 @@ router.put('/:noticeId', isLoggedIn, isContractor, async (req, res, next) => {
 
     notice.title = title;
     notice.content = content;
+    notice.startDate = startDate;
+    notice.endDate = endDate;
+
     await notice.save();
     res.status(200).json(notice.get());
   } catch (err) {
