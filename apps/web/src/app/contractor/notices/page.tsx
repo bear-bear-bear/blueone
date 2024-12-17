@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Button, Table } from 'antd';
 import Linkify from 'linkify-react';
 import { AddNotice } from '@/features/contractor/notice/add';
@@ -7,7 +7,7 @@ import { useFetchNotices } from '@/features/contractor/notice/list';
 import { DateRange } from '@/shared/api/types';
 import dayjs from '@/shared/lib/utils/dayjs';
 import { LoadingPanel } from '@/shared/ui/components/loading-panel';
-import columns, { preFormatDates } from './columns';
+import columns from './columns';
 import CustomRangePicker from './custom-range-picker.component';
 
 export default function NoticesManagementPage() {
@@ -21,7 +21,6 @@ export default function NoticesManagementPage() {
   });
 
   const { data: notices = [], isPending } = useFetchNotices(dateRange);
-  const dataSource = useMemo(() => notices.map(preFormatDates), [notices]);
 
   if (isPending) {
     return <LoadingPanel />;
@@ -40,7 +39,7 @@ export default function NoticesManagementPage() {
       </div>
       <Table
         rowKey={(notice) => notice.id}
-        dataSource={dataSource}
+        dataSource={notices}
         columns={columns}
         rowClassName="cursor-pointer"
         expandable={{

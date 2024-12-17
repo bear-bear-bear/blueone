@@ -18,6 +18,9 @@ const columns: ColumnsType<Notice> = [
       compare: (a, b) => +(new Date(b.createdAt) || 0) - +(new Date(a.createdAt) || 0),
     },
     width: 80,
+    render: (_, record) => {
+      return formatDateWithOptionalYear(record.createdAt);
+    },
   },
   {
     title: '제목',
@@ -30,7 +33,11 @@ const columns: ColumnsType<Notice> = [
     dataIndex: 'dateRange',
     key: 'dateRange',
     width: 120,
-    render: (_, record) => `${record.startDate} - ${record.endDate}`,
+    render: (_, record) => {
+      const { startDate, endDate } = record;
+
+      return `${formatDateWithOptionalYear(startDate)} - ${formatDateWithOptionalYear(endDate)}`;
+    },
   },
   {
     title: '',
@@ -74,19 +81,9 @@ const columns: ColumnsType<Notice> = [
 
 export default columns;
 
-/**
- * NOTE: thisYear과의 연산을 한번에 하기 위해 column.render에서 개별 처리하지 않고, 테이블에 데이터 넣어주기 전 포맷한다
- */
-export function preFormatDates(notice: Notice) {
+function formatDateWithOptionalYear(date: string): string {
   const thisYear = dayjs().year();
-  const createdAt = dayjs(notice.createdAt);
-  const startDate = dayjs(notice.startDate);
-  const endDate = dayjs(notice.endDate);
+  const parsedDate = dayjs(date);
 
-  return {
-    ...notice,
-    createdAt: createdAt.format(createdAt.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-    startDate: startDate.format(startDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-    endDate: endDate.format(endDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD'),
-  };
+  return parsedDate.format(parsedDate.year() === thisYear ? 'MM/DD' : 'YYYY/MM/DD');
 }
