@@ -26,14 +26,14 @@ export default function AddWork({ initialValues = { paymentType: PaymentType.DIR
   const [bookingDate, setBookingDate, resetBookingDate] = useBookingDate(initialValues?.bookingDate);
   const [pickedUserId, setPickedUserId] = useState(initialValues?.userId);
 
-  const reset = () => {
-    form.resetFields();
+  const initialize = () => {
+    form.setFieldsValue(omit(initialValues, ['bookingDate', 'userId'])); // omit controlled values
     setUseBooking(!!initialValues?.bookingDate);
     setPickedUserId(initialValues?.userId);
     resetBookingDate();
   };
   const { open, onOpen, onClose } = useDisclosure({
-    onClose: reset,
+    onOpen: initialize,
   });
 
   const onFormFinish = (values: AddRequest) => {
@@ -78,7 +78,7 @@ export default function AddWork({ initialValues = { paymentType: PaymentType.DIR
             예약
           </Checkbox>,
 
-          <Button key="clear" onClick={reset}>
+          <Button key="clear" onClick={initialize}>
             초기화
           </Button>,
           <Button key="cancel" onClick={onClose}>
@@ -92,7 +92,6 @@ export default function AddWork({ initialValues = { paymentType: PaymentType.DIR
         <Form<AddRequest>
           form={form}
           onFinish={onFormFinish}
-          initialValues={initialValues && omit(initialValues, ['bookingDate', 'userId'])} // omit controlled values
           validateMessages={validateMessages}
           size="middle"
           {...layout}

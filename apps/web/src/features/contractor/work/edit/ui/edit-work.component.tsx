@@ -33,13 +33,13 @@ export default function EditWork({ id, completed, initialValues, trigger }: Prop
   const [bookingDate, setBookingDate, resetBookingDate] = useBookingDate(initialValues?.bookingDate);
   const [pickedUserId, setPickedUserId] = useState(initialValues?.userId);
 
-  const reset = () => {
-    form.resetFields();
+  const initialize = () => {
+    form.setFieldsValue(omit(initialValues, ['userId', 'bookingDate'])); // omit controlled values;
     setPickedUserId(initialValues?.userId);
     resetBookingDate();
   };
   const { open, onOpen, onClose } = useDisclosure({
-    onClose: reset,
+    onOpen: initialize,
   });
 
   const isPending = isEditPending || isForceCompletePending || isForceActivatePending;
@@ -147,7 +147,6 @@ export default function EditWork({ id, completed, initialValues, trigger }: Prop
       >
         <Form<FormValues>
           form={form}
-          initialValues={omit(initialValues, ['userId', 'bookingDate'])} // omit controlled values
           onFinish={onFormFinish}
           validateMessages={validateMessages}
           size="middle"

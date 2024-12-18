@@ -24,7 +24,9 @@ export default function EditSubContractor({ id, initialValues, trigger }: Props)
   const { message } = App.useApp();
   const { mutate: editSubContractor, isPending } = useEditSubContractor();
   const { open, onOpen, onClose } = useDisclosure({
-    onClose: form.resetFields,
+    onOpen: () => {
+      form.setFieldsValue(initialValues);
+    },
   });
 
   const onFormFinish = (values: FormValues) => {
@@ -61,7 +63,6 @@ export default function EditSubContractor({ id, initialValues, trigger }: Props)
         <Form<FormValues>
           form={form}
           onFinish={onFormFinish}
-          initialValues={initialValues}
           validateMessages={validateMessages}
           size="middle"
           {...layout}

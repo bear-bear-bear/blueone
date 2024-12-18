@@ -22,14 +22,14 @@ export function useDisclosure(props: UseDisclosureProps = {}) {
       setOpen(false);
     }
     props.onClose?.();
-  }, [isControlled]);
+  }, [isControlled, props]);
 
   const onOpen = useCallback(() => {
     if (!isControlled) {
       setOpen(true);
     }
     props.onOpen?.();
-  }, [isControlled]);
+  }, [isControlled, props]);
 
   const onToggle = useCallback(() => {
     if (open) {
