@@ -40,7 +40,7 @@ export default function AddWork({ initialValues = { paymentType: PaymentType.DIR
     const request: AddRequest = {
       ...values,
       userId: pickedUserId,
-      remark: values.remark?.trim() || undefined,
+      remark: values.remark?.trim(),
       bookingDate: useBooking ? bookingDate.format() : undefined,
     };
 

@@ -80,7 +80,7 @@ export default function EditWork({ id, completed, initialValues, trigger }: Prop
       ...values,
       workId: id,
       userId: pickedUserId,
-      remark: values.remark?.trim() || undefined,
+      remark: values.remark?.trim(),
       bookingDate: !!initialValues.bookingDate ? bookingDate.format() : undefined,
     };
 
